@@ -2,8 +2,8 @@ LuatIDE 是一个集 **单步调试** ，**智能编辑**，多方式下载等�
 
 ## 快速入门
 1. 获取LuatIDE 快速迭代版本([点击这里或者点击右侧发行版](https://gitee.com/openLuat/luatide/releases))
-2. [安装插件](https://gitee.com/openLuat/luatide/blob/master/install.md)
-3. [使用插件](https://gitee.com/openLuat/luatide/blob/master/user_guide.md)
+2. [安装LuatIDE](https://gitee.com/openLuat/luatide/blob/master/install.md)
+3. [使用LuatIDE](https://gitee.com/openLuat/luatide/blob/master/user_guide.md)
 
 
 ## 寻求帮助
