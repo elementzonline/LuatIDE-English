@@ -1,4 +1,4 @@
-# LuatIDE 是一个集 **单步调试** ，智能编辑，多方式下载等，luatOS 集成开发环境
+LuatIDE 是一个集 **单步调试** ，**智能编辑**，多方式下载等，luatOS 集成开发环境
 
 ## 快速入门
 1. 获取LuatIDE 快速迭代版本([点击这里或者点击右侧发行版](https://gitee.com/openLuat/luatide/releases))
