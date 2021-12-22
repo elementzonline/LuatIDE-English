@@ -97,3 +97,22 @@ LuatIDE为更好的服务用户，开放登录功能，用户可使用erp账号�
 ### 八、LuatIDE模拟器功能
 LuatIDE支持模拟器功能，目前支持通过选择Icool项目，同时将模块型号切换为模拟器，即可体验模拟器功能
 ![icool.gif](https://cdn.openluat-luatcommunity.openluat.com/attachment/20211025114327369_icool.gif)
+
+[to do list]
+
+1、 支持鸿蒙（harmony）LiteOS的Luat/LuatOS调试
+
+2、 支持Linux/mac端。
+
+3、 支持适配多种模块型号
+
+5、 支持lua内存动态显示
+
+6、 代码编写支持跳转功能
+
+7、 代码编写支持悬停显示api功能
+
+8、 支持模块文件系统读写
+
+
+等等，您也可以通过官方交流群或仓库内提issue向我们提出您想要的功能。
