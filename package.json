@@ -166,7 +166,7 @@
   	  	  	  	"language": "lua",
   	  	  	  	"path": "./src/editor/snippets/luatos-soc.json"
   	  	  	}
-  	  	],
+  	  	]
   	},
   	"scripts": {
   	  	"vscode:prepublish": "npm run package",
