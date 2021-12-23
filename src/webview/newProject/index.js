@@ -1,6 +1,6 @@
 //局部全局变量
-let GCName = "";
-let GCPath = "";
+let gcName = "";
+let gcPath = "";
 
 //被点击的新建工程选项
 let tarActive = $(".menu");
@@ -46,13 +46,13 @@ $(".content_space").show();
 $("#space").addClass("active");
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 //清楚工程临时数据
 function clearTempData(tar1, tar2) {
     for (let i = 0; i < tar1.length; i++) {
         document.getElementsByName(tar1[i])[0].value = null;
-    };
+    }
     for (let j = 0; j < tar2.length; j++) {
         $("." + tar2[j]).empty();
     }
@@ -66,7 +66,7 @@ tarActive.on("click", function () {
     switch ($(this).attr("id")) {
         case "space":
             clearTempData(sapceData, spaceDynData);
-            getMessagePerSwitch("space");
+            getMessagePerSwitch("pure");
             curActiveContent = "space";
             $(".content_space").show();
             break;
@@ -153,7 +153,7 @@ function importProjectDisplay(whichDsp) {
     $(".navbar").hide();
     $(".tips").show();
     $(allHideStr).hide();
-    whichDsp.show()
+    whichDsp.show();
 }
 
 /* 添加红框提示错误 */
@@ -164,32 +164,129 @@ function addTips(tar) {
 }
 
 /* 判断那个需要添加提示 */
-function whichTips(tar) {
-    switch (key) {
-        case value:
-            
+function whichTips(type, tar) {
+    switch (type) {
+        case "pure":
             break;
-    
+        case "example":
+            break;
+        case "ndk":
+            break;
+        case "ui":
+            break;
         default:
             break;
     }
+    for (let key in tar) {
+
+    }
+}
+
+/*发送导入工程数据*/
+function getImportProjectData(type, tar) {
+    let projectPath = $("input[name=" + tar + "_project_path]").val();
+    let projectName = $("input[name=" + tar + "_project_name]").val();
+    if (!projectName.trim() || !projectPath) {
+        Alert('名称或路径不能为空！');
+        return false;
+    } else {
+        //验证上传文件的文件名是否合法
+        var reg = new RegExp('[\\\\/:*?\"<>|]');
+        if (reg.test(projectName) || reg.length > 255) {
+            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
+            return false;
+        }
+    }
+    switch (tar) {
+        case "space":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "pure",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": projectPath,
+                        "libPath": $(".select_getSpace_LibInfo option:selected").text(),
+                        "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "example":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "example",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": projectPath,
+                        "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getExample_CoreInfo option:selected").text(),
+                        "example": $(".select_getExample_ExampleInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "ndk":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "ndk",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": projectPath,
+                        "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "ui":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "ui",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": projectPath,
+                        "libPath": $(".select_getUi_LibInfo option:selected").text(),
+                        "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getUi_CoreInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        default:
+            break;
+    }
+    // TODO
+    vscode.postMessage({
+        command: 'closeWebview',
+        text: {
+            "type": "importProjectWebview",
+        }
+    });
 }
 /********************************************** 导入工程 **********************************************/
 
 /*********************************************** 数据交互↓ ************************************************/
 
-// 每次切换工程发送相应的工程类型
+/* 获取新建工程初始化数据命令(每次切换工程发送相应的工程类型) */
 function getMessagePerSwitch(para) {
-    // vscode.postMessage({
-    //     command: 'projectType',
-    //     text: para,
-    // })
+    vscode.postMessage({
+        command: 'projectType',
+        text: para,
+    })
 }
 
 //发送给后台，由后台打开选择文件夹
-function handelBackstage(name) {
+function handelBackstage(name, type) {
     vscode.postMessage({
         command: name,
+        text: {
+            "type": type,
+        }
     })
 }
 
@@ -237,7 +334,7 @@ function handleSubmit(tar) {
                     "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
                 }
-            })
+            });
             break;
         case "example":
             vscode.postMessage({
@@ -249,7 +346,7 @@ function handleSubmit(tar) {
                     "corePath": $(".select_getExample_CoreInfo option:selected").text(),
                     "example": $(".select_getExample_ExampleInfo option:selected").text(),
                 }
-            })
+            });
             break;
         case "ndk":
             vscode.postMessage({
@@ -260,7 +357,7 @@ function handleSubmit(tar) {
                     "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
                 }
-            })
+            });
             break;
         case "ui":
             vscode.postMessage({
@@ -272,7 +369,7 @@ function handleSubmit(tar) {
                     "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getUi_CoreInfo option:selected").text(),
                 }
-            })
+            });
             break;
 
         default:
@@ -280,6 +377,76 @@ function handleSubmit(tar) {
     }
     $(".father").hide();
     //关闭 WebView
+    vscode.postMessage({
+        command: 'closeWebview',
+        text: {
+            "type": "newProjectWebview",
+        }
+    });
+}
+
+/* 接受VsCode发送的自定义路径 */
+function customPathManagment(whichProject, whichCustom, pathData) {
+    switch (whichProject) {
+        case "space":
+            switch (whichCustom) {
+                case "customProjectPath":
+                    $("#space_customepath").val(pathData);
+                    break;
+                case "customLibPath":
+                    $("#space_customeLib").text(pathData);
+                    $("#space_customeLib").prop("selected", true);
+                    break;
+                case "customCorePath":
+                    $("#space_customeCore").text(pathData);
+                    $("space_customeCore").prop("selected", true);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case "example":
+            switch (whichCustom) {
+                case "customProjectPath":
+                    $("#example_customepath").val(pathData);
+                    break;
+                case "customCorePath":
+                    $("#example_customeCore").text(pathData);
+                    $("#example_customeCore").prop("selected", true);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case "ndk":
+            switch (whichCustom) {
+                case "customProjectPath":
+                    $("#example_customepath").val(pathData);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case "ui":
+            switch (whichCustom) {
+                case "customProjectPath":
+                    $("#ui_customepath").val(pathData);
+                    break;
+                case "customLibPath":
+                    $("#example_customeLib").text(pathData);
+                    $("#example_customeLib").prop("selected", true);
+                    break;
+                case "customCorePath":
+                    $("#ui_customeCore").text(pathData);
+                    $("#ui_customeCore").prop("selected", true);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -308,27 +475,37 @@ window.addEventListener('message', event => {
             }
             break;
             // TODO
-        case "导入工程":
+        case "importProjectData":
             // 判断是哪个工程
             let targetProject = null;
-            switch (message.text) {
-                case value:
+            switch (message.text.type) {
+                case "pure":
                     targetProject = $(".content_space");
                     /* 添加相应的导入数据 */
                     break;
-                case value:
+                case "example":
                     targetProject = $(".content_example");
                     break;
-                case value:
+                case "ndk":
                     targetProject = $(".content_ndk");
                     break;
-                case value:
+                case "ui":
                     targetProject = $(".content_ui");
                     break;
                 default:
                     break;
             }
             importProjectDisplay(targetProject);
+            break;
+            //自定义工程路径, lib库, core文件
+        case "customProjectPath":
+            customPathManagment(curActiveContent, "customProjectPath", message.text);
+            break;
+        case "customLibPath":
+            customPathManagment(curActiveContent, "customLibPath", message.text);
+            break;
+        case "customCorePath":
+            customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
         default:
             break;
