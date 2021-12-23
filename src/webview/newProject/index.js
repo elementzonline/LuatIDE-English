@@ -96,7 +96,9 @@ tarActive.on("click", function () {
 //按钮取消逻辑
 cancelBtn.on("click", function () {
     //关闭 WebView
-    // TODO
+    vscode.postMessage({
+        command: "cancelProject",
+    });
 });
 
 //按钮完成逻辑
@@ -182,7 +184,7 @@ function whichTips(type, tar) {
     }
 }
 
-/*发送导入工程数据*/
+/* 发送导入工程数据(导入工程提交) */
 function getImportProjectData(type, tar) {
     let projectPath = $("input[name=" + tar + "_project_path]").val();
     let projectName = $("input[name=" + tar + "_project_name]").val();
@@ -308,7 +310,7 @@ function getCurProjectName(e) {
     }
 }
 
-//工程提交
+/* 新建工程提交 */
 function handleSubmit(tar) {
     let projectPath = $("input[name=" + tar + "_project_path]").val();
     let projectName = $("input[name=" + tar + "_project_name]").val();
@@ -376,14 +378,8 @@ function handleSubmit(tar) {
             break;
     }
     $(".father").hide();
-    //关闭 WebView
-    vscode.postMessage({
-        command: 'closeWebview',
-        text: {
-            "type": "newProjectWebview",
-        }
-    });
 }
+
 
 /* 接受VsCode发送的自定义路径 */
 function customPathManagment(whichProject, whichCustom, pathData) {
@@ -474,6 +470,16 @@ window.addEventListener('message', event => {
                 addOptions(message.text, uiDynData[j]);
             }
             break;
+            //自定义工程路径, lib库, core文件
+        case "customProjectPath":
+            customPathManagment(curActiveContent, "customProjectPath", message.text);
+            break;
+        case "customLibPath":
+            customPathManagment(curActiveContent, "customLibPath", message.text);
+            break;
+        case "customCorePath":
+            customPathManagment(curActiveContent, "customCorePath", message.text);
+            break;
             // TODO
         case "importProjectData":
             // 判断是哪个工程
@@ -496,16 +502,6 @@ window.addEventListener('message', event => {
                     break;
             }
             importProjectDisplay(targetProject);
-            break;
-            //自定义工程路径, lib库, core文件
-        case "customProjectPath":
-            customPathManagment(curActiveContent, "customProjectPath", message.text);
-            break;
-        case "customLibPath":
-            customPathManagment(curActiveContent, "customLibPath", message.text);
-            break;
-        case "customCorePath":
-            customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
         default:
             break;
