@@ -1,0 +1,172 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    background: #231f20;
+    color: rgba(223, 190, 106, 0.7);
+    /* background: #8f8e85; */
+    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+}
+
+.father {
+    height: 100vh;
+}
+
+/* 错误提示 */
+h2 {
+    color: red;
+    margin-bottom: 50px;
+    display: none;
+}
+
+/*导航栏样式*/
+.navbar {
+    height: 13vh;
+    text-align: center;
+    *zoom: 1;
+    width: auto;
+    max-width: 800px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    position: relative;
+    top: 8%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+div.navbar:before,
+div.navbar:after {
+    content: "";
+    display: table;
+}
+
+div.navbar:after {
+    clear: both;
+}
+
+/*导航栏中选项样式*/
+.menu {
+    display: inline-block;
+    background: transparent;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 0.625rem;
+    letter-spacing: 0.3em;
+    color: rgba(223, 190, 106, 0.7);
+    border-radius: 0;
+    padding: 18px 60px 20px;
+    -webkit-transition: all 0.7s ease-out;
+    transition: all 0.7s ease-out;
+    background: -webkit-linear-gradient(180deg,
+            rgba(223, 190, 106, 0.8),
+            rgba(146, 111, 52, 0.8),
+            rgba(34, 34, 34, 0),
+            rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg,
+            rgba(223, 190, 106, 0.8),
+            rgba(146, 111, 52, 0.8),
+            rgba(34, 34, 34, 0),
+            rgba(34, 34, 34, 0));
+    background-position: 1% 50%;
+    background-size: 300% 300%;
+    text-decoration: none;
+    margin: 0.625rem;
+    border: none;
+    border: 1px solid rgba(223, 190, 106, 0.3);
+}
+
+.menu:hover {
+    border: 1px solid rgba(223, 190, 106, 0);
+    background-position: 50% 50%;
+}
+
+/*被选中激活样式*/
+.active {
+    border: 1px solid rgba(223, 190, 106, 0.3);
+    color: white;
+    background: -webkit-linear-gradient(180deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: -webkit-linear-gradient(180deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background-position: 60% 50%;
+    background-size: 300% 300%;
+}
+
+.content{
+    text-align: center;
+    align-content: center;
+    color: rgba(223, 190, 106, 0.5);
+}
+
+/*初始化页面内容样式*/
+.form {
+    margin: 30px auto;
+    position: relative;
+    padding-bottom: 70px;
+}
+
+.form .item {
+    margin: auto;
+    height: 30px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+}
+
+.form input,
+.form select {
+    outline-style: none ;
+    height: 24px;
+    width: 280px;
+    border-radius: 15px;
+    background-color: rgb(45, 45, 45);
+    border: 1px solid rgb(81, 81, 81);
+    color: rgba(223, 190, 106, 0.7);
+    text-align: center;
+}
+
+.exBtn {
+    position:absolute;
+    width: 50px;
+    right: 15%;
+    height: 25px;
+    border-radius: 20px;
+    border-radius: 15px;
+    background-color: rgb(45, 45, 45);
+    border: 1px solid rgb(81, 81, 81);
+    color: rgba(223, 190, 106, 0.7);
+    font-size: 11px;
+}
+
+.exBtn:hover,
+.form input:hover,
+.form select:hover {
+    border: 1px solid #815e11;
+}
+
+.form input[type="button"]{
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/**************************空白工程**************************/
+/*设置提示样式*/
+.content_space .tip_title {
+    font-size: 15px;
+    margin-bottom: 50px;
+    color: rgb(82, 105, 105);
+}
