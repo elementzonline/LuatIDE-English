@@ -18,12 +18,36 @@ function homeManage():void {
 	
 }
 
-function runProject():void {
-	
+function runProject(resource: vscode.Uri):void {
+	let targetResource = resource;
+	if (!targetResource && vscode.window.activeTextEditor) {
+		targetResource = vscode.window.activeTextEditor.document.uri;
+	}
+	if (targetResource) {
+		vscode.debug.startDebugging(undefined, {
+				type: 'luat',
+				name: 'Run File',
+				request: 'launch',
+				program: targetResource.fsPath
+			},
+			{ noDebug: true }
+		);
+	}
 }
 
-function debugProject():void {
-	
+function debugProject(resource: vscode.Uri):void {
+	let targetResource = resource;
+	if (!targetResource && vscode.window.activeTextEditor) {
+		targetResource = vscode.window.activeTextEditor.document.uri;
+	}
+	if (targetResource) {
+		vscode.debug.startDebugging(undefined, {
+			type: 'luat',
+			name: 'Debug File',
+			request: 'launch',
+			program: targetResource.fsPath
+		});
+	}
 }
 
 function projectSeletcedDelete() {
