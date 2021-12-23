@@ -1,9 +1,14 @@
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *--------------------------------------------------------*/
+
 'use strict';
 import * as vscode from 'vscode';
 // import { LuatideProvider } from './project/projectView';
 // import {OperationExplorer} from './project/toolshub';
 import {PluginVariablesInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle } from './project/ProjectHandle';
+import {activateMockDebug} from './debug/activateMockDebug';
 
 
 function createProject():void{
@@ -58,6 +63,12 @@ let pluginVariablesInit = new PluginVariablesInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
+/*
+ * The compile time flag 'runMode' controls how the debug adapter is run.
+ * Please note: the test suite only supports 'external' mode.
+ */
+const runMode: 'external' | 'server' | 'inline' = 'inline';
+
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
@@ -81,8 +92,9 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
 
-}	
+	activateMockDebug(context, runMode);
 
+}
 
 /** 这个方法当插件结束时被调用 */
 export function deactivate() {
