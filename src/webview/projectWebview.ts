@@ -99,6 +99,10 @@ export class ProjectManage {
     async receiveMessageHandle(projectPanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
+        const air72XUXLibList:string[] = ['1','2','3']; 
+        const air72XCXLibList:string[] = ['1','2','3']; 
+        const air10XLibList:string[] = ['1','2','3']; 
+        const simulatorList:string[] = ['1','2','3']; 
         const libList: string[] = ['暂时使用右侧自定义方式','2'];
         const coreList: string[] = ['暂时使用右侧自定义方式','2'];
         switch (message.command) {
@@ -108,14 +112,23 @@ export class ProjectManage {
                 switch (message.text) {
                     case 'pure':
                         // 传送pure所需要的数据至工程
-
                         projectPanel.webview.postMessage(
                             {
                                 command: 'pureProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "libList": libList,
-                                    "coreList": coreList,
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 }
                             }
                         );
@@ -127,8 +140,18 @@ export class ProjectManage {
                                 command: 'exampleProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "exampleList": [],
-                                    "coreList": [],
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 },
                             }
                         );
@@ -151,8 +174,18 @@ export class ProjectManage {
                                 command: 'uiProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "libList": [],
-                                    "coreList": [],
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 },
                             }
                         );
