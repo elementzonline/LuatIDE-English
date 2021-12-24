@@ -38,13 +38,13 @@ export class ProjectManage {
         // 获取webview界面
         this.projectPanel.webview.html = this.getProjectWebviewContent();
 
-        // 数据通信：发送数据至webview
-        this.projectPanel.webview.postMessage(
-            {
-                command: 'refactor',
-                text: ""
-            }
-        );
+        // // 数据通信：发送数据至webview
+        // this.projectPanel.webview.postMessage(
+        //     {
+        //         command: 'refactor',
+        //         text: ""
+        //     }
+        // );
 
 
         this.projectPanel.webview.onDidReceiveMessage(
@@ -161,7 +161,7 @@ export class ProjectManage {
 
             // 接收webview提交的打开资源管理器选择用户工程路径请求
             case 'openSource':
-                switch (message.text.type) {
+                switch (message.text) {
                     case 'customProjectPath':
                         const customProjectOptions = {
                             canSelectFiles: false,		//是否选择文件
