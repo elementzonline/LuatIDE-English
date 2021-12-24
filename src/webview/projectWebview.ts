@@ -258,7 +258,22 @@ export class ProjectManage {
                         break;
                 }
                 break;
-        }
+            // 接收webview取消指令，关闭新建工程webview
+            case 'cancelProject':
+                projectPanel.dispose();
+                break;
+            case 'importProject':
+                switch(message.text){
+                    case "pure":
+                        break;
+                    case "example":
+                        break;
+                    case "ndk":
+                        break;
+                    case "ui":
+                        break;
+                }
+            }
     }
 
 
