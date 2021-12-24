@@ -17,6 +17,9 @@ import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path'; // 导入fs库和path库
 
+
+import { PluginJsonParse } from '../plugConfigParse';
+
 // 获取当前时间戳，并解析后格式化输出
 function formatConsoleDate (date) {
     var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
@@ -167,6 +170,8 @@ export class MockDebugSession extends LoggingDebugSession {
 	private dataReceiveFlag:number = 1;
 	private current_logfilename:string = "";
 	private configDataPath:any = process.env['APPDATA'];
+
+	private pluginJsonParse:any = new PluginJsonParse(); 
 
 	// 分发器
 	public dbg_dispatcher(heads, exts) {
@@ -831,6 +836,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		};
 
 		vscode.tasks.executeTask(task);
+		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject()
+
 		// 写入lua运行日志到用户工程下的log文件夹
 		if (!fs.existsSync(this.activeWorkspace+"\\LuatIDE_log")) {
 			fs.mkdirSync(this.activeWorkspace+"\\LuatIDE_log");
