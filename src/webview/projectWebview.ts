@@ -15,13 +15,14 @@ export class ProjectManage {
     }
     projectPanel: vscode.WebviewPanel | undefined = undefined;
     // 工程主页webview管理
-    projectManage() {
+    projectManage(context:vscode.ExtensionContext) {
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
         // 如果检测到编辑器区域已存在home面板，则展示它
         if (this.projectPanel) {
             this.projectPanel.reveal(columnToShowIn);
+            return;
         }
         else {
             this.projectPanel = vscode.window.createWebviewPanel(
@@ -57,7 +58,7 @@ export class ProjectManage {
                 this.projectPanel = undefined;
             },
             null,
-            // context.subscriptions
+            context.subscriptions
         );
     }
 
