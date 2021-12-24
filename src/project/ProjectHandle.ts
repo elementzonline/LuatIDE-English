@@ -16,7 +16,7 @@ export class ProjectActiveHandle {
 
     // 激活工程操作
     projectActive(filePath: any) {
-        const projectActivePath: string = path.join(filePath.parentPath, filePath.label);
+        const projectActivePath: string = filePath.path;
         const projectActiveCheckState: boolean = this.projectActiveCheck(projectActivePath);
         if (!projectActiveCheckState) { //激活工程必要条件检查失败
             return false;
@@ -26,8 +26,8 @@ export class ProjectActiveHandle {
 
     // 激活工程必要条件检查
     projectActiveCheck(dir: any) {
-        const projectList: any = pluginJsonParse.getPluginConfigUserProjectList();
-        if (projectList.indexOf(dir) !== -1) {
+        const projectList: any = pluginJsonParse.getPluginConfigUserProjectAbsolutePathList();
+        if (projectList.indexOf(dir) === -1) {
             vscode.window.showErrorMessage("选择激活工程未在用户工程列表中发现,请重新激活", { modal: true });
             return false;
         }
@@ -60,7 +60,7 @@ export class ProjectDeleteHandle {
     }
 
     deleteProject(filePath: any) {
-        const clickPath: string = path.join(filePath.parentPath, filePath.label);
+        const clickPath: string = filePath.parentPath;
         const deletProjectCheckState: boolean = this.deletProjectCheck(filePath);
         if (!deletProjectCheckState) {   //工程删除必要条件检查未通过
             return false;
@@ -73,7 +73,7 @@ export class ProjectDeleteHandle {
     // 工程删除用户交互提示
     deleteProjectUserInteractionHint(result: any, filePath: any) {
         const projectName: string = filePath.label;
-        const projectPath = path.join(filePath.projectPath, filePath.projectName);
+        const projectPath = filePath.path;
         let activeProject: string;
         switch (result) {
             case '移除工程':
@@ -81,6 +81,8 @@ export class ProjectDeleteHandle {
                 // 活动工程置空
                 activeProject = '';
                 pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                break;
             case '删除本地文件':
                 vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(result => {
                     pluginJsonParse.popPluginConfigProject(projectName);
@@ -88,22 +90,24 @@ export class ProjectDeleteHandle {
                     activeProject = '';
                     pluginJsonParse.setPluginConfigActiveProject(activeProject);
                     deleteDirRecursive(projectPath);
+                    vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 });
+                break;
         }
     }
 
     // 工程删除必要条件检查
     deletProjectCheck(filePath: any) {
-        if (!fs.existsSync(path.join(filePath.parentPath, filePath.label))) {
+        if (!fs.existsSync(filePath.path)) {
             vscode.window.showErrorMessage("选定的路径文件状态已改变，将从配置文件列表中删除该工程");
             return false;
         }
         const pluginConfigAppFile: any = pluginJsonParse.getPluginConfigUserProjectList();
-        if (pluginConfigAppFile.indexOf(path.join(filePath.parentPath, filePath.label)) !== -1) {
+        if (pluginConfigAppFile.indexOf(filePath.label) === -1) {
             vscode.window.showErrorMessage(`用户工程列表中未检测到${filePath.lable}工程,请重新确认`);
             return false;
         }
-        if (fs.statSync(path.join(filePath.parentPath, filePath.label)).isFile()) {
+        if (fs.statSync(filePath.path).isFile()) {
             vscode.window.showErrorMessage("选择删除的不是一个工程,请重新选择");
             return false;
         }
@@ -270,11 +274,11 @@ export class ProjectConfigOperation {
     }
 
     // 打开文件资源管理器接口
-    showOpenDialog(options: any) {
-        vscode.window.showOpenDialog(options).then(result => {
+    async showOpenDialog(options: any) {
+        let result = await vscode.window.showOpenDialog(options).then(result => {
             if (result !== undefined && result.length===1) {
                 // 显示用户选择的路径
-                const selectPath: string = result[0].fsPath.toString();
+                const selectPath: string = result[0].fsPath;
                 return selectPath;
             }
             if (result !== undefined && result.length>=1) {
@@ -283,8 +287,9 @@ export class ProjectConfigOperation {
             }
             return undefined;
         });
+        return result;
     }
-
+      
     // 选择配置模块型号,模拟器
     selectProjectModuleModel(){
         vscode.window.showQuickPick(
