@@ -1,6 +1,7 @@
 
 import {PluginVariablesInit} from './config';
 import * as fs from 'fs';
+import * as path from 'path';
 
 let pluginVariablesInit = new PluginVariablesInit();
 /**
@@ -19,8 +20,8 @@ let pluginVariablesInit = new PluginVariablesInit();
 
     // 获取用户插件配置文件内容对象
     getPluginConfigJson(){
-        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath;
-        const pluginConfigJson:any  = fs.readFileSync(pluginConfigPath);
+        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath();
+        const pluginConfigJson:any  = fs.readFileSync(pluginConfigPath,'utf-8');
         const pluginConfigJsonObj:any = JSON.parse(pluginConfigJson);
         return pluginConfigJsonObj;
     }
@@ -37,10 +38,22 @@ let pluginVariablesInit = new PluginVariablesInit();
         return pluginConfigProjectList;
     }
 
+    // 获取用户插件配置文件内用户工程完整路径
+    getPluginConfigUserProjectAbsolutePathList(){
+        const pluginConfigJsonObj:any =  this.getPluginConfigJson();
+        const pluginConfigJsonProjectListObj:any = pluginConfigJsonObj.projectList;
+        let pluginConfigProjecAbsolutePathtList:any = [];
+        for (let i = 0; i < pluginConfigJsonProjectListObj.length; i++) {
+            const element = pluginConfigJsonProjectListObj[i];
+            pluginConfigProjecAbsolutePathtList.push(path.join(element.projectPath,element.projectName));
+        }
+        return pluginConfigProjecAbsolutePathtList;
+    }
+
     // 获取当前活动工程名称
     getPluginConfigActivityProject(){
         const pluginConfigJsonObj:any =  this.getPluginConfigJson();
-        const pluginConfigActivityProject:string = pluginConfigJsonObj.activityProject;
+        const pluginConfigActivityProject:string = pluginConfigJsonObj.activeProject;
         return pluginConfigActivityProject;
     }
 
@@ -53,7 +66,7 @@ let pluginVariablesInit = new PluginVariablesInit();
 
     // 刷新插件配置文件
     refreshPlugintJson(plugintJsonObj:any){
-        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath; 
+        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath(); 
         const projectJson:string = JSON.stringify(plugintJsonObj,null,'\t');
         fs.writeFileSync(pluginConfigPath,projectJson);
     }
@@ -85,7 +98,7 @@ let pluginVariablesInit = new PluginVariablesInit();
         for (let i = 0; i <pluginJsonObj.projectList.length; i++) {
             const projectObj:any = pluginJsonObj.projectList[i];
             if (projectObj.projectName===projectName) {
-                pluginJsonObj.splice(i,1);
+                pluginJsonObj.projectList.splice(i,1);
             }
         }
         this.refreshPlugintJson(pluginJsonObj);
