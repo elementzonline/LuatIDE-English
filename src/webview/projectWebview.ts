@@ -104,7 +104,7 @@ export class ProjectManage {
         switch (message.command) {
             // 用户新建工程信息接收
             case 'projectType':
-                // console.log(message.text);
+                console.log(message.text);
                 switch (message.text) {
                     case 'pure':
                         // 传送pure所需要的数据至工程
@@ -158,7 +158,7 @@ export class ProjectManage {
                         );
                         break;
                 }
-
+                break;
             // 接收webview提交的打开资源管理器选择用户工程路径请求
             case 'openSource':
                 switch (message.text) {
@@ -223,6 +223,7 @@ export class ProjectManage {
                         // console.log(selectPath);
                         break;
                 }
+                break;
         }
     }
 
