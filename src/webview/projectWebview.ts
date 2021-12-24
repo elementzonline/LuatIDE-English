@@ -161,6 +161,7 @@ export class ProjectManage {
                 break;
             // 接收webview提交的打开资源管理器选择用户工程路径请求
             case 'openSource':
+                console.log(message.text);
                 switch (message.text) {
                     case 'customProjectPath':
                         const customProjectOptions = {
@@ -192,7 +193,7 @@ export class ProjectManage {
                         const customLibPath = await projectConfigOperation.showOpenDialog(customLibOptions);
                         projectPanel.webview.postMessage(
                             {
-                                command: "customProjectPath",
+                                command: "customLibPath",
                                 text: customLibPath,
 
                             }
