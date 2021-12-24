@@ -4,7 +4,7 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 // import { UpdateCore } from './updataCore';
 import { ProgressLocation } from 'vscode';
-import fetch from 'node-fetch'; 
+// import  fetch from 'node-fetch'; 
 import * as compressing from 'compressing';
 
 /**
@@ -14,7 +14,7 @@ export class PluginVariablesInit{
     // 获取数据存储路径
     private appDataPath:any = process.env['APPDATA'];
     // 获取用户扩展路径
-    private extensionPath:any = path.join(__dirname,'../..');
+    private extensionPath:any = path.join(__dirname,'../.');
     constructor() {
         
     }
@@ -93,8 +93,20 @@ export class PluginVariablesInit{
 
     // 获取home主页html路径
     getHomeHtmlPath(){
-        const homeHtmlPath: string = path.join(this.extensionPath,'webview','home.html');
+        const homeHtmlPath: string = path.join(this.extensionPath,'src','webview','home.html');
         return homeHtmlPath;
+    }
+
+    // 获取project主页资源文件路径
+    getProjectSourcePath(){
+        const projectSourcePath: string = path.join(this.extensionPath,'src','webview','newProject');
+        return projectSourcePath;
+    }
+
+    // 获取project主页html按钮
+    getProjectHtmlPath(){
+        const projectHtmlPath: string = path.join(this.extensionPath,'src','webview','newProject','index.html');
+        return projectHtmlPath;
     }
 
     // 获取主页LuatIDE logo图标路径
@@ -149,6 +161,12 @@ export class PluginVariablesInit{
     getAir10XDefaultDemoPath(){
         const air10XDefaultDemoPath: string = path.join(this.appDataPath,"LuatIDE","LuatideLib","Air10X_Demo");
         return air10XDefaultDemoPath;
+    }
+
+    // 获取插件支持的模块列表
+    getPluginDefaultModuleList(){
+        const moduleList:string[] = ["Air72XUX/Air82XUX", "Air72XCX","Air10X","Simulator"];
+        return moduleList;
     }
 }
 
@@ -221,7 +239,7 @@ export class PluginConfigInit {
                 const pluginConfigJson: string = this.configJsonGenerator();
                 fs.writeFileSync(filePath,pluginConfigJson);
             case 'uuid.txt':
-                const uuidData: string | undefined = this.uuidGenerator();
+                const uuidData:any = this.uuidGenerator();
                 fs.writeFileSync(filePath,uuidData);
         }
     }
@@ -238,35 +256,10 @@ export class PluginConfigInit {
 
     // 生成插件配置文件
     configJsonGenerator(){
-        const activeWorkspace = 'active_workspace';
-        const air10xdemoProject = {
-           projectPath:'.\\win32\\Air101',
-           projectName: 'Air10X',
-        };
-        const air72xdemoProject = {
-            projectPath: '.\\script_LuaTask_V2.4.0',
-            projectName: 'Air72X'
-        };
-        const demoProject = {
-            air10xdemoProject,
-            air72xdemoProject,
-        };
-        const demoprojectTypeObj ={
-            type:'demo',
-            projects:demoProject,
-        };
-        const userprojectTypeObj ={
-            type:'user',
-            projects:[],
-        };
-        const projectTypeObj = {
-            demoprojectTypeObj,
-            userprojectTypeObj,
-        };
         const configJson:any ={
-            version:1.1,
-            data:projectTypeObj,
-            activeWorkspace:'',
+            version:2.0,
+            projectList:[],
+            activeProject:'',
         };
         let configJsonObj = JSON.parse(configJson);
         return JSON.stringify(configJsonObj);
@@ -452,7 +445,7 @@ export class CorePullDownload {
         const jsonResult:any = this.getApiJsonFromRemoteServer(pullRequestUrl);
         const sourceUrl:any = this.parseJsonReturnSourceUrl(moduleModel,jsonResult);  //依据传入的不同型号做不同的解析
         const sourceDistPath:any = this.getSourceDistPath(moduleModel,sourceUrl);
-        await this.download(sourceUrl,sourceDistPath);
+        // await this.download(sourceUrl,sourceDistPath);
         await this.unzip(sourceUrl,sourceDistPath);
         await this.deleteRedundantSource(moduleModel,sourceDistPath);
     }
@@ -508,16 +501,16 @@ export class CorePullDownload {
     }
 
     // 请求服务器执行二进制下载操作
-    async download(url: any, filePath: any) {
-        let headers:any = {};
-        headers['Content-Type'] = 'application/octet-stream';
-        await fetch(url, {
-            method: 'GET',
-            headers: headers,
-        }).then(res => res.arrayBuffer()).then(_ => {
-            fs.writeFileSync(filePath, _, 'binary');
-        });
-      }
+    // async download(url: any, filePath: any) {
+    //     let headers:any = {};
+    //     headers['Content-Type'] = 'application/octet-stream';
+    //     await fetch(url, {
+    //         method: 'GET',
+    //         headers: headers,
+    //     }).then(res => res.buffer()).then(_ => {
+    //         fs.writeFileSync(filePath, _, 'binary');
+    //     });
+    //   }
 
     // 对下载完毕的zip文件进行解压缩
     async unzip(srcpath:any,distpath:any) {
