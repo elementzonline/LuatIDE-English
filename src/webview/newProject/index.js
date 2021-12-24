@@ -40,14 +40,17 @@ let uiDynData = [
     "select_getUi_ModuleInfo", "select_getUi_LibInfo", "select_getUi_CoreInfo"
 ];
 
+
+//激活 VsCode 通信
+const vscode = acquireVsCodeApi();
+
+
 //初始化激活空白工程
 $(allHideStr).hide();
 $(".content_space").show();
 $("#space").addClass("active");
 getMessagePerSwitch("pure");
 
-//激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
 
 //清楚工程临时数据
 function clearTempData(tar1, tar2) {
@@ -58,6 +61,7 @@ function clearTempData(tar1, tar2) {
         $("." + tar2[j]).empty();
     }
 }
+
 
 //不同新建工程切换逻辑
 tarActive.on("click", function () {
@@ -94,6 +98,7 @@ tarActive.on("click", function () {
     }
 });
 
+
 //按钮取消逻辑
 cancelBtn.on("click", function () {
     //关闭 WebView
@@ -102,53 +107,18 @@ cancelBtn.on("click", function () {
     });
 });
 
+
 //按钮完成逻辑
 submitBtn.on("click", function () {
     handleSubmit(curActiveContent);
 });
 
-// 自定义按钮
-$(".exBtn").on("click", function () {
-    let signal = $(this).attr("class");
-    handelBackstage(signal);
-})
 
 /* 为下拉框添加选项 */
 function autoProduceOption(par, val) {
-    par.append('<option value="' + val + '" selected>' + val + '</option>');
+    par.append('<option selected>' + val + '</option>');
 }
 
-/* 具体添加数据 */
-// obj          接收 vscode 发送的数据
-// tar          需要添加数据的下拉框对象class
-function addOptions(obj, tar) {
-    for (let key in obj) {
-        // 模块型号
-        if (key.indexOf("module") > -1 && tar.indexOf("Module") > -1) {
-            for (let i = 0; i < obj[key].length; i++) {
-                autoProduceOption($("." + tar), obj[key][i]);
-            }
-        }
-        // lib库
-        if (key.indexOf("lib") > -1 && tar.indexOf("Lib") > -1) {
-            for (let i = 0; i < obj[key].length; i++) {
-                autoProduceOption($("." + tar), obj[key][i]);
-            }
-        }
-        // 示例
-        if (key.indexOf("example") > -1 && tar.indexOf("Example") > -1) {
-            for (let i = 0; i < obj[key].length; i++) {
-                autoProduceOption($("." + tar), obj[key][i]);
-            }
-        }
-        // core
-        if (key.indexOf("core") > -1 && tar.indexOf("Core") > -1) {
-            for (let i = 0; i < obj[key].length; i++) {
-                autoProduceOption($("." + tar), obj[key][i]);
-            }
-        }
-    }
-}
 
 /********************************************** 导入工程 **********************************************/
 function importProjectDisplay(whichDsp) {
@@ -159,12 +129,14 @@ function importProjectDisplay(whichDsp) {
     whichDsp.show();
 }
 
+
 /* 添加红框提示错误 */
 function addTips(tar) {
     tar.css({
         "border": "1px solid #b42525"
     });
 }
+
 
 /* 判断那个需要添加提示 */
 function whichTips(type, tar) {
@@ -184,6 +156,7 @@ function whichTips(type, tar) {
 
     }
 }
+
 
 /* 发送导入工程数据(导入工程提交) */
 function getImportProjectData(type, tar) {
@@ -275,6 +248,7 @@ function getImportProjectData(type, tar) {
 
 /*********************************************** 数据交互↓ ************************************************/
 
+
 /* 获取新建工程初始化数据命令(每次切换工程发送相应的工程类型) */
 function getMessagePerSwitch(para) {
     vscode.postMessage({
@@ -283,6 +257,7 @@ function getMessagePerSwitch(para) {
     })
 }
 
+
 //发送给后台，由后台打开选择文件夹
 function handelBackstage(name, type) {
     vscode.postMessage({
@@ -290,6 +265,7 @@ function handelBackstage(name, type) {
         text: type
     })
 }
+
 
 //Alert
 function Alert(msg) {
@@ -301,6 +277,7 @@ function Alert(msg) {
     })
 }
 
+
 //实时获取新建工程名称并导入工程路径
 function getCurProjectName(e) {
     GCName = e;
@@ -308,6 +285,7 @@ function getCurProjectName(e) {
         document.querySelector('.content .project_path').value = GCPath + GCName;
     }
 }
+
 
 /* 新建工程提交 */
 function handleSubmit(tar) {
@@ -380,7 +358,7 @@ function handleSubmit(tar) {
 }
 
 
-/* 接受VsCode发送的自定义路径 */
+/* 新建工程 接受VsCode发送的自定义路径 */
 function customPathManagment(whichProject, whichCustom, pathData) {
     switch (whichProject) {
         case "space":
@@ -445,31 +423,141 @@ function customPathManagment(whichProject, whichCustom, pathData) {
 }
 
 
+/* 为下拉框添加选项 */
+function addOptionToSelect(whichSelect, arr, whichModule) {
+    for (let i = 0; i < arr[whichModule].length; i++) {
+        autoProduceOption(whichSelect, arr[whichModule][i]);
+    }
+}
+
+
+/* 新建工程初始化数据管理[空白工程] */
+function pureProjectInitDataManagment(initData) {
+    let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
+    let libSelected = $(".select_getSpace_LibInfo");
+    let coreSelected = $(".select_getSpace_CoreInfo");
+
+    switch (moduleSelected.text()) {
+        case "Air72XUX/Air82XUX":
+            addOptionToSelect(libSelected, initData.libList, "Air72XUX/Air82XUX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+            break;
+        case "Air72XCX":
+            addOptionToSelect(libSelected, initData.libList, "Air72XCX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+            break;
+        case "Simulator":
+            addOptionToSelect(libSelected, initData.libList, "Simulator");
+            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+            break;
+        case "Air10X":
+            addOptionToSelect(libSelected, initData.libList, "Air10X");
+            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+            break;
+        default:
+            break;
+    }
+}
+
+/* 新建工程初始化数据管理[示例工程] */
+function exampleProjectInitDataManagment(initData) {
+    let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
+    let exampleSelected = $(".select_getExample_ExampleInfo");
+    let coreSelected = $(".select_getExample_CoreInfo");
+
+    switch (moduleSelected.text()) {
+        case "Air72XUX/Air82XUX":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XUX/Air82XUX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+            break;
+        case "Air72XCX":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XCX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+            break;
+        case "Simulator":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Simulator");
+            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+            break;
+        case "Air10X":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air10X");
+            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+            break;
+        default:
+            break;
+    }
+}
+
+
+/* 新建工程初始化数据管理[NDK工程] */
+function ndkProjectInitDataManagment(initData) {
+    let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
+    let exampleSelected = $(".select_getNDK_ExampleInfo");
+
+    switch (moduleSelected.text()) {
+        case "Air72XUX/Air82XUX":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XUX/Air82XUX");
+            break;
+        case "Air72XCX":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XCX");
+            break;
+        case "Simulator":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Simulator");
+            break;
+        case "Air10X":
+            addOptionToSelect(exampleSelected, initData.exampleList, "Air10X");
+            break;
+        default:
+            break;
+    }
+}
+
+/* 新建工程初始化数据管理[UI工程] */
+function uiProjectInitDataManagment(initData) {
+    let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
+    let libSelected = $(".select_getUi_LibInfo");
+    let coreSelected = $(".select_getUi_CoreInfo");
+
+    switch (moduleSelected.text()) {
+        case "Air72XUX/Air82XUX":
+            addOptionToSelect(libSelected, initData.libList, "Air72XUX/Air82XUX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+            break;
+        case "Air72XCX":
+            addOptionToSelect(libSelected, initData.libList, "Air72XCX");
+            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+            break;
+        case "Simulator":
+            addOptionToSelect(libSelected, initData.libList, "Simulator");
+            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+            break;
+        case "Air10X":
+            addOptionToSelect(libSelected, initData.libList, "Air10X");
+            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+            break;
+        default:
+            break;
+    }
+}
+
+
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
     const message = event.data;
     switch (message.command) {
+        /* 新建工程初始化数据获取 */
         case "pureProjectInitData":
-            for (let j = 0; j < spaceDynData.length; j++) {
-                addOptions(message.text, spaceDynData[j]);
-            }
+            pureProjectInitDataManagment(message.text);
             break;
         case "exampleProjectInitData":
-            for (let j = 0; j < exampleDynData.length; j++) {
-                addOptions(message.text, exampleDynData[j]);
-            }
+            exampleProjectInitDataManagment(message.text);
             break;
         case "ndkProjectInitData":
-            for (let j = 0; j < ndkDynData.length; j++) {
-                addOptions(message.text, ndkDynData[j]);
-            }
+            ndkProjectInitDataManagment(message.text);
             break;
         case "uiProjectInitData":
-            for (let j = 0; j < uiDynData.length; j++) {
-                addOptions(message.text, uiDynData[j]);
-            }
+            uiProjectInitDataManagment(message.text);
             break;
-            //自定义工程路径, lib库, core文件
+            /* 自定义工程路径, lib库, core文件 */
         case "customProjectPath":
             customPathManagment(curActiveContent, "customProjectPath", message.text);
             break;
@@ -507,4 +595,4 @@ window.addEventListener('message', event => {
     }
 });
 
-console.log("ooooooo", $("#space_customeLib").text("opo"));
+// console.log("ooooooo", $("#space_customeLib").text("opo"));
