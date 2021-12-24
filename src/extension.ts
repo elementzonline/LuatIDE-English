@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import {PluginVariablesInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle } from './project/ProjectHandle';
 import {activateMockDebug} from './debug/activateMockDebug';
-
+import { ProjectManage } from './webview/projectWebview';
 
 function createProject():void{
 
@@ -63,6 +63,7 @@ let pluginVariablesInit = new PluginVariablesInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
+let projectManage = new ProjectManage();
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
  * Please note: the test suite only supports 'external' mode.
@@ -72,7 +73,7 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject',async ()=> createProject));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject',async ()=> projectManage.projectManage()));
 	// 注册打开工程命令,当点击用户历史工程标题区域打开工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject',openProject));
 	// 注册运行工程命令,当点击活动工程标题区域运行工程按钮时触发
