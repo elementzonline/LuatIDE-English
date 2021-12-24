@@ -1,265 +1,216 @@
 {
-  	"name": "luatide",
-  	"displayName": "LuatIDE",
-  	"description": "合宙官方IDE",
-  	"version": "0.0.1",
-  	"publisher": "luater",
-  	"engines": {
-  	  	"vscode": "^1.63.0"
-  	},
-  	"categories": [
-  	  	"Other"
-  	],
-  	"activationEvents": [
-  	  	"onView:luatide-activeBar",
-  	  	"onCommand:luatide.Open"
-  	],
-  	"main": "./dist/extension.js",
-  	"contributes": {
-  	  	"viewsContainers": {
-  	  	  	"activitybar": [
-  	  	  	  	{
-  	  	  	  	  	"id": "luatide-activeBar",
-  	  	  	  	  	"title": "LuatIDE",
-  	  	  	  	  	"icon": "./resource/themeSvg/dark/activebar.svg"
-  	  	  	  	}
-  	  	  	]
-  	  	},
-  	  	"views": {
-  	  	  	"luatide-activeBar": [
-  	  	  	  	{
-  	  	  	  	  	"id": "luatide-history-project",
-  	  	  	  	  	"name": "用户工程"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"id": "luatide-activity-project",
-  	  	  	  	  	"name": "活动工程【活动工程内文件默认全部烧录至硬件】"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"id": "luatide-tools-hub",
-  	  	  	  	  	"name": "工具集合"
-  	  	  	  	}
-  	  	  	]
-  	  	},
-  	  	"menus": {
-  	  	  	"view/title": [
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-history-project.createProject",
-  	  	  	  	  	"when": "view == luatide-history-project",
-  	  	  	  	  	"group": "navigation@0"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-history-project.openProject",
-  	  	  	  	  	"when": "view == luatide-history-project",
-  	  	  	  	  	"group": "navigation@1"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-history-project.Home",
-  	  	  	  	  	"when": "view == luatide-history-project",
-  	  	  	  	  	"group": "navigation@2"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-activity-project.runProject",
-  	  	  	  	  	"when": "view == luatide-activity-project",
-  	  	  	  	  	"group": "navigation@2"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-activity-project.debugProject",
-  	  	  	  	  	"when": "view == luatide-activity-project",
-  	  	  	  	  	"group": "navigation@1"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-activity-project.deleteProject",
-  	  	  	  	  	"when": "view == luatide-activity-project",
-  	  	  	  	  	"group": "navigation@0"
-  	  	  	  	}
-  	  	  	],
-  	  	  	"view/item/context": [
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-history-project.Project.active",
-  	  	  	  	  	"when": "view == luatide-history-project",
-  	  	  	  	  	"group": "inline"
-  	  	  	  	},
-  	  	  	  	{
-  	  	  	  	  	"command": "luatide-history-project.Project.delete",
-  	  	  	  	  	"when": "view == luatide-history-project",
-  	  	  	  	  	"group": "inline"
-  	  	  	  	}
-  	  	  	]
-  	  	},
-  	  	"commands": [
-  	  	  	{
-  	  	  	  	"command": "luatide-history-project.createProject",
-  	  	  	  	"title": "新建工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/createProject.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/createProject.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-history-project.openProject",
-  	  	  	  	"title": "打开工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/openProject.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/openProject.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-history-project.Home",
-  	  	  	  	"title": "主页",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/Home.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/Home.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-activity-project.runProject",
-  	  	  	  	"title": "运行工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/runProject.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/runProject.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-activity-project.debugProject",
-  	  	  	  	"title": "调试工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/debugProject.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/debugProject.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-activity-project.deleteProject",
-  	  	  	  	"title": "删除工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/delete.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/delete.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-history-project.Project.active",
-  	  	  	  	"title": "激活工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/activeProject.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/activeProject.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide-history-project.Project.delete",
-  	  	  	  	"title": "删除工程",
-  	  	  	  	"icon": {
-  	  	  	  	  	"dark": "./resource/themeSvg/dark/delete.svg",
-  	  	  	  	  	"light": "./resource/themeSvg/light/delete.svg"
-  	  	  	  	}
-  	  	  	},
-  	  	  	{
-  	  	  	  	"command": "luatide.Open",
-  	  	  	  	"title": "打开工程"
-  	  	  	}
-  	  	],
-		"breakpoints": [
-			{
-				"language": "lua"
-			}
-		],
-		"debuggers": [
-		{
-			"type": "luat",
-			"label": "LuatIDE Debug",
-			"program": "./out/mockDebug.js",
-			"runtime": "node",
-			"languages": [
-			"lua"
-			],
-			"configurationAttributes": {
-			"launch": {
-				"required": [
-				"program"
-				],
-				"properties": {
-				"program": {
-					"type": "string",
-					"description": "Absolute path to a text file.",
-					"default": "${workspaceFolder}"
-				},
-				"stopOnEntry": {
-					"type": "boolean",
-					"description": "Automatically stop after launch.",
-					"default": true
-				},
-				"trace": {
-					"type": "boolean",
-					"description": "Enable logging of the Debug Adapter Protocol.",
-					"default": true
-				}
-				}
-			}
-			},
-			"initialConfigurations": [
-			{
-				"type": "luat",
-				"request": "launch",
-				"name": "Ask for file name",
-				"program": "${workspaceFolder}/${command:AskForProgramName}",
-				"stopOnEntry": true
-			}
-			],
-			"configurationSnippets": [
-			{
-				"label": "Luat_IDE Debug: Launch",
-				"description": "A new configuration for 'debugging' a user selected lua file.",
-				"body": {
-				"type": "luat",
-				"request": "launch",
-				"name": "Ask for file name",
-				"program": "^\"\\${workspaceFolder}/\\${command:AskForProgramName}\"",
-				"stopOnEntry": true
-				}
-			}
-			],
-			"variables": {
-			"AskForProgramName": "extension.mock-debug.getProgramName"
-			}
-		}
-		],
-  	  	"snippets": [
-  	  	  	{
-  	  	  	  	"language": "lua",
-  	  	  	  	"path": "./src/editor/snippets/luatos-air.json"
-  	  	  	},
-  	  	  	{
-  	  	  	  	"language": "lua",
-  	  	  	  	"path": "./src/editor/snippets/luatos-soc.json"
-  	  	  	}
-  	  	]
-  	},
-  	"scripts": {
-  	  	"vscode:prepublish": "npm run package",
-  	  	"compile": "webpack",
-  	  	"watch": "webpack --watch",
-  	  	"package": "webpack --mode production --devtool hidden-source-map",
-  	  	"test-compile": "tsc -p ./",
-  	  	"test-watch": "tsc -watch -p ./",
-  	  	"pretest": "npm run test-compile && npm run lint",
-  	  	"lint": "eslint src --ext ts",
-  	  	"test": "node ./out/test/runTest.js"
-  	},
-  	"devDependencies": {
-  	  	"@types/glob": "^7.1.3",
-  	  	"@types/mocha": "^8.0.4",
-  	  	"@types/node": "^12.11.7",
-  	  	"@types/vscode": "^1.63.0",
-  	  	"@typescript-eslint/eslint-plugin": "^5.6.0",
-  	  	"@typescript-eslint/parser": "^5.6.0",
-  	  	"eslint": "^8.4.1",
-  	  	"eslint-config-google": "^0.14.0",
-  	  	"glob": "^7.1.6",
-  	  	"mocha": "^8.2.1",
-  	  	"ts-loader": "^8.0.14",
-  	  	"typescript": "^4.1.3",
-  	  	"vscode-test": "^1.5.0",
-  	  	"webpack": "^5.19.0",
-  	  	"webpack-cli": "^4.4.0"
-  	}
-
-}
+    "name": "luatide",
+    "displayName": "luatide",
+    "description": "合宙官方IDE",
+    "version": "0.0.1",
+    "publisher": "luater",
+    "engines": {
+      "vscode": "^1.63.0"
+    },
+    "categories": [
+      "Other"
+    ],
+    "activationEvents": [
+      "*",
+      "onView:luatide-activeBar",
+      "onCommand:luatide.Open",
+      "onCommand:luatide-history-project.createProject"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+      "viewsContainers": {
+        "activitybar": [
+          {
+            "id": "luatide-activeBar",
+            "title": "LuatIDE",
+            "icon": "./resource/themeSvg/dark/activebar.svg"
+          }
+        ]
+      },
+      "views": {
+        "luatide-activeBar": [
+          {
+            "id": "luatide-history-project",
+            "name": "用户工程"
+          },
+          {
+            "id": "luatide-activity-project",
+            "name": "活动工程【活动工程内文件默认全部烧录至硬件】"
+          },
+          {
+            "id": "luatide-tools-hub",
+            "name": "工具集合"
+          }
+        ]
+      },
+      "menus": {
+        "view/title": [
+          {
+            "command": "luatide-history-project.createProject",
+            "when": "view == luatide-history-project",
+            "group": "navigation@0"
+          },
+          {
+            "command": "luatide-history-project.openProject",
+            "when": "view == luatide-history-project",
+            "group": "navigation@1"
+          },
+          {
+            "command": "luatide-history-project.Home",
+            "when": "view == luatide-history-project",
+            "group": "navigation@2"
+          },
+          {
+            "command": "luatide-activity-project.runProject",
+            "when": "view == luatide-activity-project",
+            "group": "navigation@2"
+          },
+          {
+            "command": "luatide-activity-project.debugProject",
+            "when": "view == luatide-activity-project",
+            "group": "navigation@1"
+          },
+          {
+            "command": "luatide-activity-project.Project.delete",
+            "when": "view == luatide-activity-project",
+            "group": "navigation@0"
+          },
+          {
+            "command": "luatide-history-project.Project.refresh",
+            "when": "view == luatide-history-project",
+            "group": "navigation@0"
+          }
+        ],
+        "view/item/context": [
+          {
+            "command": "luatide-history-project.Project.active",
+            "when": "view == luatide-history-project",
+            "group": "inline"
+          },
+          {
+            "command": "luatide-history-project.deleteProject",
+            "when": "view == luatide-history-project",
+            "group": "inline"
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": "luatide-history-project.createProject",
+          "title": "新建工程",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/createProject.svg",
+            "light": "./resource/themeSvg/light/createProject.svg"
+          }
+        },
+        {
+          "command": "luatide-history-project.openProject",
+          "title": "打开工程",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/openProject.svg",
+            "light": "./resource/themeSvg/light/openProject.svg"
+          }
+        },
+        {
+          "command": "luatide-history-project.Home",
+          "title": "主页",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/Home.svg",
+            "light": "./resource/themeSvg/light/Home.svg"
+          }
+        },
+        {
+          "command": "luatide-activity-project.runProject",
+          "title": "运行工程",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/runProject.svg",
+            "light": "./resource/themeSvg/light/runProject.svg"
+          }
+        },
+        {
+          "command": "luatide-activity-project.debugProject",
+          "title": "调试工程",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/debugProject.svg",
+            "light": "./resource/themeSvg/light/debugProject.svg"
+          }
+        },
+        {
+          "command": "luatide-history-project.deleteProject",
+          "title": "删除工程文件",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/delete.svg",
+            "light": "./resource/themeSvg/light/delete.svg"
+          }
+        },
+        {
+          "command": "luatide-history-project.Project.active",
+          "title": "激活工程",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/activeProject.svg",
+            "light": "./resource/themeSvg/light/activeProject.svg"
+          }
+        },
+        {
+          "command": "luatide-activity-project.Project.delete",
+          "title": "删除工程内文件",
+          "icon": {
+            "dark": "./resource/themeSvg/dark/delete.svg",
+            "light": "./resource/themeSvg/light/delete.svg"
+          }
+        },
+        {
+          "command": "luatide.Open",
+          "title": "打开工程"
+        },
+        {
+          "command": "luatide-history-project.Project.refresh",
+          "title": "刷新用户工程列表"
+        }
+      ],
+      "snippets": [
+        {
+          "language": "lua",
+          "path": "./src/editor/snippets/luatos-air.json"
+        },
+        {
+          "language": "lua",
+          "path": "./src/editor/snippets/luatos-soc.json"
+        }
+      ],
+      "viewsWelcome": [
+        {
+          "view": "luatide-history-project",
+          "contents": "[欢迎下载LuatIDE插件.](command:luatide.quickstart)\n[点击快速上手](command:luatide.quickstart)"
+        }
+      ]
+    },
+    "scripts": {
+      "vscode:prepublish": "npm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./",
+      "pretest": "npm run compile && npm run lint",
+      "lint": "eslint src --ext ts",
+      "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+      "@types/glob": "^7.1.4",
+      "@types/mocha": "^9.0.0",
+      "@types/node": "14.x",
+      "@types/uuid": "^8.3.3",
+      "@types/vscode": "^1.63.0",
+      "@typescript-eslint/eslint-plugin": "^5.1.0",
+      "@typescript-eslint/parser": "^5.1.0",
+      "@vscode/test-electron": "^1.6.2",
+      "eslint": "^8.1.0",
+      "glob": "^7.1.7",
+      "mocha": "^9.1.3",
+      "typescript": "^4.4.4"
+    },
+    "dependencies": {
+      "compressing": "^1.5.1",
+      "node-fetch": "^3.1.0",
+      "uuid": "^8.3.2"
+    }
+  }
+  
