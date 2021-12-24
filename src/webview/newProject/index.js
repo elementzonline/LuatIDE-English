@@ -44,9 +44,10 @@ let uiDynData = [
 $(allHideStr).hide();
 $(".content_space").show();
 $("#space").addClass("active");
+getMessagePerSwitch("pure");
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 //清楚工程临时数据
 function clearTempData(tar1, tar2) {
@@ -286,9 +287,7 @@ function getMessagePerSwitch(para) {
 function handelBackstage(name, type) {
     vscode.postMessage({
         command: name,
-        text: {
-            "type": type,
-        }
+        text: type
     })
 }
 
@@ -417,7 +416,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
         case "ndk":
             switch (whichCustom) {
                 case "customProjectPath":
-                    $("#example_customepath").val(pathData);
+                    $("#ndk_customepath").val(pathData);
                     break;
                 default:
                     break;
@@ -429,8 +428,8 @@ function customPathManagment(whichProject, whichCustom, pathData) {
                     $("#ui_customepath").val(pathData);
                     break;
                 case "customLibPath":
-                    $("#example_customeLib").text(pathData);
-                    $("#example_customeLib").prop("selected", true);
+                    $("#ui_customeLib").text(pathData);
+                    $("#ui_customeLib").prop("selected", true);
                     break;
                 case "customCorePath":
                     $("#ui_customeCore").text(pathData);
@@ -507,3 +506,5 @@ window.addEventListener('message', event => {
             break;
     }
 });
+
+console.log("ooooooo", $("#space_customeLib").text("opo"));
