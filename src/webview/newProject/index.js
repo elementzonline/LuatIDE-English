@@ -254,7 +254,7 @@ function getMessagePerSwitch(para) {
     vscode.postMessage({
         command: 'projectType',
         text: para,
-    })
+    });
 }
 
 
@@ -263,7 +263,7 @@ function handelBackstage(name, type) {
     vscode.postMessage({
         command: name,
         text: type
-    })
+    });
 }
 
 
@@ -274,7 +274,7 @@ function Alert(msg) {
         text: {
             "msg": msg,
         }
-    })
+    });
 }
 
 
@@ -372,7 +372,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
                     break;
                 case "customCorePath":
                     $("#space_customeCore").text(pathData);
-                    $("space_customeCore").prop("selected", true);
+                    $("#space_customeCore").prop("selected", true);
                     break;
                 default:
                     break;
@@ -459,6 +459,7 @@ function pureProjectInitDataManagment(initData) {
     }
 }
 
+
 /* 新建工程初始化数据管理[示例工程] */
 function exampleProjectInitDataManagment(initData) {
     let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
@@ -510,6 +511,7 @@ function ndkProjectInitDataManagment(initData) {
             break;
     }
 }
+
 
 /* 新建工程初始化数据管理[UI工程] */
 function uiProjectInitDataManagment(initData) {
