@@ -71,12 +71,17 @@ tarActive.on("click", function () {
     switch ($(this).attr("id")) {
         case "space":
             clearTempData(sapceData, spaceDynData);
+            /* 添加初始化option */
+            $(".select_getSpace_LibInfo").append('<option value="default" selected id="space_customeLib">点击选择</option>');
+            $(".select_getSpace_CoreInfo").append('<option value="default" selected id="space_customeCore">点击选择</option>');
             getMessagePerSwitch("pure");
             curActiveContent = "space";
             $(".content_space").show();
             break;
         case "example":
             clearTempData(exampleData, exampleDynData);
+            /* 添加初始化option */
+            $(".select_getExample_CoreInfo").append('<option value="default" selected id="example_customeCore">点击选择</option>');
             getMessagePerSwitch("example");
             curActiveContent = "example";
             $(".content_example").show();
@@ -89,6 +94,9 @@ tarActive.on("click", function () {
             break;
         case "ui":
             clearTempData(uiData, uiDynData);
+            /* 添加初始化option */
+            $(".select_getUi_LibInfo").append('<option value="default" selected id="ui_customeLib">点击选择</option>');
+            $(".select_getUi_CoreInfo").append('<option value="default" selected id="ui_customeCore">点击选择</option>');
             getMessagePerSwitch("ui");
             curActiveContent = "ui";
             $(".content_ui").show();
