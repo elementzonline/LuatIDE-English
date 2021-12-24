@@ -7,6 +7,8 @@ import { ProjectJsonParse } from "./projectConfigParse";
 
 let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
+
+// 激活工程处理
 export class ProjectActiveHandle {
     constructor() {
 
@@ -51,6 +53,7 @@ export class ProjectActiveHandle {
     }
 }
 
+// 删除工程处理
 export class ProjectDeleteHandle {
     constructor() {
 
@@ -107,7 +110,6 @@ export class ProjectDeleteHandle {
         return true;
     }
 }
-
 
 // 工程配置项处理
 export class ProjectConfigOperation {
@@ -216,7 +218,7 @@ export class ProjectConfigOperation {
                if (!projectAddCheckState) {
                    return false;
                }
-               projectJsonParse.pushProjectConfigAppFile(filePath);
+               projectJsonParse.pushProjectConfigAppFile(filePath,activityProjectPath);
            } 
         }
     }
@@ -239,7 +241,7 @@ export class ProjectConfigOperation {
                 if (!projectAddCheckState) {
                     return false;
                 }
-                projectJsonParse.pushProjectConfigAppFile(filePath);
+                projectJsonParse.pushProjectConfigAppFile(filePath,activityProjectPath);
             } 
         }
     }
@@ -310,5 +312,31 @@ export class ProjectConfigOperation {
         const activityProjectPath:string = pluginJsonParse.getPluginConfigActiveProject();
         const activityProjectConfigPath:string = path.join(activityProjectPath,'luatide_project.json');
         vscode.window.showTextDocument(vscode.Uri.file(activityProjectConfigPath));
+    }
+}
+
+// 工程内资源文件删除处理
+export class ProjectSoruceFileDelete{
+    constructor(){
+
+    }
+
+    // 删除工程内指定文件或文件夹
+    projectSourceFileDelete(filePath:any){
+        const projectAppFile:any = projectJsonParse.getProjectConfigAppFile();
+        const selectPath:any = path.join(filePath.parentPath,filePath.label);
+        if (projectAppFile.indexOf(filePath)!==-1) {
+            this.projectSourceFileDeleteHint(selectPath);
+        }
+    }
+    
+    // 删除工程内文件提示
+    projectSourceFileDeleteHint(dirPath:string){
+        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        vscode.window.showWarningMessage("【从工程中删除选中文件（不删除本地文件）】", { modal: true }, "确定").then(result => {
+            if (result === '确定') {
+                projectJsonParse.popProjectConfigAppFile(dirPath,activityProjectPath);
+            }
+        });
     }
 }
