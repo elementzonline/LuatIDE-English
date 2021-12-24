@@ -98,12 +98,26 @@ let pluginJsonParse = new PluginJsonParse();
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
 
-    // 设置活动工程下载文件列表
+    // 添加文件路径到活动工程下载文件列表
     pushProjectConfigAppFile(appFile:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJsonObj:any =  this.getProjectConfigJson();
         projectJsonObj.appFile.push(appFile);
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
+    }
+
+    // 删除文件路径从活动工程下载文件列表
+    popProjectConfigAppFile(appFile:any,projectPath:any){
+        const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
+        const projectJsonObj:any =  this.getProjectConfigJson();
+        const index = projectJsonObj.appFile.indexOf(appFile);
+        if (index!==-1) {
+            projectJsonObj.appFile.splice(appFile);
+            this.refreshProjectJson(projectJsonObj,projectConfigPath);
+        }
+        else{
+            console.log(`AppFile中未检测到该路径${appFile}`);
+        }
     }
 
     // 设置活动工程模块端口
