@@ -8,8 +8,11 @@ import * as vscode from 'vscode';
 // import {OperationExplorer} from './project/toolshub';
 import {PluginVariablesInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle } from './project/ProjectHandle';
-import {activateMockDebug} from './debug/activateMockDebug';
+// import {activateMockDebug} from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
+import { NodeDependenciesProvider } from './project/projectTreeView';
+import * as path from 'path';
+import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 
 function createProject():void{
 
@@ -64,6 +67,8 @@ let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
 let projectManage = new ProjectManage();
+let nodeDependenciesProvider = new NodeDependenciesProvider(path.join(__dirname,'../.'));
+// let operationExplorer = new OperationExplorer();
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
  * Please note: the test suite only supports 'external' mode.
@@ -92,9 +97,17 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-plugin.Login',async ()=> homeManage));
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
-
-	activateMockDebug(context, runMode);
-
+	
+	// activateMockDebug(context, runMode);
+	vscode.window.registerTreeDataProvider(
+		'luatide-history-project',
+		new NodeDependenciesProvider(path.join(__dirname,'../.'))
+	  );
+	  
+	  vscode.window.registerTreeDataProvider(
+		'luatide-activity-project',
+		new OperationDataProvider()
+	  );
 }
 
 /** 这个方法当插件结束时被调用 */
