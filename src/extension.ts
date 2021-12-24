@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 // import {OperationExplorer} from './project/toolshub';
 import {PluginVariablesInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle } from './project/ProjectHandle';
-import {activateMockDebug} from './debug/activateMockDebug';
+// import {activateMockDebug} from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
 
 function createProject():void{
@@ -93,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
 
-	activateMockDebug(context, runMode);
+	// activateMockDebug(context, runMode);
 
 }
 
