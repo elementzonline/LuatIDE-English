@@ -15,13 +15,14 @@ export class ProjectManage {
     }
     projectPanel: vscode.WebviewPanel | undefined = undefined;
     // 工程主页webview管理
-    projectManage() {
+    projectManage(context:vscode.ExtensionContext) {
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
         // 如果检测到编辑器区域已存在home面板，则展示它
         if (this.projectPanel) {
             this.projectPanel.reveal(columnToShowIn);
+            return;
         }
         else {
             this.projectPanel = vscode.window.createWebviewPanel(
@@ -57,7 +58,7 @@ export class ProjectManage {
                 this.projectPanel = undefined;
             },
             null,
-            // context.subscriptions
+            context.subscriptions
         );
     }
 
@@ -99,6 +100,10 @@ export class ProjectManage {
     async receiveMessageHandle(projectPanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
+        const air72XUXLibList:string[] = ['1','2','3']; 
+        const air72XCXLibList:string[] = ['1','2','3']; 
+        const air10XLibList:string[] = ['1','2','3']; 
+        const simulatorList:string[] = ['1','2','3']; 
         const libList: string[] = ['暂时使用右侧自定义方式','2'];
         const coreList: string[] = ['暂时使用右侧自定义方式','2'];
         switch (message.command) {
@@ -108,14 +113,23 @@ export class ProjectManage {
                 switch (message.text) {
                     case 'pure':
                         // 传送pure所需要的数据至工程
-
                         projectPanel.webview.postMessage(
                             {
                                 command: 'pureProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "libList": libList,
-                                    "coreList": coreList,
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 }
                             }
                         );
@@ -127,8 +141,18 @@ export class ProjectManage {
                                 command: 'exampleProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "exampleList": [],
-                                    "coreList": [],
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 },
                             }
                         );
@@ -151,8 +175,18 @@ export class ProjectManage {
                                 command: 'uiProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "libList": [],
-                                    "coreList": [],
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XCXLibList,
+                                        "air10X": air10XLibList,
+                                        "simulator":simulatorList,
+                                    },
                                 },
                             }
                         );
@@ -225,7 +259,22 @@ export class ProjectManage {
                         break;
                 }
                 break;
-        }
+            // 接收webview取消指令，关闭新建工程webview
+            case 'cancelProject':
+                projectPanel.dispose();
+                break;
+            case 'importProject':
+                switch(message.text){
+                    case "pure":
+                        break;
+                    case "example":
+                        break;
+                    case "ndk":
+                        break;
+                    case "ui":
+                        break;
+                }
+            }
     }
 
 
