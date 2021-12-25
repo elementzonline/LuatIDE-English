@@ -1,6 +1,3 @@
-//局部全局变量
-let gcName = "";
-let gcPath = "";
 
 //被点击的新建工程选项
 let tarActive = $(".menu");
@@ -39,6 +36,8 @@ let uiData = [
 let uiDynData = [
     "select_getUi_ModuleInfo", "select_getUi_LibInfo", "select_getUi_CoreInfo"
 ];
+// 判断是否是导入工程
+let isInImportProject = false;
 
 
 //激活 VsCode 通信
@@ -49,7 +48,9 @@ const vscode = acquireVsCodeApi();
 $(allHideStr).hide();
 $(".content_space").show();
 $("#space").addClass("active");
-getMessagePerSwitch("pure");
+if (!isInImportProject){
+    getMessagePerSwitch("pure");
+}
 
 
 //清楚工程临时数据
@@ -129,20 +130,73 @@ function autoProduceOption(par, val) {
 
 
 /********************************************** 导入工程 **********************************************/
-function importProjectDisplay(whichDsp) {
-    /* 隐藏选择框 */
-    $(".navbar").hide();
-    $(".tips").show();
-    $(allHideStr).hide();
-    whichDsp.show();
-}
-
 
 /* 添加红框提示错误 */
 function addTips(tar) {
     tar.css({
         "border": "1px solid #b42525"
     });
+}
+
+
+/* 导入工程界面初始化 */
+function importProjectDisplay(whichDsp, importData) {
+    /* 隐藏选择框 */
+    $(".navbar").hide();
+    $(".tips").show();
+    $(allHideStr).hide();
+    whichDsp.show();
+
+    /* 正确数据 */
+    for (let key1 in importData.correctData) {
+        switch (key1) {
+            case "projectName":
+                $("#space_customepath").val(importData.correctData.key1);
+                break;
+            case "projectPath":
+                $("input[name=space_project_name]").val(importData.correctData.key1);
+                break;
+            case "moduleData":
+                $("#select_getSpace_ModuleInfo").append('<option>' + importData.errorData.key1 + '</option>');
+                break;
+            case "libData":
+                $("#space_customeLib").text(importData.correctData.key1);
+                break;
+            case "coreData":
+                $("#space_customeCore").text(importData.correctData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 错误数据 */
+    for (let key2 in importData.errorData) {
+        switch (key2) {
+            case "projectName":
+                addTips($("#space_customepath"));
+                $("#space_customepath").val(importData.errorData.key1);
+                break;
+            case "projectPath":
+                addTips($("input[name=space_project_name]"));
+                $("input[name=space_project_name]").val(importData.errorData.key1);
+                break;
+            case "moduleData":
+                addTips($(".select_getSpace_ModuleInfo"));
+                $("#select_getSpace_ModuleInfo").append('<option>' + importData.errorData.key1 + '</option>');
+                break;
+            case "libData":
+                addTips($(".select_getSpace_LibInfo"));
+                $("#space_customeLib").text(importData.errorData.key1);
+                break;
+            case "coreData":
+                addTips($(".select_getSpace_CoreInfo"));
+                $("#space_customeCore").text(importData.errorData.key1);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 
@@ -159,9 +213,6 @@ function whichTips(type, tar) {
             break;
         default:
             break;
-    }
-    for (let key in tar) {
-
     }
 }
 
@@ -253,6 +304,8 @@ function getImportProjectData(type, tar) {
     });
 }
 /********************************************** 导入工程 **********************************************/
+
+
 
 /*********************************************** 数据交互↓ ************************************************/
 /* 为下拉框添加选项 */
@@ -359,6 +412,10 @@ function handleSubmit(tar) {
             break;
     }
     $(".father").hide();
+    //关闭 WebView
+    vscode.postMessage({
+        command: "cancelProject",
+    });
 }
 
 
@@ -602,6 +659,7 @@ $(".select_getNDK_ModuleInfo").on("click", function () {
     }
 });
 
+
 /* 新建工程初始化数据管理[NDK工程] */
 function ndkProjectInitDataManagment(initData) {
     /* 添加初始化模块型号 */
@@ -731,14 +789,15 @@ window.addEventListener('message', event => {
         case "customCorePath":
             customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
-            // TODO
         case "importProjectData":
             // 判断是哪个工程
             let targetProject = null;
+            // TODO
+            /* 暂时不判断导入工程类型
             switch (message.text.type) {
                 case "pure":
                     targetProject = $(".content_space");
-                    /* 添加相应的导入数据 */
+                    // 添加相应的导入数据
                     break;
                 case "example":
                     targetProject = $(".content_example");
@@ -752,7 +811,9 @@ window.addEventListener('message', event => {
                 default:
                     break;
             }
-            importProjectDisplay(targetProject);
+            */
+            targetProject = $(".content_space");
+            importProjectDisplay(targetProject, message.text);
             break;
         default:
             break;
