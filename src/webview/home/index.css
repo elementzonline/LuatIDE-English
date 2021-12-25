@@ -1,0 +1,324 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    background: #231f20;
+    color: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+}
+
+.father {
+    height: 100vh;
+}
+
+h1 {
+    padding-top: 20px;
+    text-align: center;
+    color: rgba(223, 190, 106, 0.8);
+    font-family: 'Montserrat';
+    font-size: 3em;
+    letter-spacing: 0.5em;
+}
+
+/*弹窗按钮 bar*/
+.bar {
+    color: rgba(223, 190, 106, 0.7);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 0.6em 1.5em;
+    margin-top: 5vh;
+    position: absolute;
+    right: 0;
+    z-index: 3;
+    font-family: 'Montserrat';
+    overflow-x: hidden;
+}
+
+.bar:after {
+    content: '';
+    width: 5%;
+    position: absolute;
+    left: 95%;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: rgba(223, 190, 106, 0.8);
+}
+
+.bar:hover:after {
+    animation: hover 1.5s 1 both;
+}
+
+.bar.animateout:after {
+    animation: hover 0.75s 1 reverse;
+}
+
+/*弹窗按钮 bar 动画*/
+@keyframes hover {
+
+    0%,
+    20% {
+        width: 5%;
+        position: absolute;
+        left: 95%;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+    2%,
+    6%,
+    10% {
+        opacity: 0;
+    }
+
+    4%,
+    8%,
+    12% {
+        opacity: 1;
+    }
+
+    49% {
+        width: 100%;
+    }
+
+    55% {
+        width: 0;
+        left: 0;
+        background-color: rgba(223, 190, 106, 0.4);
+    }
+
+    56% {
+        width: 0;
+        background-color: rgba(223, 190, 106, 0.2);
+    }
+
+    100% {
+        width: 100%;
+        background-color: rgba(223, 190, 106, 0.2);
+        left: 0;
+    }
+}
+
+/********************弹窗按钮 ↑*********************/
+
+/********************反馈 ↓*********************/
+/*反馈吐槽按钮*/
+.feedback {
+    margin-top: 15vh;
+}
+
+.feedback-box {
+    top: 25%;
+    left: 50%;
+    width: 400px;
+    height: 350px;
+    position: relative;
+    transform: translate(-50%, -50%);
+    background: #231f20;
+    border-width: 0.1px;
+    border: solid;
+    border-color: rgba(223, 190, 106, 0.1);
+    text-align: center;
+    display: none;
+}
+
+.feedback-box input {
+    width: 80%;
+    margin-top: 40px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: rgb(228, 227, 227, 0.3);
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1.5px solid rgb(223, 190, 106, 0.4);
+    outline: none;
+    background: transparent;
+}
+
+.feedback-box label {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: rgba(223, 190, 106, 0.6);
+    pointer-events: none;
+    transition: .5s;
+}
+
+.feedback-box input:focus~label,
+.feedback-box input:valid~label {
+    top: 2%;
+    color: #2e8388;
+    font-size: 12px;
+}
+
+.feedback-box textarea {
+    margin-top: 6%;
+    height: 140px;
+    width: 80%;
+    position: relative;
+    background-color: #231f20;
+    padding: 10px 10px 10px 30px;
+    resize: none;
+    border-color: rgba(223, 190, 106, 0.4);
+    caret-color: rgba(255, 230, 0, 0.6);
+}
+
+.feedback-box textarea::placeholder {
+    color: rgba(223, 190, 106, 0.4);
+}
+
+
+.feedback-box textarea:focus {
+    outline-style: none;
+    border-color: rgba(223, 190, 106, 0.6);
+}
+
+.feedback-submit,
+.feedback-cancel {
+    width: 80px;
+    height: 25px;
+    margin-top: 5%;
+    background-color: #231f20;
+    border-radius: 20px;
+    border-color: rgba(223, 190, 106, 0.5);
+    color: rgba(223, 190, 106, 0.6);
+    outline-width: 0;
+}
+
+.feedback-cancel {
+    margin-left: 100px;
+}
+
+.feedback-submit:hover,
+.feedback-cancel:hover {
+    border-color: rgba(223, 190, 106, 0.6);
+    color: rgba(223, 190, 106, 0.8);
+}
+
+/********************反馈 ↑*********************/
+
+
+/********************登录 ↓*********************/
+/*登录box样式*/
+.login,
+.forgetPw {
+    top: 30%;
+    left: 50%;
+    width: 400px;
+    position: relative;
+    transform: translate(-50%, -50%);
+    background: #231f20;
+    display: none;
+}
+
+.login h2,
+.forgetPw h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: rgba(223, 190, 106, 0.6);
+    text-align: center;
+}
+
+.form-box {
+    position: relative;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 15px 0;
+    font-size: 16px;
+    color: rgb(228, 227, 227, 0.3);
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1.5px solid rgb(228, 227, 227, 0.5);
+    outline: none;
+    background: transparent;
+}
+
+.form-box label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: rgba(223, 190, 106, 0.6);
+    pointer-events: none;
+    transition: .5s;
+}
+
+.form-box input:focus~label,
+.form-box input:valid~label {
+    top: -20px;
+    left: 0;
+    color: #2e8388;
+    font-size: 12px;
+}
+
+.form-box input:focus {
+    border-color: rgba(223, 190, 106, 0.6);
+}
+
+.loginbtn {
+    width: 140px;
+    height: 30px;
+    background-color: #231f20;
+    border-radius: 20px;
+    border-color: rgba(223, 190, 106, 0.5);
+    color: rgba(223, 190, 106, 0.6);
+    outline-width: 0;
+    margin-top: 50px;
+}
+
+.loginbtn:hover {
+    border-color: rgb(235, 154, 5, 0.5);
+    color: rgba(223, 190, 106);
+}
+
+.btLogin {
+    margin-right: 25px;
+}
+
+.btCancel {
+    width: 60px;
+}
+
+.btNoAcc {
+    margin-left: 25px;
+}
+
+.btforgetPw {
+    margin-left: 130px;
+}
+
+.forgitPw-cancel {
+    margin-left: 110px;
+}
+
+.form-box #forgetPw-code {
+    width: 200px;
+}
+
+.forgitPw-sentVerCode {
+    margin-left: 12%;
+    margin-top: 0;
+}
+/********************登录 ↑*********************/
+
+.news,
+.study {
+    margin: auto;
+    padding: auto;
+    top: 35%;
+    text-align: center;
+    position: relative;
+    background: #231f20;
+}
+
+.news img {
+    width: 33%;
+}
