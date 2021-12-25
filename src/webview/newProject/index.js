@@ -124,7 +124,7 @@ submitBtn.on("click", function () {
 
 /* 为下拉框添加选项 */
 function autoProduceOption(par, val) {
-    par.append('<option selected>' + val + '</option>');
+    par.append('<option>' + val + '</option>');
 }
 
 
@@ -166,7 +166,7 @@ function whichTips(type, tar) {
 }
 
 
-/* 发送导入工程数据(导入工程提交) */
+/* 导入工程数据提交 */
 function getImportProjectData(type, tar) {
     let projectPath = $("input[name=" + tar + "_project_path]").val();
     let projectName = $("input[name=" + tar + "_project_name]").val();
@@ -255,6 +255,12 @@ function getImportProjectData(type, tar) {
 /********************************************** 导入工程 **********************************************/
 
 /*********************************************** 数据交互↓ ************************************************/
+/* 为下拉框添加选项 */
+function addOptionToSelect(whichSelect, arr, whichModule) {
+    for (let i = 0; i < arr[whichModule].length; i++) {
+        autoProduceOption(whichSelect, arr[whichModule][i]);
+    }
+}
 
 
 /* 获取新建工程初始化数据命令(每次切换工程发送相应的工程类型) */
@@ -283,15 +289,6 @@ function Alert(msg) {
             "msg": msg,
         }
     });
-}
-
-
-//实时获取新建工程名称并导入工程路径
-function getCurProjectName(e) {
-    GCName = e;
-    if (GCPath) {
-        document.querySelector('.content .project_path').value = GCPath + GCName;
-    }
 }
 
 
@@ -358,7 +355,6 @@ function handleSubmit(tar) {
                 }
             });
             break;
-
         default:
             break;
     }
@@ -431,36 +427,81 @@ function customPathManagment(whichProject, whichCustom, pathData) {
 }
 
 
-/* 为下拉框添加选项 */
-function addOptionToSelect(whichSelect, arr, whichModule) {
-    for (let i = 0; i < arr[whichModule].length; i++) {
-        autoProduceOption(whichSelect, arr[whichModule][i]);
+/* 模块型号类型 */
+const moduleOne = "air72XUX/air82XUX";
+const moduleTwo = "air72XCX";
+const moduleThree = "simulator";
+const moduleFour = "air10X";
+
+/* 新建工程 暂存VsCode发送的工程数据 */
+let temPureProjectData = null;
+let temExampleProjectData = null;
+let temNdkProjectData = null;
+let temUiProjectData = null;
+
+
+/* 新建工程 模块型号select添加刷新数据[空白工程] */
+$(".select_getSpace_ModuleInfo").on("click", function () {
+    let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
+    let libSelected = $(".select_getSpace_LibInfo");
+    let coreSelected = $(".select_getSpace_CoreInfo");
+
+    libSelected.empty();
+    coreSelected.empty();
+    /* 添加初始化option */
+    libSelected.append('<option value="default" selected id="space_customeLib">点击选择</option>');
+    coreSelected.append('<option value="default" selected id="space_customeCore">点击选择</option>');
+
+    switch (moduleSelected.text()) {
+        case moduleOne:
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleOne);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleOne);
+            break;
+        case moduleTwo:
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleTwo);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleTwo);
+            break;
+        case moduleThree:
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleThree);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleThree);
+            break;
+        case moduleFour:
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
+            break;
+        default:
+            break;
     }
-}
+});
 
 
 /* 新建工程初始化数据管理[空白工程] */
 function pureProjectInitDataManagment(initData) {
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initData.moduleList.length; i++) {
+        autoProduceOption($(".select_getSpace_ModuleInfo"), initData.moduleList[i]);
+    }
+
     let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
     let libSelected = $(".select_getSpace_LibInfo");
     let coreSelected = $(".select_getSpace_CoreInfo");
 
     switch (moduleSelected.text()) {
-        case "Air72XUX/Air82XUX":
-            addOptionToSelect(libSelected, initData.libList, "Air72XUX/Air82XUX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+        case moduleOne:
+            addOptionToSelect(libSelected, initData.libList, moduleOne);
+            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
-        case "Air72XCX":
-            addOptionToSelect(libSelected, initData.libList, "Air72XCX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+        case moduleTwo:
+            addOptionToSelect(libSelected, initData.libList, moduleTwo);
+            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
             break;
-        case "Simulator":
-            addOptionToSelect(libSelected, initData.libList, "Simulator");
-            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+        case moduleThree:
+            addOptionToSelect(libSelected, initData.libList, moduleThree);
+            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
-        case "Air10X":
-            addOptionToSelect(libSelected, initData.libList, "Air10X");
-            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+        case moduleFour:
+            addOptionToSelect(libSelected, initData.libList, moduleFour);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
         default:
             break;
@@ -468,28 +509,67 @@ function pureProjectInitDataManagment(initData) {
 }
 
 
+/* 新建工程 模块型号select添加刷新数据[示例工程] */
+$(".select_getExample_ModuleInfo").on("click", function () {
+    let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
+    let exampleSelected = $(".select_getExample_ExampleInfo");
+    let coreSelected = $(".select_getExample_CoreInfo");
+
+    libSelected.empty();
+    coreSelected.empty();
+    /* 添加初始化option */
+    coreSelected.append('<option value="default" selected id="example_customeCore">点击选择</option>');
+
+    switch (moduleSelected.text()) {
+        case moduleOne:
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleOne);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleOne);
+            break;
+        case moduleTwo:
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleTwo);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleTwo);
+            break;
+        case moduleThree:
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleThree);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleThree);
+            break;
+        case moduleFour:
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFour);
+            break;
+        default:
+            break;
+    }
+});
+
+
 /* 新建工程初始化数据管理[示例工程] */
 function exampleProjectInitDataManagment(initData) {
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initData.moduleList.length; i++) {
+        autoProduceOption($(".select_getExample_ModuleInfo"), initData.moduleList[i]);
+    }
+
     let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
     let exampleSelected = $(".select_getExample_ExampleInfo");
     let coreSelected = $(".select_getExample_CoreInfo");
 
     switch (moduleSelected.text()) {
-        case "Air72XUX/Air82XUX":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XUX/Air82XUX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+        case moduleOne:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
+            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
-        case "Air72XCX":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XCX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+        case moduleTwo:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleTwo);
+            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
             break;
-        case "Simulator":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Simulator");
-            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+        case moduleThree:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleThree);
+            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
-        case "Air10X":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air10X");
-            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+        case moduleFour:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
         default:
             break;
@@ -497,23 +577,53 @@ function exampleProjectInitDataManagment(initData) {
 }
 
 
+/* 新建工程 模块型号select添加刷新数据[NDK工程] */
+$(".select_getNDK_ModuleInfo").on("click", function () {
+    let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
+    let exampleSelected = $(".select_getNDK_ExampleInfo");
+
+    exampleSelected.empty();
+
+    switch (moduleSelected.text()) {
+        case moduleOne:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleOne);
+            break;
+        case moduleTwo:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleTwo);
+            break;
+        case moduleThree:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleThree);
+            break;
+        case moduleFour:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFour);
+            break;
+        default:
+            break;
+    }
+});
+
 /* 新建工程初始化数据管理[NDK工程] */
 function ndkProjectInitDataManagment(initData) {
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initData.moduleList.length; i++) {
+        autoProduceOption($(".select_getNDK_ModuleInfo"), initData.moduleList[i]);
+    }
+
     let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
     let exampleSelected = $(".select_getNDK_ExampleInfo");
 
     switch (moduleSelected.text()) {
-        case "Air72XUX/Air82XUX":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XUX/Air82XUX");
+        case moduleOne:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
             break;
-        case "Air72XCX":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air72XCX");
+        case moduleTwo:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleTwo);
             break;
-        case "Simulator":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Simulator");
+        case moduleThree:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleThree);
             break;
-        case "Air10X":
-            addOptionToSelect(exampleSelected, initData.exampleList, "Air10X");
+        case moduleFour:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
             break;
         default:
             break;
@@ -521,28 +631,68 @@ function ndkProjectInitDataManagment(initData) {
 }
 
 
+/* 新建工程 模块型号select添加刷新数据[UI工程] */
+$(".select_getUi_ModuleInfo").on("click", function () {
+    let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
+    let libSelected = $(".select_getUi_LibInfo");
+    let coreSelected = $(".select_getUi_CoreInfo");
+
+    libSelected.empty();
+    coreSelected.empty();
+    /* 添加初始化option */
+    libSelected.append('<option value="default" selected id="ui_customeLib">点击选择</option>');
+    coreSelected.append('<option value="default" selected id="ui_customeCore">点击选择</option>');
+
+    switch (moduleSelected.text()) {
+        case moduleOne:
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleOne);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleOne);
+            break;
+        case moduleTwo:
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleTwo);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleTwo);
+            break;
+        case moduleThree:
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleThree);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleThree);
+            break;
+        case moduleFour:
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleFour);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFour);
+            break;
+        default:
+            break;
+    }
+});
+
+
 /* 新建工程初始化数据管理[UI工程] */
 function uiProjectInitDataManagment(initData) {
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initData.moduleList.length; i++) {
+        autoProduceOption($(".select_getUi_ModuleInfo"), initData.moduleList[i]);
+    }
+
     let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
     let libSelected = $(".select_getUi_LibInfo");
     let coreSelected = $(".select_getUi_CoreInfo");
 
     switch (moduleSelected.text()) {
-        case "Air72XUX/Air82XUX":
-            addOptionToSelect(libSelected, initData.libList, "Air72XUX/Air82XUX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XUX/Air82XUX");
+        case moduleOne:
+            addOptionToSelect(libSelected, initData.libList, moduleOne);
+            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
-        case "Air72XCX":
-            addOptionToSelect(libSelected, initData.libList, "Air72XCX");
-            addOptionToSelect(coreSelected, initData.coreList, "Air72XCX");
+        case moduleTwo:
+            addOptionToSelect(libSelected, initData.libList, moduleTwo);
+            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
             break;
-        case "Simulator":
-            addOptionToSelect(libSelected, initData.libList, "Simulator");
-            addOptionToSelect(coreSelected, initData.coreList, "Simulator");
+        case moduleThree:
+            addOptionToSelect(libSelected, initData.libList, moduleThree);
+            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
-        case "Air10X":
-            addOptionToSelect(libSelected, initData.libList, "Air10X");
-            addOptionToSelect(coreSelected, initData.coreList, "Air10X");
+        case moduleFour:
+            addOptionToSelect(libSelected, initData.libList, moduleFour);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
         default:
             break;
@@ -556,15 +706,19 @@ window.addEventListener('message', event => {
     switch (message.command) {
         /* 新建工程初始化数据获取 */
         case "pureProjectInitData":
+            temPureProjectData = message.text;
             pureProjectInitDataManagment(message.text);
             break;
         case "exampleProjectInitData":
+            temExampleProjectData = message.text;
             exampleProjectInitDataManagment(message.text);
             break;
         case "ndkProjectInitData":
+            temNdkProjectData = message.text;
             ndkProjectInitDataManagment(message.text);
             break;
         case "uiProjectInitData":
+            temUiProjectData = message.text;
             uiProjectInitDataManagment(message.text);
             break;
             /* 自定义工程路径, lib库, core文件 */
