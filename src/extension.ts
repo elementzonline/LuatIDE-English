@@ -13,6 +13,7 @@ import { ProjectManage } from './webview/projectWebview';
 import { NodeDependenciesProvider } from './project/projectTreeView';
 import * as path from 'path';
 import {OperationDataProvider, OperationExplorer} from './project/toolshub';
+import { HomeManage } from './webview/homeWebview';
 
 function createProject():void{
 
@@ -22,9 +23,9 @@ function openProject():void{
 
 }
 
-function homeManage():void {
+// function homeManage():void {
 	
-}
+// }
 
 function runProject(resource: vscode.Uri):void {
 	let targetResource = resource;
@@ -67,6 +68,7 @@ let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
 let projectManage = new ProjectManage();
+let homeManage = new HomeManage();
 let nodeDependenciesProvider = new NodeDependenciesProvider(path.join(__dirname,'../.'));
 // let operationExplorer = new OperationExplorer();
 /*
@@ -95,6 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Home',async ()=> homeManage));
 	// 注册点击登录命令,当点击home主页内登录按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-plugin.Login',async ()=> homeManage));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Home',async ()=> homeManage.homeManage(context)));
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
 	
