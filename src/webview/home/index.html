@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>newProject</title>
+	<link rel="stylesheet" type="text/css" href="./index.css" />
+</head>
+
+<body>
+	<div class="father">
+		<!-- 登录按钮 -->
+		<h1>LUAT IDE</h1>
+		<a href="#" class="signinBar bar">Sign In</a>
+		<a href="#" class="feedback bar">我要吐槽</a>
+		<!-- 登录界面 -->
+		<div class="login">
+			<h2>Login</h2>
+			<form class="login-Form">
+				<div class="form-box">
+					<input type="text" id="username" required="" placeholder="">
+					<label>Username</label>
+				</div>
+				<div class="form-box">
+					<input type="password" id="password" name="" required="">
+					<label>Password</label>
+				</div>
+				<div class="form-box">
+					<button class="btLogin loginbtn" type="submit">Log in</button>
+					<button class="btCancel loginbtn" type="button">Cancel</button>
+					<button class="btNoAcc loginbtn" type="button">No Account ?</button>
+					<button class="btforgetPw loginbtn" type="button">Forget Password ?</button>
+				</div>
+			</form>
+		</div>
+		<div class="forgetPw">
+			<h2>Reset Password</h2>
+			<form class="forgetPw-Form">
+				<div class="form-box">
+					<input type="text" id="forgetPw-phone" required="">
+					<label>Phone</label>
+				</div>
+				<div class="form-box">
+					<input type="password" id="forgetPw-code" required="">
+					<label>Verify Code</label>
+					<button class="forgitPw-sentVerCode loginbtn" type="button">Sent VerifyCode</button>
+				</div>
+				<div class="form-box">
+					<input type="password" id="forgetPw-newPw" required="">
+					<label>New Password</label>
+				</div>
+				<div class="form-box">
+					<input type="password" id="forgetPw-verPw" required="">
+					<label>Verify Password</label>
+				</div>
+				<div class="form-box">
+					<button class="forgitPw-sure loginbtn" type="submit">Sure</button>
+					<button class="forgitPw-cancel loginbtn" type="button">Cancel</button>
+				</div>
+			</form>
+		</div>
+		<div class="feedback-box">
+			<input class="feedback-phone" type="text" id="username" required="" placeholder="" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="11">
+			<label>Phone</label>
+			<textarea tabindex=4 type="text" class="feedback-input" placeholder="Type message..."></textarea>
+			<button type="submit" class="feedback-submit">comment</button>
+			<button type="submit" class="feedback-cancel">Cancel</button>
+		</div>
+		<!-- 新闻展示 -->
+		<div class="news">
+			<img class="news1" src="" alt="new1">
+			<img class="news2" src="" alt="new2">
+			<img class="news3" src="" alt="new3">
+		</div>
+		<!-- 快速上手 -->
+		<div class="study">
+			<!-- <img class="news3" src="" alt="new3"> -->
+		</div>
+        <script type="text/javascript" src="../jquery-3.6.0.js"></script>
+		<script type="text/javascript" src="./index.js"></script>
+</body>
+
+</html>
