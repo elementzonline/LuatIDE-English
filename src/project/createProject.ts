@@ -73,13 +73,13 @@ export class CreateProject {
             createProjectMessage.createProjectPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath);      //初始化写入工程配置文件
         const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigAppFile(appFile);
+        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion);
-        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // cosnt libPath:string = "c"
-        projectJsonParse.setProjectConfigLibPath();  //示例工程的lib采用最新的lib
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel);
+        projectJsonParse.setProjectConfigLibPath('',createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
+        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 
@@ -198,16 +198,18 @@ export class CreateProject {
     // 向工程中copy用户所选择的demo
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
         let demoPath: any;
-        const projectDemoDistPath: string = path.join(projectPath, projectDemo);
+        const projectDemoDistPath: string = projectPath;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
                 const air72XDefaultDemoPath: string = pluginVariablesInit.getAir72XDefaultDemoPath();
                 demoPath = path.join(air72XDefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
+                break;
             case 'air10X':
                 const air10XDefaultDemoPath: string = pluginVariablesInit.getAir10XDefaultDemoPath();
                 demoPath = path.join(air10XDefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
+                break;
         }
     }
 
