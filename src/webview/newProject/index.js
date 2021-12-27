@@ -498,18 +498,28 @@ $(".select_getSpace_ModuleInfo").on("click", function () {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            libSelected.prop("disabled", false);
+            $(".space_lib_btn").prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleOne);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleOne);
             break;
         case moduleTwo:
+            libSelected.prop("disabled", false);
+            $(".space_lib_btn").prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleTwo);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleTwo);
             break;
         case moduleThree:
+            libSelected.prop("disabled", false);
+            $(".space_lib_btn").prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleThree);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleThree);
             break;
         case moduleFour:
+            /* 目前101没有lib */
+            libSelected.prop("disabled", true);
+            $(".space_lib_btn").prop("disabled", true);
+            Alert("目前 Air10X 不支持Lib配置！");
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
             break;
@@ -532,6 +542,8 @@ function pureProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            libSelected.prop("disabled", false);
+            $(".space_lib_btn").prop("disabled", false);
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
@@ -559,7 +571,7 @@ $(".select_getExample_ModuleInfo").on("click", function () {
     let exampleSelected = $(".select_getExample_ExampleInfo");
     let coreSelected = $(".select_getExample_CoreInfo");
 
-    libSelected.empty();
+    exampleSelected.empty();
     coreSelected.empty();
     /* 添加初始化option */
     coreSelected.append('<option value="default" selected id="example_customeCore">点击选择</option>');
