@@ -62,13 +62,13 @@ export class PluginVariablesInit {
     }
 
     // 获取获取Air72X固件版本号正则解析表达式
-    async getAir72XReg() {
+    getAir72XReg() {
         const reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
         return reg;
     }
 
     // 获取获取Air10X固件版本号正则解析表达式
-    async getAir10XReg() {
+    getAir10XReg() {
         const reg = /LuatOS-SoC_V(\d+)_AIR101/ig;
         return reg;
     }
@@ -257,8 +257,57 @@ export class PluginVariablesInit {
         }
         return coreList;
     }
-}
 
+    // 获取air10x默认最新corePath路径
+    getAir10XDefaultLatestCorePath(){
+        const air10xCorePath:string = this.getAir10XDefaultCorePath();
+        const coreList:string[] = fs.readdirSync(air10xCorePath);
+        const reg = this.getAir10XReg();
+        let currentVersion = undefined;
+        let coreName = '';
+        for (let index = 0; index < coreList.length; index++) {
+            const currentCoreName:string = coreList[index];
+            if (path.extname(currentCoreName) === '.soc') {
+                const coreNameVersionArray:any = reg.exec(currentCoreName);
+                reg.lastIndex = 0;
+                if (coreNameVersionArray !== null && currentVersion === undefined) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+                else if (coreNameVersionArray !== null && coreNameVersionArray[1] > currentVersion) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+            }
+            }
+        return coreName;
+        }   
+
+    // 获取air72x默认最新corePath路径
+    getAir72XDefaultLatestCorePath(){
+        const air72xCorePath:string = this.getAir72XDefaultCorePath();
+        const coreList:string[] = fs.readdirSync(air72xCorePath);
+        const reg = this.getAir72XReg();
+        let currentVersion = undefined;
+        let coreName = '';
+        for (let index = 0; index < coreList.length; index++) {
+            let currentCoreName:string = coreList[index];
+            if (path.extname(currentCoreName) === '.pac') {
+                const coreNameVersionArray:any = reg.exec(currentCoreName);
+                reg.lastIndex = 0;
+                if (coreNameVersionArray !== null && currentVersion === undefined) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+                else if (coreNameVersionArray !== null && coreNameVersionArray[1] > currentVersion) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+            }
+            }
+        return coreName;
+}
+}
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
  */
@@ -392,11 +441,12 @@ export class PluginCoreUpate {
         switch (moduleModel) {
             case 'Air72X':
                 corepath = this.plugVariablesInit.getAir72xCorepath();
-                return corepath;
+                break;
             case 'Air10X':
                 corepath = this.plugVariablesInit.getAir10xCorepath();
-                return corepath;
+                break;
         }
+        return corepath;
     }
 
     // 依据模块型号获取文件名后缀
@@ -405,8 +455,10 @@ export class PluginCoreUpate {
         switch (moduleModel) {
             case 'Air72X':
                 extname = '.pac';
+                break;
             case 'Air10X':
                 extname = '.soc';
+                break;
         }
         return extname;
     }
