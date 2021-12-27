@@ -102,6 +102,8 @@ export class ProjectManage {
     async receiveMessageHandle(projectPanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
+        const pluginDefaultAir10XExample:string[] = pluginVariablesInit.getAir10XDefaultExampleList();
+        const pluginDefaultAir72XExample:string[] = pluginVariablesInit.getAir72XDefaultExampleList();
         const air72XUXLibList:string[] = ['1','1','1']; 
         const air72XCXLibList:string[] = ['2','2','2']; 
         const air10XLibList:string[] = ['3','3','3']; 
@@ -143,11 +145,11 @@ export class ProjectManage {
                                 command: 'exampleProjectInitData',
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
-                                    "libList": {
-                                        "air72XUX/air82XUX": air72XUXLibList,
-                                        "air72XCX":air72XCXLibList,
-                                        "air10X": air10XLibList,
-                                        "simulator":simulatorList,
+                                    "exampleList": {
+                                        "air72XUX/air82XUX": pluginDefaultAir72XExample,
+                                        "air72XCX":pluginDefaultAir72XExample,
+                                        "air10X": pluginDefaultAir10XExample,
+                                        "simulator":pluginDefaultAir72XExample,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
