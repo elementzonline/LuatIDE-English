@@ -25,6 +25,7 @@ export class CreateProject {
             createProjectCorePath: message.text['corePath'],
             // createProjectExample: message.text['project_example'],
         };
+        const projectType:string = 'pure';
         const createProjectCheckState: boolean = this.createProjectCheck(message);
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
@@ -50,11 +51,13 @@ export class CreateProject {
         const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 
     // 新建示例工程
     createExampleProject(message: any) {
+        const projectType:string = 'example';
         let createProjectMessage = {
             createProjectName: message.text['projectName'],
             createProjectPath: message.text['projectPath'],
@@ -84,12 +87,13 @@ export class CreateProject {
         // cosnt libPath:string = "c"
         projectJsonParse.setProjectConfigLibPath('',createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 
     // 新建ndk工程
     createNdkProject(message: any) {
-        console.log('ndk操作');
+        const projectType:string = 'ndk';
         let createProjectMessage = {
             createProjectName: message.text['projectName'],
             createProjectPath: message.text['projectPath'],
@@ -126,11 +130,13 @@ export class CreateProject {
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel);
+        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 
     // 新建ui工程
     createUiProject(message: any) {
+        const projectType:string = 'ui';
         let createProjectMessage = {
             createProjectName: message.text['projectName'],
             createProjectPath: message.text['projectPath'],
@@ -160,6 +166,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 

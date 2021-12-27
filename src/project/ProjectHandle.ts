@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { deleteDirRecursive } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
+import { NodeDependenciesProvider } from "./projectTreeView";
 
 let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
@@ -81,6 +82,7 @@ export class ProjectDeleteHandle {
                 // 活动工程置空
                 activeProject = '';
                 pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                new NodeDependenciesProvider('c://');
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 break;
             case '删除本地文件':
@@ -90,6 +92,7 @@ export class ProjectDeleteHandle {
                     activeProject = '';
                     pluginJsonParse.setPluginConfigActiveProject(activeProject);
                     deleteDirRecursive(projectPath);
+                    new NodeDependenciesProvider('c://');
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 });
                 break;
@@ -294,10 +297,10 @@ export class ProjectConfigOperation {
     selectProjectModuleModel(){
         vscode.window.showQuickPick(
 			[
-				"Air72XUX/Air82XUX",
-				"Air72XCX",
-				"Air10X",
-				"Simulator"
+				"air72XUX/Air82XUX",
+				"air72XCX",
+				"air10X",
+				"simulator"
 			],
 			{
 				canPickMany:false,
