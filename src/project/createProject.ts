@@ -43,8 +43,12 @@ export class CreateProject {
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectPath);
+        // 获取实际的core路径
+        const createProjectCorePath:string =  this.getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
+        projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
+        // 获取写入配置文件的实际lib路径
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
@@ -157,6 +161,72 @@ export class CreateProject {
         projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+    }
+
+    // 接收到的webview发送的lib处理
+    getCreateProjectLibpathHandle(libPath:string){
+        const air72XDefaultLibPath = pluginVariablesInit.getAir72XDefaultLibPath();
+        if (fs.existsSync(libPath)) {
+            libPath = libPath;
+        }
+        else if (libPath==='') {
+            libPath = path.join(air72XDefaultLibPath,'v2.4.0','lib');
+        }
+        else{
+            libPath = path.join(air72XDefaultLibPath,libPath,'lib');
+        }
+        return libPath;
+    }
+
+    //接收到的webview发送的core路径处理
+    getCreateProjectCorepathHandle(corePath:string,moduleModel:string){
+        switch(moduleModel){
+            case 'air72XUX/air82XUX':
+                corePath = this.getCreateProjectAir72XCorepathHandle(corePath);
+                break;
+            case 'air72XCX':
+                corePath = '';
+                break;
+            case 'air10X':
+                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                break;
+            case 'simulator':
+                corePath = this.getCreateProjectAir72XCorepathHandle(corePath);
+                break;
+        }
+        return corePath;
+    }
+
+    // 接收到的webview发送的air101的core处理
+    getCreateProjectAir10XCorepathHandle(corePath:string){
+        const air10XDefaultCorePath = pluginVariablesInit.getAir10XDefaultCorePath();
+        if (fs.existsSync(corePath)) {
+            corePath = corePath;
+        }
+        else if (corePath==='') {
+            const coreLatestName:string = pluginVariablesInit.getAir10XDefaultLatestCorePath();
+            corePath = path.join(air10XDefaultCorePath,coreLatestName);
+        }
+        else{
+            corePath = path.join(air10XDefaultCorePath,corePath);
+        }
+        return corePath;
+    }
+
+    // 接收到的webview发送的air724的core处理
+    getCreateProjectAir72XCorepathHandle(corePath:string){
+        const air72XDefaultCorePath = pluginVariablesInit.getAir72XDefaultCorePath();
+        if (fs.existsSync(corePath)) {
+            corePath = corePath;
+        }
+        else if (corePath==='') {
+            const coreLatestName:string = pluginVariablesInit.getAir72XDefaultLatestCorePath();
+            corePath = path.join(air72XDefaultCorePath,coreLatestName);
+        }
+        else{
+            corePath = path.join(air72XDefaultCorePath,corePath);
+        }
+        return corePath;
     }
 
     // 工程新建必要条件检查
