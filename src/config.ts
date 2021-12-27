@@ -93,13 +93,19 @@ export class PluginVariablesInit{
 
     // 获取home主页html路径
     getHomeHtmlPath(){
-        const homeHtmlPath: string = path.join(this.extensionPath,'src','webview','home.html');
+        const homeHtmlPath: string = path.join(this.extensionPath,'src','webview','home','index.html');
         return homeHtmlPath;
     }
 
     // 获取project主页资源文件路径
     getProjectSourcePath(){
         const projectSourcePath: string = path.join(this.extensionPath,'src','webview','newProject');
+        return projectSourcePath;
+    }
+
+    // 获取project主页资源文件路径
+    getHomeSourcePath(){
+        const projectSourcePath: string = path.join(this.extensionPath,'src','webview','home');
         return projectSourcePath;
     }
 
@@ -165,7 +171,7 @@ export class PluginVariablesInit{
 
     // 获取插件支持的模块列表
     getPluginDefaultModuleList(){
-        const moduleList:string[] = ["Air72XUX/Air82XUX", "Air72XCX","Air10X","Simulator"];
+        const moduleList:string[] = ["air72XUX/air82XUX", "air72XCX","air10X","simulator"];
         return moduleList;
     }
 }

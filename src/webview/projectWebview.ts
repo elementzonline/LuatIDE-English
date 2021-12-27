@@ -5,10 +5,12 @@ import path = require('path');
 import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { PluginJsonParse } from '../plugConfigParse';
+import { CreateProject } from '../project/createProject';
 
 let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 let pluginJsonParse = new PluginJsonParse();
+let createProject = new CreateProject();
 export class ProjectManage {
     constructor() {
 
@@ -100,10 +102,10 @@ export class ProjectManage {
     async receiveMessageHandle(projectPanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
-        const air72XUXLibList:string[] = ['1','2','3']; 
-        const air72XCXLibList:string[] = ['1','2','3']; 
-        const air10XLibList:string[] = ['1','2','3']; 
-        const simulatorList:string[] = ['1','2','3']; 
+        const air72XUXLibList:string[] = ['1','1','1']; 
+        const air72XCXLibList:string[] = ['2','2','2']; 
+        const air10XLibList:string[] = ['3','3','3']; 
+        const simulatorList:string[] = ['4','4','4']; 
         const libList: string[] = ['暂时使用右侧自定义方式','2'];
         const coreList: string[] = ['暂时使用右侧自定义方式','2'];
         switch (message.command) {
@@ -274,7 +276,27 @@ export class ProjectManage {
                     case "ui":
                         break;
                 }
-            }
+            case 'Alert':
+                vscode.window.showErrorMessage(message.text['msg'],{modal: true});
+                break;
+            
+            // 用户新建pure工程命令接收
+            case "pureProject":
+                createProject.createPureProject(message);
+                break;
+            // 用户新建example工程命令接收
+            case "exampleProject":
+                createProject.createExampleProject(message);
+                break;
+            // 用户新建ndk工程命令接收
+            case "ndkProject":
+                createProject.createNdkProject(message);
+                break;
+            // 用户新建ui工程命令接收
+            case "uiProject":
+                createProject.createExampleProject(message);
+                break;
+        }
     }
 
 
