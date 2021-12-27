@@ -38,6 +38,10 @@ let uiDynData = [
 ];
 // 判断是否是导入工程
 let isInImportProject = false;
+// 判断是否是 Air10X 模块型号
+let isInAir101 = false;
+// 判断是否是 Air72XCX 模块型号
+let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
@@ -321,6 +325,24 @@ function handelBackstage(name, type) {
 }
 
 
+/* 对 Air10X 和 Air72XCX 模块型号做特殊处理 */
+function handelBackstageExtra(name, type) {
+    if (isInAir101 && type === "customLibPath"){
+        Alert("当前模块型号不支持 lib 配置！");
+    }
+    else if (isInAirCx72 && type === "customCorePath"){
+        Alert("当前模块型号不支持 core 配置！");
+    }
+    else
+    {
+        vscode.postMessage({
+            command: name,
+            text: type
+        });
+    }
+}
+
+
 //Alert
 function Alert(msg) {
     vscode.postMessage({
@@ -498,28 +520,36 @@ $(".select_getSpace_ModuleInfo").on("click", function () {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            isInAir101 = false;
+            isInAirCx72 = false;
             libSelected.prop("disabled", false);
-            $(".space_lib_btn").prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleOne);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleOne);
             break;
         case moduleTwo:
+            /* 目前 Air72CXC 没有 Core */
+            isInAir101 = false;
+            isInAirCx72 = true;
             libSelected.prop("disabled", false);
-            $(".space_lib_btn").prop("disabled", false);
+            coreSelected.prop("disabled", true);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleTwo);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleTwo);
             break;
         case moduleThree:
+            isInAir101 = false;
+            isInAirCx72 = false;
             libSelected.prop("disabled", false);
-            $(".space_lib_btn").prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleThree);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleThree);
             break;
         case moduleFour:
-            /* 目前101没有lib */
+            /* 目前 Air10X 没有 lib */
+            isInAir101 = true;
+            isInAirCx72 = false;
             libSelected.prop("disabled", true);
-            $(".space_lib_btn").prop("disabled", true);
-            Alert("目前 Air10X 不支持Lib配置！");
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
             break;
@@ -543,7 +573,9 @@ function pureProjectInitDataManagment(initData) {
     switch (moduleSelected.text()) {
         case moduleOne:
             libSelected.prop("disabled", false);
-            $(".space_lib_btn").prop("disabled", false);
+            coreSelected.prop("disabled", false);
+            isInAir101 = false;
+            isInAirCx72 = false;
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
@@ -578,18 +610,26 @@ $(".select_getExample_ModuleInfo").on("click", function () {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleOne);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleOne);
             break;
         case moduleTwo:
+            isInAirCx72 = true;
+            coreSelected.prop("disabled", true);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleTwo);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleTwo);
             break;
         case moduleThree:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleThree);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleThree);
             break;
         case moduleFour:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFour);
             break;
@@ -612,6 +652,8 @@ function exampleProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
@@ -702,18 +744,34 @@ $(".select_getUi_ModuleInfo").on("click", function () {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            isInAirCx72 = false;
+            isInAir101 = false;
+            libSelected.prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleOne);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleOne);
             break;
         case moduleTwo:
+            isInAirCx72 = true;
+            isInAir101 = false;
+            libSelected.prop("disabled", false);
+            coreSelected.prop("disabled", true);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleTwo);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleTwo);
             break;
         case moduleThree:
+            isInAirCx72 = false;
+            isInAir101 = false;
+            libSelected.prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleThree);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleThree);
             break;
         case moduleFour:
+            isInAirCx72 = false;
+            isInAir101 = true;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFour);
             break;
@@ -736,6 +794,10 @@ function uiProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case moduleOne:
+            isInAirCx72 = false;
+            isInAir101 = false;
+            libSelected.prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
