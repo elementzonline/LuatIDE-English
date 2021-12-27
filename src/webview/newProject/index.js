@@ -229,9 +229,9 @@ function getImportProjectData(type, tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getSpace_LibInfo option:selected").text(),
+                        "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
+                        "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
                     }
                 }
             });
@@ -245,7 +245,7 @@ function getImportProjectData(type, tar) {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
                         "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getExample_CoreInfo option:selected").text(),
+                        "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
                         "example": $(".select_getExample_ExampleInfo option:selected").text(),
                     }
                 }
@@ -273,9 +273,9 @@ function getImportProjectData(type, tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getUi_LibInfo option:selected").text(),
+                        "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getUi_CoreInfo option:selected").text(),
+                        "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
                     }
                 }
             });
@@ -354,9 +354,9 @@ function handleSubmit(tar) {
                 text: {
                     "projectName": projectName,
                     "projectPath": (projectPath + "\\" + projectName),
-                    "libPath": $(".select_getSpace_LibInfo option:selected").text(),
+                    "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
                     "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
+                    "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
                 }
             });
             break;
@@ -367,7 +367,7 @@ function handleSubmit(tar) {
                     "projectName": projectName,
                     "projectPath": (projectPath + "\\" + projectName),
                     "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getExample_CoreInfo option:selected").text(),
+                    "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
                     "example": $(".select_getExample_ExampleInfo option:selected").text(),
                 }
             });
@@ -389,9 +389,9 @@ function handleSubmit(tar) {
                 text: {
                     "projectName": projectName,
                     "projectPath": (projectPath + "\\" + projectName),
-                    "libPath": $(".select_getUi_LibInfo option:selected").text(),
+                    "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
                     "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getUi_CoreInfo option:selected").text(),
+                    "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
                 }
             });
             break;
