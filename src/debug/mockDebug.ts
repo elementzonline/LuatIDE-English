@@ -19,6 +19,7 @@ import * as path from 'path'; // 导入fs库和path库
 
 
 import { PluginJsonParse } from '../plugConfigParse';
+import { ProjectJsonParse } from "../project/projectConfigParse";
 
 // 获取当前时间戳，并解析后格式化输出
 function formatConsoleDate (date) {
@@ -172,6 +173,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private configDataPath:any = process.env['APPDATA'];
 
 	private pluginJsonParse:any = new PluginJsonParse(); 
+	private projectJsonParse: any = new ProjectJsonParse();
 
 	// 分发器
 	public dbg_dispatcher(heads, exts) {
@@ -278,13 +280,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private generate_project_filepath(){
 		let configSource_fileList:string[]=[];
 		let configSource_filepathList:string[]=[];
-		const configFilePath:any = path.join(this.configDataPath,"LuatIDE","luatide_workspace.json");
-		var configFileData = fs.readFileSync(configFilePath).toString();
-		let configFileDataObj: any = JSON.parse(configFileData);
-		const currentactiveWorkspace:any = configFileDataObj['active_workspace'];
-		let json_Data_tmp = fs.readFileSync(path.join(currentactiveWorkspace,"luatide_project.json")).toString();
-		let json_Data = JSON.parse(json_Data_tmp);
-		let project_fileslist = json_Data['app_file'];
+		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile();
 		for (let index = 0; index < project_fileslist.length; index++) {
 			const project_absolute_file = project_fileslist[index];
 			const project_file = path.basename(project_absolute_file);
@@ -561,9 +557,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		});
 	}
 
-	//增加调试前执行下载操作
-	private json_Data: any;
-	    // 遍历pac所在文件夹，确定当前pac包版本
+	// 遍历pac所在文件夹，确定当前pac包版本
 	private async  search_current_coreversion(dir,reg,coreExtname) {
 			const files =fs.readdirSync(dir);
 			let current_version:any=undefined;
@@ -597,71 +591,21 @@ export class MockDebugSession extends LoggingDebugSession {
 			/*+\NEW\zhw\2021.05.25\用户工作空间路径从插件配置文件里读取*/
 			const user_path_data = "work_path " + this.activeWorkspace;
 			this.dbg_write_cmd(user_path_data);
+			await this.sleep(100);
+
 			// 插件所在路径获取
 			const plug_path:string = path.join(__dirname,"../..");
 			const plug_path_data: any = "plug_path " + plug_path;
-			await this.sleep(100);
 			this.dbg_write_cmd(plug_path_data);
-			// 用户自定义lib库所在文件路径获取。
-			//通过从配置文件读取插件路径
-			let json_Data_tmp = fs.readFileSync(path.join(this.activeWorkspace,"luatide_project.json")).toString();
-			this.json_Data = JSON.parse(json_Data_tmp);
-			const user_lib_path = this.json_Data['lib_path'];
-			/*+\NEW\zhw\2021.05.25\用户工作空间路径从插件配置文件里读取*/
-			const lib_path_data: any = "ulib_path " + user_lib_path;
 			await this.sleep(100);
-			this.dbg_write_cmd(lib_path_data);
-			const module_model = this.json_Data['module_model'];
+
+
+			const module_model = this.projectJsonParse.getProjectConfigModuleModel();
 			this.module_model_flag = module_model;
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
 			if (module_model === undefined) {
-				this.json_Data['module_model'] = "Air72XUX/Air82XUX";
-				const fileData = JSON.stringify(this.json_Data,null,"\t");
-				fs.writeFileSync(this.activeWorkspace,"luatide_project.json", fileData);
+				this.projectJsonParse.setProjectConfigModuleModel("Air72XUX/Air82XUX");
 			}
-			// 模块型号如果是air101，检查pac后缀是不是soc
-
-			const module_model_data: any = "module_model " + module_model;
-			this.dbg_write_cmd(module_model_data);
-			// 用户自定义pac所在文件路径获取
-			let user_pac_path = this.json_Data['corefile_path'];
-
-			if (module_model==="Air72XUX/Air82XUX" && user_pac_path === "") {
-				let temp_72xdir:any = path.join(configDataPath,"LuatIDE","LuatideCore","Air72X_CORE");
-				let reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
-				let user_pac_name = await this.search_current_coreversion(temp_72xdir,reg,".pac");
-				user_pac_path = temp_72xdir+"\\"+user_pac_name;
-
-			}
-			else if(module_model==="Air10X" && user_pac_path === ""){
-				let temp_10xdir:any = path.join(configDataPath,"LuatIDE","LuatideCore","Air10X_CORE");
-				let reg = /LuatOS-SoC_V(\d+)_AIR101/ig;
-				let user_pac_name = await this.search_current_coreversion(temp_10xdir,reg,".soc");
-				user_pac_path = temp_10xdir+"\\"+user_pac_name;
-			}
-			/*+\NEW\czm\2021.09.29\支持模拟器​*/
-			else if(module_model==="Simulator" && user_pac_path === ""){
-				const files =fs.readdirSync(path.join(configDataPath,"LuatIDE","LuatideCore","Air72X_CORE"));
-				files.forEach(function (file, index) {
-				  const extname =path.extname(file);
-				  if (extname === ".pac") {
-					user_pac_path = path.join(configDataPath,"LuatIDE","LuatideCore","Air72X_CORE",file);
-				  }   
-				});
-			}
-			/*-\NEW\czm\2021.09.29\支持模拟器​*/
-			if((module_model==="Air10X" && path.extname(user_pac_path)!==".soc") || (module_model==="Air72XUX/Air82XUX" && path.extname(user_pac_path)!==".pac")){
-				vscode.window.showErrorMessage("您选择的固件版本与模块型号不匹配，请重新选择",{modal:true});
-				require('child_process').exec('taskkill -f -im LuatideService.exe');
-				return;				
-			}
-
-			const pac_path_data: any = "upac_path " + user_pac_path;
-			await this.sleep(100);
-			this.dbg_write_cmd(pac_path_data);
-
-			await this.sleep(100);
-
 			this.dbg_write_cmd("LuatIDE_Down/LoAd");
 			return true;
 		}
@@ -876,13 +820,13 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 		}
 		const flag:any = await this.downpath_send();
-		if (flag===false) {
+		if (flag === false) {
 			// 强行终止调试器
 			vscode.debug.stopDebugging();
 			return; 
 		}
 		// 等待下载完成状态
-		for (var i = 0; i < 60 * 3; i++) {
+		for (var i = 0; i < 120 * 3; i++) {
 			if (this.download_state === 0) {
 				await this.download_success.wait(300);
 			} else {
@@ -891,7 +835,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		console.log("等待waiting for debugger");
-		for (var i = 0; i < 60 * 3; i++) {
+		for (var i = 0; i < 120 * 3; i++) {
 			if (this.dbg_state === 1) {
 				console.log("waiting for debugger ok");
 				break;
@@ -1041,7 +985,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
 		child_process.exec('taskkill -f -im LuatideService.exe');
-		if (this.json_Data['module_model'] === "Simulator")
+		if (this.projectJsonParse.getProjectConfigModuleModel() === "Simulator")
 		{
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
