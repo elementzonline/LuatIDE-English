@@ -38,9 +38,15 @@ let pluginJsonParse = new PluginJsonParse();
         const projectConfigLibPath:string = projectConfigJsonObj.libPath;
         return projectConfigLibPath;
     }
+    // 获取活动工程配置的模块型号
+    getProjectConfigModuleModel(){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+        const projectConfigCorePath:string = projectConfigJsonObj.moduleModel;
+        return projectConfigCorePath;
+    }
 
     // 获取活动工程core文件路径
-    getProjectConfigActiveProject(){
+    getProjectConfigCorePath(){
         const projectConfigJsonObj:any =  this.getProjectConfigJson();
         const projectConfigCorePath:string = projectConfigJsonObj.corePath;
         return projectConfigCorePath;
