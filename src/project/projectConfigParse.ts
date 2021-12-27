@@ -17,51 +17,51 @@ let pluginJsonParse = new PluginJsonParse();
     }
 
     // 获取工程配置文件内容对象
-    getProjectConfigJson(){
-        const activityPath:any = pluginJsonParse.getPluginConfigActivityProject();
-        const projectConfigPath:any = path.join(activityPath,'luatide_project.json');
+    getProjectConfigJson(projectPath:any){
+        // const activityPath:any = pluginJsonParse.getPluginConfigActivityProject();
+        const projectConfigPath:any = path.join(projectPath,'luatide_project.json');
         const projectConfigJson:any  = fs.readFileSync(projectConfigPath);
         const projectConfigJsonObj:any = JSON.parse(projectConfigJson);
         return projectConfigJsonObj;
     }
 
     // 获取活动工程下载至模块的脚本文件及资源文件列表
-    getProjectConfigAppFile(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigAppFile(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigAppFile:string = projectConfigJsonObj.appFile;
         return projectConfigAppFile;
     }
 
     // 获取活动工程lib库文件路径
-    getProjectConfigLibPath(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigLibPath(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigLibPath:string = projectConfigJsonObj.libPath;
         return projectConfigLibPath;
     }
     // 获取活动工程配置的模块型号
-    getProjectConfigModuleModel(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigModuleModel(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigCorePath:string = projectConfigJsonObj.moduleModel;
         return projectConfigCorePath;
     }
 
     // 获取活动工程core文件路径
-    getProjectConfigCorePath(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigActiveProject(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigCorePath:string = projectConfigJsonObj.corePath;
         return projectConfigCorePath;
     }
 
     // 获取活动工程配置文件版本号
-    getProjectConfigVersion(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigVersion(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigVersion:string = projectConfigJsonObj.version;
         return projectConfigVersion;
     }
     
     // 获取活动工程模块端口号
-    getProjectConfigMoudlePort(){
-        const projectConfigJsonObj:any =  this.getProjectConfigJson();
+    getProjectConfigMoudlePort(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigModulePort:string = projectConfigJsonObj.modulePort;
         return projectConfigModulePort;
     }
@@ -75,7 +75,7 @@ let pluginJsonParse = new PluginJsonParse();
     // 设置活动工程版本号
     setProjectConfigVersion(version:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         projectJsonObj.version = version;
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
@@ -83,7 +83,7 @@ let pluginJsonParse = new PluginJsonParse();
     // 设置活动工程core文件路径
     setProjectConfigCorePath(corePath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         projectJsonObj.corePath = corePath;
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
@@ -91,7 +91,7 @@ let pluginJsonParse = new PluginJsonParse();
     // 设置活动工程lib文件路径
     setProjectConfigLibPath(libPath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         projectJsonObj.libPath = libPath;
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
@@ -99,7 +99,7 @@ let pluginJsonParse = new PluginJsonParse();
     // 设置活动工程模块型号
     setProjectConfigModuleModel(moduleModel:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         projectJsonObj.moduleModel = moduleModel;
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
@@ -107,15 +107,19 @@ let pluginJsonParse = new PluginJsonParse();
     // 添加文件路径到活动工程下载文件列表
     pushProjectConfigAppFile(appFile:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
-        projectJsonObj.appFile.push(appFile);
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
+        for (let index = 0; index < appFile.length; index++) {
+            const element = appFile[index];
+            projectJsonObj.appFile.push(element);
+        }
+        
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
 
     // 删除文件路径从活动工程下载文件列表
     popProjectConfigAppFile(appFile:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         const index = projectJsonObj.appFile.indexOf(appFile);
         if (index!==-1) {
             projectJsonObj.appFile.splice(appFile);
@@ -129,14 +133,14 @@ let pluginJsonParse = new PluginJsonParse();
     // 设置活动工程模块端口
     setProjectConfigModulePort(modulePort:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const projectJsonObj:any =  this.getProjectConfigJson();
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         projectJsonObj.modulePort = modulePort;
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
 
     // 刷新活动工程配置文件
-    refreshProjectJson(projectJsonObj:any,projectPath:any){
-        const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
+    refreshProjectJson(projectJsonObj:any,projectConfigPath:any){
+        // const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJson:string = JSON.stringify(projectJsonObj,null,'\t');
         fs.writeFileSync(projectConfigPath,projectJson);
     }
@@ -148,7 +152,7 @@ let pluginJsonParse = new PluginJsonParse();
             version:'',
             corePath:'',
             libPath:'',
-            muduleModel:'',
+            moduleModel:'',
             appFile:[],
             modulePort:'',
         };

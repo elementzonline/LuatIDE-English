@@ -7,8 +7,8 @@ let pluginJsonParse:any = new PluginJsonParse();
 
 // 检查当前工程是否存在用户历史工程中
 export function checkSameProjectExistStatusForPluginConfig(projectName:any){
-    let userProjectArray:any = pluginJsonParse.getPluginConfigUserArray();
-    if (userProjectArray.indexOf(projectName)!==-1) {
+    let userProjectList:any = pluginJsonParse.getPluginConfigUserProjectList();
+    if (userProjectList.indexOf(projectName)!==-1) {
         return true;
     }
     return false;
