@@ -159,13 +159,13 @@ export class PluginVariablesInit{
 
     // 获取Air72X默认demo
     getAir72XDefaultDemoPath(){
-        const air72XDefaultDemoPath: string = path.join(this.appDataPath,"LuatIDE","LuatideLib","Air72X_Demo","Air72X_DEMO_V2.4.0");
+        const air72XDefaultDemoPath: string = path.join(this.appDataPath,"LuatIDE","LuatideDemo","Air72X_Demo","Air72X_DEMO_V2.4.0");
         return air72XDefaultDemoPath;
     }
 
     // 获取Air10X默认demo
     getAir10XDefaultDemoPath(){
-        const air10XDefaultDemoPath: string = path.join(this.appDataPath,"LuatIDE","LuatideLib","Air10X_Demo");
+        const air10XDefaultDemoPath: string = path.join(this.appDataPath,"LuatIDE","LuatideDemo","Air10X_Demo");
         return air10XDefaultDemoPath;
     }
 
@@ -173,6 +173,21 @@ export class PluginVariablesInit{
     getPluginDefaultModuleList(){
         const moduleList:string[] = ["air72XUX/air82XUX", "air72XCX","air10X","simulator"];
         return moduleList;
+    }
+
+    
+    // 获取Air72X默认示例demo列表
+    getAir72XDefaultExampleList(){
+        const air72XDefaultDemoPath:string = this.getAir72XDefaultDemoPath();
+        const demoList:string[] = fs.readdirSync(air72XDefaultDemoPath);
+        return demoList;
+    }
+
+    // 获取Air10X默认示例demo列表
+    getAir10XDefaultExampleList(){
+        const air10XDefaultDemoPath:string = this.getAir10XDefaultDemoPath();
+        const demoList:string[] = fs.readdirSync(air10XDefaultDemoPath);
+        return demoList;
     }
 }
 
