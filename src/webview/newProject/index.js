@@ -228,7 +228,7 @@ function getImportProjectData(type, tar) {
                     "type": "pure",
                     "data": {
                         "projectName": projectName,
-                        "projectPath": (projectPath + "//" + projectName),
+                        "projectPath": (projectPath + "\\" + projectName),
                         "libPath": $(".select_getSpace_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
@@ -243,7 +243,7 @@ function getImportProjectData(type, tar) {
                     "type": "example",
                     "data": {
                         "projectName": projectName,
-                        "projectPath": (projectPath + "//" + projectName),
+                        "projectPath": (projectPath + "\\" + projectName),
                         "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getExample_CoreInfo option:selected").text(),
                         "example": $(".select_getExample_ExampleInfo option:selected").text(),
@@ -258,7 +258,7 @@ function getImportProjectData(type, tar) {
                     "type": "ndk",
                     "data": {
                         "projectName": projectName,
-                        "projectPath": (projectPath + "//" + projectName),
+                        "projectPath": (projectPath + "\\" + projectName),
                         "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
                     }
@@ -272,7 +272,7 @@ function getImportProjectData(type, tar) {
                     "type": "ui",
                     "data": {
                         "projectName": projectName,
-                        "projectPath": (projectPath + "//" + projectName),
+                        "projectPath": (projectPath + "\\" + projectName),
                         "libPath": $(".select_getUi_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getUi_CoreInfo option:selected").text(),
@@ -353,7 +353,7 @@ function handleSubmit(tar) {
                 command: "pureProject",
                 text: {
                     "projectName": projectName,
-                    "projectPath": (projectPath + "//" + projectName),
+                    "projectPath": (projectPath + "\\" + projectName),
                     "libPath": $(".select_getSpace_LibInfo option:selected").text(),
                     "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getSpace_CoreInfo option:selected").text(),
@@ -365,7 +365,7 @@ function handleSubmit(tar) {
                 command: "exampleProject",
                 text: {
                     "projectName": projectName,
-                    "projectPath": (projectPath + "//" + projectName),
+                    "projectPath": (projectPath + "\\" + projectName),
                     "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getExample_CoreInfo option:selected").text(),
                     "example": $(".select_getExample_ExampleInfo option:selected").text(),
@@ -377,7 +377,7 @@ function handleSubmit(tar) {
                 command: "ndkProject",
                 text: {
                     "projectName": projectName,
-                    "projectPath": (projectPath + "//" + projectName),
+                    "projectPath": (projectPath + "\\" + projectName),
                     "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
                 }
@@ -388,7 +388,7 @@ function handleSubmit(tar) {
                 command: "uiProject",
                 text: {
                     "projectName": projectName,
-                    "projectPath": (projectPath + "//" + projectName),
+                    "projectPath": (projectPath + "\\" + projectName),
                     "libPath": $(".select_getUi_LibInfo option:selected").text(),
                     "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
                     "corePath": $(".select_getUi_CoreInfo option:selected").text(),
