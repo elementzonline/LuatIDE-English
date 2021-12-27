@@ -296,7 +296,7 @@ export class ProjectManage {
                 break;
             // 用户新建ui工程命令接收
             case "uiProject":
-                createProject.createExampleProject(message);
+                createProject.createUiProject(message);
                 break;
         }
     }

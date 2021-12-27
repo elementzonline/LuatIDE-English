@@ -150,12 +150,12 @@ export class CreateProject {
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigAppFile(appFile);
+        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion);
-        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath);
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel);
+        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
     }
 
