@@ -153,7 +153,7 @@ export class PluginVariablesInit {
 
     // 获取Air72X默认lib库路径
     getAir72XDefaultLibPath() {
-        const air72xDefaultLibPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideLib", "Air72X_LIB", "V2.4.0", "lib");
+        const air72xDefaultLibPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideLib", "Air72X_LIB");
         return air72xDefaultLibPath;
     }
 
@@ -183,7 +183,7 @@ export class PluginVariablesInit {
         const files: string[] = fs.readdirSync(air72XDefaultDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(element).isDirectory()) {
+            if (fs.statSync(path.join(air72XDefaultDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
@@ -197,11 +197,65 @@ export class PluginVariablesInit {
         const files: string[] = fs.readdirSync(air10XDefaultDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(element).isDirectory()) {
+            if (fs.statSync(path.join(air10XDefaultDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
         return demoList;
+    }
+
+    // 获取air72x默认lib库列表
+    getAir72XDefaultLibList(){
+        const libList: string[] = [];
+        const air72XDefaultLibPath:string = this.getAir72XDefaultLibPath();
+        const files: string[] = fs.readdirSync(air72XDefaultLibPath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (fs.statSync(path.join(air72XDefaultLibPath,element)).isDirectory()) {
+                libList.push(element);
+            }
+        }
+        return libList;
+    }
+
+    // 获取72x默认core文件存储路径
+    getAir72XDefaultCorePath(){
+        const air72xDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air72X_CORE");
+        return air72xDefaultCorePath;
+    }
+
+    // 获取10x默认core文件存储路径
+    getAir10XDefaultCorePath(){
+        const air10xDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air10X_CORE");
+        return air10xDefaultCorePath;
+    }
+
+    // 获取air72x默认core文件列表
+    getAir72XDefaultCoreList(){
+        const coreList: string[] = [];
+        const air72XDefaultCorePath:string = this.getAir72XDefaultCorePath();
+        const files: string[] = fs.readdirSync(air72XDefaultCorePath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (path.extname(path.join(air72XDefaultCorePath,element))==='.pac') {
+                coreList.push(element);
+            }
+        }
+        return coreList;
+    }
+
+    // 获取air10x默认core文件礼包
+    getAir10XDefaultCoreList(){
+        const coreList: string[] = [];
+        const air10XDefaultCorePath:string = this.getAir10XDefaultCorePath();
+        const files: string[] = fs.readdirSync(air10XDefaultCorePath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (path.extname(path.join(air10XDefaultCorePath,element))==='.soc') {
+                coreList.push(element);
+            }
+        }
+        return coreList;
     }
 }
 
