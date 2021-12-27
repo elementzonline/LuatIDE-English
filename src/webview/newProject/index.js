@@ -119,7 +119,12 @@ cancelBtn.on("click", function () {
 
 //按钮完成逻辑
 submitBtn.on("click", function () {
-    handleSubmit(curActiveContent);
+    if (isInImportProject){
+        getImportProjectData("pure", "space");
+    }
+    else{
+        handleSubmit(curActiveContent);
+    }
 });
 
 
@@ -196,23 +201,6 @@ function importProjectDisplay(whichDsp, importData) {
             default:
                 break;
         }
-    }
-}
-
-
-/* 判断那个需要添加提示 */
-function whichTips(type, tar) {
-    switch (type) {
-        case "pure":
-            break;
-        case "example":
-            break;
-        case "ndk":
-            break;
-        case "ui":
-            break;
-        default:
-            break;
     }
 }
 
@@ -295,7 +283,6 @@ function getImportProjectData(type, tar) {
         default:
             break;
     }
-    // TODO
     vscode.postMessage({
         command: 'closeWebview',
         text: {
