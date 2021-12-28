@@ -671,26 +671,26 @@ function importSpaceProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=space_project_path]").val(importData.correctData.key1);
+                $("input[name=space_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=space_project_name]").val(importData.correctData.key1);
+                $("input[name=space_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData.key1 === temModule[i]){
-                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    if (importData.correctData[key1] === temModule[i]){
+                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                     }else{
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
                 }
                 break;
             case "libPath":
-                $("#space_customeLib").text(importData.correctData.key1);
+                $("#space_customeLib").text(importData.correctData[key1]);
                 break;
             case "corePath":
-                $("#space_customeCore").text(importData.correctData.key1);
+                $("#space_customeCore").text(importData.correctData[key1]);
                 break;
             default:
                 break;
@@ -701,19 +701,19 @@ function importSpaceProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=space_project_path]"));
-                $("input[name=space_project_path]").val(importData.errorData.key1);
+                addTips($("input[name=space_project_name]"));
+                $("input[name=space_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=space_project_name]"));
-                $("input[name=space_project_name]").val(importData.errorData.key1);
+                addTips($("input[name=space_project_path]"));
+                $("input[name=space_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
                 addTips($("#select_getSpace_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData.key1 === temModule[i]){
-                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData.key1 + '</option>');
+                    if (importData.errorData[key2] === temModule[i]){
+                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
@@ -721,11 +721,11 @@ function importSpaceProject(importData) {
                 break;
             case "libPath":
                 addTips($(".select_getSpace_LibInfo"));
-                $("#space_customeLib").text(importData.errorData.key1);
+                $("#space_customeLib").text(importData.errorData[key2]);
                 break;
             case "corePath":
                 addTips($(".select_getSpace_CoreInfo"));
-                $("#space_customeCore").text(importData.errorData.key1);
+                $("#space_customeCore").text(importData.errorData[key2]);
                 break;
             default:
                 break;
@@ -745,26 +745,26 @@ function importExampleProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=example_project_path]").val(importData.correctData.key1);
+                $("input[name=example_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=example_project_name]").val(importData.correctData.key1);
+                $("input[name=example_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData.key1 === temModule[i]){
-                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    if (importData.correctData[key1] === temModule[i]){
+                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                     }else{
                         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
                     }
                 }
                 break;
             case "example":
-                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "corePath":
-                $("#example_customeCore").text(importData.correctData.key1);
+                $("#example_customeCore").text(importData.correctData[key1]);
                 break;
             default:
                 break;
@@ -775,19 +775,19 @@ function importExampleProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=example_project_path]"));
-                $("input[name=example_project_path]").val(importData.errorData.key2);
+                addTips($("input[name=example_project_name]"));
+                $("input[name=example_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=example_project_name]"));
-                $("input[name=example_project_name]").val(importData.errorData.key2);
+                addTips($("input[name=example_project_path]"));
+                $("input[name=example_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
                 addTips($(".select_getExample_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData.key2 === temModule[i]){
-                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                    if (importData.errorData[key2] === temModule[i]){
+                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
                     }
@@ -795,11 +795,11 @@ function importExampleProject(importData) {
                 break;
             case "example":
                 addTips($(".select_getExample_ExampleInfo"));
-                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "corePath":
                 addTips($(".select_getExample_CoreInfo"));
-                $("#example_customeCore").text(importData.errorData.key2);
+                $("#example_customeCore").text(importData.errorData[key2]);
                 break;
             default:
                 break;
@@ -819,23 +819,23 @@ function importNdkProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=ndk_project_path]").val(importData.correctData.key1);
+                $("input[name=ndk_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=ndk_project_name]").val(importData.correctData.key1);
+                $("input[name=ndk_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData.key1 === temModule[i]){
-                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    if (importData.correctData[key1] === temModule[i]){
+                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                     }else{
                         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
                     }
                 }
                 break;
             case "example":
-                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             default:
                 break;
@@ -846,19 +846,19 @@ function importNdkProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=ndk_project_path]"));
-                $("input[name=ndk_project_path]").val(importData.errorData.key2);
+                addTips($("input[name=ndk_project_name]"));
+                $("input[name=ndk_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=ndk_project_name]"));
-                $("input[name=ndk_project_name]").val(importData.errorData.key2);
+                addTips($("input[name=ndk_project_path]"));
+                $("input[name=ndk_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
                 addTips($(".select_getNDK_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData.key2 === temModule[i]){
-                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                    if (importData.errorData[key2] === temModule[i]){
+                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
                     }
@@ -866,7 +866,7 @@ function importNdkProject(importData) {
                 break;
             case "example":
                 addTips($(".select_getNDK_ExampleInfo"));
-                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             default:
                 break;
@@ -885,26 +885,26 @@ function importUiProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=ui_project_name]").val(importData.correctData.key1);
+                $("input[name=ui_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=ui_project_path]").val(importData.correctData.key1);
+                $("input[name=ui_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData.key1 === temModule[i]){
-                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    if (importData.correctData[key1] === temModule[i]){
+                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                     }else{
                         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
                     }
                 }
                 break;
             case "libPath":
-                $("#ui_customeLib").text(importData.correctData.key1);
+                $("#ui_customeLib").text(importData.correctData[key1]);
                 break;
             case "corePath":
-                $("#ui_customeCore").text(importData.correctData.key1);
+                $("#ui_customeCore").text(importData.correctData[key1]);
                 break;
             default:
                 break;
@@ -916,18 +916,18 @@ function importUiProject(importData) {
         switch (key2) {
             case "projectName":
                 addTips($("input[name=ui_project_name]"));
-                $("input[name=ui_project_name]").val(importData.errorData.key1);
+                $("input[name=ui_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
                 addTips($("input[name=ui_project_path]"));
-                $("input[name=ui_project_path]").val(importData.errorData.key1);
+                $("input[name=ui_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
                 addTips($("#select_getUi_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData.key1 === temModule[i]){
-                        $("#select_getUi_ModuleInfo").append('<option selected>' + importData.errorData.key1 + '</option>');
+                    if (importData.errorData[key2] === temModule[i]){
+                        $("#select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
                     }
@@ -935,11 +935,11 @@ function importUiProject(importData) {
                 break;
             case "libPath":
                 addTips($(".select_getUi_LibInfo"));
-                $("#ui_customeLib").text(importData.errorData.key1);
+                $("#ui_customeLib").text(importData.errorData[key2]);
                 break;
             case "corePath":
                 addTips($(".select_getUi_CoreInfo"));
-                $("#ui_customeCore").text(importData.errorData.key1);
+                $("#ui_customeCore").text(importData.errorData[key2]);
                 break;
             default:
                 break;
@@ -1102,7 +1102,6 @@ window.addEventListener('message', event => {
         case "importProjectData":
             let targetProject = null;
             isInImportProject = true;
-            // TODO
             switch (message.text.type) {
                 case "pure":
                     curActiveContent = "space";
