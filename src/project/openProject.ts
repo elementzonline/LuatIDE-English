@@ -21,7 +21,7 @@ export class OpenProject {
 			canSelectFolders: true,		//是否选择文件夹
 			canSelectMany: false,		//是否选择多个文件
 			defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
-			openLabel: '选择需要导入工程的文件'
+			openLabel: '选择您需要打开的工程目录'
 		};
         const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);
         if (importProjectPath === undefined) {

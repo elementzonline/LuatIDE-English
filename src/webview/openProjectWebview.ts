@@ -28,7 +28,7 @@ export class OpenProjectManage {
         else {
             this.openopenProjectPanel = vscode.window.createWebviewPanel(
                 'OpenProject', //仅供内部使用的面板类型
-                '打开工程', //webview 展示标题
+                '打开工程配置', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
