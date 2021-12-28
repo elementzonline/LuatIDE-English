@@ -179,6 +179,7 @@ export class OpenProjectManage {
         }
     }
 
+    // 处理打开工程webview接收到的数据
     openProjectReceiveDataHandle(message:any){
         let openProjectMessage = {
             openProjectProjectType:message.text.type,
@@ -214,9 +215,9 @@ export class OpenProjectManage {
 
     // 打开工程必要条件检查
     openProjectCheck(message:any){
-        const projectName:any = message.text.projectName;
-        const projectPath:any = message.text.projectPath;
-        const projectModule:any =message.text.moduleModel;
+        const projectName:any = message.text.data.projectName;
+        const projectPath:any = message.text.data.projectPath;
+        const projectModule:any =message.text.data.moduleModel;
         if (projectName === "" || projectPath  === "" || projectModule === "") {
             vscode.window.showErrorMessage("打开工程webview数据接收失败!!",{modal: true});
             return false;
