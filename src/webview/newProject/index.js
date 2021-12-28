@@ -1065,7 +1065,7 @@ function getImportProjectData(tar) {
             break;
     }
     vscode.postMessage({
-        command: 'closeWebview',
+        command: 'cancelProject',
         text: {
             "type": "importProjectWebview",
         }
