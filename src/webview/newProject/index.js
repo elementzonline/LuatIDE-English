@@ -342,7 +342,7 @@ let temUiProjectData = null;
 
 
 /* 新建工程 模块型号select添加刷新数据[空白工程] */
-$(".select_getSpace_ModuleInfo").on("click", function () {
+$(".select_getSpace_ModuleInfo").on("change", function () {
     let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
     let libSelected = $(".select_getSpace_LibInfo");
     let coreSelected = $(".select_getSpace_CoreInfo");
@@ -433,7 +433,7 @@ function pureProjectInitDataManagment(initData) {
 
 
 /* 新建工程 模块型号select添加刷新数据[示例工程] */
-$(".select_getExample_ModuleInfo").on("click", function () {
+$(".select_getExample_ModuleInfo").on("change", function () {
     let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
     let exampleSelected = $(".select_getExample_ExampleInfo");
     let coreSelected = $(".select_getExample_CoreInfo");
@@ -511,7 +511,7 @@ function exampleProjectInitDataManagment(initData) {
 
 
 /* 新建工程 模块型号select添加刷新数据[NDK工程] */
-$(".select_getNDK_ModuleInfo").on("click", function () {
+$(".select_getNDK_ModuleInfo").on("change", function () {
     let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
     let exampleSelected = $(".select_getNDK_ExampleInfo");
 
@@ -566,7 +566,7 @@ function ndkProjectInitDataManagment(initData) {
 
 
 /* 新建工程 模块型号select添加刷新数据[UI工程] */
-$(".select_getUi_ModuleInfo").on("click", function () {
+$(".select_getUi_ModuleInfo").on("change", function () {
     let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
     let libSelected = $(".select_getUi_LibInfo");
     let coreSelected = $(".select_getUi_CoreInfo");
