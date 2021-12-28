@@ -680,7 +680,7 @@ function importSpaceProject(importData) {
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
                     if (importData.correctData[key1] === temModule[i]){
-                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                        $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                     }else{
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
@@ -709,11 +709,11 @@ function importSpaceProject(importData) {
                 $("input[name=space_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($("#select_getSpace_ModuleInfo"));
+                addTips($(".select_getSpace_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
                     if (importData.errorData[key2] === temModule[i]){
-                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                        $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
@@ -923,11 +923,11 @@ function importUiProject(importData) {
                 $("input[name=ui_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($("#select_getUi_ModuleInfo"));
+                addTips($(".select_getUi_ModuleInfo"));
                 let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
                 for (let i = 0; i < temModule.length; i++){
                     if (importData.errorData[key2] === temModule[i]){
-                        $("#select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                     }else{
                         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
                     }
@@ -1007,6 +1007,7 @@ function getImportProjectData(tar) {
                         "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
+                        "example": "",
                     }
                 }
             });
@@ -1022,6 +1023,7 @@ function getImportProjectData(tar) {
                         "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
                         "example": $(".select_getExample_ExampleInfo option:selected").text(),
+                        "libPath": "",
                     }
                 }
             });
@@ -1036,6 +1038,8 @@ function getImportProjectData(tar) {
                         "projectPath": (projectPath + "\\" + projectName),
                         "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
+                        "libPath": "",
+                        "example": "",
                     }
                 }
             });
@@ -1051,6 +1055,8 @@ function getImportProjectData(tar) {
                         "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
                         "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
                         "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
+                        "libPath": "",
+                        "example": "",
                     }
                 }
             });
