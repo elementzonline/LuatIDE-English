@@ -61,7 +61,7 @@ export class ProjectDeleteHandle {
     }
 
     deleteProject(filePath: any) {
-        const clickPath: string = filePath.parentPath;
+        const clickPath: string = filePath.path;
         const deletProjectCheckState: boolean = this.deletProjectCheck(filePath);
         if (!deletProjectCheckState) {   //工程删除必要条件检查未通过
             return false;
