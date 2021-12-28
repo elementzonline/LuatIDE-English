@@ -30,9 +30,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
+        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectMessage.createProjectPath,
+            projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
@@ -69,9 +71,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
+        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectMessage.createProjectPath,
+            projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
@@ -106,9 +110,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
+        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectMessage.createProjectPath,
+            projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
@@ -149,9 +155,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
+        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectMessage.createProjectPath,
+            projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
