@@ -74,23 +74,28 @@ export class ProjectDeleteHandle {
     // 工程删除用户交互提示
     deleteProjectUserInteractionHint(result: any, filePath: any) {
         const projectName: string = filePath.label;
-        const projectPath = filePath.path;
-        let activeProject: string;
+        const projectParentPath:string = filePath.path;
+        const projectPath:string = path.join(projectParentPath,projectName);
+        let activeProject: string = pluginJsonParse.getPluginConfigActivityProject();
         switch (result) {
             case '移除工程':
                 pluginJsonParse.popPluginConfigProject(projectName);
-                // 活动工程置空
-                activeProject = '';
-                pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
+                    // 活动工程置空
+                    activeProject = '';
+                    pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                }
                 new NodeDependenciesProvider('c://');
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 break;
             case '删除本地文件':
                 vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(result => {
                     pluginJsonParse.popPluginConfigProject(projectName);
-                    // 活动工程置空
-                    activeProject = '';
-                    pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                    if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
+                        // 活动工程置空
+                        activeProject = '';
+                        pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                    }
                     deleteDirRecursive(projectPath);
                     new NodeDependenciesProvider('c://');
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -126,7 +131,7 @@ export class ProjectConfigOperation {
 
     // 工程配置项处理
     projectConfigOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         if (activityProjectPath === '') {
             return false;
         }
@@ -174,7 +179,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择core文件
     selectProjectCorePathOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: true,		//是否选择文件
             canSelectFolders: false,		//是否选择文件夹
@@ -193,7 +198,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择lib文件
     selectProjectLibPathOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
             canSelectFolders: true,		//是否选择文件夹
@@ -209,7 +214,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件
     selectProjectFileAddOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
 			canSelectFiles: true,		//是否选择文件
 			canSelectFolders: false,		//是否选择文件夹
@@ -232,7 +237,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件夹
     selectProjectFolderAddOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
             canSelectFolders: true,		//是否选择文件夹
@@ -255,7 +260,7 @@ export class ProjectConfigOperation {
 
     // 添加至活动工程的文件、文件夹必要条件校验
     projectAddCheck(filePath:string){
-        const activityPath:string = pluginJsonParse.getPluginConfigActiveProject();
+        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
         const appFile:any = projectJsonParse.getProjectConfigAppFile();
         if (filePath.indexOf(activityPath)!==-1) {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
@@ -317,7 +322,7 @@ export class ProjectConfigOperation {
     
     //显示配置文件
     openShowProjectConfig(){
-        const activityProjectPath:string = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
         const activityProjectConfigPath:string = path.join(activityProjectPath,'luatide_project.json');
         vscode.window.showTextDocument(vscode.Uri.file(activityProjectConfigPath));
     }
@@ -340,7 +345,7 @@ export class ProjectSoruceFileDelete{
     
     // 删除工程内文件提示
     projectSourceFileDeleteHint(dirPath:string){
-        const activityProjectPath = pluginJsonParse.getPluginConfigActiveProject();
+        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         vscode.window.showWarningMessage("【从工程中删除选中文件（不删除本地文件）】", { modal: true }, "确定").then(result => {
             if (result === '确定') {
                 projectJsonParse.popProjectConfigAppFile(dirPath,activityProjectPath);
