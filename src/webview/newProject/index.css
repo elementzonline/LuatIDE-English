@@ -16,6 +16,7 @@ body {
 
 /* 错误提示 */
 h2 {
+    top: 5%;
     color: red;
     margin-bottom: 50px;
     display: none;

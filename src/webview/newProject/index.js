@@ -1,4 +1,3 @@
-
 //被点击的新建工程选项
 let tarActive = $(".menu");
 let allContent = $(".content");
@@ -52,7 +51,7 @@ const vscode = acquireVsCodeApi();
 $(allHideStr).hide();
 $(".content_space").show();
 $("#space").addClass("active");
-if (!isInImportProject){
+if (!isInImportProject) {
     getMessagePerSwitch("pure");
 }
 
@@ -123,10 +122,9 @@ cancelBtn.on("click", function () {
 
 //按钮完成逻辑
 submitBtn.on("click", function () {
-    if (isInImportProject){
-        getImportProjectData("pure", "space");
-    }
-    else{
+    if (isInImportProject) {
+        getImportProjectData(curActiveContent);
+    } else {
         handleSubmit(curActiveContent);
     }
 });
@@ -136,166 +134,6 @@ submitBtn.on("click", function () {
 function autoProduceOption(par, val) {
     par.append('<option>' + val + '</option>');
 }
-
-
-/********************************************** 导入工程 **********************************************/
-
-/* 添加红框提示错误 */
-function addTips(tar) {
-    tar.css({
-        "border": "1px solid #b42525"
-    });
-}
-
-
-/* 导入工程界面初始化 */
-function importProjectDisplay(whichDsp, importData) {
-    /* 隐藏选择框 */
-    $(".navbar").hide();
-    $(".tips").show();
-    $(allHideStr).hide();
-    whichDsp.show();
-
-    /* 正确数据 */
-    for (let key1 in importData.correctData) {
-        switch (key1) {
-            case "projectName":
-                $("#space_customepath").val(importData.correctData.key1);
-                break;
-            case "projectPath":
-                $("input[name=space_project_name]").val(importData.correctData.key1);
-                break;
-            case "moduleData":
-                $("#select_getSpace_ModuleInfo").append('<option>' + importData.errorData.key1 + '</option>');
-                break;
-            case "libData":
-                $("#space_customeLib").text(importData.correctData.key1);
-                break;
-            case "coreData":
-                $("#space_customeCore").text(importData.correctData.key1);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /* 错误数据 */
-    for (let key2 in importData.errorData) {
-        switch (key2) {
-            case "projectName":
-                addTips($("#space_customepath"));
-                $("#space_customepath").val(importData.errorData.key1);
-                break;
-            case "projectPath":
-                addTips($("input[name=space_project_name]"));
-                $("input[name=space_project_name]").val(importData.errorData.key1);
-                break;
-            case "moduleData":
-                addTips($(".select_getSpace_ModuleInfo"));
-                $("#select_getSpace_ModuleInfo").append('<option>' + importData.errorData.key1 + '</option>');
-                break;
-            case "libData":
-                addTips($(".select_getSpace_LibInfo"));
-                $("#space_customeLib").text(importData.errorData.key1);
-                break;
-            case "coreData":
-                addTips($(".select_getSpace_CoreInfo"));
-                $("#space_customeCore").text(importData.errorData.key1);
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-
-/* 导入工程数据提交 */
-function getImportProjectData(type, tar) {
-    let projectPath = $("input[name=" + tar + "_project_path]").val();
-    let projectName = $("input[name=" + tar + "_project_name]").val();
-    if (!projectName.trim() || !projectPath) {
-        Alert('名称或路径不能为空！');
-        return false;
-    } else {
-        //验证上传文件的文件名是否合法
-        var reg = new RegExp('[\\\\/:*?\"<>|]');
-        if (reg.test(projectName) || reg.length > 255) {
-            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
-            return false;
-        }
-    }
-    switch (tar) {
-        case "space":
-            vscode.postMessage({
-                command: "importProject",
-                text: {
-                    "type": "pure",
-                    "data": {
-                        "projectName": projectName,
-                        "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
-                        "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
-                    }
-                }
-            });
-            break;
-        case "example":
-            vscode.postMessage({
-                command: "importProject",
-                text: {
-                    "type": "example",
-                    "data": {
-                        "projectName": projectName,
-                        "projectPath": (projectPath + "\\" + projectName),
-                        "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
-                        "example": $(".select_getExample_ExampleInfo option:selected").text(),
-                    }
-                }
-            });
-            break;
-        case "ndk":
-            vscode.postMessage({
-                command: "importProject",
-                text: {
-                    "type": "ndk",
-                    "data": {
-                        "projectName": projectName,
-                        "projectPath": (projectPath + "\\" + projectName),
-                        "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
-                    }
-                }
-            });
-            break;
-        case "ui":
-            vscode.postMessage({
-                command: "importProject",
-                text: {
-                    "type": "ui",
-                    "data": {
-                        "projectName": projectName,
-                        "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
-                        "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
-                    }
-                }
-            });
-            break;
-        default:
-            break;
-    }
-    vscode.postMessage({
-        command: 'closeWebview',
-        text: {
-            "type": "importProjectWebview",
-        }
-    });
-}
-/********************************************** 导入工程 **********************************************/
-
 
 
 /*********************************************** 数据交互↓ ************************************************/
@@ -327,14 +165,11 @@ function handelBackstage(name, type) {
 
 /* 对 Air10X 和 Air72XCX 模块型号做特殊处理 */
 function handelBackstageExtra(name, type) {
-    if (isInAir101 && type === "customLibPath"){
+    if (isInAir101 && type === "customLibPath") {
         Alert("当前模块型号不支持 lib 配置！");
-    }
-    else if (isInAirCx72 && type === "customCorePath"){
+    } else if (isInAirCx72 && type === "customCorePath") {
         Alert("当前模块型号不支持 core 配置！");
-    }
-    else
-    {
+    } else {
         vscode.postMessage({
             command: name,
             text: type
@@ -572,10 +407,10 @@ function pureProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case moduleOne:
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
             isInAir101 = false;
             isInAirCx72 = false;
+            libSelected.prop("disabled", false);
+            coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
             break;
@@ -819,6 +654,420 @@ function uiProjectInitDataManagment(initData) {
 }
 
 
+
+/********************************************** 导入工程 **********************************************/
+
+/* 添加红框提示错误 */
+function addTips(tar) {
+    tar.css({
+        "border": "1px solid #b42525"
+    });
+}
+
+
+/* 导入工程 初始化数据管理[空白工程] */
+function importSpaceProject(importData) {
+    /* 正确数据 */
+    for (let key1 in importData.correctData) {
+        switch (key1) {
+            case "projectName":
+                $("input[name=space_project_path]").val(importData.correctData.key1);
+                break;
+            case "projectPath":
+                $("input[name=space_project_name]").val(importData.correctData.key1);
+                break;
+            case "moduleModel":
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.correctData.key1 === temModule[i]){
+                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "libPath":
+                $("#space_customeLib").text(importData.correctData.key1);
+                break;
+            case "corePath":
+                $("#space_customeCore").text(importData.correctData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 错误数据 */
+    for (let key2 in importData.errorData) {
+        switch (key2) {
+            case "projectName":
+                addTips($("input[name=space_project_path]"));
+                $("input[name=space_project_path]").val(importData.errorData.key1);
+                break;
+            case "projectPath":
+                addTips($("input[name=space_project_name]"));
+                $("input[name=space_project_name]").val(importData.errorData.key1);
+                break;
+            case "moduleModel":
+                addTips($("#select_getSpace_ModuleInfo"));
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.errorData.key1 === temModule[i]){
+                        $("#select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "libPath":
+                addTips($(".select_getSpace_LibInfo"));
+                $("#space_customeLib").text(importData.errorData.key1);
+                break;
+            case "corePath":
+                addTips($(".select_getSpace_CoreInfo"));
+                $("#space_customeCore").text(importData.errorData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+
+    addOptionToSelect($(".select_getSpace_LibInfo"), importData.importInitData.libList[curModule], curModule);
+    addOptionToSelect($(".select_getSpace_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+}
+
+
+/* 导入工程 初始化数据管理[示例工程] */
+function importExampleProject(importData) {
+    /* 正确数据 */
+    for (let key1 in importData.correctData) {
+        switch (key1) {
+            case "projectName":
+                $("input[name=example_project_path]").val(importData.correctData.key1);
+                break;
+            case "projectPath":
+                $("input[name=example_project_name]").val(importData.correctData.key1);
+                break;
+            case "moduleModel":
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.correctData.key1 === temModule[i]){
+                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "example":
+                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                break;
+            case "corePath":
+                $("#example_customeCore").text(importData.correctData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 错误数据 */
+    for (let key2 in importData.errorData) {
+        switch (key2) {
+            case "projectName":
+                addTips($("input[name=example_project_path]"));
+                $("input[name=example_project_path]").val(importData.errorData.key2);
+                break;
+            case "projectPath":
+                addTips($("input[name=example_project_name]"));
+                $("input[name=example_project_name]").val(importData.errorData.key2);
+                break;
+            case "moduleModel":
+                addTips($(".select_getExample_ModuleInfo"));
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.errorData.key2 === temModule[i]){
+                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "example":
+                addTips($(".select_getExample_ExampleInfo"));
+                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                break;
+            case "corePath":
+                addTips($(".select_getExample_CoreInfo"));
+                $("#example_customeCore").text(importData.errorData.key2);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+
+    addOptionToSelect($(".select_getExample_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
+    addOptionToSelect($(".select_getExample_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+}
+
+
+/* 导入工程 初始化数据管理[NDK工程] */
+function importNdkProject(importData) {
+    /* 正确数据 */
+    for (let key1 in importData.correctData) {
+        switch (key1) {
+            case "projectName":
+                $("input[name=ndk_project_path]").val(importData.correctData.key1);
+                break;
+            case "projectPath":
+                $("input[name=ndk_project_name]").val(importData.correctData.key1);
+                break;
+            case "moduleModel":
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.correctData.key1 === temModule[i]){
+                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "example":
+                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 错误数据 */
+    for (let key2 in importData.errorData) {
+        switch (key2) {
+            case "projectName":
+                addTips($("input[name=ndk_project_path]"));
+                $("input[name=ndk_project_path]").val(importData.errorData.key2);
+                break;
+            case "projectPath":
+                addTips($("input[name=ndk_project_name]"));
+                $("input[name=ndk_project_name]").val(importData.errorData.key2);
+                break;
+            case "moduleModel":
+                addTips($(".select_getNDK_ModuleInfo"));
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.errorData.key2 === temModule[i]){
+                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "example":
+                addTips($(".select_getNDK_ExampleInfo"));
+                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.errorData.key2 + '</option>');
+                break;
+            default:
+                break;
+        }
+    }
+    
+    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+
+    addOptionToSelect($(".select_getNDK_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
+}
+
+
+/* 导入工程 初始化数据管理[UI工程] */
+function importUiProject(importData) {
+    /* 正确数据 */
+    for (let key1 in importData.correctData) {
+        switch (key1) {
+            case "projectName":
+                $("input[name=ui_project_name]").val(importData.correctData.key1);
+                break;
+            case "projectPath":
+                $("input[name=ui_project_path]").val(importData.correctData.key1);
+                break;
+            case "moduleModel":
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.correctData.key1 === temModule[i]){
+                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "libPath":
+                $("#ui_customeLib").text(importData.correctData.key1);
+                break;
+            case "corePath":
+                $("#ui_customeCore").text(importData.correctData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 错误数据 */
+    for (let key2 in importData.errorData) {
+        switch (key2) {
+            case "projectName":
+                addTips($("input[name=ui_project_name]"));
+                $("input[name=ui_project_name]").val(importData.errorData.key1);
+                break;
+            case "projectPath":
+                addTips($("input[name=ui_project_path]"));
+                $("input[name=ui_project_path]").val(importData.errorData.key1);
+                break;
+            case "moduleModel":
+                addTips($("#select_getUi_ModuleInfo"));
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
+                for (let i = 0; i < temModule.length; i++){
+                    if (importData.errorData.key1 === temModule[i]){
+                        $("#select_getUi_ModuleInfo").append('<option selected>' + importData.errorData.key1 + '</option>');
+                    }else{
+                        autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                    }
+                }
+                break;
+            case "libPath":
+                addTips($(".select_getUi_LibInfo"));
+                $("#ui_customeLib").text(importData.errorData.key1);
+                break;
+            case "corePath":
+                addTips($(".select_getUi_CoreInfo"));
+                $("#ui_customeCore").text(importData.errorData.key1);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+
+    addOptionToSelect($(".select_getUi_LibInfo"), importData.importInitData.libList[curModule], curModule);
+    addOptionToSelect($(".select_getUi_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+}
+
+
+/* 导入工程界面初始化 */
+function importProjectDisplay(whichDsp, projectType, importData) {
+    /* 隐藏选择框 */
+    $(".navbar").hide();
+    $(".tips").show();
+    $(allHideStr).hide();
+    whichDsp.show();
+
+    switch (projectType) {
+        case "space":
+            importSpaceProject(importData);
+            break;
+        case "example":
+            importExampleProject(importData);
+            break;
+        case "ndk":
+            importNdkProject(importData);
+            break;
+        case "ui":
+            importUiProject(importData);
+            break;
+        default:
+            break;
+    }
+}
+
+
+/* 导入工程数据提交 */
+function getImportProjectData(tar) {
+    let projectPath = $("input[name=" + tar + "_project_path]").val();
+    let projectName = $("input[name=" + tar + "_project_name]").val();
+    if (!projectName.trim() || !projectPath) {
+        Alert('名称或路径不能为空！');
+        return false;
+    } else {
+        //验证上传文件的文件名是否合法
+        var reg = new RegExp('[\\\\/:*?\"<>|]');
+        if (reg.test(projectName) || reg.length > 255) {
+            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
+            return false;
+        }
+    }
+    switch (tar) {
+        case "space":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "pure",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": (projectPath + "\\" + projectName),
+                        "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
+                        "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "example":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "example",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": (projectPath + "\\" + projectName),
+                        "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
+                        "example": $(".select_getExample_ExampleInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "ndk":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "ndk",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": (projectPath + "\\" + projectName),
+                        "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        case "ui":
+            vscode.postMessage({
+                command: "importProject",
+                text: {
+                    "type": "ui",
+                    "data": {
+                        "projectName": projectName,
+                        "projectPath": (projectPath + "\\" + projectName),
+                        "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
+                        "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
+                        "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
+                    }
+                }
+            });
+            break;
+        default:
+            break;
+    }
+    vscode.postMessage({
+        command: 'closeWebview',
+        text: {
+            "type": "importProjectWebview",
+        }
+    });
+}
+/********************************************** 导入工程 **********************************************/
+
+
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
     const message = event.data;
@@ -851,34 +1100,33 @@ window.addEventListener('message', event => {
             customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
         case "importProjectData":
-            // 判断是哪个工程
             let targetProject = null;
+            isInImportProject = true;
             // TODO
-            /* 暂时不判断导入工程类型
             switch (message.text.type) {
                 case "pure":
+                    curActiveContent = "space";
                     targetProject = $(".content_space");
                     // 添加相应的导入数据
                     break;
                 case "example":
+                    curActiveContent = "example";
                     targetProject = $(".content_example");
                     break;
                 case "ndk":
+                    curActiveContent = "ndk";
                     targetProject = $(".content_ndk");
                     break;
                 case "ui":
+                    curActiveContent = "ui";
                     targetProject = $(".content_ui");
                     break;
                 default:
                     break;
             }
-            */
-            targetProject = $(".content_space");
-            importProjectDisplay(targetProject, message.text);
+            importProjectDisplay(targetProject, curActiveContent, message.text);
             break;
         default:
             break;
     }
 });
-
-// console.log("ooooooo", $("#space_customeLib").text("opo"));
