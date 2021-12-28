@@ -25,45 +25,58 @@ let pluginJsonParse = new PluginJsonParse();
         return projectConfigJsonObj;
     }
 
-    // 获取活动工程下载至模块的脚本文件及资源文件列表
+    // 获取工程下载至模块的脚本文件及资源文件列表
     getProjectConfigAppFile(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigAppFile:string = projectConfigJsonObj.appFile;
         return projectConfigAppFile;
     }
 
-    // 获取活动工程lib库文件路径
+    // 获取工程lib库文件路径
     getProjectConfigLibPath(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigLibPath:string = projectConfigJsonObj.libPath;
         return projectConfigLibPath;
     }
-    // 获取活动工程配置的模块型号
+    // 获取工程配置的模块型号
     getProjectConfigModuleModel(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigCorePath:string = projectConfigJsonObj.moduleModel;
         return projectConfigCorePath;
     }
 
-    // 获取活动工程core文件路径
-    getProjectConfigActiveProject(projectPath:any){
+    // 获取工程core文件路径
+    getProjectConfigCorePath(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigCorePath:string = projectConfigJsonObj.corePath;
         return projectConfigCorePath;
     }
 
-    // 获取活动工程配置文件版本号
+    // 获取工程配置文件版本号
     getProjectConfigVersion(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigVersion:string = projectConfigJsonObj.version;
         return projectConfigVersion;
     }
     
-    // 获取活动工程模块端口号
+    // 获取工程模块端口号
     getProjectConfigMoudlePort(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         const projectConfigModulePort:string = projectConfigJsonObj.modulePort;
         return projectConfigModulePort;
+    }
+
+    // 获取工程配置文件工程类型
+    getProjectConfigProjectType(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
+        let projectConfigProjectType:string;
+        if (projectConfigJsonObj.projectTypero && projectConfigJsonObj.projectTypero!=='') {
+            projectConfigProjectType =projectConfigJsonObj.projectType;
+        }
+        else{
+            projectConfigProjectType = 'pure';    //兼容无工程类型的工程配置
+        }
+        return projectConfigProjectType;
     }
 
     // 获取最新活动工程对象
@@ -138,6 +151,14 @@ let pluginJsonParse = new PluginJsonParse();
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
 
+    // 设置活动工程工程类型
+    setProjectConfigProjectType(projectType:string,projectPath:any){
+        const projectConfigPath = path.join(projectPath,'luatide_project.json');
+        const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
+        projectJsonObj.projectType = projectType;
+        this.refreshProjectJson(projectJsonObj,projectConfigPath);
+    }
+
     // 刷新活动工程配置文件
     refreshProjectJson(projectJsonObj:any,projectConfigPath:any){
         // const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
@@ -150,6 +171,7 @@ let pluginJsonParse = new PluginJsonParse();
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJson:any = {
             version:'',
+            projectType:'',
             corePath:'',
             libPath:'',
             moduleModel:'',
