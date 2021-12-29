@@ -335,14 +335,20 @@ export class ProjectSoruceFileDelete{
     constructor(){
 
     }
+
+    //删除活动工程所有内容处理
+    deleteActivityProject(){
+        pluginJsonParse.setPluginConfigActivityProject('');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+    }  
+
     // 删除工程内指定文件或文件夹
     projectSourceFileDelete(filePath:any){
         const selectPath:any = path.join(filePath.parentPath,filePath.label);
         const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
         const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
         if (selectPath===activityPath) {
-            pluginJsonParse.setPluginConfigActivityProject('');
-            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            this.deleteActivityProject();
         }
         else if (projectAppFile.indexOf(selectPath)!==-1) {
             this.projectSourceFileDeleteHint(selectPath);

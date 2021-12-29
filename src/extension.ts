@@ -98,6 +98,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active',async (filePath) => projectActiveHandle.projectActive(filePath)));
 	// 注册删除工程文件命令,当点击活动工程内部区域删除工程文件夹或文件按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.sourceFile.delete',async (filePath:Dependency) =>projectSoruceFileDelete.projectSourceFileDelete(filePath)));
+	// 注册删除活动工程命令，当点击活动工程右侧删除按钮时触发
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.delete',async () =>projectSoruceFileDelete.deleteActivityProject()));
+	// 注册删除活动工程命令，当点击活动工程右侧删除按钮时触发
 	// 注册点击home主页命令,当点击历史工程标题区域主页按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Home',async ()=> homeManage.homeManage(context)));
 	// // 注册点击登录命令,当点击home主页内登录按钮时触发
