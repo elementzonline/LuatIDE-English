@@ -13,7 +13,7 @@ import { ProjectManage } from './webview/projectWebview';
 import { NodeDependenciesProvider,Dependency } from './project/projectTreeView';
 import * as path from 'path';
 import { HomeManage } from './webview/homeWebview';
-import { TestDependenciesProvider } from './project/activityProjectTreeView';
+import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityProjectTreeView';
 import {OpenProject} from './project/openProject';
 import { PluginJsonParse } from './plugConfigParse';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
@@ -72,7 +72,7 @@ let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let nodeDependenciesProvider = new NodeDependenciesProvider();
 let pluginJsonParse = new PluginJsonParse();
-let  testDependenciesProvider = new TestDependenciesProvider();
+let  testDependenciesProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 // let operationExplorer = new OperationExplorer();
 /*
@@ -97,7 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// // 注册激活工程命令,当点击历史工程内部区域激活工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active',async (filePath) => projectActiveHandle.projectActive(filePath)));
 	// 注册删除工程文件命令,当点击活动工程内部区域删除工程文件夹或文件按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.sourceFile.delete',async (filePath:Dependency) =>projectSoruceFileDelete.projectSourceFileDelete(filePath)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.sourceFile.delete',async (filePath:ActivityTreeItem) =>projectSoruceFileDelete.projectSourceFileDelete(filePath)));
 	// 注册删除活动工程命令，当点击活动工程右侧删除按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.delete',async () =>projectSoruceFileDelete.deleteActivityProject()));
 	// 注册删除活动工程命令，当点击活动工程右侧删除按钮时触发
@@ -136,7 +136,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 	dataProvider
 	//   );
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh',async (filePath:Dependency) => nodeDependenciesProvider.refresh()));
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh',async (filePath:Dependency) => testDependenciesProvider.refresh()));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh',async (filePath:ActivityTreeItem) => testDependenciesProvider.refresh()));
 
 	//   vscode.window.registerTreeDataProvider(
 	// 	'luatide-activity-project',
