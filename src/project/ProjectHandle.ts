@@ -24,6 +24,7 @@ export class ProjectActiveHandle {
             return false;
         }
         pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 激活工程必要条件检查
@@ -87,6 +88,7 @@ export class ProjectDeleteHandle {
                     pluginJsonParse.setPluginConfigActivityProject(activeProject);
                 }
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 break;
             case '删除本地文件':
                 vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(result => {
@@ -98,6 +100,7 @@ export class ProjectDeleteHandle {
                     }
                     deleteDirRecursive(projectPath);
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 });
                 break;
         }
