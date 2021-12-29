@@ -6,6 +6,7 @@ import { deleteDirRecursive } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
 import { NodeDependenciesProvider } from "./projectTreeView";
 
+
 let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
 
@@ -85,7 +86,6 @@ export class ProjectDeleteHandle {
                     activeProject = '';
                     pluginJsonParse.setPluginConfigActiveProject(activeProject);
                 }
-                new NodeDependenciesProvider('c://');
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 break;
             case '删除本地文件':
@@ -97,7 +97,6 @@ export class ProjectDeleteHandle {
                         pluginJsonParse.setPluginConfigActiveProject(activeProject);
                     }
                     deleteDirRecursive(projectPath);
-                    new NodeDependenciesProvider('c://');
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 });
                 break;
@@ -106,7 +105,7 @@ export class ProjectDeleteHandle {
 
     // 工程删除必要条件检查
     deletProjectCheck(filePath: any) {
-        if (!fs.existsSync(filePath.path)) {
+        if (!fs.existsSync(path.join(filePath.path,filePath.label))) {
             vscode.window.showErrorMessage("选定的路径文件状态已改变，将从配置文件列表中删除该工程");
             return false;
         }
@@ -115,7 +114,7 @@ export class ProjectDeleteHandle {
             vscode.window.showErrorMessage(`用户工程列表中未检测到${filePath.lable}工程,请重新确认`);
             return false;
         }
-        if (fs.statSync(filePath.path).isFile()) {
+        if (fs.statSync(path.join(filePath.path,filePath.label)).isFile()) {
             vscode.window.showErrorMessage("选择删除的不是一个工程,请重新选择");
             return false;
         }
