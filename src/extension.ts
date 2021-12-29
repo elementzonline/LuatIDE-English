@@ -16,6 +16,7 @@ import { HomeManage } from './webview/homeWebview';
 import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityProjectTreeView';
 import {OpenProject} from './project/openProject';
 import { PluginJsonParse } from './plugConfigParse';
+import * as fs from 'fs';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 
@@ -109,14 +110,17 @@ export function activate(context: vscode.ExtensionContext) {
 	// context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
 	// 注册活动工程文件点击命令，当点击活动工程文件时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click',(label,filePath) => {
-		vscode.workspace.openTextDocument(filePath).then(doc => {
-			// 在VSCode编辑窗口展示读取到的文本
-			vscode.window.showTextDocument(doc);
-		}, err => {
-			//vscode.window.showInformationMessage('Open string in window err,' + err);
-		}).then(undefined, err => {
-			vscode.window.showInformationMessage(`Open ${filePath} error, ${err}.`);
-		});
+		const selectPath = path.join(filePath,label);
+		if (fs.statSync(selectPath).isFile()) {
+			vscode.workspace.openTextDocument(selectPath).then(doc => {
+				// 在VSCode编辑窗口展示读取到的文本
+				vscode.window.showTextDocument(doc);
+			}, err => {
+				vscode.window.showInformationMessage('打开失败' + err);
+			}).then(undefined, err => {
+				// vscode.window.showInformationMessage(`Open ${filePath} error, ${err}.`);
+			});
+		}
 	}));
 	// // activateMockDebug(context, runMode);
 	vscode.window.registerTreeDataProvider(
