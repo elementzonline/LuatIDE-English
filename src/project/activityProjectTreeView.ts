@@ -43,13 +43,18 @@ export class TestDependenciesProvider implements vscode.TreeDataProvider<Depende
       for (let i = 0; i < files.length; i++) {
         const childrenFileName:string  = files[i];
         const childrenFilePath:string = path.join(filePath,childrenFileName);
-        if (appFile.indexOf(childrenFilePath)!==-1) {
-          if (fs.statSync(childrenFilePath).isFile()) {
-            treeDir.push(new Dependency(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
+        if (appFile!==undefined){
+          if (appFile.indexOf(childrenFilePath)!==-1) {
+            if (fs.statSync(childrenFilePath).isFile()) {
+              treeDir.push(new Dependency(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
+            }
+            else{
+              treeDir.push(new Dependency(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
+            }
           }
-          else{
-            treeDir.push(new Dependency(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
-          }
+        }
+        else{
+          vscode.window.showErrorMessage('活动工程目录展开失败,插件appFile项获取异常',{modal:true});
         }
         }
       return Promise.resolve(treeDir);
