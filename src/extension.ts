@@ -107,7 +107,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// // 注册点击登录命令,当点击home主页内登录按钮时触发
 	// context.subscriptions.push(vscode.commands.registerCommand('luatide-plugin.Login',async ()=> homeManage));
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
-	// context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',projectConfigOperation.projectConfigOperation));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation',async () => projectConfigOperation.projectConfigOperation()));
 	// 注册活动工程文件点击命令，当点击活动工程文件时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click',(label,filePath) => {
 		const selectPath = path.join(filePath,label);
@@ -127,26 +127,12 @@ export function activate(context: vscode.ExtensionContext) {
 		'luatide-history-project',
 		nodeDependenciesProvider
 	  );
-
 	vscode.window.registerTreeDataProvider(
 	'luatide-activity-project',
 	testDependenciesProvider
 	);
-	
-	// const userProjectAbsulutePathList =  pluginJsonParse.getPluginConfigUserProjectAbsolutePathList();
-	// nodeDependenciesProvider.generateRootUrl(userProjectAbsulutePathList);
-	// vscode.window.registerTreeDataProvider(
-	// 	'luatide-history-project',
-	// 	dataProvider
-	//   );
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh',async (filePath:HistoryProjectTreeItem) => nodeDependenciesProvider.refresh()));
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh',async (filePath:ActivityTreeItem) => testDependenciesProvider.refresh()));
-
-	//   vscode.window.registerTreeDataProvider(
-	// 	'luatide-activity-project',
-	// 	new OperationDataProvider()
-	//   );
-	//   new OperationExplorer(context);
 
 }
 
