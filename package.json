@@ -86,6 +86,11 @@
 					"command": "luatide-history-project.deleteProject",
 					"when": "view == luatide-history-project",
 					"group": "inline"
+				},
+				{
+					"command": "luatide-activity-project.sourceFile.delete",
+					"when": "view == luatide-activity-project",
+					"group": "inline"
 				}
 			]
 		},
@@ -165,6 +170,14 @@
 			{
 				"command": "luatide-activity-project.Project.refresh",
 				"title": "刷新活动工程列表"
+			},
+			{
+				"command": "luatide-activity-project.sourceFile.delete",
+				"title": "删除工程内资源文件",
+				"icon": {
+					"dark": "./resource/themeSvg/dark/delete.svg",
+					"light": "./resource/themeSvg/light/delete.svg"
+				}
 			}
 		],
 		"breakpoints": [
