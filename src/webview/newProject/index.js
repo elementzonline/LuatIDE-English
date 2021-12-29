@@ -1074,6 +1074,52 @@ function getImportProjectData(tar) {
 /********************************************** 导入工程 **********************************************/
 
 
+/* 改变主题颜色 */
+function changeThemeColor(theme) {
+    if (theme === "light"){
+        $(".mainBody").css({
+            "background": "#ffffff",
+            "color": "rgb(0, 0, 0)",
+        });
+        $(".active").css({
+            "border": "1px solid rgba(26, 25, 24, 0.3)",
+        });
+        $(".content").css({
+            "color": "rgb(22, 20, 20)",
+        });
+        $(".form input, .form select").css({
+            "background-color": "rgb(192, 187, 187)",
+            "color": "rgb(22, 20, 20)",
+        });
+        $(".exBtn").css({
+            "background-color": "rgb(168, 162, 162)",
+            "border": "1px solid rgba(26, 25, 24, 0.3)",
+            "color": "rgb(22, 20, 20)",
+        });
+    }else{
+        $(".mainBody").css({
+            "background": "#231f20",
+            "color": "rgba(223, 190, 106, 0.7)",
+        });
+        $(".active").css({
+            "border": "1px solid rgba(223, 190, 106, 0.3)",
+        });
+        $(".content").css({
+            "color": "rgba(223, 190, 106, 0.5)",
+        });
+        $(".form input, .form select").css({
+            "background-color": "rgb(45, 45, 45)",
+            "color": "rgba(223, 190, 106, 0.7)",
+        });
+        $(".exBtn").css({
+            "background-color": "rgb(45, 45, 45)",
+            "border": "1px solid rgb(81, 81, 81)",
+            "color": "rgba(223, 190, 106, 0.7)",
+        });
+    }
+}
+
+
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
     const message = event.data;
@@ -1130,6 +1176,9 @@ window.addEventListener('message', event => {
                     break;
             }
             importProjectDisplay(targetProject, curActiveContent, message.text);
+            break;
+        case "switchTheme":
+            changeThemeColor(message.text);
             break;
         default:
             break;

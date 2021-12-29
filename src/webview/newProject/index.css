@@ -94,13 +94,11 @@ div.navbar:after {
     color: white;
     background: -webkit-linear-gradient(180deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
     background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
-    background: -webkit-linear-gradient(180deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
-    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
     background-position: 60% 50%;
     background-size: 300% 300%;
 }
 
-.content{
+.content {
     text-align: center;
     align-content: center;
     color: rgba(223, 190, 106, 0.5);
@@ -125,7 +123,7 @@ div.navbar:after {
 
 .form input,
 .form select {
-    outline-style: none ;
+    outline-style: none;
     height: 24px;
     width: 280px;
     border-radius: 15px;
@@ -136,7 +134,7 @@ div.navbar:after {
 }
 
 .exBtn {
-    position:absolute;
+    position: absolute;
     width: 50px;
     right: 15%;
     height: 25px;
@@ -154,7 +152,7 @@ div.navbar:after {
     border: 1px solid #815e11;
 }
 
-.form input[type="button"]{
+.form input[type="button"] {
     width: 200px;
     height: 30px;
     border-radius: 20px;
