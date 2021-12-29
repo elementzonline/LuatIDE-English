@@ -10,7 +10,7 @@ import {PluginVariablesInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
 // import {activateMockDebug} from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
-import { NodeDependenciesProvider,Dependency } from './project/projectTreeView';
+import { HistoryProjectDataProvider,HistoryProjectTreeItem } from './project/projectTreeView';
 import * as path from 'path';
 import { HomeManage } from './webview/homeWebview';
 import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityProjectTreeView';
@@ -70,7 +70,7 @@ let projectConfigOperation = new ProjectConfigOperation();
 let projectManage = new ProjectManage();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
-let nodeDependenciesProvider = new NodeDependenciesProvider();
+let nodeDependenciesProvider = new HistoryProjectDataProvider();
 let pluginJsonParse = new PluginJsonParse();
 let  testDependenciesProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
@@ -93,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// // 注册调试工程命令,当点击活动工程标题区域调试工程按钮时触发
 	// context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.debugProject',debugProject));
 	// // 注册删除工程命令,当点击活动工程内部区域删除工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.deleteProject',async (filePath:Dependency) => projectDeleteHandle.deleteProject(filePath)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.deleteProject',async (filePath:HistoryProjectTreeItem) => projectDeleteHandle.deleteProject(filePath)));
 	// // 注册激活工程命令,当点击历史工程内部区域激活工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active',async (filePath) => projectActiveHandle.projectActive(filePath)));
 	// 注册删除工程文件命令,当点击活动工程内部区域删除工程文件夹或文件按钮时触发
@@ -135,7 +135,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 	'luatide-history-project',
 	// 	dataProvider
 	//   );
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh',async (filePath:Dependency) => nodeDependenciesProvider.refresh()));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh',async (filePath:HistoryProjectTreeItem) => nodeDependenciesProvider.refresh()));
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh',async (filePath:ActivityTreeItem) => testDependenciesProvider.refresh()));
 
 	//   vscode.window.registerTreeDataProvider(

@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { deleteDirRecursive } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
-import { NodeDependenciesProvider } from "./projectTreeView";
+import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
 let pluginJsonParse: any = new PluginJsonParse();

@@ -8,17 +8,17 @@ import { ProjectJsonParse } from './projectConfigParse';
 let pluginJsonParse = new PluginJsonParse();
 let pluginVariablesInit = new PluginVariablesInit();
 let projectJsonParse = new ProjectJsonParse();
-export class NodeDependenciesProvider implements vscode.TreeDataProvider<Dependency> {
+export class HistoryProjectDataProvider implements vscode.TreeDataProvider<HistoryProjectTreeItem> {
   constructor() { }
-  private _onDidChangeTreeData: vscode.EventEmitter<Dependency | undefined | null | void> = new vscode.EventEmitter<Dependency | undefined | null | void>();
-  readonly onDidChangeTreeData: vscode.Event<Dependency | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<HistoryProjectTreeItem | undefined | null | void> = new vscode.EventEmitter<HistoryProjectTreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<HistoryProjectTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
   public rootloadUrlArray = new Array();
 
-  getTreeItem(element: Dependency): vscode.TreeItem {
+  getTreeItem(element: HistoryProjectTreeItem): vscode.TreeItem {
     return element;
   }
 
-  getChildren(element?: Dependency): Thenable<Dependency[]> {
+  getChildren(element?: HistoryProjectTreeItem): Thenable<HistoryProjectTreeItem[]> {
     this.rootloadUrlArray = [];
     let userProjectAbsulutePathList: any = pluginJsonParse.getPluginConfigUserProjectAbsolutePathList();
     this.generateTreeItem(userProjectAbsulutePathList);
@@ -33,7 +33,7 @@ export class NodeDependenciesProvider implements vscode.TreeDataProvider<Depende
         const nameIndex = projectAbsolutePath.lastIndexOf('\\');
         const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
         const projectPath = projectAbsolutePath.substring(0, nameIndex);
-        this.rootloadUrlArray.push(new Dependency(projectName, projectPath, vscode.TreeItemCollapsibleState.None));
+        this.rootloadUrlArray.push(new HistoryProjectTreeItem(projectName, projectPath, vscode.TreeItemCollapsibleState.None));
       }
     }
 
@@ -53,7 +53,7 @@ export class NodeDependenciesProvider implements vscode.TreeDataProvider<Depende
   }
 }
 
-export class Dependency extends vscode.TreeItem {
+export class HistoryProjectTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     private path: string,
