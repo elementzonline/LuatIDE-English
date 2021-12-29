@@ -55,6 +55,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
     }
 
     // 新建示例工程
@@ -93,6 +94,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
     }
 
     // 新建ndk工程
@@ -138,6 +140,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
     }
 
     // 新建ui工程
@@ -176,6 +179,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
     }
 
     // 接收到的webview发送的lib处理
