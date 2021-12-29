@@ -30,7 +30,7 @@ export class TestDependenciesProvider implements vscode.TreeDataProvider<Depende
       const nameIndex:number = activityPath.lastIndexOf("\\");
       const activityParentPath:string = activityPath.substring(0,nameIndex);
       const activityProjectName:string = activityPath.substring(nameIndex+1);
-      treeDir.push(new Dependency(activityProjectName, activityParentPath, vscode.TreeItemCollapsibleState.Collapsed));
+      treeDir.push(new Dependency(activityProjectName, activityParentPath, vscode.TreeItemCollapsibleState.Expanded));
       return Promise.resolve(treeDir);
     }
     else{
