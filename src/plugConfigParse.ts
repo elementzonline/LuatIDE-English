@@ -86,7 +86,7 @@ let pluginVariablesInit = new PluginVariablesInit();
     }
 
     // 设置插件配置文件活动工程
-    setPluginConfigActiveProject(activeProject:any){
+    setPluginConfigActivityProject(activeProject:any){
         const pluginJsonObj:any = this.getPluginConfigJson();
         pluginJsonObj.activeProject = activeProject;
         this.refreshPlugintJson(pluginJsonObj);

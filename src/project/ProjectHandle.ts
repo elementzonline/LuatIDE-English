@@ -18,12 +18,12 @@ export class ProjectActiveHandle {
 
     // 激活工程操作
     projectActive(filePath: any) {
-        const projectActivePath: string = filePath.path;
+        const projectActivePath: string = path.join(filePath.path,filePath.label);
         const projectActiveCheckState: boolean = this.projectActiveCheck(projectActivePath);
         if (!projectActiveCheckState) { //激活工程必要条件检查失败
             return false;
         }
-        pluginJsonParse.setPluginConfigActiveProject(projectActivePath);
+        pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
     }
 
     // 激活工程必要条件检查
@@ -84,7 +84,7 @@ export class ProjectDeleteHandle {
                 if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
                     // 活动工程置空
                     activeProject = '';
-                    pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                    pluginJsonParse.setPluginConfigActivityProject(activeProject);
                 }
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 break;
@@ -94,7 +94,7 @@ export class ProjectDeleteHandle {
                     if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
                         // 活动工程置空
                         activeProject = '';
-                        pluginJsonParse.setPluginConfigActiveProject(activeProject);
+                        pluginJsonParse.setPluginConfigActivityProject(activeProject);
                     }
                     deleteDirRecursive(projectPath);
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
