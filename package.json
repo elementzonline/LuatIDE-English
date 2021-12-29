@@ -161,6 +161,10 @@
 			{
 				"command": "luatide-history-project.Project.refresh",
 				"title": "刷新用户工程列表"
+			},
+			{
+				"command": "luatide-activity-project.Project.refresh",
+				"title": "刷新活动工程列表"
 			}
 		],
 		"breakpoints": [
