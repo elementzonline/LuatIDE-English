@@ -129,16 +129,26 @@ let pluginJsonParse = new PluginJsonParse();
     }
 
     // 删除文件路径从活动工程下载文件列表
-    popProjectConfigAppFile(appFile:any,projectPath:any){
+    popProjectConfigAppFile(appFilePath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
-        const index = projectJsonObj.appFile.indexOf(appFile);
+        const index = projectJsonObj.appFile.indexOf(appFilePath);
         if (index!==-1) {
-            projectJsonObj.appFile.splice(appFile);
+            projectJsonObj.appFile.splice(index,1);
+            if (fs.statSync(appFilePath).isDirectory()) {
+                // 若用户删除的是文件夹，则删除appfile目录中其所有子文件
+                for (let i = 0; i < projectJsonObj.appFile.length; i++) {
+                    const element:string = projectJsonObj.appFile[i];
+                    if (element.indexOf(appFilePath)!==-1) {
+                        projectJsonObj.appFile.splice(i,1);
+                        i = i-1;
+                    }
+                }
+            }
             this.refreshProjectJson(projectJsonObj,projectConfigPath);
         }
         else{
-            console.log(`AppFile中未检测到该路径${appFile}`);
+            console.log(`工程appFile中未检测到该路径${appFilePath}`);
         }
     }
 
