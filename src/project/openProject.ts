@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { PluginJsonParse } from '../plugConfigParse';
 import {ProjectJsonParse} from './projectConfigParse';
-import {checkSameProjectExistStatusForPluginConfig, getFileForDir} from './projectApi';
+import {checkSameProjectExistStatusForPluginConfig, getFileForDirRecursion} from './projectApi';
 import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -67,7 +67,7 @@ export class OpenProject {
 					const selectProjectPath:any =  await vscode.window.showErrorMessage("该项目未配置工程，是否配置？", { modal: true }, "是", "否").then(optionsResult =>  {
 						if (optionsResult === '是') {
                             projectJsonParse.generateProjectJson(importProjectPath);
-                            const appFile:string = getFileForDir(importProjectPath);
+                            const appFile:string[] = getFileForDirRecursion(importProjectPath);
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}

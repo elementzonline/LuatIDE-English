@@ -122,10 +122,9 @@ let pluginJsonParse = new PluginJsonParse();
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
         for (let index = 0; index < appFile.length; index++) {
-            const element = appFile[index];
-            projectJsonObj.appFile.push(element);
+            const appFilePath:string = appFile[index];
+            projectJsonObj.appFile.push(appFilePath);
         }
-        
         this.refreshProjectJson(projectJsonObj,projectConfigPath);
     }
 

@@ -3,7 +3,7 @@ import * as path from "path";
 import * as vscode from 'vscode';
 import { PluginVariablesInit } from "../config";
 import { PluginJsonParse } from "../plugConfigParse";
-import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getFileForDir } from "./projectApi";
+import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getFileForDirRecursion } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
 
 let pluginVariablesInit = new PluginVariablesInit();
@@ -43,7 +43,7 @@ export class CreateProject {
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
+        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
@@ -87,7 +87,7 @@ export class CreateProject {
         this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
             createProjectMessage.createProjectPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath);      //初始化写入工程配置文件
-        const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
+        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
@@ -136,7 +136,7 @@ export class CreateProject {
                 createProjectMessage.createProjectPath);
         }
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
+        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigAppFile(appFile);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion);
@@ -177,7 +177,7 @@ export class CreateProject {
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string = getFileForDir(createProjectMessage.createProjectPath);
+        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
