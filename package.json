@@ -39,7 +39,8 @@
 				},
 				{
 					"id": "luatide-tools-hub",
-					"name": "工具集合"
+					"name": "工具集合",
+					"visibility": "collapsed"
 				}
 			]
 		},
