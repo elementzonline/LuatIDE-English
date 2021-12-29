@@ -54,9 +54,19 @@ export function copyOperation(src:any, dist:any) {
     }
     
 // 获取文件夹内文件列表
-export function getFileForDir(dir:any){
+export function getFileForDirRecursion(dir:any,filesList:string[] = []){
     const files:any = fs.readdirSync(dir);
-    return files;
+    for (let index = 0; index < files.length; index++) {
+        const filePath:string = path.join(dir,files[index]);
+        if (fs.statSync(filePath).isDirectory()) {
+            filesList.push(filePath);
+            getFileForDirRecursion(filePath,filesList);
+        }
+        else{
+            filesList.push(filePath);
+        }
+    }
+    return filesList;
 }
 
 // 递归删除文件夹内容
