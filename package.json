@@ -64,17 +64,22 @@
 				{
 					"command": "luatide-activity-project.runProject",
 					"when": "view == luatide-activity-project",
-					"group": "navigation@2"
+					"group": "navigation@3"
 				},
 				{
 					"command": "luatide-activity-project.debugProject",
 					"when": "view == luatide-activity-project",
-					"group": "navigation@1"
+					"group": "navigation@2"
 				},
 				{
 					"command": "luatide-activity-project.Project.delete",
 					"when": "view == luatide-activity-project",
 					"group": "navigation@0"
+				},
+				{
+					"command": "luatide-activity-project.configOperation",
+					"when": "view == luatide-activity-project",
+					"group": "navigation@1"
 				}
 			],
 			"view/item/context": [
@@ -179,6 +184,14 @@
 					"dark": "./resource/themeSvg/dark/delete.svg",
 					"light": "./resource/themeSvg/light/delete.svg"
 				}
+			},
+			{
+				"command": "luatide-activity-project.configOperation",
+				"title": "活动工程配置",
+				"icon": {
+					"dark": "./resource/themeSvg/dark/projectConfig.svg",
+					"light": "./resource/themeSvg/light/projectConfig.svg"
+				  }
 			}
 		],
 		"breakpoints": [
