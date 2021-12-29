@@ -38,6 +38,7 @@ export class CreateProject {
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
+        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
@@ -56,6 +57,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建示例工程
@@ -80,6 +82,7 @@ export class CreateProject {
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
+        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
             createProjectMessage.createProjectPath);
@@ -95,6 +98,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建ndk工程
@@ -120,6 +124,7 @@ export class CreateProject {
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
+        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         // 依据示例demo是否选择确定新建工程类型
@@ -141,6 +146,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建ui工程
@@ -166,6 +172,7 @@ export class CreateProject {
             projectName: createProjectMessage.createProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
+        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
@@ -180,6 +187,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 接收到的webview发送的lib处理

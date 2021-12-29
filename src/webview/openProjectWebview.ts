@@ -202,6 +202,7 @@ export class OpenProjectManage {
             projectName:openProjectMessage.openProjectName,
         };
         pluginJsonParse.pushPluginConfigProject(projectObj);
+        pluginJsonParse.setPluginConfigActivityProject(openProjectMessage.openProjectPath);
         // const appFile:string = getFileForDir(openProjectMessage.openProjectPath);         //appfile采用用户自己的appfile
         // projectJsonParse.setProjectConfigAppFile(appFile,openProjectMessage.openProjectPath);
         const projectConfigVersion:string = projectJsonParse.getprojectConfigInitVersion();
@@ -212,6 +213,7 @@ export class OpenProjectManage {
         projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
         vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 打开工程必要条件检查
