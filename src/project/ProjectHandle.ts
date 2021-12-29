@@ -335,12 +335,16 @@ export class ProjectSoruceFileDelete{
     constructor(){
 
     }
-
     // 删除工程内指定文件或文件夹
     projectSourceFileDelete(filePath:any){
-        const projectAppFile:any = projectJsonParse.getProjectConfigAppFile();
         const selectPath:any = path.join(filePath.parentPath,filePath.label);
-        if (projectAppFile.indexOf(filePath)!==-1) {
+        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        if (selectPath===activityPath) {
+            pluginJsonParse.setPluginConfigActivityProject('');
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        }
+        else if (projectAppFile.indexOf(selectPath)!==-1) {
             this.projectSourceFileDeleteHint(selectPath);
         }
     }
@@ -351,6 +355,7 @@ export class ProjectSoruceFileDelete{
         vscode.window.showWarningMessage("【从工程中删除选中文件（不删除本地文件）】", { modal: true }, "确定").then(result => {
             if (result === '确定') {
                 projectJsonParse.popProjectConfigAppFile(dirPath,activityProjectPath);
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
         });
     }
