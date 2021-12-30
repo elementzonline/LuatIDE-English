@@ -283,7 +283,7 @@ export class PluginVariablesInit {
         return coreName;
         }   
 
-    // 获取air72x默认最新corePath路径
+    // 获取air72x默认最新core路径
     getAir72XDefaultLatestCorePath(){
         const air72xCorePath:string = this.getAir72XDefaultCorePath();
         const coreList:string[] = fs.readdirSync(air72xCorePath);
@@ -306,7 +306,30 @@ export class PluginVariablesInit {
             }
             }
         return coreName;
-}
+    }
+
+    // 获取airr72x默认最新lib路径
+    getAir72XDefaultLatestLibPath(){
+        const air72xLibPath:string = this.getAir72XDefaultLibPath();
+        const libList:string[] = fs.readdirSync(air72xLibPath);
+        const reg = /V([\d\.]+)/gi;
+        let currentVersion = undefined;
+        for (let index = 0; index < libList.length; index++) {
+            const currentLibName:string = libList[index];
+            const libNameVersionArray = reg.exec(currentLibName);
+            if (libNameVersionArray === null) {
+                break;
+            }
+            else if (currentVersion === undefined) {
+                currentVersion = libNameVersionArray[1];
+            }
+            else if (libNameVersionArray[1] > currentVersion) {
+                currentVersion = libNameVersionArray[1];
+            }
+        }
+        const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion);
+        return libLatestPath;
+    }
 }
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
