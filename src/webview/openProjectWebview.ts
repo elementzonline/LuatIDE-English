@@ -209,6 +209,10 @@ export class OpenProjectManage {
         projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigCorePath(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectPath);
+        // 如果非10x且lib为空，则为
+        if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air10X') {
+            openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+        }
         projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
         vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
