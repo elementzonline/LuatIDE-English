@@ -135,6 +135,7 @@ export class ProjectConfigOperation {
     projectConfigOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         if (activityProjectPath === '') {
+            vscode.window.showErrorMessage("当前未检测到活动工程，请先激活工程后再配置");
             return false;
         }
         this.projectConfigOperationUserInteractionInit();
@@ -166,16 +167,22 @@ export class ProjectConfigOperation {
         switch (msg) {
             case "配置core文件":
                 this.selectProjectCorePathOperation();
+                break;
             case "配置lib库文件":
                 this.selectProjectLibPathOperation();
+                break;
             case "添加文件":
                 this.selectProjectFileAddOperation();
+                break;
             case "添加文件夹":
                 this.selectProjectFolderAddOperation();
+                break;
             case "配置模块型号/模拟器":
                 this.selectProjectModuleModel();
+                break;
             case "显示配置文件":
                 this.openShowProjectConfig();
+                break;
         }
     }
 
@@ -215,7 +222,7 @@ export class ProjectConfigOperation {
     }
 
     // 打开文件资源管理器接口选择添加文件
-    selectProjectFileAddOperation() {
+    async selectProjectFileAddOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
 			canSelectFiles: true,		//是否选择文件
@@ -224,16 +231,19 @@ export class ProjectConfigOperation {
 			defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
 			openLabel: '选择需要导入工程的文件'
 		};
-        const fileObjList: any = this.showOpenDialog(options);
+        const fileObjList: any = await this.showOpenDialog(options);
         if (fileObjList!==undefined) {
+            const filePathList:string[] = [];
            for (let index = 0; index < fileObjList.length; index++) {
                const filePath:string = fileObjList[index].fsPath;
                const projectAddCheckState:boolean = this.projectAddCheck(filePath);
                if (!projectAddCheckState) {
                    return false;
                }
-               projectJsonParse.pushProjectConfigAppFile(filePath,activityProjectPath);
+               filePathList.push(filePath);
            } 
+           projectJsonParse.pushProjectConfigAppFile(filePathList,activityProjectPath);
+           vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
     }
 
@@ -263,8 +273,8 @@ export class ProjectConfigOperation {
     // 添加至活动工程的文件、文件夹必要条件校验
     projectAddCheck(filePath:string){
         const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
-        const appFile:any = projectJsonParse.getProjectConfigAppFile();
-        if (filePath.indexOf(activityPath)!==-1) {
+        const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        if (filePath.indexOf(activityPath)===-1) {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
             return false;
         }
@@ -285,11 +295,11 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口
     async showOpenDialog(options: any) {
-        let result = await vscode.window.showOpenDialog(options).then(result => {
+        const addFileList = await vscode.window.showOpenDialog(options).then(result => {
             if (result !== undefined && result.length===1) {
                 // 显示用户选择的路径
-                const selectPath: string = result[0].fsPath;
-                return selectPath;
+                // const selectPath: string = result[0].fsPath;
+                return [result];
             }
             if (result !== undefined && result.length>=1) {
                 // 显示用户选择的列表对象
@@ -297,7 +307,7 @@ export class ProjectConfigOperation {
             }
             return undefined;
         });
-        return result;
+        return addFileList;
     }
       
     // 选择配置模块型号,模拟器
