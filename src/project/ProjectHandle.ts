@@ -345,8 +345,9 @@ export class ProjectConfigOperation {
     }
       
     // 选择配置模块型号,模拟器
-    selectProjectModuleModel(){
-        vscode.window.showQuickPick(
+    async selectProjectModuleModel(){
+        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const result:any = await vscode.window.showQuickPick(
 			[
 				"air72XUX/Air82XUX",
 				"air72XCX",
@@ -360,10 +361,12 @@ export class ProjectConfigOperation {
 				matchOnDetail:true,
 				placeHolder:'请选择模块型号'
 			}).then((msg) =>{
-                if (msg!==undefined) {
-                    projectJsonParse.setProjectConfigModuleModel(msg);
-                }
+                    return msg;
             });
+            if (result!==undefined) {
+                projectJsonParse.setProjectConfigModuleModel(result,activityPath);
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            }
 		}
     
     //显示配置文件
