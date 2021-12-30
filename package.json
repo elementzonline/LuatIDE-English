@@ -191,7 +191,7 @@
 				"icon": {
 					"dark": "./resource/themeSvg/dark/projectConfig.svg",
 					"light": "./resource/themeSvg/light/projectConfig.svg"
-				  }
+				}
 			}
 		],
 		"breakpoints": [
@@ -299,8 +299,10 @@
 		"typescript": "^4.4.4"
 	},
 	"dependencies": {
+		"await-notify": "^1.0.1",
 		"compressing": "^1.5.1",
 		"node-fetch": "^3.1.0",
-		"uuid": "^8.3.2"
+		"uuid": "^8.3.2",
+		"vscode-debugadapter": "^1.51.0"
 	}
 }
