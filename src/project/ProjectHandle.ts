@@ -206,7 +206,7 @@ export class ProjectConfigOperation {
     }
 
     // 打开文件资源管理器接口选择lib文件
-    selectProjectLibPathOperation() {
+    async selectProjectLibPathOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
@@ -215,9 +215,17 @@ export class ProjectConfigOperation {
             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
             openLabel: '选择lib库'
         };
-        const libPath: any = this.showOpenDialog(options);
-        if (libPath !== undefined) {
-            projectJsonParse.setProjectConfigLibPath(libPath, activityProjectPath);
+        const libPathList: any = await this.showOpenDialog(options);
+        if (libPathList !== undefined) {
+            for (let index = 0; index < libPathList.length; index++) {
+                const filePath: string = libPathList[index].fsPath;
+                const libCoreCheckState: boolean = this.libCoreCheck(filePath);
+                if (!libCoreCheckState) {
+                    return false;
+                }
+                projectJsonParse.setProjectConfigLibPath(filePath, activityProjectPath);
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            }
         }
     }
 
@@ -296,13 +304,28 @@ export class ProjectConfigOperation {
         return true;
     }
 
+        // lib库及core文件设置必要条件校验
+        libCoreCheck(filePath:string){
+            const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+            const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+            if (filePath===activityPath){
+                vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
+                return false;
+            }
+            if (filePath===path.join(activityPath,'luatide_project.json')) {
+                vscode.window.showErrorMessage("不支持设置LuatIDE工程配置文件",{modal: true});
+                return false;
+            }
+            return true;
+        }
+
     // 打开文件资源管理器接口
     async showOpenDialog(options: any) {
         const addFileList = await vscode.window.showOpenDialog(options).then(result => {
             if (result !== undefined && result.length===1) {
                 // 显示用户选择的路径
                 // const selectPath: string = result[0].fsPath;
-                return [result];
+                return result;
             }
             if (result !== undefined && result.length>=1) {
                 // 显示用户选择的列表对象
