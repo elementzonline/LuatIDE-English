@@ -92,8 +92,15 @@ export class CreateProject {
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
-        // cosnt libPath:string = "c"
-        projectJsonParse.setProjectConfigLibPath('',createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
+        let createProjectLibPath:string;
+        // lib库路径初始化写入
+        if (createProjectMessage.createProjectModuleModel!=='air10X') {
+            createProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+        }
+        else{
+            createProjectLibPath = '';
+        }
+        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
@@ -137,13 +144,15 @@ export class CreateProject {
         }
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigAppFile(appFile);
+        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion);
-        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath);
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
+        // 获取写入配置文件的实际lib路径
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        projectJsonParse.setProjectConfigLibPath(createProjectLibPath);
+        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
         vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
@@ -182,7 +191,9 @@ export class CreateProject {
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigLibPath(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectPath);
+        // 获取写入配置文件的实际lib路径
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
@@ -197,7 +208,7 @@ export class CreateProject {
             libPath = libPath;
         }
         else if (libPath==='') {
-            libPath = path.join(air72XDefaultLibPath,'v2.4.0','lib');
+            libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
         else{
             libPath = path.join(air72XDefaultLibPath,libPath,'lib');
