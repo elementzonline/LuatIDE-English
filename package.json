@@ -98,6 +98,18 @@
 					"when": "view == luatide-activity-project",
 					"group": "inline"
 				}
+			],
+			"editor/context": [
+				{
+					"command": "luatide-activity-project.runProject",
+					"when": "resourceLangId == lua",
+					"group": "navigation@0"
+				},
+				{
+					"command": "luatide-activity-project.debugProject",
+					"when": "resourceLangId == lua",
+					"group": "navigation@0"
+				}
 			]
 		},
 		"commands": [
@@ -127,7 +139,7 @@
 			},
 			{
 				"command": "luatide-activity-project.runProject",
-				"title": "运行工程",
+				"title": "LuatIDE:Run Project",
 				"icon": {
 					"dark": "./resource/themeSvg/dark/runProject.svg",
 					"light": "./resource/themeSvg/light/runProject.svg"
@@ -135,7 +147,7 @@
 			},
 			{
 				"command": "luatide-activity-project.debugProject",
-				"title": "调试工程",
+				"title": "LuatIDE:Debug Project",
 				"icon": {
 					"dark": "./resource/themeSvg/dark/debugProject.svg",
 					"light": "./resource/themeSvg/light/debugProject.svg"
