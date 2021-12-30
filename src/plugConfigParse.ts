@@ -103,4 +103,42 @@ let pluginVariablesInit = new PluginVariablesInit();
         }
         this.refreshPlugintJson(pluginJsonObj);
     }
+
+    // 插件配置文件兼容
+    pluginConfigCompatible(){
+        // plugin版本2.0以下兼容
+        const pluginConfigPath:string = pluginVariablesInit.getPluginConfigPath();
+        const pluginJson:string = fs.readFileSync(pluginConfigPath,'utf-8');
+        const pluginJsonObj = JSON.parse(pluginJson);
+        let luatideWorkspaceJson:any = {
+            version:'',
+            projectList:[],
+            activeProject:'',
+        };
+        if (Number(pluginJsonObj.version) < 2.0) {
+            // 活动工程兼容
+            const activityProject:string = pluginJsonObj['active_workspace'];
+            luatideWorkspaceJson.activeProject  = activityProject;
+            // 用户工程数据兼容
+            for (let index = 0; index < pluginJsonObj.data.length; index++) {
+                const projectObjType = pluginJsonObj.data[index];
+                if (projectObjType.type==='user') {
+                    for (let i = 0; i < projectObjType.projects.length; i++) {
+                        const userProjectObj = projectObjType.projects[i];
+                        const projectName = userProjectObj['project_name'];
+                        const projectPath = userProjectObj['project_path'];
+                        let projectObjNew = {
+                            projectName:projectName,
+                            projectPath:projectPath
+                        };
+                        luatideWorkspaceJson.projectList.push(projectObjNew);
+                    }
+                } 
+            }
+            // 插件版本兼容
+            luatideWorkspaceJson.version='2.0';
+            const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson);
+            fs.writeFileSync(pluginConfigPath,pluginConfigJsonNew);
+        }
+    }
 }
