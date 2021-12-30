@@ -2,7 +2,7 @@ import { PluginJsonParse } from "../plugConfigParse";
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import * as path from "path";
-import { deleteDirRecursive } from './projectApi';
+import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
 import { HistoryProjectDataProvider } from "./projectTreeView";
 
@@ -275,14 +275,17 @@ export class ProjectConfigOperation {
         };
         const fileObjList: any = await this.showOpenDialog(options);
         if (fileObjList !== undefined) {
-            const folderPathList: string[] = [];
+            let folderPathList: string[] = [];
             for (let index = 0; index < fileObjList.length; index++) {
                 const filePath: string = fileObjList[index].fsPath;
                 const projectAddCheckState: boolean = this.projectAddCheck(filePath);
                 if (!projectAddCheckState) {
                     return false;
                 }
-                folderPathList.push(filePath);
+                // 获取添加文件夹内所有子文件夹内容并加上文件夹自身
+                const folderChildrenList:string[] = getFileForDirRecursion(filePath);
+                folderChildrenList.push(filePath);
+                folderPathList = folderPathList.concat(folderChildrenList);
             }
             projectJsonParse.pushProjectConfigAppFile(folderPathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
