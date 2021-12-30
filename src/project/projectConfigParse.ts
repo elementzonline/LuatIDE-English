@@ -180,7 +180,7 @@ let pluginJsonParse = new PluginJsonParse();
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJson:any = {
             version:'',
-            projectType:'',
+            projectType:'pure',
             corePath:'',
             libPath:'',
             moduleModel:'',

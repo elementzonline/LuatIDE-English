@@ -23,21 +23,23 @@ export class ProjectActiveHandle {
         if (!projectActiveCheckState) { //激活工程必要条件检查失败
             return false;
         }
-        
+        // 激活工程前做兼容性处理
+        pluginJsonParse.projectConfigCompatible(projectActivePath);
         // 执行激活到资源管理器命令
         vscode.window.showInformationMessage('请选择激活工程的打开方式',{modal:true},"当前窗口打开","新窗口打开").then(
             result =>{
                 if (result==='当前窗口打开') {
                     pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
                 }
                 else if(result === '新窗口打开'){
                     pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
                 }
             }
         );   
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 激活工程必要条件检查
