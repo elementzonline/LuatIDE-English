@@ -47,9 +47,7 @@ export class CreateProject {
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
-        // 获取实际的core路径
-        const createProjectCorePath:string =  this.getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
@@ -147,7 +145,7 @@ export class CreateProject {
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
+        projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath);
