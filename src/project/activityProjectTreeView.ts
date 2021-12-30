@@ -49,7 +49,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
               treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
             }
             else{
-              treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
+              treeDir.unshift(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
             }
           }
         }
