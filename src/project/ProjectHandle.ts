@@ -24,6 +24,17 @@ export class ProjectActiveHandle {
             return false;
         }
         pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+        // 执行激活到资源管理器命令
+        vscode.window.showInformationMessage('请选择激活工程的打开方式',{modal:true},"当前窗口打开","新窗口打开").then(
+            result =>{
+                if (result==='当前窗口打开') {
+                    vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
+                }
+                else{
+                    vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
+                }
+            }
+        );   
         vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
