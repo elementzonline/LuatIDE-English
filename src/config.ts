@@ -423,7 +423,7 @@ export class PluginConfigInit {
             activeProject: '',
         };
         let configJsonObj = JSON.parse(configJson);
-        return JSON.stringify(configJsonObj);
+        return JSON.stringify(configJsonObj,null,"\t");
     }
 }
 
