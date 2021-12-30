@@ -280,7 +280,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private generate_project_filepath(){
 		let configSource_fileList:string[]=[];
 		let configSource_filepathList:string[]=[];
-		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile();
+		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < project_fileslist.length; index++) {
 			const project_absolute_file = project_fileslist[index];
 			const project_file = path.basename(project_absolute_file);
@@ -600,11 +600,11 @@ export class MockDebugSession extends LoggingDebugSession {
 			await this.sleep(100);
 
 
-			const module_model = this.projectJsonParse.getProjectConfigModuleModel();
+			const module_model = this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace);
 			this.module_model_flag = module_model;
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
 			if (module_model === undefined) {
-				this.projectJsonParse.setProjectConfigModuleModel("Air72XUX/Air82XUX");
+				this.projectJsonParse.setProjectConfigModuleModel(this.activeWorkspace, "Air72XUX/Air82XUX");
 			}
 			this.dbg_write_cmd("LuatIDE_Down/LoAd");
 			return true;
@@ -985,7 +985,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
 		child_process.exec('taskkill -f -im LuatideService.exe');
-		if (this.projectJsonParse.getProjectConfigModuleModel() === "Simulator")
+		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "Simulator")
 		{
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
