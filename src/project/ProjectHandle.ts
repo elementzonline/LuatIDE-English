@@ -187,7 +187,7 @@ export class ProjectConfigOperation {
     }
 
     // 打开文件资源管理器接口选择core文件
-    selectProjectCorePathOperation() {
+    async selectProjectCorePathOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: true,		//是否选择文件
@@ -199,9 +199,17 @@ export class ProjectConfigOperation {
                 json: ['pac', "soc"], // 文件类型过滤
             },
         };
-        const corePath: any = this.showOpenDialog(options);
-        if (corePath !== undefined) {
-            projectJsonParse.setProjectConfigCorePath(corePath, activityProjectPath);
+        const corePathList: any = await this.showOpenDialog(options);
+        if (corePathList !== undefined) {
+            for (let index = 0; index < corePathList.length; index++) {
+                const filePath: string = corePathList[index].fsPath;
+                const libCoreCheckState: boolean = this.libCoreCheck(filePath);
+                if (!libCoreCheckState) {
+                    return false;
+                }
+                projectJsonParse.setProjectConfigCorePath(filePath, activityProjectPath);
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            }
         }
     }
 
