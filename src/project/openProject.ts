@@ -27,6 +27,8 @@ export class OpenProject {
         if (importProjectPath === undefined) {
             return;
         }
+        // 打开工程导入前做兼容性处理
+        pluginJsonParse.projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         let openProjectManage =  new OpenProjectManage();
