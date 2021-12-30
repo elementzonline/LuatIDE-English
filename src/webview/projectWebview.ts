@@ -206,16 +206,19 @@ export class ProjectManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                            openLabel: '选择需要导入工程的文件夹'
+                            openLabel: '选择工程文件夹'
                         };
-                        const customProjectPath = await projectConfigOperation.showOpenDialog(customProjectOptions);
-                        projectPanel.webview.postMessage(
-                            {
-                                command: "customProjectPath",
-                                text: customProjectPath,
-
-                            }
-                        );
+                        const customProjectPathResult:any = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        if (customProjectPathResult!==undefined) {
+                            const customProjectPath = customProjectPathResult[0].fsPath;
+                            projectPanel.webview.postMessage(
+                                {
+                                    command: "customProjectPath",
+                                    text: customProjectPath,
+    
+                                }
+                            );
+                        }
                         // console.log(selectPath);
                         break;
                     // 接收webview提交的打开资源管理器选择用户lib路径请求
@@ -225,16 +228,19 @@ export class ProjectManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                            openLabel: '选择需要导入工程的文件夹'
+                            openLabel: '选择工程Lib文件夹'
                         };
-                        const customLibPath = await projectConfigOperation.showOpenDialog(customLibOptions);
-                        projectPanel.webview.postMessage(
-                            {
-                                command: "customLibPath",
-                                text: customLibPath,
-
-                            }
-                        );
+                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        if (customLibPathResult!==undefined) {
+                            const customLibPath:string = customLibPathResult[0].fsPath;
+                            projectPanel.webview.postMessage(
+                                {
+                                    command: "customLibPath",
+                                    text: customLibPath,
+    
+                                }
+                            );
+                        }
                         // console.log(selectPath);
                         break;
 
@@ -245,19 +251,22 @@ export class ProjectManage {
                             canSelectFolders: false,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                            openLabel: '选择底包',
+                            openLabel: '选择工程Core文件夹',
                             filters: {
                                 json: ['pac', "soc"], // 文件类型过滤
                             },
                         };
-                        const customCorePath = await projectConfigOperation.showOpenDialog(customCoreOptions);
-                        projectPanel.webview.postMessage(
-                            {
-                                command: "customCorePath",
-                                text: customCorePath,
-
-                            }
-                        );
+                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        if (customCorePathResult!==undefined) {
+                            const customCorePath = customCorePathResult[0].fsPath;
+                            projectPanel.webview.postMessage(
+                                {
+                                    command: "customCorePath",
+                                    text: customCorePath,
+    
+                                }
+                            );
+                        }
                         // console.log(selectPath);
                         break;
                 }
