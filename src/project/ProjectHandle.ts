@@ -232,23 +232,23 @@ export class ProjectConfigOperation {
 			openLabel: '选择需要导入工程的文件'
 		};
         const fileObjList: any = await this.showOpenDialog(options);
-        if (fileObjList!==undefined) {
-            const filePathList:string[] = [];
-           for (let index = 0; index < fileObjList.length; index++) {
-               const filePath:string = fileObjList[index].fsPath;
-               const projectAddCheckState:boolean = this.projectAddCheck(filePath);
-               if (!projectAddCheckState) {
-                   return false;
-               }
-               filePathList.push(filePath);
-           } 
-           projectJsonParse.pushProjectConfigAppFile(filePathList,activityProjectPath);
-           vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        if (fileObjList !== undefined) {
+            const filePathList: string[] = [];
+            for (let index = 0; index < fileObjList.length; index++) {
+                const filePath: string = fileObjList[index].fsPath;
+                const projectAddCheckState: boolean = this.projectAddCheck(filePath);
+                if (!projectAddCheckState) {
+                    return false;
+                }
+                filePathList.push(filePath);
+            }
+            projectJsonParse.pushProjectConfigAppFile(filePathList, activityProjectPath);
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
     }
 
     // 打开文件资源管理器接口选择添加文件夹
-    selectProjectFolderAddOperation() {
+    async selectProjectFolderAddOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
@@ -257,16 +257,19 @@ export class ProjectConfigOperation {
             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
             openLabel: '选择需要导入工程的文件夹'
         };
-        const fileObjList: any = this.showOpenDialog(options);
-        if (fileObjList!==undefined) {
+        const fileObjList: any = await this.showOpenDialog(options);
+        if (fileObjList !== undefined) {
+            const folderPathList: string[] = [];
             for (let index = 0; index < fileObjList.length; index++) {
-                const filePath:string = fileObjList[index].fsPath;
-                const projectAddCheckState:boolean = this.projectAddCheck(filePath);
+                const filePath: string = fileObjList[index].fsPath;
+                const projectAddCheckState: boolean = this.projectAddCheck(filePath);
                 if (!projectAddCheckState) {
                     return false;
                 }
-                projectJsonParse.pushProjectConfigAppFile(filePath,activityProjectPath);
-            } 
+                folderPathList.push(filePath);
+            }
+            projectJsonParse.pushProjectConfigAppFile(folderPathList, activityProjectPath);
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
     }
 
