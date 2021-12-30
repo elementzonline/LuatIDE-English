@@ -20,18 +20,6 @@ import * as fs from 'fs';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 
-function createProject():void{
-
-}
-
-// function openProject():void{
-
-// }
-
-// function homeManage():void {
-	
-// }
-
 function runProject(resource: vscode.Uri):void {
 	let targetResource = resource;
 	if (!targetResource && vscode.window.activeTextEditor) {
@@ -89,11 +77,11 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject',async ()=> projectManage.projectManage(context)));
 	// // 注册打开工程命令,当点击用户历史工程标题区域打开工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject',async ()=> openProject.openProject(context)));
-	// 注册运行工程命令,当点击活动工程标题区域运行工程按钮时触发
+	// // 注册运行工程命令,当点击活动工程标题区域运行工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.runProject',runProject));
-	// 注册调试工程命令,当点击活动工程标题区域调试工程按钮时触发
+	// // 注册调试工程命令,当点击活动工程标题区域调试工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.debugProject',debugProject));
-	// 注册删除工程命令,当点击活动工程内部区域删除工程按钮时触发
+	// // 注册删除工程命令,当点击活动工程内部区域删除工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.deleteProject',async (filePath:HistoryProjectTreeItem) => projectDeleteHandle.deleteProject(filePath)));
 	// // 注册激活工程命令,当点击历史工程内部区域激活工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active',async (filePath) => projectActiveHandle.projectActive(filePath)));

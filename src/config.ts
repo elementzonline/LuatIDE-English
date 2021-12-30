@@ -327,7 +327,7 @@ export class PluginVariablesInit {
                 currentVersion = libNameVersionArray[1];
             }
         }
-        const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion);
+        const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion,'lib');
         return libLatestPath;
     }
 }
