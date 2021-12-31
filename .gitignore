@@ -8,3 +8,5 @@ node_modules
 sampleWorkspace
 lib_merge_temp/
 script_package.bin
+luatide_server/build/ide_service/_temp/
+luatide_server/build/ide_service/log/
