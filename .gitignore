@@ -6,3 +6,5 @@ node_modules
 !*.dll
 !*.exe
 sampleWorkspace
+lib_merge_temp/
+script_package.bin
