@@ -12,6 +12,7 @@
 	],
 	"activationEvents": [
 		"*",
+		"onLanguage:lua",
 		"onView:luatide-activeBar",
 		"onCommand:luatide.Open",
 		"onCommand:luatide-history-project.createProject"
@@ -35,7 +36,7 @@
 				},
 				{
 					"id": "luatide-activity-project",
-					"name": "活动工程【活动工程内文件默认全部烧录至硬件】"
+					"name": "活动工程"
 				},
 				{
 					"id": "luatide-tools-hub",
