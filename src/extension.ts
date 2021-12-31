@@ -120,6 +120,10 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => testDependenciesProvider.refresh()));
 
+	// 注册快速点击命令，点击后打开浏览器文档
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
+		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
+	}));
 }
 
 /** 这个方法当插件结束时被调用 */
