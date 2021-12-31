@@ -22,6 +22,11 @@ h1 {
     letter-spacing: 0.5em;
 }
 
+.videoBox {
+    text-align: center;
+    max-height: 100px;
+}
+
 /*弹窗按钮 bar*/
 .bar {
     color: rgba(223, 190, 106, 0.7);
@@ -111,10 +116,10 @@ h1 {
 }
 
 .feedback-box {
-    top: 25%;
+    top: 35%;
     left: 50%;
-    width: 400px;
-    height: 350px;
+    width: 500px;
+    height: 500px;
     position: relative;
     transform: translate(-50%, -50%);
     background: #231f20;
@@ -140,7 +145,7 @@ h1 {
 
 .feedback-box label {
     position: absolute;
-    top: 10%;
+    top: 8%;
     left: 10%;
     padding: 10px 0;
     font-size: 16px;
@@ -158,7 +163,7 @@ h1 {
 
 .feedback-box textarea {
     margin-top: 6%;
-    height: 140px;
+    height: 240px;
     width: 80%;
     position: relative;
     background-color: #231f20;
@@ -172,6 +177,9 @@ h1 {
     color: rgba(223, 190, 106, 0.4);
 }
 
+.feedback-box textarea {
+    color: rgba(223, 190, 106, 0.4);
+}
 
 .feedback-box textarea:focus {
     outline-style: none;

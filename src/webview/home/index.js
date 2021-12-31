@@ -142,10 +142,10 @@ function updateNews(data) {
     }
 }
 
-updateNews(["http://cdn.openluat-luatcommunity.openluat.com/images/20210707171204573_luatideproject.png",
-    "http://cdn.openluat-luatcommunity.openluat.com/images/20210707171215356_news_02 - \u526f\u672c.jpg",
-    "http://cdn.openluat-luatcommunity.openluat.com/images/20210730171736579_v3102.jpg"
-]);
+// updateNews(["http://cdn.openluat-luatcommunity.openluat.com/images/20210707171204573_luatideproject.png",
+//     "http://cdn.openluat-luatcommunity.openluat.com/images/20210707171215356_news_02 - \u526f\u672c.jpg",
+//     "http://cdn.openluat-luatcommunity.openluat.com/images/20210730171736579_v3102.jpg"
+// ]);
 
 
 
@@ -254,7 +254,7 @@ function handleCaptcha() {
             if (xhr.status === 200) {
                 let res = JSON.parse(xhr.responseText)
                 if (res && res.code == 0) {
-                    Alert('验证码已发送！')
+                    Alert('验证码已发送！');
                 }
             } else {
                 var msg = null;
@@ -281,7 +281,7 @@ function handleResetPasswords() {
         return false;
     }
     if (password1.length < 6) {
-        Alert('密码需大于六位')
+        Alert('密码需大于六位');
         return false;
     }
     dataObj.append("phone", tPhone)
@@ -328,7 +328,7 @@ function sentComment() {
         Alert("手机号码有误，请重填");
         return false;
     }
-    dataObj.append("comment", comment)
+    dataObj.append("comment", comment);
     var url = host + "/api/auth/comment";
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url);
@@ -336,13 +336,13 @@ function sentComment() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let res = JSON.parse(xhr.responseText)
+                let res = JSON.parse(xhr.responseText);
                 if (res && res.code == 0) {
-                    Alert('评论成功！')
+                    Alert('评论成功！');
                     barBtn.show();
                     setTimeout(function () {
                         $(".feedback-box").hide();
-                    }, 200)
+                    }, 200);
                 }
             } else {
                 var msg = null;
