@@ -2,7 +2,7 @@
 	"name": "luatide",
 	"displayName": "luatide",
 	"description": "合宙官方IDE",
-	"version": "0.0.1",
+	"version": "2.0.1",
 	"publisher": "luater",
 	"engines": {
 		"vscode": "^1.63.0"
@@ -10,12 +10,44 @@
 	"categories": [
 		"Other"
 	],
+	"author": {
+		"name": "LUATER"
+	  },
+	"license": "LGPL",
+	"keywords": [
+		"luat",
+		"LuatIDE",
+		"lua",
+		"harmony",
+		"liteos",
+		"embedded"
+	  ],
+	"repository": {
+		"type": "git",
+		"url": "http://gitee.com/openLuat/luatide"
+	},
+	"bugs": {
+		"url": "http://gitee.com/openLuat/luatide"
+	},
 	"activationEvents": [
-		"*",
 		"onLanguage:lua",
 		"onView:luatide-activeBar",
 		"onCommand:luatide.Open",
-		"onCommand:luatide-history-project.createProject"
+		"onCommand:luatide-history-project.createProject",
+		"onView:luatide-history-project",
+		"onView:luatide-activity-project",
+		"onView:luatide-tools-hub",
+		"onCommand:luatide-history-project.openProject",
+		"onCommand:luatide-history-project.Home",
+		"onCommand:luatide-activity-project.runProject",
+		"onCommand:luatide-activity-project.debugProject",
+		"onCommand:luatide-history-project.deleteProject",
+		"onCommand:luatide-history-project.Project.active",
+		"onCommand:luatide-activity-project.Project.delete",
+		"onCommand:luatide-history-project.Project.refresh",
+		"onCommand:luatide-activity-project.Project.refresh",
+		"onCommand:luatide-activity-project.sourceFile.delete",
+		"onCommand:luatide-activity-project.configOperation"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
