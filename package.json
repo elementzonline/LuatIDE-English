@@ -47,7 +47,8 @@
 		"onCommand:luatide-history-project.Project.refresh",
 		"onCommand:luatide-activity-project.Project.refresh",
 		"onCommand:luatide-activity-project.sourceFile.delete",
-		"onCommand:luatide-activity-project.configOperation"
+		"onCommand:luatide-activity-project.configOperation",
+		"onCommand:luatide-ui.design"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -97,12 +98,12 @@
 				{
 					"command": "luatide-activity-project.runProject",
 					"when": "view == luatide-activity-project",
-					"group": "navigation@3"
+					"group": "navigation@4"
 				},
 				{
 					"command": "luatide-activity-project.debugProject",
 					"when": "view == luatide-activity-project",
-					"group": "navigation@2"
+					"group": "navigation@3"
 				},
 				{
 					"command": "luatide-activity-project.Project.delete",
@@ -113,6 +114,11 @@
 					"command": "luatide-activity-project.configOperation",
 					"when": "view == luatide-activity-project",
 					"group": "navigation@1"
+				},
+				{
+					"command": "luatide-ui.design",
+					"when": "view == luatide-activity-project",
+					"group": "navigation@2"
 				}
 			],
 			"view/item/context": [
@@ -236,6 +242,14 @@
 				"icon": {
 					"dark": "./resource/themeSvg/dark/projectConfig.svg",
 					"light": "./resource/themeSvg/light/projectConfig.svg"
+				}
+			},
+			{
+				"command": "luatide-ui.design",
+				"title": "UI设计器",
+				"icon": {
+					"dark": "./resource/themeSvg/dark/uiDesign.svg",
+					"light": "./resource/themeSvg/light/uiDesign.svg"
 				}
 			}
 		],
