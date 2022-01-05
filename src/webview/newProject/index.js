@@ -332,7 +332,9 @@ function customPathManagment(whichProject, whichCustom, pathData) {
 const moduleOne = "air72XUX/air82XUX";
 const moduleTwo = "air72XCX";
 const moduleThree = "simulator";
-const moduleFour = "air10X";
+const moduleFour = "air101";
+const moduleFive = "air103";
+const moduleSix = "air105";
 
 /* 新建工程 暂存VsCode发送的工程数据 */
 let temPureProjectData = null;
@@ -388,6 +390,24 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
             break;
+        case moduleFive:
+            /* 目前 Air10X 没有 lib */
+            isInAir101 = true;
+            isInAirCx72 = false;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleFive);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            /* 目前 Air10X 没有 lib */
+            isInAir101 = true;
+            isInAirCx72 = false;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(libSelected, temPureProjectData.libList, moduleSix);
+            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleSix);
+            break;
         default:
             break;
     }
@@ -425,6 +445,14 @@ function pureProjectInitDataManagment(initData) {
         case moduleFour:
             addOptionToSelect(libSelected, initData.libList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
+            break;
+        case moduleFive:
+            addOptionToSelect(libSelected, initData.libList, moduleFive);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            addOptionToSelect(libSelected, initData.libList, moduleSix);
+            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
             break;
         default:
             break;
@@ -468,6 +496,18 @@ $(".select_getExample_ModuleInfo").on("change", function () {
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFour);
             break;
+        case moduleFive:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFive);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleSix);
+            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleSix);
+            break;
         default:
             break;
     }
@@ -504,6 +544,14 @@ function exampleProjectInitDataManagment(initData) {
             addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
+        case moduleFive:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleFive);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleSix);
+            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
+            break;
         default:
             break;
     }
@@ -529,6 +577,12 @@ $(".select_getNDK_ModuleInfo").on("change", function () {
             break;
         case moduleFour:
             addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFour);
+            break;
+        case moduleFive:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFive);
+            break;
+        case moduleSix:
+            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleSix);
             break;
         default:
             break;
@@ -558,6 +612,12 @@ function ndkProjectInitDataManagment(initData) {
             break;
         case moduleFour:
             addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
+            break;
+        case moduleFive:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleFive);
+            break;
+        case moduleSix:
+            addOptionToSelect(exampleSelected, initData.exampleList, moduleSix);
             break;
         default:
             break;
@@ -610,6 +670,22 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFour);
             break;
+        case moduleFive:
+            isInAirCx72 = false;
+            isInAir101 = true;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleFive);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            isInAirCx72 = false;
+            isInAir101 = true;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            addOptionToSelect(libSelected, temUiProjectData.libList, moduleSix);
+            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleSix);
+            break;
         default:
             break;
     }
@@ -648,6 +724,14 @@ function uiProjectInitDataManagment(initData) {
             addOptionToSelect(libSelected, initData.libList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
+        case moduleFive:
+            addOptionToSelect(libSelected, initData.libList, moduleFive);
+            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
+            break;
+        case moduleSix:
+            addOptionToSelect(libSelected, initData.libList, moduleSix);
+            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
+            break;
         default:
             break;
     }
@@ -677,11 +761,11 @@ function importSpaceProject(importData) {
                 $("input[name=space_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData[key1] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.correctData[key1] === temModule[i]) {
                         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -710,11 +794,11 @@ function importSpaceProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getSpace_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData[key2] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.errorData[key2] === temModule[i]) {
                         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -731,7 +815,7 @@ function importSpaceProject(importData) {
                 break;
         }
     }
-    
+
     let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
 
     addOptionToSelect($(".select_getSpace_LibInfo"), importData.importInitData.libList[curModule], curModule);
@@ -751,11 +835,11 @@ function importExampleProject(importData) {
                 $("input[name=example_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData[key1] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.correctData[key1] === temModule[i]) {
                         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -784,11 +868,11 @@ function importExampleProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getExample_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData[key2] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.errorData[key2] === temModule[i]) {
                         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -805,7 +889,7 @@ function importExampleProject(importData) {
                 break;
         }
     }
-    
+
     let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
 
     addOptionToSelect($(".select_getExample_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
@@ -825,11 +909,11 @@ function importNdkProject(importData) {
                 $("input[name=ndk_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData[key1] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.correctData[key1] === temModule[i]) {
                         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -855,11 +939,11 @@ function importNdkProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getNDK_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData[key2] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.errorData[key2] === temModule[i]) {
                         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -872,7 +956,7 @@ function importNdkProject(importData) {
                 break;
         }
     }
-    
+
     let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
 
     addOptionToSelect($(".select_getNDK_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
@@ -891,11 +975,11 @@ function importUiProject(importData) {
                 $("input[name=ui_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.correctData[key1] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.correctData[key1] === temModule[i]) {
                         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -924,11 +1008,11 @@ function importUiProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getUi_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour];
-                for (let i = 0; i < temModule.length; i++){
-                    if (importData.errorData[key2] === temModule[i]){
+                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                for (let i = 0; i < temModule.length; i++) {
+                    if (importData.errorData[key2] === temModule[i]) {
                         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    }else{
+                    } else {
                         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
                     }
                 }
@@ -945,7 +1029,7 @@ function importUiProject(importData) {
                 break;
         }
     }
-    
+
     let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
 
     addOptionToSelect($(".select_getUi_LibInfo"), importData.importInitData.libList[curModule], curModule);
@@ -957,7 +1041,7 @@ function importUiProject(importData) {
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
     $(".navbar").hide();
-    if (importData.errorData !== ""){
+    if (importData.errorData !== "") {
         $(".tips").show();
     }
     $(allHideStr).hide();
@@ -1078,7 +1162,7 @@ function getImportProjectData(tar) {
 
 /* 改变主题颜色 */
 function changeThemeColor(theme) {
-    if (theme === "light"){
+    if (theme === "light") {
         $(".mainBody").css({
             "background": "#ffffff",
             "color": "rgb(0, 0, 0)",
@@ -1098,7 +1182,7 @@ function changeThemeColor(theme) {
             "border": "1px solid rgba(26, 25, 24, 0.3)",
             "color": "rgb(22, 20, 20)",
         });
-    }else{
+    } else {
         $(".mainBody").css({
             "background": "#231f20",
             "color": "rgba(223, 190, 106, 0.7)",
