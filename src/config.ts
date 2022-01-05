@@ -264,14 +264,42 @@ export class PluginVariablesInit {
         return coreList;
     }
 
-    // 获取air10x默认core文件礼包
-    getAir10XDefaultCoreList(){
+    // 获取air101默认core文件列表
+    getAir101DefaultCoreList(){
         const coreList: string[] = [];
-        const air10XDefaultCorePath:string = this.getAir10XDefaultCorePath();
-        const files: string[] = fs.readdirSync(air10XDefaultCorePath);
+        const getAir101DefaultCoreList:string = this.getAir101DefaultCorePath();
+        const files: string[] = fs.readdirSync(getAir101DefaultCoreList);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (path.extname(path.join(air10XDefaultCorePath,element))==='.soc') {
+            if (path.extname(path.join(getAir101DefaultCoreList,element))==='.soc') {
+                coreList.push(element);
+            }
+        }
+        return coreList;
+    }
+
+    // 获取air103默认core文件列表
+    getAir103DefaultCoreList(){
+        const coreList: string[] = [];
+        const air103DefaultCorePath:string = this.getAir103DefaultCorePath();
+        const files: string[] = fs.readdirSync(air103DefaultCorePath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (path.extname(path.join(air103DefaultCorePath,element))==='.soc') {
+                coreList.push(element);
+            }
+        }
+        return coreList;
+    }
+
+    // 获取air105默认core文件列表
+    getAir105DefaultCoreList(){
+        const coreList: string[] = [];
+        const air105DefaultCorePath:string = this.getAir105DefaultCorePath();
+        const files: string[] = fs.readdirSync(air105DefaultCorePath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (path.extname(path.join(air105DefaultCorePath,element))==='.soc') {
                 coreList.push(element);
             }
         }
