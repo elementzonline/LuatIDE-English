@@ -957,7 +957,9 @@ function importUiProject(importData) {
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
     $(".navbar").hide();
-    $(".tips").show();
+    if (importData.errorData !== ""){
+        $(".tips").show();
+    }
     $(allHideStr).hide();
     whichDsp.show();
 
