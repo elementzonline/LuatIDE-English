@@ -306,30 +306,80 @@ export class PluginVariablesInit {
         return coreList;
     }
 
-    // 获取air10x默认最新corePath路径
-    getAir10XDefaultLatestCorePath(){
-        const air10xCorePath:string = this.getAir10XDefaultCorePath();
-        const coreList:string[] = fs.readdirSync(air10xCorePath);
-        const reg = this.getAir10XReg();
+    // 获取air101默认最新corePath路径
+    getAir101DefaultLatestCorePath() {
+        const air101CorePath: string = this.getAir101DefaultCorePath();
+        const coreList: string[] = fs.readdirSync(air101CorePath);
+        const reg = this.getAir101Reg();
         let currentVersion = undefined;
         let coreName = '';
         for (let index = 0; index < coreList.length; index++) {
-            const currentCoreName:string = coreList[index];
+            const currentCoreName: string = coreList[index];
             if (path.extname(currentCoreName) === '.soc') {
-                const coreNameVersionArray:any = reg.exec(currentCoreName);
+                const coreNameVersionArray: any = reg.exec(currentCoreName);
                 reg.lastIndex = 0;
                 if (coreNameVersionArray !== null && currentVersion === undefined) {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
-                else if (coreNameVersionArray !== null  && currentVersion!==undefined && coreNameVersionArray[1] > currentVersion) {
+                else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
             }
-            }
+        }
         return coreName;
-        }   
+    }   
+
+    // 获取air103默认最新corePath路径
+    getAir103DefaultLatestCorePath() {
+        const air103CorePath: string = this.getAir103DefaultCorePath();
+        const coreList: string[] = fs.readdirSync(air103CorePath);
+        const reg = this.getAir103Reg();
+        let currentVersion = undefined;
+        let coreName = '';
+        for (let index = 0; index < coreList.length; index++) {
+            const currentCoreName: string = coreList[index];
+            if (path.extname(currentCoreName) === '.soc') {
+                const coreNameVersionArray: any = reg.exec(currentCoreName);
+                reg.lastIndex = 0;
+                if (coreNameVersionArray !== null && currentVersion === undefined) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+                else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+            }
+        }
+        return coreName;
+    }   
+
+    // 获取air105默认最新corePath路径
+    getAir105DefaultLatestCorePath() {
+        const air105CorePath: string = this.getAir105DefaultCorePath();
+        const coreList: string[] = fs.readdirSync(air105CorePath);
+        const reg = this.getAir105Reg();
+        let currentVersion = undefined;
+        let coreName = '';
+        for (let index = 0; index < coreList.length; index++) {
+            const currentCoreName: string = coreList[index];
+            if (path.extname(currentCoreName) === '.soc') {
+                const coreNameVersionArray: any = reg.exec(currentCoreName);
+                reg.lastIndex = 0;
+                if (coreNameVersionArray !== null && currentVersion === undefined) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+                else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
+                    currentVersion = coreNameVersionArray[1];
+                    coreName = currentCoreName;
+                }
+            }
+        }
+        return coreName;
+    }   
 
     // 获取air72x默认最新core路径
     getAir72XDefaultLatestCorePath(){
