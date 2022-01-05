@@ -171,10 +171,22 @@ export class PluginVariablesInit {
         return air72XDefaultDemoPath;
     }
 
-    // 获取Air10X默认demo
-    getAir10XDefaultDemoPath() {
-        const air10XDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air10X_Demo");
-        return air10XDefaultDemoPath;
+    // 获取air101默认demo
+    getAir101DefaultDemoPath() {
+        const air101DefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
+        return air101DefaultDemoPath;
+    }
+
+    // 获取air103默认demo
+    getAir103DefaultDemoPath(){
+        const air103DefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air103_Demo");
+        return air103DefaultDemoPath;
+    }
+
+    // 获取air105默认demo
+    getAir105DefaultDemoPath(){
+        const air105DefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
+        return air105DefaultDemoPath;
     }
 
     // 获取插件支持的模块列表
