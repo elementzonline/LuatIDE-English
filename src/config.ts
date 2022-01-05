@@ -697,11 +697,17 @@ export class PluginCoreUpate {
     async getDownloadReadyHint(moduleModel: string) {
         let coreDownloadReadyHint: string;
         switch (moduleModel) {
-            case 'Air72X':
-                coreDownloadReadyHint = '当前Air10X固件默认区域未检测到固件,是否拉取最新Air10X固件';
+            case 'air72XUX/air82XUX':
+                coreDownloadReadyHint = '当前air72XUX/air82XUX固件默认区域未检测到固件,是否拉取最新air72XUX/air82XUX固件';
                 return coreDownloadReadyHint;
-            case 'Air10X':
-                coreDownloadReadyHint = '当前Air10X固件默认区域未检测到固件,是否拉取最新Air10X固件';
+            case 'air101':
+                coreDownloadReadyHint = '当前air101固件默认区域未检测到固件,是否拉取最新air101固件';
+                return coreDownloadReadyHint;
+            case 'air103':
+                coreDownloadReadyHint = '当前air103固件默认区域未检测到固件,是否拉取最新air103固件';
+                return coreDownloadReadyHint;
+            case 'air105':
+                coreDownloadReadyHint = '当前air105固件默认区域未检测到固件,是否拉取最新air105固件';
                 return coreDownloadReadyHint;
         }
     }
@@ -710,11 +716,17 @@ export class PluginCoreUpate {
     async getDownloadingHint(moduleModel: string) {
         let coreDownloadingHint: string;
         switch (moduleModel) {
-            case 'Air72X':
-                coreDownloadingHint = '正在为您拉取最新Air72X固件,请耐心等待';
+            case 'air72XUX/air82XUX':
+                coreDownloadingHint = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
                 return coreDownloadingHint;
-            case 'Air10X':
-                coreDownloadingHint = '正在为您拉取最新Air10X固件,请耐心等待';
+            case 'air101':
+                coreDownloadingHint = '正在为您拉取最新air101固件,请耐心等待';
+                return coreDownloadingHint;
+            case 'air103':
+                coreDownloadingHint = '正在为您拉取最新air103固件,请耐心等待';
+                return coreDownloadingHint;
+            case 'air105':
+                coreDownloadingHint = '正在为您拉取最新air105固件,请耐心等待';
                 return coreDownloadingHint;
         }
     }
@@ -786,10 +798,16 @@ export class CorePullDownload {
     async getPullRequestUrl(moduleModel: any) {
         let requestUrl: any;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 requestUrl = 'https://erp.openluat.com/api/site/product_software_latest?software_type=8910&software_type_2=LUAT';
                 return requestUrl;
-            case 'Air10X':
+            case 'air101':
+                requestUrl = 'https://luatos.com/api/luatools/files';
+                return requestUrl;
+            case 'air103':
+                requestUrl = 'https://luatos.com/api/luatools/files';
+                return requestUrl;
+            case 'air105':
                 requestUrl = 'https://luatos.com/api/luatools/files';
                 return requestUrl;
         }
@@ -806,12 +824,20 @@ export class CorePullDownload {
     async parseJsonReturnSourceUrl(moduleModel: any, jsonData: any) {
         let sourceUrl: string;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 sourceUrl = jsonData['data'][0]['software_url'];
                 return sourceUrl;
-            case 'Air10X':
-                const sourceName: string = jsonData['101_lua_lod'];
-                sourceUrl = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/101_lua_lod/' + sourceName;
+            case 'air101':
+                const air101SourceName: string = jsonData['101_lua_lod'];
+                sourceUrl = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/101_lua_lod/' + air101SourceName;
+                return sourceUrl;
+            case 'air103':
+                const air103SourceName: string = jsonData['103_lua_lod'];
+                sourceUrl = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/103_lua_lod/' + air103SourceName;
+                return sourceUrl;
+            case 'air105':
+                const air105SourceName: string = jsonData['105_lua_lod'];
+                sourceUrl = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/105_lua_lod/' + air105SourceName;
                 return sourceUrl;
         }
     }
@@ -821,13 +847,21 @@ export class CorePullDownload {
         const sourcezipName: any = sourceUrl.split('/').reverse()[0];
         let sourceDistPath: any;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 const air72xCorePath = this.pluginVariablesInit.getAir72xCorepath();
                 sourceDistPath = path.join(air72xCorePath, sourcezipName);
                 return sourceDistPath;
-            case 'Air10X':
-                const air10xCorePath = this.pluginVariablesInit.getAir10xCorepath();
-                sourceDistPath = path.join(air10xCorePath, sourcezipName);
+            case 'air101':
+                const air101CorePath = this.pluginVariablesInit.getAir101DefaultLatestCorePath();
+                sourceDistPath = path.join(air101CorePath, sourcezipName);
+                return sourceDistPath;
+            case 'air103':
+                const air103CorePath = this.pluginVariablesInit.getAir103DefaultLatestCorePath();
+                sourceDistPath = path.join(air103CorePath, sourcezipName);
+                return sourceDistPath;
+            case 'air105':
+                const air105CorePath = this.pluginVariablesInit.getAir105DefaultLatestCorePath();
+                sourceDistPath = path.join(air105CorePath, sourcezipName);
                 return sourceDistPath;
         }
     }
