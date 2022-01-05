@@ -159,7 +159,7 @@ let pluginVariablesInit = new PluginVariablesInit();
              appFile: [],
              modulePort: '',
          };
-         if (Number(projectOldJsonObj.version) < 2.0) {
+         if (projectOldJsonObj.version!=="" &&Number(projectOldJsonObj.version) < 2.0) {
              // 用户core路径兼容
              const corePath: string = projectOldJsonObj['corefile_path'];
              luatideProjectNewJson.corePath = corePath;
