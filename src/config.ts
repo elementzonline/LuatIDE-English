@@ -77,10 +77,18 @@ export class PluginVariablesInit {
     async getRegBaseModel(moduleModel: any) {
         let reg: any;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 reg = this.getAir72XReg();
-            case 'Air10X':
+                break;
+            case 'air101':
                 reg = this.getAir10XReg();
+                break;
+            case 'air103':
+                reg = this.getAir10XReg();
+                break;
+            case 'air105':
+                reg = this.getAir10XReg();
+                break;
         }
         return reg;
     }
@@ -171,7 +179,7 @@ export class PluginVariablesInit {
 
     // 获取插件支持的模块列表
     getPluginDefaultModuleList() {
-        const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air10X", "simulator"];
+        const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator"];
         return moduleList;
     }
 
