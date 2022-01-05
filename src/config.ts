@@ -55,21 +55,27 @@ export class PluginVariablesInit {
         return air72xCorepath;
     }
 
-    // 获取Air10X固件存储路径
-    getAir10xCorepath() {
-        let air10xCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air10X_CORE');
-        return air10xCorepath;
-    }
-
     // 获取获取Air72X固件版本号正则解析表达式
     getAir72XReg() {
         const reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
         return reg;
     }
 
-    // 获取获取Air10X固件版本号正则解析表达式
-    getAir10XReg() {
+    // 获取获取Air101固件版本号正则解析表达式
+    getAir101Reg() {
         const reg = /LuatOS-SoC_V(\d+)_AIR101/ig;
+        return reg;
+    }
+
+    // 获取获取Air101固件版本号正则解析表达式
+    getAir103Reg() {
+        const reg = /LuatOS-SoC_V(\d+)_AIR103/ig;
+        return reg;
+    }
+
+    // 获取获取Air101固件版本号正则解析表达式
+    getAir105Reg() {
+        const reg = /LuatOS-SoC_V(\d+)_AIR105/ig;
         return reg;
     }
 
