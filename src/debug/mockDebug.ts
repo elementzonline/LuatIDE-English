@@ -311,7 +311,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			{
 				source_name = tmp[0].substring(4 + 1,);
 			}
-			if(tmp[0].indexOf("/luadb/") !== -1)
+			else if(tmp[0].indexOf("/luadb/") !== -1)
 			{
 				source_name = tmp[0].substring(6 + 1,);
 			}
