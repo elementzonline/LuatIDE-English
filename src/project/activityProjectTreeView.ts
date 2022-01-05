@@ -63,14 +63,14 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
   
 
 
-  private pathExists(p: string): boolean {
-    try {
-      fs.accessSync(p);
-    } catch (err) {
-      return false;
-    }
-    return true;
-  }
+  // private pathExists(p: string): boolean {
+  //   try {
+  //     fs.accessSync(p);
+  //   } catch (err) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 }
 
 export class ActivityTreeItem extends vscode.TreeItem{

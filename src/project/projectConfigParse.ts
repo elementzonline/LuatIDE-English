@@ -28,7 +28,7 @@ let pluginJsonParse = new PluginJsonParse();
     // 获取工程下载至模块的脚本文件及资源文件列表
     getProjectConfigAppFile(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
-        const projectConfigAppFile:string = projectConfigJsonObj.appFile;
+        const projectConfigAppFile:string[] = projectConfigJsonObj.appFile;
         return projectConfigAppFile;
     }
 
