@@ -22,7 +22,7 @@ import { PluginJsonParse } from '../plugConfigParse';
 import { ProjectJsonParse } from "../project/projectConfigParse";
 
 // 获取当前时间戳，并解析后格式化输出
-function formatConsoleDate (date) {
+function formatConsoleDate (date:any) {
     var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
     var month = date.getMonth();    // 获取当前月份(0-11,0代表1月)
     var day = date.getDate();
@@ -50,7 +50,7 @@ let Queue = (function () {
             items.set(this, []);
         }
 
-        enqueue(...element) {//向队列尾部添加一个（或多个）新的项
+        enqueue(...element:any) {//向队列尾部添加一个（或多个）新的项
             let q = items.get(this);
             q.push(...element);
         }
@@ -144,7 +144,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private bt_lock_done = new Subject();
 
 	private download_success = new Subject();
-	protected _socket;
+	protected _socket:any;
 	
 	private timesleep = new Subject();
 
@@ -176,9 +176,9 @@ export class MockDebugSession extends LoggingDebugSession {
 	private projectJsonParse: any = new ProjectJsonParse();
 
 	// 分发器
-	public dbg_dispatcher(heads, exts) {
+	public dbg_dispatcher(heads:any, exts:any) {
 
-		var key = "dbg_" + heads[0] + "_" + heads[1];
+		var key:any = "dbg_" + heads[0] + "_" + heads[1];
 		if (typeof this[key] === "function") {
 
 			this[key](heads, exts);
@@ -198,9 +198,9 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	
 	/*+\NEW\czm\2021.05.8\调试控制台输出日志*/
-	public dbg_luat_log(heads, exts) {
-		vscode.debug.activeDebugConsole.appendLine(exts);
-		_outputChannel.appendLine(exts);
+	public dbg_luat_log(heads:any, exts:any) {
+		vscode.debug.activeDebugConsole.append(exts);
+		_outputChannel.append(exts);
 		// 增加lua运行日志文件下载到本地活动工程目录
 		fs.appendFile(this.activeWorkspace+"\\LuatIDE_log"+"\\"+this.current_logfilename,exts+"\r\n",()=>{});
 	}
@@ -208,7 +208,7 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	//---------------------------------------------------------------
 	//                State 状态类
-	public dbg_state_changed(heads) {
+	public dbg_state_changed(heads:any) {
 		this.dbg_state = parseInt(heads[3]);
 		this._stateChanged.notify();
 	}
@@ -224,7 +224,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	//---------------------------------------------------------------
 	//                事件类
-	public dbg_event_stopped(heads) {
+	public dbg_event_stopped(heads:any) {
 		this.dbg_state = 3;
 		this.sendEvent(new StoppedEvent(heads[2], 1));
 	}
@@ -294,7 +294,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	//打印指定深度或打印全部堆栈信息。
 	private dbg_stack: DebugProtocol.StackFrame[] = new Array();
-	public dbg_resp_stack(heads, exts: String) {
+	public dbg_resp_stack(heads:any, exts: String) {
 		const level = parseInt(heads[3]);
 		if (level === -1) {
 			this._stackDone.notify();
@@ -362,7 +362,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//------------------------------------------------------------------
 	//-----------------------------------------------------------------
 	//打印变量信息
-	public dbg_resp_vars(heads, exts: String) {
+	public dbg_resp_vars(heads:any, exts: String) {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//局部变量全部打印完毕了
@@ -374,7 +374,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			// console.log("dbg_vars");
 		}
 	}
-	public dbg_resp_gvars(heads, exts: String) {
+	public dbg_resp_gvars(heads:any, exts: String) {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//全局变量全部打印完毕了
@@ -384,7 +384,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			this.dbg_gvarsArray.push(exts);
 		}
 	}
-	public dbg_resp_jvars(heads,exts:string){
+	public dbg_resp_jvars(heads:any,exts:string){
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//变量全部打印完毕了
@@ -458,7 +458,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 
 	// 命令队列出队;
-	public  commandprint1(arg){
+	public  commandprint1(arg:any){
 
 		if (arg.dataReceiveFlag === 1) {
 
@@ -560,33 +560,6 @@ export class MockDebugSession extends LoggingDebugSession {
 			setTimeout(res, time);
 		});
 	}
-
-	// 遍历pac所在文件夹，确定当前pac包版本
-	private async  search_current_coreversion(dir,reg,coreExtname) {
-			const files =fs.readdirSync(dir);
-			let current_version:any=undefined;
-			let current_version_array:any
-			let final_file:any;
-			await files.forEach(  (file, index) => {
-				const extname =path.extname(file);
-				if (extname === coreExtname) {
-					current_version_array = reg.exec(file);
-					reg.lastIndex = 0;      //reg.exec()正则表达式全局匹配，需要使用该lastIndex属性重置索引（最后一个匹配的位置）。
-					if (current_version_array!==null && current_version===undefined) {
-						current_version=current_version_array[1];
-						final_file=file;
-					}       
-					else if (current_version_array!==null && current_version_array[1]>current_version) {
-						current_version = current_version_array[1];
-						final_file = file;
-					}
-				}
-				else{
-					console.log("非core文件");
-				}
-			});
-			return final_file;
-		}
 	public async downpath_send() {
 		this.download_state = 0;
 		// 获取用户工作区路径
@@ -736,7 +709,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		const line = JSON.stringify(line_temp) + "\r\n";
 
 		try {
-			this._socket.write(line, (err) => {
+			this._socket.write(line, (err:any) => {
 				if (err) {
 					console.log(err);
 				}
