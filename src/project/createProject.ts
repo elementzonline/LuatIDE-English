@@ -92,7 +92,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         let createProjectLibPath:string;
         // lib库路径初始化写入
-        if (createProjectMessage.createProjectModuleModel!=='air10X') {
+        if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105') {
             createProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
         else{
@@ -223,7 +223,13 @@ export class CreateProject {
             case 'air72XCX':
                 corePath = '';
                 break;
-            case 'air10X':
+            case 'air101':
+                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                break;
+            case 'air103':
+                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                break;
+            case 'air105':
                 corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
                 break;
             case 'simulator':
@@ -288,16 +294,25 @@ export class CreateProject {
 
     // 向工程中写入初始的main脚本
     createMainLuaData(moduleModel: any, mainLuaPath: any) {
+        const air10xMainData: string = pluginVariablesInit.getAir10XDefaultMainData();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
                 const air72xMainData: string = pluginVariablesInit.getAir72XDefaultMainData();
                 fs.writeFileSync(mainLuaPath, air72xMainData);
-            case 'air10X':
-                const air10xMainData: string = pluginVariablesInit.getAir10XDefaultMainData();
+                break;
+            case 'air101':
                 fs.writeFileSync(mainLuaPath, air10xMainData);
+                break;
+            case 'air103':
+                fs.writeFileSync(mainLuaPath, air10xMainData);
+                break;
+            case 'air105':
+                fs.writeFileSync(mainLuaPath, air10xMainData);
+                break;
             default:
                 const airMainData: string = pluginVariablesInit.getAir72XDefaultMainData();
                 fs.writeFileSync(mainLuaPath, airMainData);
+                break;
         }
     }
 
@@ -305,14 +320,22 @@ export class CreateProject {
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
         let demoPath: any;
         const projectDemoDistPath: string = projectPath;
+        const air10XDefaultDemoPath: string = pluginVariablesInit.getAir10XDefaultDemoPath();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
                 const air72XDefaultDemoPath: string = pluginVariablesInit.getAir72XDefaultDemoPath();
                 demoPath = path.join(air72XDefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
-            case 'air10X':
-                const air10XDefaultDemoPath: string = pluginVariablesInit.getAir10XDefaultDemoPath();
+            case 'air101':
+                demoPath = path.join(air10XDefaultDemoPath, projectDemo);
+                copyDir(demoPath, projectDemoDistPath);
+                break;
+            case 'air103':
+                demoPath = path.join(air10XDefaultDemoPath, projectDemo);
+                copyDir(demoPath, projectDemoDistPath);
+                break;
+            case 'air105':
                 demoPath = path.join(air10XDefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
