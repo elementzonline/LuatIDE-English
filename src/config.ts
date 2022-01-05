@@ -210,14 +210,42 @@ export class PluginVariablesInit {
         return demoList;
     }
 
-    // 获取Air10X默认示例demo列表
-    getAir10XDefaultExampleList() {
+    // 获取Air101默认示例demo列表
+    getAir101DefaultExampleList() {
         const demoList: string[] = [];
-        const air10XDefaultDemoPath: string = this.getAir10XDefaultDemoPath();
-        const files: string[] = fs.readdirSync(air10XDefaultDemoPath);
+        const air101DefaultDemoPath: string = this.getAir101DefaultDemoPath();
+        const files: string[] = fs.readdirSync(air101DefaultDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(path.join(air10XDefaultDemoPath,element)).isDirectory()) {
+            if (fs.statSync(path.join(air101DefaultDemoPath,element)).isDirectory()) {
+                demoList.push(element);
+            }
+        }
+        return demoList;
+    }
+
+    // 获取Air103默认示例demo列表
+    getAir103DefaultExampleList() {
+        const demoList: string[] = [];
+        const air103DefaultDemoPath: string = this.getAir103DefaultDemoPath();
+        const files: string[] = fs.readdirSync(air103DefaultDemoPath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (fs.statSync(path.join(air103DefaultDemoPath,element)).isDirectory()) {
+                demoList.push(element);
+            }
+        }
+        return demoList;
+    }
+
+    // 获取Air105默认示例demo列表
+    getAir105DefaultExampleList() {
+        const demoList: string[] = [];
+        const air105DefaultDemoPath: string = this.getAir105DefaultDemoPath();
+        const files: string[] = fs.readdirSync(air105DefaultDemoPath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (fs.statSync(path.join(air105DefaultDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
