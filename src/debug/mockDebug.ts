@@ -560,33 +560,6 @@ export class MockDebugSession extends LoggingDebugSession {
 			setTimeout(res, time);
 		});
 	}
-
-	// 遍历pac所在文件夹，确定当前pac包版本
-	private async  search_current_coreversion(dir,reg,coreExtname) {
-			const files =fs.readdirSync(dir);
-			let current_version:any=undefined;
-			let current_version_array:any
-			let final_file:any;
-			await files.forEach(  (file, index) => {
-				const extname =path.extname(file);
-				if (extname === coreExtname) {
-					current_version_array = reg.exec(file);
-					reg.lastIndex = 0;      //reg.exec()正则表达式全局匹配，需要使用该lastIndex属性重置索引（最后一个匹配的位置）。
-					if (current_version_array!==null && current_version===undefined) {
-						current_version=current_version_array[1];
-						final_file=file;
-					}       
-					else if (current_version_array!==null && current_version_array[1]>current_version) {
-						current_version = current_version_array[1];
-						final_file = file;
-					}
-				}
-				else{
-					console.log("非core文件");
-				}
-			});
-			return final_file;
-		}
 	public async downpath_send() {
 		this.download_state = 0;
 		// 获取用户工作区路径
