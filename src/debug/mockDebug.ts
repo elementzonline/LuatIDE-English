@@ -311,6 +311,10 @@ export class MockDebugSession extends LoggingDebugSession {
 			{
 				source_name = tmp[0].substring(4 + 1,);
 			}
+			if(tmp[0].indexOf("/luadb/") !== -1)
+			{
+				source_name = tmp[0].substring(6 + 1,);
+			}
 			else
 			{
 				source_name = tmp[0].substring(1,);
@@ -756,7 +760,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
 
 		// 打开调试模式显示到用户工作台
-		const path_exe_new = path.join(__dirname, "../..", "luatide_server","build","ide_service","main.exe");
+		const path_exe_new = path.join(__dirname, "../..", "luatide_server","build","ide_service","ide_service.exe");
 		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
 		console.log(path_exe_new);
 
