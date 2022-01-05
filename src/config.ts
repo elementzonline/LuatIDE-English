@@ -585,16 +585,20 @@ export class PluginConfigInit {
 export class PluginCoreUpate {
     corePullDownload = new CorePullDownload();
     plugVariablesInit = new PluginVariablesInit();
-    model72XName = 'Air72X';
-    model10XName = 'Air10X';
+    model72XName = 'air72XUX/air82XUX';
+    model101Name = 'air101';
+    model103Name = 'air103';
+    model105Name = 'air105';
     constructor() {
         this.updateCore(this.model72XName);
         this.updateCore(this.model72XName);
+        this.updateCore(this.model101Name);
+        this.updateCore(this.model103Name);
+        this.updateCore(this.model105Name);
     }
 
     // 更新指定模块的Core文件
     async updateCore(moduleModel: any) {
-
         let corepath: any = this.getCorePath(moduleModel);
         // 获取用户本地core版本
         let localCoreVersion = this.getLocalCoreVersion(corepath, moduleModel);
@@ -614,11 +618,17 @@ export class PluginCoreUpate {
     async getCorePath(moduleModel: any) {
         let corepath: any;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 corepath = this.plugVariablesInit.getAir72xCorepath();
                 break;
-            case 'Air10X':
-                corepath = this.plugVariablesInit.getAir10xCorepath();
+            case 'air101':
+                corepath = this.plugVariablesInit.getAir101DefaultCorePath();
+                break;
+            case 'air103':
+                corepath = this.plugVariablesInit.getAir103DefaultCorePath();
+                break;
+            case 'air105':
+                corepath = this.plugVariablesInit.getAir101DefaultCorePath();
                 break;
         }
         return corepath;
@@ -628,10 +638,16 @@ export class PluginCoreUpate {
     async getExtnameBaseModel(moduleModel: any) {
         let extname: any;
         switch (moduleModel) {
-            case 'Air72X':
+            case 'air72XUX/air82XUX':
                 extname = '.pac';
                 break;
-            case 'Air10X':
+            case 'air101':
+                extname = '.soc';
+                break;
+            case 'air103':
+                extname = '.soc';
+                break;
+            case 'air105':
                 extname = '.soc';
                 break;
         }
