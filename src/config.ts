@@ -274,7 +274,7 @@ export class PluginVariablesInit {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
-                else if (coreNameVersionArray !== null && coreNameVersionArray[1] > currentVersion) {
+                else if (coreNameVersionArray !== null  && currentVersion!==undefined && coreNameVersionArray[1] > currentVersion) {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
@@ -299,7 +299,7 @@ export class PluginVariablesInit {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
-                else if (coreNameVersionArray !== null && coreNameVersionArray[1] > currentVersion) {
+                else if (coreNameVersionArray !== null && currentVersion!==undefined && coreNameVersionArray[1] > currentVersion) {
                     currentVersion = coreNameVersionArray[1];
                     coreName = currentCoreName;
                 }
@@ -313,7 +313,7 @@ export class PluginVariablesInit {
         const air72xLibPath:string = this.getAir72XDefaultLibPath();
         const libList:string[] = fs.readdirSync(air72xLibPath);
         const reg = /V([\d\.]+)/gi;
-        let currentVersion = undefined;
+        let currentVersion:string|undefined = undefined;
         for (let index = 0; index < libList.length; index++) {
             const currentLibName:string = libList[index];
             const libNameVersionArray = reg.exec(currentLibName);
@@ -500,7 +500,7 @@ export class PluginCoreUpate {
                 if (currentVersionArray !== null && currentVersion === undefined) {
                     currentVersion = currentVersionArray[1];
                 }
-                else if (currentVersionArray !== null && currentVersionArray[1] > currentVersion) {
+                else if (currentVersionArray !== null  && currentVersion!==undefined && currentVersionArray[1] > currentVersion) {
                     currentVersion = currentVersionArray[1];
                 }
             }
