@@ -198,9 +198,9 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	
 	/*+\NEW\czm\2021.05.8\调试控制台输出日志*/
-		vscode.debug.activeDebugConsole.appendLine(exts);
-		_outputChannel.appendLine(exts);
 	public dbg_luat_log(heads:any, exts:any) {
+		vscode.debug.activeDebugConsole.append(exts);
+		_outputChannel.append(exts);
 		// 增加lua运行日志文件下载到本地活动工程目录
 		fs.appendFile(this.activeWorkspace+"\\LuatIDE_log"+"\\"+this.current_logfilename,exts+"\r\n",()=>{});
 	}
