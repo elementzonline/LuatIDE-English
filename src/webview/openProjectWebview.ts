@@ -210,7 +210,8 @@ export class OpenProjectManage {
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigCorePath(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectPath);
         // 如果非10x且lib为空，则为
-        if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air10X') {
+        if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
+        openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105') {
             openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
         projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
