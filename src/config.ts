@@ -499,40 +499,35 @@ export class PluginConfigInit {
     private air105Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air105_CORE');
 
     constructor() {
-        this.fileInit(this.plugDataPath);
-        this.fileInit(this.historyLibpath);
-        this.fileInit(this.historyDemopath);
-        this.fileInit(this.air72xDemopath);
-        this.fileInit(this.air101Demopath);
-        this.fileInit(this.air103Demopath);
-        this.fileInit(this.air105Demopath);
-        this.fileInit(this.air72xLibpath);
+        this.folderInit(this.plugDataPath);
+        this.folderInit(this.historyLibpath);
+        this.folderInit(this.historyDemopath);
+        this.folderInit(this.air72xDemopath);
+        this.folderInit(this.air101Demopath);
+        this.folderInit(this.air103Demopath);
+        this.folderInit(this.air105Demopath);
+        this.folderInit(this.air72xLibpath);
         this.fileInit(this.dataIntroduce);
         this.fileInit(this.pluginconfigPath);
         this.fileInit(this.uuidPath);
-        this.fileInit(this.corepath);
-        this.fileInit(this.air72xCorepath);
-        this.fileInit(this.air101Corepath);
-        this.fileInit(this.air103Corepath);
-        this.fileInit(this.air105Corepath);
+        this.folderInit(this.corepath);
+        this.folderInit(this.air72xCorepath);
+        this.folderInit(this.air101Corepath);
+        this.folderInit(this.air103Corepath);
+        this.folderInit(this.air105Corepath);
     }
 
-    // 
-
-    // 数据存储路径数据结构初始化
+    // 数据存储路径文件初始化
     fileInit(filePath: string) {
         if (!fs.existsSync(filePath)) {
-            this.judgeFileTypetStatus(filePath);
+            this.generateFile(filePath);
         }
     }
 
-    // 判断文件类型
-    judgeFileTypetStatus(filePath: string) {
-        if (fs.statSync(filePath).isFile()) {
-            this.generateFile(filePath);
-        }
-        else {
-            this.generateFloder(filePath);
+    // 数据存储路径文件夹初始化
+    folderInit(folderPath:string){
+        if (!fs.existsSync(folderPath)) {
+            this.generateFloder(folderPath);
         }
     }
 
