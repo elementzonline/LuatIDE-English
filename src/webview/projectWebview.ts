@@ -108,7 +108,9 @@ export class ProjectManage {
         const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XDefaultCoreList();
         const air10XCoreList:string[] = pluginVariablesInit.getAir10XDefaultCoreList();
         const air72XCXCoreList:string[] = [];
-        const air10XLibList:string[] = []; 
+        const air101LibList:string[] = []; 
+        const air103LibList:string[] = []; 
+        const air105LibList:string[] = []; 
         switch (message.command) {
             // 用户新建工程信息接收
             case 'projectType':
@@ -124,17 +126,17 @@ export class ProjectManage {
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
                                         "air72XCX":air72XUXLibList,
-                                        "air101": air10XLibList,
-                                        "air103": air10XLibList,
-                                        "air105": air10XLibList,
+                                        "air101": air101LibList,
+                                        "air103": air103LibList,
+                                        "air105": air105LibList,
                                         "simulator":air72XUXLibList,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air101": air10XLibList,
-                                        "air103": air10XLibList,
-                                        "air105": air10XLibList,
+                                        "air101": air10XCoreList,
+                                        "air103": air10XCoreList,
+                                        "air105": air10XCoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 }
@@ -189,9 +191,9 @@ export class ProjectManage {
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
                                         "air72XCX":air72XUXLibList,
-                                        "air101": air10XLibList,
-                                        "air103": air10XLibList,
-                                        "air105": air10XLibList,
+                                        "air101": air101LibList,
+                                        "air103": air103LibList,
+                                        "air105": air105LibList,
                                         "simulator":air72XUXLibList,
                                     },
                                     "coreList": {
