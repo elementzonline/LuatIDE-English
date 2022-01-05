@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
 import { ProjectConfigOperation } from '../project/ProjectHandle';
-import { ProjectJsonParse } from '../project/projectConfigParse';
+// import { ProjectJsonParse } from '../project/projectConfigParse';
 import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 
@@ -124,13 +124,17 @@ export class ProjectManage {
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
                                         "air72XCX":air72XUXLibList,
-                                        "air10X": air10XLibList,
+                                        "air101": air10XLibList,
+                                        "air103": air10XLibList,
+                                        "air105": air10XLibList,
                                         "simulator":air72XUXLibList,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air10X": air10XCoreList,
+                                        "air101": air10XLibList,
+                                        "air103": air10XLibList,
+                                        "air105": air10XLibList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 }
@@ -147,13 +151,17 @@ export class ProjectManage {
                                     "exampleList": {
                                         "air72XUX/air82XUX": pluginDefaultAir72XExample,
                                         "air72XCX":pluginDefaultAir72XExample,
-                                        "air10X": pluginDefaultAir10XExample,
+                                        "air101": pluginDefaultAir10XExample,
+                                        "air103": pluginDefaultAir10XExample,
+                                        "air105": pluginDefaultAir10XExample,
                                         "simulator":pluginDefaultAir72XExample,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air10X": air10XCoreList,
+                                        "air101": air10XCoreList,
+                                        "air103": air10XCoreList,
+                                        "air105": air10XCoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 },
@@ -181,13 +189,17 @@ export class ProjectManage {
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
                                         "air72XCX":air72XUXLibList,
-                                        "air10X": air10XLibList,
+                                        "air101": air10XLibList,
+                                        "air103": air10XLibList,
+                                        "air105": air10XLibList,
                                         "simulator":air72XUXLibList,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air10X": air10XCoreList,
+                                        "air101": air10XCoreList,
+                                        "air103": air10XCoreList,
+                                        "air105": air10XCoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 },
