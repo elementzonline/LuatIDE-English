@@ -232,10 +232,22 @@ export class PluginVariablesInit {
         return air72xDefaultCorePath;
     }
 
-    // 获取10x默认core文件存储路径
-    getAir10XDefaultCorePath(){
-        const air10xDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air10X_CORE");
-        return air10xDefaultCorePath;
+    // 获取101默认core文件存储路径
+    getAir101DefaultCorePath(){
+        const air101DefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
+        return air101DefaultCorePath;
+    }
+
+    // 获取103默认core文件存储路径
+    getAir103DefaultCorePath(){
+        const air103DefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air103_CORE");
+        return air103DefaultCorePath;
+    }
+    
+    // 获取105默认core文件存储路径
+    getAir105DefaultCorePath(){
+        const air105DefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
+        return air105DefaultCorePath;
     }
 
     // 获取air72x默认core文件列表
