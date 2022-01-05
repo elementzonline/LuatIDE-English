@@ -87,13 +87,13 @@ export class PluginVariablesInit {
                 reg = this.getAir72XReg();
                 break;
             case 'air101':
-                reg = this.getAir10XReg();
+                reg = this.getAir101Reg();
                 break;
             case 'air103':
-                reg = this.getAir10XReg();
+                reg = this.getAir103Reg();
                 break;
             case 'air105':
-                reg = this.getAir10XReg();
+                reg = this.getAir105Reg();
                 break;
         }
         return reg;
@@ -484,7 +484,9 @@ export class PluginConfigInit {
     private historyLibpath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib');
     private historyDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo');
     private air72xDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72X_DEMO');
-    private air10xDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air10X_DEMO');
+    private air101Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air101_DEMO');
+    private air103Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air103_DEMO');
+    private air105Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air105_DEMO');
     private air72xLibpath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib', 'Air72X_LIB');
     private dataIntroduce: any = path.join(this.appDataPath, 'LuatIDE', '文件夹说明.txt');
     private introduceData: any = '该文件夹为合宙vscode插件LuatIDE的配置保存文件,删除后可能导致插件历史配置丢失,插件不可使用,请谨慎删除';
@@ -492,21 +494,27 @@ export class PluginConfigInit {
     private uuidPath = path.join(this.appDataPath, 'LuatIDE', 'uuid.txt');
     private corepath = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore');
     private air72xCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air72X_CORE');
-    private air10xCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air10X_CORE');
+    private air101Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air101_CORE');
+    private air103Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air103_CORE');
+    private air105Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air105_CORE');
 
     constructor() {
         this.fileInit(this.plugDataPath);
         this.fileInit(this.historyLibpath);
         this.fileInit(this.historyDemopath);
         this.fileInit(this.air72xDemopath);
-        this.fileInit(this.air10xDemopath);
+        this.fileInit(this.air101Demopath);
+        this.fileInit(this.air103Demopath);
+        this.fileInit(this.air105Demopath);
         this.fileInit(this.air72xLibpath);
         this.fileInit(this.dataIntroduce);
         this.fileInit(this.pluginconfigPath);
         this.fileInit(this.uuidPath);
         this.fileInit(this.corepath);
         this.fileInit(this.air72xCorepath);
-        this.fileInit(this.air10xCorepath);
+        this.fileInit(this.air101Corepath);
+        this.fileInit(this.air103Corepath);
+        this.fileInit(this.air105Corepath);
     }
 
     // 
