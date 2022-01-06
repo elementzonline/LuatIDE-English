@@ -224,13 +224,13 @@ export class CreateProject {
                 corePath = '';
                 break;
             case 'air101':
-                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                corePath = this.getCreateProjectAir101CorepathHandle(corePath);
                 break;
             case 'air103':
-                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                corePath = this.getCreateProjectAir103CorepathHandle(corePath);
                 break;
             case 'air105':
-                corePath = this.getCreateProjectAir10XCorepathHandle(corePath);
+                corePath = this.getCreateProjectAir105CorepathHandle(corePath);
                 break;
             case 'simulator':
                 corePath = this.getCreateProjectAir72XCorepathHandle(corePath);
@@ -240,17 +240,49 @@ export class CreateProject {
     }
 
     // 接收到的webview发送的air101的core处理
-    getCreateProjectAir10XCorepathHandle(corePath:string){
-        const air10XDefaultCorePath = pluginVariablesInit.getAir10XDefaultCorePath();
+    getCreateProjectAir101CorepathHandle(corePath:string){
+        const air101DefaultCorePath = pluginVariablesInit.getAir101DefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir10XDefaultLatestCorePath();
-            corePath = path.join(air10XDefaultCorePath,coreLatestName);
+            const coreLatestName:string = pluginVariablesInit.getAir101DefaultLatestCorePath();
+            corePath = path.join(air101DefaultCorePath,coreLatestName);
         }
         else{
-            corePath = path.join(air10XDefaultCorePath,corePath);
+            corePath = path.join(air101DefaultCorePath,corePath);
+        }
+        return corePath;
+    }
+
+    // 接收到的webview发送的air103的core处理
+    getCreateProjectAir103CorepathHandle(corePath:string){
+        const air103DefaultCorePath = pluginVariablesInit.getAir103DefaultCorePath();
+        if (fs.existsSync(corePath)) {
+            corePath = corePath;
+        }
+        else if (corePath==='') {
+            const coreLatestName:string = pluginVariablesInit.getAir103DefaultLatestCorePath();
+            corePath = path.join(air103DefaultCorePath,coreLatestName);
+        }
+        else{
+            corePath = path.join(air103DefaultCorePath,corePath);
+        }
+        return corePath;
+    }
+
+    // 接收到的webview发送的air105的core处理
+    getCreateProjectAir105CorepathHandle(corePath:string){
+        const air105DefaultCorePath = pluginVariablesInit.getAir105DefaultCorePath();
+        if (fs.existsSync(corePath)) {
+            corePath = corePath;
+        }
+        else if (corePath==='') {
+            const coreLatestName:string = pluginVariablesInit.getAir105DefaultLatestCorePath();
+            corePath = path.join(air105DefaultCorePath,coreLatestName);
+        }
+        else{
+            corePath = path.join(air105DefaultCorePath,corePath);
         }
         return corePath;
     }
@@ -320,7 +352,9 @@ export class CreateProject {
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
         let demoPath: any;
         const projectDemoDistPath: string = projectPath;
-        const air10XDefaultDemoPath: string = pluginVariablesInit.getAir10XDefaultDemoPath();
+        const air101DefaultDemoPath: string = pluginVariablesInit.getAir101DefaultDemoPath();
+        const air103DefaultDemoPath: string = pluginVariablesInit.getAir103DefaultDemoPath();
+        const air105DefaultDemoPath: string = pluginVariablesInit.getAir105DefaultDemoPath();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
                 const air72XDefaultDemoPath: string = pluginVariablesInit.getAir72XDefaultDemoPath();
@@ -328,15 +362,15 @@ export class CreateProject {
                 copyDir(demoPath, projectDemoDistPath);
                 break;
             case 'air101':
-                demoPath = path.join(air10XDefaultDemoPath, projectDemo);
+                demoPath = path.join(air101DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
             case 'air103':
-                demoPath = path.join(air10XDefaultDemoPath, projectDemo);
+                demoPath = path.join(air103DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
             case 'air105':
-                demoPath = path.join(air10XDefaultDemoPath, projectDemo);
+                demoPath = path.join(air105DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
         }
