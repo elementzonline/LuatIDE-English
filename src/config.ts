@@ -4,8 +4,9 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 // import { UpdateCore } from './updataCore';
 import { ProgressLocation } from 'vscode';
-// import  fetch from 'node-fetch'; 
 import * as compressing from 'compressing';
+const {fetch} = require('node-fetch');
+
 
 /**
  * 插件变量初始化，管理插件所有的全局变量

@@ -10,7 +10,7 @@ import {
 } from 'vscode-debugadapter';
 import { DebugProtocol } from 'vscode-debugprotocol';
 // import { FileAccessor } from './mockRuntime';
-import { Subject } from 'await-notify';
+const { Subject } = require('await-notify');
 import * as Net from 'net';
 /*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 import * as vscode from "vscode";
@@ -22,79 +22,79 @@ import { PluginJsonParse } from '../plugConfigParse';
 import { ProjectJsonParse } from "../project/projectConfigParse";
 
 // 获取当前时间戳，并解析后格式化输出
-function formatConsoleDate (date:any) {
-    var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
-    var month = date.getMonth();    // 获取当前月份(0-11,0代表1月)
-    var day = date.getDate();
-    var hour = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    return year+
-            '-' +(month+1)+
-            '-' +day+
-            '_' +
-            ((hour < 10) ? '0' + hour: hour) +
-            '-' +
-            ((minutes < 10) ? '0' + minutes: minutes) +
-            '-' +
-            ((seconds < 10) ? '0' + seconds: seconds);
+function formatConsoleDate(date: any) {
+	var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
+	var month = date.getMonth();    // 获取当前月份(0-11,0代表1月)
+	var day = date.getDate();
+	var hour = date.getHours();
+	var minutes = date.getMinutes();
+	var seconds = date.getSeconds();
+	return year +
+		'-' + (month + 1) +
+		'-' + day +
+		'_' +
+		((hour < 10) ? '0' + hour : hour) +
+		'-' +
+		((minutes < 10) ? '0' + minutes : minutes) +
+		'-' +
+		((seconds < 10) ? '0' + seconds : seconds);
 }
 // 队列结构实现
 let Queue = (function () {
 
-    const items = new WeakMap();//WeakMap对象是密钥/值对的集合，其中密钥被弱引用。键必须是对象，值可以是任意值。
+	const items = new WeakMap();//WeakMap对象是密钥/值对的集合，其中密钥被弱引用。键必须是对象，值可以是任意值。
 
-    class Queue {
+	class Queue {
 
-        constructor () {
-            items.set(this, []);
-        }
+		constructor() {
+			items.set(this, []);
+		}
 
-        enqueue(...element:any) {//向队列尾部添加一个（或多个）新的项
-            let q = items.get(this);
-            q.push(...element);
-        }
+		enqueue(...element: any) {//向队列尾部添加一个（或多个）新的项
+			let q = items.get(this);
+			q.push(...element);
+		}
 
-        dequeue() {//移除队列的第一个（排在队列最前面的）项，并返回被移除的元素。
-            let q = items.get(this);
-            let r = q.shift();
-            return r;
-        }
+		dequeue() {//移除队列的第一个（排在队列最前面的）项，并返回被移除的元素。
+			let q = items.get(this);
+			let r = q.shift();
+			return r;
+		}
 
-        front() {//返回队列中第一个元素——最先被添加，也将是最先被移除的元素。队列不做任何变动（不移除元素，只返回元素信息）
-            let q = items.get(this);
-            return q[0];
-        }
+		front() {//返回队列中第一个元素——最先被添加，也将是最先被移除的元素。队列不做任何变动（不移除元素，只返回元素信息）
+			let q = items.get(this);
+			return q[0];
+		}
 
-        isEmpty(){//如果队列中不包含任何元素，返回true，否则返回false。
-            return items.get(this).length === 0;
-        }
+		isEmpty() {//如果队列中不包含任何元素，返回true，否则返回false。
+			return items.get(this).length === 0;
+		}
 
-        size(){//返回队列包含的元素个数，与数组的length属性类似。
-            let q = items.get(this);
-            return q.length;
-        }
+		size() {//返回队列包含的元素个数，与数组的length属性类似。
+			let q = items.get(this);
+			return q.length;
+		}
 
-        clear(){//清空队列里面的元素。
-            items.set(this, []);
-        }
+		clear() {//清空队列里面的元素。
+			items.set(this, []);
+		}
 
-        print(){//打印队列为String到控制台
-            console.log(this.toString());
-        }
+		print() {//打印队列为String到控制台
+			console.log(this.toString());
+		}
 
-        toString(){//输出队列以String模式。
-            return items.get(this).toString();
-        }
-    }
-    return Queue;
+		toString() {//输出队列以String模式。
+			return items.get(this).toString();
+		}
+	}
+	return Queue;
 })();
 
 let queue = new Queue();//实例化队列
 // 定义输出日志到输出
 let _outputChannel = vscode.window.createOutputChannel("LuatIDE_log");
 
-let configDataPath:any = process.env['APPDATA'];
+let configDataPath: any = process.env['APPDATA'];
 
 /**
  * This interface describes the mock-debug specific launch attributes
@@ -144,8 +144,8 @@ export class MockDebugSession extends LoggingDebugSession {
 	private bt_lock_done = new Subject();
 
 	private download_success = new Subject();
-	protected _socket:any;
-	
+	protected _socket: any;
+
 	private timesleep = new Subject();
 
 	protected dbg_state: Number = 0;
@@ -166,19 +166,20 @@ export class MockDebugSession extends LoggingDebugSession {
 	/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 
 	public runmodel: boolean = false;
-	public current_messagearr:any;
+	public current_messagearr: any;
 
-	private dataReceiveFlag:number = 1;
-	private current_logfilename:string = "";
-	private configDataPath:any = process.env['APPDATA'];
+	private dataReceiveFlag: number = 1;
+	private current_logfilename: string = "";
+	private configDataPath: any = process.env['APPDATA'];
 
-	private pluginJsonParse:any = new PluginJsonParse(); 
+	private pluginJsonParse: any = new PluginJsonParse();
 	private projectJsonParse: any = new ProjectJsonParse();
-
+	// dbg_dispatcher元素隐式具有 "any" 类型，因为类型为 "any" 的表达式不能用于索引类型 "MockDebugSession"。
+	[key: string]: any;
 	// 分发器
-	public dbg_dispatcher(heads:any, exts:any) {
+	public dbg_dispatcher(heads: any, exts: any) {
 
-		var key:any = "dbg_" + heads[0] + "_" + heads[1];
+		var key: any = "dbg_" + heads[0] + "_" + heads[1];
 		if (typeof this[key] === "function") {
 
 			this[key](heads, exts);
@@ -196,19 +197,19 @@ export class MockDebugSession extends LoggingDebugSession {
 	public dbg_download_state() {
 		this.download_state = 1;
 	}
-	
+
 	/*+\NEW\czm\2021.05.8\调试控制台输出日志*/
-	public dbg_luat_log(heads:any, exts:any) {
+	public dbg_luat_log(heads: any, exts: any) {
 		vscode.debug.activeDebugConsole.append(exts);
 		_outputChannel.append(exts);
 		// 增加lua运行日志文件下载到本地活动工程目录
-		fs.appendFile(this.activeWorkspace+"\\LuatIDE_log"+"\\"+this.current_logfilename,exts+"\r\n",()=>{});
+		fs.appendFile(this.activeWorkspace + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
 	}
 	/*-\NEW\czm\2021.05.8\调试控制台输出日志*/
 
 	//---------------------------------------------------------------
 	//                State 状态类
-	public dbg_state_changed(heads:any) {
+	public dbg_state_changed(heads: any) {
 		this.dbg_state = parseInt(heads[3]);
 		this._stateChanged.notify();
 	}
@@ -224,7 +225,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	//---------------------------------------------------------------
 	//                事件类
-	public dbg_event_stopped(heads:any) {
+	public dbg_event_stopped(heads: any) {
 		this.dbg_state = 3;
 		this.sendEvent(new StoppedEvent(heads[2], 1));
 	}
@@ -243,13 +244,13 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 	// /*+\NEW\zhw\2021.06.28\获取用户所选下载配置文件列表*/
 	private userSourceList: string[] = new Array();
-// /*+\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
+	// /*+\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
 	private userSourceListPath: string[] = [];
 	public fileDisplay(filePath: string) {
 		// 根据文件路径读取文件，返回一个文件列表
 		const userSourceList_tmp = fs.readdirSync(filePath);
 		// 遍历读取到的文件列表
-		for (let i = 0; i < userSourceList_tmp.length;i++) {
+		for (let i = 0; i < userSourceList_tmp.length; i++) {
 			// path.join得到当前文件的绝对路径
 			const filepath = path.join(filePath, userSourceList_tmp[i]);
 			// 根据文件路径获取文件信息
@@ -257,29 +258,29 @@ export class MockDebugSession extends LoggingDebugSession {
 			const isFile = stats.isFile(); // 是否为文件
 			const isDir = stats.isDirectory(); // 是否为文件夹
 			if (isFile) {
-				if (userSourceList_tmp[i].lastIndexOf('.lua')!==-1) {
+				if (userSourceList_tmp[i].lastIndexOf('.lua') !== -1) {
 					console.log(filePath);
 					this.userSourceList.push(userSourceList_tmp[i]);
 					this.userSourceListPath.push(path.join(filePath, userSourceList_tmp[i]));
-					console.log("当前文件：",userSourceList_tmp[i]);
+					console.log("当前文件：", userSourceList_tmp[i]);
 				}
-			}else if (isDir) {
+			} else if (isDir) {
 				this.fileDisplay(filepath); // 递归，如果是文件夹，就继续遍历该文件夹里面的文件	
 				console.log(userSourceList_tmp);
-				
+
 			}
 		};
-		console.log("处理后：",this.userSourceList);
+		console.log("处理后：", this.userSourceList);
 		return this.userSourceList;
 	}
-// /*-\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
+	// /*-\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
 	// /*-\NEW\zhw\2021.06.28\获取用户所选下载配置文件列表*/
 	//-----------------------------------------------------------------
 	// 读取配置文件路径
 
-	private generate_project_filepath(){
-		let configSource_fileList:string[]=[];
-		let configSource_filepathList:string[]=[];
+	private generate_project_filepath() {
+		let configSource_fileList: string[] = [];
+		let configSource_filepathList: string[] = [];
 		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < project_fileslist.length; index++) {
 			const project_absolute_file = project_fileslist[index];
@@ -289,12 +290,12 @@ export class MockDebugSession extends LoggingDebugSession {
 				configSource_filepathList.push(project_absolute_file);
 			}
 		}
-		const temp = [configSource_fileList,configSource_filepathList];
+		const temp = [configSource_fileList, configSource_filepathList];
 		return temp;
 	}
 	//打印指定深度或打印全部堆栈信息。
 	private dbg_stack: DebugProtocol.StackFrame[] = new Array();
-	public dbg_resp_stack(heads:any, exts: String) {
+	public dbg_resp_stack(heads: any, exts: String) {
 		const level = parseInt(heads[3]);
 		if (level === -1) {
 			this._stackDone.notify();
@@ -303,36 +304,33 @@ export class MockDebugSession extends LoggingDebugSession {
 			var fullname = exts.trim();
 			let tmp = fullname.split(":");
 			// 跳转路径修改
-			let currentconfigSource_fileList:any = [];
-			let configSource_filepathList:any=this.generate_project_filepath()[1];
+			let currentconfigSource_fileList: any = [];
+			let configSource_filepathList: any = this.generate_project_filepath()[1];
 			currentconfigSource_fileList = this.generate_project_filepath()[0];
-			let source_name:string = "";
-			if(tmp[0].indexOf("/lua/") !== -1)
-			{
+			let source_name: string = "";
+			if (tmp[0].indexOf("/lua/") !== -1) {
 				source_name = tmp[0].substring(4 + 1,);
 			}
-			else if(tmp[0].indexOf("/luadb/") !== -1)
-			{
+			else if (tmp[0].indexOf("/luadb/") !== -1) {
 				source_name = tmp[0].substring(6 + 1,);
 			}
-			else
-			{
+			else {
 				source_name = tmp[0].substring(1,);
 			}
 			let source: string = "";
 			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
-			
+
 			if (currentconfigSource_fileList.indexOf(source_name) !== -1) {
-				console.log("当前",currentconfigSource_fileList);
-				for(let i =0;i<currentconfigSource_fileList.length;i++){
+				console.log("当前", currentconfigSource_fileList);
+				for (let i = 0; i < currentconfigSource_fileList.length; i++) {
 					if (configSource_filepathList[i].indexOf(source_name) !== -1) {
 						source = configSource_filepathList[i];
 						break;
 					}
 				}
 			}
-			else {	
-				source = path.join(__dirname, "../..", "lib_merge_temp",source_name);
+			else {
+				source = path.join(__dirname, "../..", "lib_merge_temp", source_name);
 			}
 			// /*-\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 			// const line = parseInt(tmp[1])
@@ -362,7 +360,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//------------------------------------------------------------------
 	//-----------------------------------------------------------------
 	//打印变量信息
-	public dbg_resp_vars(heads:any, exts: String) {
+	public dbg_resp_vars(heads: any, exts: String) {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//局部变量全部打印完毕了
@@ -374,7 +372,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			// console.log("dbg_vars");
 		}
 	}
-	public dbg_resp_gvars(heads:any, exts: String) {
+	public dbg_resp_gvars(heads: any, exts: String) {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//全局变量全部打印完毕了
@@ -384,11 +382,11 @@ export class MockDebugSession extends LoggingDebugSession {
 			this.dbg_gvarsArray.push(exts);
 		}
 	}
-	public dbg_resp_jvars(heads:any,exts:string){
+	public dbg_resp_jvars(heads: any, exts: string) {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//变量全部打印完毕了
-			console.log("当前的exts是",exts);
+			console.log("当前的exts是", exts);
 			this._watchvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
@@ -442,23 +440,23 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 	}
 	// private requestMessage:string="";
-	private timer1:any = undefined;
-	public  messageRequestManage() {
+	private timer1: any = undefined;
+	public messageRequestManage() {
 		// 判断队列是否有元素
 		if (this.timer1 === undefined) {
-			if(!queue.isEmpty()){
-				console.log("当前的dataReceiveFlag：",this.dataReceiveFlag);
-				this.timer1 = setInterval(this.commandprint1,5,this);
-		}
+			if (!queue.isEmpty()) {
+				console.log("当前的dataReceiveFlag：", this.dataReceiveFlag);
+				this.timer1 = setInterval(this.commandprint1, 5, this);
+			}
 
-		// 判断定时器是否激活
-		// 如果未激活就启动定时器
-		// 如果激活就只入队命令到队
-	}
+			// 判断定时器是否激活
+			// 如果未激活就启动定时器
+			// 如果激活就只入队命令到队
+		}
 	}
 
 	// 命令队列出队;
-	public  commandprint1(arg:any){
+	public commandprint1(arg: any) {
 
 		if (arg.dataReceiveFlag === 1) {
 
@@ -467,14 +465,14 @@ export class MockDebugSession extends LoggingDebugSession {
 				arg.timer1 = undefined;
 				return;
 			}
-			console.log("当前队列第一条数据",queue.front()[0]);
+			console.log("当前队列第一条数据", queue.front()[0]);
 			// 接收消息队列出队数据
-			const requestDataArr:string[] = queue.front();
+			const requestDataArr: string[] = queue.front();
 			const requestData = requestDataArr[0];
 			arg.requestMessage = requestDataArr[1];
-			console.log("当前出队数据：",requestData);
+			console.log("当前出队数据：", requestData);
 			arg.dbg_write_cmd(requestData);
-			console.log("队列发送数据成功",requestData);
+			console.log("队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
 	}
@@ -494,7 +492,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			else {
 				this.dbg_input_buffer = data;
 			}
-			
+
 			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 			while (true) {
 				let msg: any;
@@ -504,13 +502,13 @@ export class MockDebugSession extends LoggingDebugSession {
 					if (offset > - 1) {
 						msglen = offset + 1;
 						msg = this.dbg_input_buffer.subarray(0, msglen).toString("utf-8");
-						console.log(msg,"数据接收成功:",msg);
+						console.log(msg, "数据接收成功:", msg);
 
 						if (!queue.isEmpty()) {
-							if (this.module_model_flag!==undefined){
-								if (msg.indexOf(queue.front()[1])!==-1 && queue.front()[1]!=="" ) {
+							if (this.module_model_flag !== undefined) {
+								if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
 									this.dataReceiveFlag = 1;
-									console.log("当前回传确认数据是",queue.front()[1],"当前接收数据是：",msg);
+									console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
 									// // at交互数据发送到console终端
 									// if(msg.indexOf(queue.front()[0])!==-1){
 									// 	vscode.debug.activeDebugConsole.appendLine(msg);
@@ -520,7 +518,7 @@ export class MockDebugSession extends LoggingDebugSession {
 								}
 							}
 							// 补丁：3103版本固件回传的有问题
-							else if(msg.indexOf("D/dbg [resp,wvars,0]")!==-1){
+							else if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
 								this.dataReceiveFlag = 1;
 								queue.dequeue();
 							}
@@ -571,7 +569,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			await this.sleep(100);
 
 			// 插件所在路径获取
-			const plug_path:string = path.join(__dirname,"../..");
+			const plug_path: string = path.join(__dirname, "../..");
 			const plug_path_data: any = "plug_path " + plug_path;
 			this.dbg_write_cmd(plug_path_data);
 			await this.sleep(100);
@@ -589,7 +587,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 
 	//原有命令写入python服务器逻辑，有修改
-	public  dbg_write_cmd(data: String) {
+	public dbg_write_cmd(data: String) {
 		console.log(data);
 		for (var i = 0; i < 100; i++) {
 			if (this._socket !== null) {
@@ -709,7 +707,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		const line = JSON.stringify(line_temp) + "\r\n";
 
 		try {
-			this._socket.write(line, (err:any) => {
+			this._socket.write(line, (err: any) => {
 				if (err) {
 					console.log(err);
 				}
@@ -733,14 +731,14 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
 
 		// 打开调试模式显示到用户工作台
-		const path_exe_new = path.join(__dirname, "../..", "luatide_server","build","ide_service","ide_service.exe");
+		const path_exe_new = path.join(__dirname, "../..", "luatide_server", "build", "ide_service", "ide_service.exe");
 		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
 		console.log(path_exe_new);
 
 		const isCmd = /cmd.exe$/i.test(vscode.env.shell);
 		const invokePrefix = isCmd ? '' : '& ';
 		const cmdPrefixSuffix = isCmd ? '"' : '';
-		let commandLine = invokePrefix + "'"+path_exe_new+"'";
+		let commandLine = invokePrefix + "'" + path_exe_new + "'";
 		/*+\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
 		const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE Debug", 'Service');
 		/*-\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
@@ -760,10 +758,10 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject()
 
 		// 写入lua运行日志到用户工程下的log文件夹
-		if (!fs.existsSync(this.activeWorkspace+"\\LuatIDE_log")) {
-			fs.mkdirSync(this.activeWorkspace+"\\LuatIDE_log");
+		if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
+			fs.mkdirSync(this.activeWorkspace + "\\LuatIDE_log");
 		}
-		this.current_logfilename = formatConsoleDate(new Date())+"_log.txt";
+		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
 		// execFile(path_exe_new);
 		// 清空历史输出的数据
 		_outputChannel.clear();
@@ -774,18 +772,18 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
 		let socketstat: number = 0;
-		while (true) {		
+		while (true) {
 			const socket = Net.createConnection(21331, '127.0.0.1', () => {
 				socketstat = 1;
 				this._socket_connect_ok.notify();
 			});
-			socket.on('error', function(err) {
+			socket.on('error', function (err) {
 				socket.destroy();
 				socketstat = 0;
 			});
-			socket.on('close',function () {
+			socket.on('close', function () {
 				socket.destroy();
-				socketstat=0;	
+				socketstat = 0;
 			});
 			await this.timesleep.wait(300);
 			if (socketstat === 0) {
@@ -796,11 +794,11 @@ export class MockDebugSession extends LoggingDebugSession {
 				break;
 			}
 		}
-		const flag:any = await this.downpath_send();
+		const flag: any = await this.downpath_send();
 		if (flag === false) {
 			// 强行终止调试器
 			vscode.debug.stopDebugging();
-			return; 
+			return;
 		}
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
@@ -858,8 +856,8 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		await this._configurationDone.wait(1000);
 
-		
-		this.current_messagearr = ["start","D/dbg [state,changed,"];
+
+		this.current_messagearr = ["start", "D/dbg [state,changed,"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg start入队成功");
 		this.messageRequestManage();
@@ -884,29 +882,29 @@ export class MockDebugSession extends LoggingDebugSession {
 			const pathIndex = args.source.path.lastIndexOf("\\");
 			let path: string = args.source.path.substring(0, pathIndex);
 			// 修改不能跳转到其它地方问题,解析json
-			const project_filelist_temp =  this.generate_project_filepath()[1];
+			const project_filelist_temp = this.generate_project_filepath()[1];
 			// 遍历json文件
 			let temp_flag = false;
 			for (let i = 0; i < project_filelist_temp.length; i++) {
 				const element = project_filelist_temp[i];
 				// console.log("===============",element,path,element.indexOf(path));
 				// 排除字符串大小写问题干扰，统一处理
-				if (element.toLocaleLowerCase().indexOf(path.toLocaleLowerCase())!== -1) {
+				if (element.toLocaleLowerCase().indexOf(path.toLocaleLowerCase()) !== -1) {
 					temp_flag = true;
 					break;
 				}
-				else{
+				else {
 					temp_flag = false;
 				}
 			}
-			if (temp_flag===false) {
+			if (temp_flag === false) {
 				this.sendResponse(response);
 				return;
 			}
 
 			/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 			// this.dbg_write_cmd("break clr " + args.source.name);
-			this.current_messagearr = ["break clr " + args.source.name,"D/dbg [resp,break,clear,ok]"];
+			this.current_messagearr = ["break clr " + args.source.name, "D/dbg [resp,break,clear,ok]"];
 			// this.first_messageflag  = true;
 			queue.enqueue(this.current_messagearr);
 			this.messageRequestManage();
@@ -921,15 +919,15 @@ export class MockDebugSession extends LoggingDebugSession {
 					/*+\NEW\zhw\2021.05.26\dbg.wait()main.lua中的代码下载行数加1*/
 					if (args.source.name) {
 						if (args.source.name.indexOf("main.lua") !== -1) {
-							this.current_messagearr = ["break add " + args.source.name + " " + (Number(point.line)+1).toString(),`D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line)+1}`];
+							this.current_messagearr = ["break add " + args.source.name + " " + (Number(point.line) + 1).toString(), `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line) + 1}`];
 							queue.enqueue(this.current_messagearr);
-							console.log("dbg add 入队成功",point.line+1);
+							console.log("dbg add 入队成功", point.line + 1);
 							this.messageRequestManage();
 						}
 						else {
-							this.current_messagearr = ["break add " + args.source.name + " " + point.line,`D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line)}`];
+							this.current_messagearr = ["break add " + args.source.name + " " + point.line, `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line)}`];
 							queue.enqueue(this.current_messagearr);
-							console.log("dbg add 入队成功",point.line);
+							console.log("dbg add 入队成功", point.line);
 							this.messageRequestManage();
 						}
 					}
@@ -957,13 +955,12 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.dbg_write_cmd("service/kill");
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
-		this.timer1=undefined;
+		this.timer1 = undefined;
 		clearInterval(this.timer1);
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
 		child_process.exec('taskkill -f -im LuatideService.exe');
-		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "Simulator")
-		{
+		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "Simulator") {
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
 		}
@@ -985,39 +982,39 @@ export class MockDebugSession extends LoggingDebugSession {
 	//堆栈跟踪请求
 	protected async stackTraceRequest(response: DebugProtocol.StackTraceResponse, args: DebugProtocol.StackTraceArguments) {
 
-				// 不知道为啥, stackTrace总是请求2次, 那是相当蛋疼, 需要干掉
-				if (this.bt_lock === false) {
-					this.bt_lock = true;
+		// 不知道为啥, stackTrace总是请求2次, 那是相当蛋疼, 需要干掉
+		if (this.bt_lock === false) {
+			this.bt_lock = true;
+		}
+		else {
+			for (var i = 0; i < 5; i++) {
+				if (this.bt_lock) {
+					this.bt_lock_done.wait(1000);
 				}
-				else {
-					for (var i = 0; i < 5; i++) {
-						if (this.bt_lock) {
-							this.bt_lock_done.wait(1000);
-						}
-					}
-				}
-				/*+\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
-				//this.dbg_stack = new Array();
-				this.dbg_stack.splice(0);
-				/*-\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
-				this.current_messagearr = ["bt","D/dbg [resp,stack,1,-1]"];
-				queue.enqueue(this.current_messagearr);
-				console.log("dbg bt入队成功");
-				this.messageRequestManage();
-				// 断点显示的不能删
-				console.log("before bt wait");
-				await this._stackDone.wait(5000);
-				console.log("after bt wait");
-				
-				response.body = {
-					stackFrames: this.dbg_stack,
-					totalFrames: this.dbg_stack.length
-				};
-				this.sendResponse(response);
-
-				this.bt_lock = false;
-				this.bt_lock_done.notify();
 			}
+		}
+		/*+\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
+		//this.dbg_stack = new Array();
+		this.dbg_stack.splice(0);
+		/*-\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
+		this.current_messagearr = ["bt", "D/dbg [resp,stack,1,-1]"];
+		queue.enqueue(this.current_messagearr);
+		console.log("dbg bt入队成功");
+		this.messageRequestManage();
+		// 断点显示的不能删
+		console.log("before bt wait");
+		await this._stackDone.wait(5000);
+		console.log("after bt wait");
+
+		response.body = {
+			stackFrames: this.dbg_stack,
+			totalFrames: this.dbg_stack.length
+		};
+		this.sendResponse(response);
+
+		this.bt_lock = false;
+		this.bt_lock_done.notify();
+	}
 
 	protected scopesRequest(response: DebugProtocol.ScopesResponse, args: DebugProtocol.ScopesArguments): void {
 
@@ -1039,14 +1036,14 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async variablesRequest(response: DebugProtocol.VariablesResponse, args: DebugProtocol.VariablesArguments, request?: DebugProtocol.Request) {
 		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 		let dbgVariables: DebugProtocol.Variable[] = [];
-		this.fullvarsArray=[];
+		this.fullvarsArray = [];
 		const id = this._variableHandles.get(args.variablesReference);
 		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端开发全局变量的显示的功能*/
 		console.log("variables  id= ", id);
 		if (id === 'local' || id === 'global') {
 			if (id === 'local') {
 				// this.dbg_write_cmd("vars");
-				this.current_messagearr = ["vars","D/dbg [resp,vars,0]"];
+				this.current_messagearr = ["vars", "D/dbg [resp,vars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg vars 入队");
 				this.messageRequestManage();
@@ -1059,11 +1056,11 @@ export class MockDebugSession extends LoggingDebugSession {
 					if (typeof exts === "undefined") {
 						break;
 					}
-	
+
 					//console.log("exts:",exts);
 					var items = JSON.parse(exts);
-	
-	
+
+
 					if (items["type"] === "table") {
 						dbgVariables.push({
 							name: items["name"],
@@ -1096,7 +1093,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 			else if (id === 'global') {
 				// this.dbg_write_cmd("gvars");
-				this.current_messagearr = ["gvars","D/dbg [resp,gvars,0]"];
+				this.current_messagearr = ["gvars", "D/dbg [resp,gvars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg gvars 入队");
 				this.messageRequestManage();
@@ -1108,11 +1105,11 @@ export class MockDebugSession extends LoggingDebugSession {
 					if (typeof exts === "undefined") {
 						break;
 					}
-	
+
 					//console.log("exts:",exts);
 					var items = JSON.parse(exts);
-	
-	
+
+
 					if (items["type"] === "table") {
 						dbgVariables.push({
 							name: items["name"],
@@ -1145,15 +1142,15 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端开发全局变量的显示的功能*/
 		}
-		else if(id==="\"lvgl\""){
-			vscode.window.showErrorMessage("检测到LVGL表数据量过大，该表不做展开显示",{modal:true});
+		else if (id === "\"lvgl\"") {
+			vscode.window.showErrorMessage("检测到LVGL表数据量过大，该表不做展开显示", { modal: true });
 		}
-		else if(id!==undefined){
-			if(id.indexOf(`{"Tables":[{"type":`)===0){
+		else if (id !== undefined) {
+			if (id.indexOf(`{"Tables":[{"type":`) === 0) {
 				// console.log("==++++++",id,typeof(id));
 				var tables = JSON.parse(id)["Tables"];
 				for (var i = 0; i < tables.length; i++) {
-					var items:any = tables[i];
+					var items: any = tables[i];
 					// if (items.toString().indexOf(`{"Tables":[{"type":`)===0) {
 					if (items["type"] === "table") {
 						// var itemsNew =JSON.parse(items.toString())["data"];
@@ -1186,15 +1183,15 @@ export class MockDebugSession extends LoggingDebugSession {
 					}
 				}
 			}
-			else{
-				const jvars_data = id.replace(/"/g,''); //特殊处理id内的双引号
-				
+			else {
+				const jvars_data = id.replace(/"/g, ''); //特殊处理id内的双引号
+
 				let jvars_data_arraytmp = jvars_data.split(" ");
-				if (jvars_data_arraytmp.length>15) {
-					vscode.window.showErrorMessage("不支持查询超过15层以上的变量",{modal:true});
+				if (jvars_data_arraytmp.length > 15) {
+					vscode.window.showErrorMessage("不支持查询超过15层以上的变量", { modal: true });
 				}
 				// let jvars_data_lastflag = jvars_data_arraytmp.pop();
-				this.current_messagearr = ["jvars "+jvars_data,"D/dbg [resp,jvars,0]"];
+				this.current_messagearr = ["jvars " + jvars_data, "D/dbg [resp,jvars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg vars 入队");
 				this.messageRequestManage();
@@ -1205,26 +1202,26 @@ export class MockDebugSession extends LoggingDebugSession {
 					//console.log("variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
-					}				
-					var table_name =JSON.parse(exts)['name'];
+					}
+					var table_name = JSON.parse(exts)['name'];
 					var tables = JSON.parse(exts)['data']["Tables"];
-					if (tables===[]) {
+					if (tables.length === 0) {
 						continue;
 					}
 					for (var i = 0; i < tables.length; i++) {
-						var items:any = tables[i];
+						var items: any = tables[i];
 						if (items["type"] === "table") {
 							dbgVariables.push({
 								name: items["name"],
 								type: items["type"],
 								value: "Object",
-								variablesReference: this._variableHandles.create(jvars_data+" "+JSON.stringify(items["name"]))
+								variablesReference: this._variableHandles.create(jvars_data + " " + JSON.stringify(items["name"]))
 							});//把接收到的变量信息放到数组
 							this.fullvarsArray.push({
 								name: items["name"],
 								type: items["type"],
 								value: "Object",
-								variablesReference: this._variableHandles.create(table_name+" "+JSON.stringify(items["name"]))
+								variablesReference: this._variableHandles.create(table_name + " " + JSON.stringify(items["name"]))
 							});
 						}
 						else {
@@ -1260,7 +1257,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//dbg continue
 	protected async continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments) {
 		// this.dbg_write_cmd("continue");
-		this.current_messagearr = ["continue","D/dbg [state,changed,3,2]"];
+		this.current_messagearr = ["continue", "D/dbg [state,changed,3,2]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg continue 入队");
 		this.messageRequestManage();
@@ -1274,7 +1271,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//dbg next
 	protected async nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments) {
 		// this.dbg_write_cmd("next");
-		this.current_messagearr = ["next","D/dbg [state,changed,4,3]"];
+		this.current_messagearr = ["next", "D/dbg [state,changed,4,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg next 入队成功");
 		this.messageRequestManage();
@@ -1286,7 +1283,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//dbg stepIn
 	protected async stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments) {
 		// this.dbg_write_cmd("stepIn");
-		this.current_messagearr = ["stepIn","D/dbg [state,changed,5,3]"];
+		this.current_messagearr = ["stepIn", "D/dbg [state,changed,5,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg stepin入队成功");
 		this.messageRequestManage();
@@ -1298,7 +1295,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F12单步跳出，跳出当前执行的方法。
 	//dbg stepOut
 	protected async stepOutRequest(response: DebugProtocol.StepOutResponse, args: DebugProtocol.StepOutArguments) {
-		this.current_messagearr = ["stepOut","D/dbg [state,changed,6,3]"];
+		this.current_messagearr = ["stepOut", "D/dbg [state,changed,6,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg stepout 入队成功");
 		this.messageRequestManage();
@@ -1319,32 +1316,32 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async evaluateRequest(response: DebugProtocol.EvaluateResponse, args: DebugProtocol.EvaluateArguments, request: DebugProtocol.Request) {
 		//调试控制台输入请求
 		switch (args.context) {
-		case 'repl':
-			this.dbg_write_cmd("modem/sendat " + args.expression);
-			this.sendResponse(response);
-		default:
-			while (true) {
-				if (this.fullvarsArray.length===0 && args.expression) {
-					await this.fullvarsDone.wait(1000);
-				}
-				else{
-					break;
-				}
-			}
-			for (let i = 0; i < this.fullvarsArray.length; i++) {
-				const element = this.fullvarsArray[i];
-				if (element['name'] === args.expression) {
-					response.body = {
-						result: element['value'],
-						type: element['type'],
-						variablesReference:element['variablesReference']
-					};
-				}
-				else{
-					continue;
-				}	
+			case 'repl':
+				this.dbg_write_cmd("modem/sendat " + args.expression);
 				this.sendResponse(response);
-			}
+			default:
+				while (true) {
+					if (this.fullvarsArray.length === 0 && args.expression) {
+						await this.fullvarsDone.wait(1000);
+					}
+					else {
+						break;
+					}
+				}
+				for (let i = 0; i < this.fullvarsArray.length; i++) {
+					const element = this.fullvarsArray[i];
+					if (element['name'] === args.expression) {
+						response.body = {
+							result: element['value'],
+							type: element['type'],
+							variablesReference: element['variablesReference']
+						};
+					}
+					else {
+						continue;
+					}
+					this.sendResponse(response);
+				}
 		}
 	}
 	/*-\NEW\czm\2021.05.9\添加调试控制台>输入框发送at的功能*/
