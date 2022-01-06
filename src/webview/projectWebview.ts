@@ -102,11 +102,15 @@ export class ProjectManage {
     async receiveMessageHandle(projectPanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
-        const pluginDefaultAir10XExample:string[] = pluginVariablesInit.getAir10XDefaultExampleList();
+        const pluginDefaultAir101Example:string[] = pluginVariablesInit.getAir101DefaultExampleList();
+        const pluginDefaultAir103Example:string[] = pluginVariablesInit.getAir103DefaultExampleList();
+        const pluginDefaultAir105Example:string[] = pluginVariablesInit.getAir105DefaultExampleList();
         const pluginDefaultAir72XExample:string[] = pluginVariablesInit.getAir72XDefaultExampleList();
         const air72XUXLibList:string[] = pluginVariablesInit.getAir72XDefaultLibList();
         const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XDefaultCoreList();
-        const air10XCoreList:string[] = pluginVariablesInit.getAir10XDefaultCoreList();
+        const air101CoreList:string[] = pluginVariablesInit.getAir101DefaultCoreList();
+        const air103CoreList:string[] = pluginVariablesInit.getAir103DefaultCoreList();
+        const air105CoreList:string[] = pluginVariablesInit.getAir105DefaultCoreList();
         const air72XCXCoreList:string[] = [];
         const air101LibList:string[] = []; 
         const air103LibList:string[] = []; 
@@ -134,9 +138,9 @@ export class ProjectManage {
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air101": air10XCoreList,
-                                        "air103": air10XCoreList,
-                                        "air105": air10XCoreList,
+                                        "air101": air101CoreList,
+                                        "air103": air103CoreList,
+                                        "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 }
@@ -153,17 +157,17 @@ export class ProjectManage {
                                     "exampleList": {
                                         "air72XUX/air82XUX": pluginDefaultAir72XExample,
                                         "air72XCX":pluginDefaultAir72XExample,
-                                        "air101": pluginDefaultAir10XExample,
-                                        "air103": pluginDefaultAir10XExample,
-                                        "air105": pluginDefaultAir10XExample,
+                                        "air101": pluginDefaultAir101Example,
+                                        "air103": pluginDefaultAir103Example,
+                                        "air105": pluginDefaultAir105Example,
                                         "simulator":pluginDefaultAir72XExample,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air101": air10XCoreList,
-                                        "air103": air10XCoreList,
-                                        "air105": air10XCoreList,
+                                        "air101": air101CoreList,
+                                        "air103": air103CoreList,
+                                        "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 },
@@ -199,9 +203,9 @@ export class ProjectManage {
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
                                         "air72XCX":air72XCXCoreList,
-                                        "air101": air10XCoreList,
-                                        "air103": air10XCoreList,
-                                        "air105": air10XCoreList,
+                                        "air101": air101CoreList,
+                                        "air103": air103CoreList,
+                                        "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
                                     },
                                 },
