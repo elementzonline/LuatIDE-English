@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 // import { LuatideProvider } from './project/projectView';
 // import {OperationExplorer} from './project/toolshub';
-import { PluginVariablesInit } from './config';
+// import { PluginVariablesInit } from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
@@ -52,7 +52,7 @@ function debugProject(resource: vscode.Uri): void {
 	}
 }
 
-let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();

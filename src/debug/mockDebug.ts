@@ -94,7 +94,7 @@ let queue = new Queue();//实例化队列
 // 定义输出日志到输出
 let _outputChannel = vscode.window.createOutputChannel("LuatIDE_log");
 
-let configDataPath: any = process.env['APPDATA'];
+// let configDataPath: any = process.env['APPDATA'];
 
 /**
  * This interface describes the mock-debug specific launch attributes
@@ -170,7 +170,7 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	private dataReceiveFlag: number = 1;
 	private current_logfilename: string = "";
-	private configDataPath: any = process.env['APPDATA'];
+	// private configDataPath: any = process.env['APPDATA'];
 
 	private pluginJsonParse: any = new PluginJsonParse();
 	private projectJsonParse: any = new ProjectJsonParse();

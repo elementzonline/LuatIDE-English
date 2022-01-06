@@ -676,7 +676,7 @@ export class PluginCoreUpate {
     async getRemoteCoreVersion(moduleModel: any) {
         let remoteCoreVersion: any = undefined;
         const reg: any = await this.plugVariablesInit.getRegBaseModel(moduleModel);
-        const coreExtname = await this.getExtnameBaseModel(moduleModel);
+        // const coreExtname = await this.getExtnameBaseModel(moduleModel);
         const jsonData: any = await this.corePullDownload.getPullRequestUrl(moduleModel);
         const remoteUrl: any = this.corePullDownload.parseJsonReturnSourceUrl(moduleModel, jsonData);
         let remoteUrlArray = reg.exec(remoteUrl);

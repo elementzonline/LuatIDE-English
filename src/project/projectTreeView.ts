@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { PluginJsonParse } from '../plugConfigParse';
-import { PluginConfigInit, PluginVariablesInit } from '../config';
-import { ProjectJsonParse } from './projectConfigParse';
+// import { PluginConfigInit, PluginVariablesInit } from '../config';
+// import { ProjectJsonParse } from './projectConfigParse';
 
 
 let pluginJsonParse = new PluginJsonParse();
-let pluginVariablesInit = new PluginVariablesInit();
-let projectJsonParse = new ProjectJsonParse();
+// let pluginVariablesInit = new PluginVariablesInit();
+// let projectJsonParse = new ProjectJsonParse();
 export class HistoryProjectDataProvider implements vscode.TreeDataProvider<HistoryProjectTreeItem> {
   constructor() { }
   private _onDidChangeTreeData: vscode.EventEmitter<HistoryProjectTreeItem | undefined | null | void> = new vscode.EventEmitter<HistoryProjectTreeItem | undefined | null | void>();
@@ -39,14 +39,14 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 
   }
 
-  private pathExists(p: string): boolean {
-    try {
-      fs.accessSync(p);
-    } catch (err) {
-      return false;
-    }
-    return true;
-  }
+  // private pathExists(p: string): boolean {
+  //   try {
+  //     fs.accessSync(p);
+  //   } catch (err) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
