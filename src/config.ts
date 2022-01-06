@@ -678,7 +678,7 @@ export class PluginCoreUpate {
                 corepath = this.plugVariablesInit.getAir103DefaultCorePath();
                 break;
             case 'air105':
-                corepath = this.plugVariablesInit.getAir101DefaultCorePath();
+                corepath = this.plugVariablesInit.getAir105DefaultCorePath();
                 break;
         }
         return corepath;
