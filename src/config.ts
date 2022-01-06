@@ -587,14 +587,18 @@ export class PluginConfigInit {
         switch (path.basename(filePath)) {
             default:
                 fs.writeFileSync(filePath, '');
+                break;
             case '文件夹说明.txt':
                 fs.writeFileSync(filePath, this.introduceData);
+                break;
             case 'luatide_workspace.json':
                 const pluginConfigJson: string = this.configJsonGenerator();
                 fs.writeFileSync(filePath, pluginConfigJson);
+                break;
             case 'uuid.txt':
                 const uuidData: any = this.uuidGenerator();
                 fs.writeFileSync(filePath, uuidData);
+                break;
         }
     }
 
@@ -615,8 +619,8 @@ export class PluginConfigInit {
             projectList: [],
             activeProject: '',
         };
-        let configJsonObj = JSON.parse(configJson);
-        return JSON.stringify(configJsonObj,null,"\t");
+        // let configJsonObj = JSON.parse(configJson);
+        return JSON.stringify(configJson,null,"\t");
     }
 }
 
