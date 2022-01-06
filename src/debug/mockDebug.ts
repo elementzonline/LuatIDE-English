@@ -174,7 +174,8 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	private pluginJsonParse: any = new PluginJsonParse();
 	private projectJsonParse: any = new ProjectJsonParse();
-
+	// dbg_dispatcher元素隐式具有 "any" 类型，因为类型为 "any" 的表达式不能用于索引类型 "MockDebugSession"。
+	[key: string]: any;
 	// 分发器
 	public dbg_dispatcher(heads: any, exts: any) {
 
