@@ -10,7 +10,7 @@ import {
 } from 'vscode-debugadapter';
 import { DebugProtocol } from 'vscode-debugprotocol';
 // import { FileAccessor } from './mockRuntime';
-import { Subject } from 'await-notify';
+const { Subject } = require('await-notify');
 import * as Net from 'net';
 /*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 import * as vscode from "vscode";
