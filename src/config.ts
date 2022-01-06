@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import { UpdateCore } from './updataCore';
 import { ProgressLocation } from 'vscode';
 import * as compressing from 'compressing';
-const {fetch} = require('node-fetch');
+import * as fetch from 'node-fetch';
 
 
 /**

@@ -6,7 +6,7 @@ import { ProjectConfigOperation } from '../project/ProjectHandle';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
-const {fetch} = require('node-fetch');
+import * as fetch from 'node-fetch';
 
 let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
