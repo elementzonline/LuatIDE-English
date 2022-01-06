@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import { PluginJsonParse } from '../plugConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
 import * as path from "path";
-let pluginJsonParse = new PluginJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 
 /**
  * 解析工程配置文件

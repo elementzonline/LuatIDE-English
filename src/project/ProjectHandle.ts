@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
-import { HistoryProjectDataProvider } from "./projectTreeView";
+// import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
 let pluginJsonParse: any = new PluginJsonParse();
@@ -78,7 +78,7 @@ export class ProjectDeleteHandle {
     }
 
     deleteProject(filePath: any) {
-        const clickPath: string = filePath.path;
+        // const clickPath: string = filePath.path;
         const deletProjectCheckState: boolean = this.deletProjectCheck(filePath);
         if (!deletProjectCheckState) {   //工程删除必要条件检查未通过
             return false;
@@ -333,7 +333,7 @@ export class ProjectConfigOperation {
         // lib库及core文件设置必要条件校验
         libCoreCheck(filePath:string){
             const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
-            const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+            // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
             if (filePath===activityPath){
                 vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
                 return false;

@@ -17,13 +17,13 @@ export interface MockBreakpoint {
 export class MockRuntime extends EventEmitter {
 
 	// the initial (and one and only) file we are 'debugging'
-	private _sourceFile: string;
+	private _sourceFile: string = "";
 	public get sourceFile() {
 		return this._sourceFile;
 	}
 
 	// the contents (= lines) of the one and only file
-	private _sourceLines: string[];
+	private _sourceLines: string[] = [];
 
 	// This is the next line that will be 'executed'
 	private _currentLine = 0;

@@ -2,16 +2,16 @@ import { PluginVariablesInit } from '../config';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
-import { ProjectConfigOperation } from '../project/ProjectHandle';
-import { ProjectJsonParse } from '../project/projectConfigParse';
-import { PluginJsonParse } from '../plugConfigParse';
-import { CreateProject } from '../project/createProject';
+// import { ProjectConfigOperation } from '../project/ProjectHandle';
+// import { ProjectJsonParse } from '../project/projectConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
+// import { CreateProject } from '../project/createProject';
 const {fetch} = require('node-fetch');
 
 let pluginVariablesInit = new PluginVariablesInit();
-let projectConfigOperation = new ProjectConfigOperation();
-let pluginJsonParse = new PluginJsonParse();
-let createProject = new CreateProject();
+// let projectConfigOperation = new ProjectConfigOperation();
+// let pluginJsonParse = new PluginJsonParse();
+// let createProject = new CreateProject();
 export class HomeManage {
     constructor() {
 

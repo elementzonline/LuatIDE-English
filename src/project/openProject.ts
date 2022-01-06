@@ -1,15 +1,16 @@
 import * as vscode from 'vscode';
 import { PluginJsonParse } from '../plugConfigParse';
 import {ProjectJsonParse} from './projectConfigParse';
-import {checkSameProjectExistStatusForPluginConfig, getFileForDirRecursion} from './projectApi';
-import { ProjectConfigOperation } from './ProjectHandle';
+// import {checkSameProjectExistStatusForPluginConfig, getFileForDirRecursion} from './projectApi';
+import {getFileForDirRecursion} from './projectApi';
+// import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
 import { OpenProjectManage } from '../webview/openProjectWebview';
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 let projectJsonParse:any = new ProjectJsonParse(); 
-let projectConfigOperation:any = new ProjectConfigOperation();
+// let projectConfigOperation:any = new ProjectConfigOperation();
 export class OpenProject {
     constructor() {
     }
@@ -40,12 +41,12 @@ export class OpenProject {
         const projectConfigProjectPath:string = importProjectPath.substring(0,nameIndex);
         const projectConfigProjectName:string = importProjectPath.substring(nameIndex+1);
         const projectConfigProjectType:string =  projectJsonParse.getProjectConfigProjectType(importProjectPath);
-        const porjectConfigVersion:string = projectJsonParse.getProjectConfigVersion(importProjectPath);
+        // const porjectConfigVersion:string = projectJsonParse.getProjectConfigVersion(importProjectPath);
         const porjectConfigModuleModel:string = projectJsonParse.getProjectConfigModuleModel(importProjectPath);
         const projectConfigCorePath:string = projectJsonParse.getProjectConfigCorePath(importProjectPath);
         const projectConfigLibPath:string = projectJsonParse.getProjectConfigLibPath(importProjectPath);
-        const projectConfigModulePort:string = projectJsonParse.getProjectConfigMoudlePort(importProjectPath);
-        const projectConfigAppFile:string = projectJsonParse.getProjectConfigAppFile(importProjectPath);
+        // const projectConfigModulePort:string = projectJsonParse.getProjectConfigMoudlePort(importProjectPath);
+        // const projectConfigAppFile:string = projectJsonParse.getProjectConfigAppFile(importProjectPath);
         let openProjectJson:any = {};
         openProjectJson.type = projectConfigProjectType;
         openProjectJson.importInitData = '';
