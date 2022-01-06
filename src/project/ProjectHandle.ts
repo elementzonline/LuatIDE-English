@@ -369,7 +369,9 @@ export class ProjectConfigOperation {
 			[
 				"air72XUX/Air82XUX",
 				"air72XCX",
-				"air10X",
+				"air101",
+                "air103",
+                "air105",
 				"simulator"
 			],
 			{
