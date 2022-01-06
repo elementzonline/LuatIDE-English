@@ -101,7 +101,7 @@ export class PluginVariablesInit {
     }
 
     // 依据模块型号获取解析的正则表达式
-    async getRegBaseModel(moduleModel: any) {
+    getRegBaseModel(moduleModel: any) {
         let reg: any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
@@ -635,11 +635,11 @@ export class PluginCoreUpate {
 
     // 更新指定模块的Core文件
     async updateCore(moduleModel: any) {
-        let corepath: any = this.getCorePath(moduleModel);
+        let corepath: string = this.getCorePath(moduleModel);
         // 获取用户本地core版本
-        let localCoreVersion = this.getLocalCoreVersion(corepath, moduleModel);
+        let localCoreVersion =  this.getLocalCoreVersion(corepath, moduleModel);
         // 获取远端最新core版本
-        let remoteCoreVersion = this.getRemoteCoreVersion(moduleModel);
+        let remoteCoreVersion:any = await this.getRemoteCoreVersion(moduleModel);
         // 执行首次下载操作
         if (localCoreVersion === undefined) {
             this.updateHintForUser(moduleModel);
@@ -651,7 +651,7 @@ export class PluginCoreUpate {
     }
 
     // 获取用户core存储路径
-    async getCorePath(moduleModel: any) {
+    getCorePath(moduleModel: any) {
         let corepath: any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
@@ -670,31 +670,11 @@ export class PluginCoreUpate {
         return corepath;
     }
 
-    // 依据模块型号获取文件名后缀
-    async getExtnameBaseModel(moduleModel: any) {
-        let extname: any;
-        switch (moduleModel) {
-            case 'air72XUX/air82XUX':
-                extname = '.pac';
-                break;
-            case 'air101':
-                extname = '.soc';
-                break;
-            case 'air103':
-                extname = '.soc';
-                break;
-            case 'air105':
-                extname = '.soc';
-                break;
-        }
-        return extname;
-    }
-
     // 解析并返回本地当前固件最新版本号
-    async getLocalCoreVersion(dir: any, moduleModel: any) {
-        const reg: any = await this.plugVariablesInit.getRegBaseModel(moduleModel);
-        const coreExtname = await this.getExtnameBaseModel(moduleModel);
-        const files: any = fs.readFileSync(dir);
+    getLocalCoreVersion(dir: any, moduleModel: any) {
+        const reg: any =  this.plugVariablesInit.getRegBaseModel(moduleModel);
+        const coreExtname =  this.plugVariablesInit.getExtnameBaseModel(moduleModel);
+        const files: any = fs.readdirSync(dir);
         let currentVersion = undefined;
         for (let index = 0; index < files.length; index++) {
             const file: any = files[index];
@@ -714,23 +694,24 @@ export class PluginCoreUpate {
 
     // 获取远端固件版本号
     async getRemoteCoreVersion(moduleModel: any) {
-        let remoteCoreVersion: any = undefined;
-        const reg: any = await this.plugVariablesInit.getRegBaseModel(moduleModel);
-        // const coreExtname = await this.getExtnameBaseModel(moduleModel);
-        const jsonData: any = await this.corePullDownload.getPullRequestUrl(moduleModel);
-        const remoteUrl: any = this.corePullDownload.parseJsonReturnSourceUrl(moduleModel, jsonData);
-        let remoteUrlArray = reg.exec(remoteUrl);
-        if (remoteUrlArray !== null) {
-            remoteCoreVersion = remoteUrlArray[1];
+            const reg: any = this.plugVariablesInit.getRegBaseModel(moduleModel);
+            const coreExtname = this.plugVariablesInit.getExtnameBaseModel(moduleModel);
+            const requestUrl: any = this.corePullDownload.getPullRequestUrl(moduleModel);
+            const jsonData: any = await this.corePullDownload.getApiJsonFromRemoteServer(requestUrl);
+            const remoteUrl: any = await this.corePullDownload.parseJsonReturnSourceUrl(moduleModel, jsonData);
+            let remoteUrlArray = reg.exec(remoteUrl);
+            let remoteCoreVersion: any;
+            if (remoteUrlArray !== null) {
+                remoteCoreVersion = remoteUrlArray[1];
+            }
+            else{
+                remoteCoreVersion = undefined;
+            }
             return remoteCoreVersion;
-        }
-        else {
-            return remoteCoreVersion;
-        }
     }
 
     // 获取用户提示中的提示内容
-    async getDownloadReadyHint(moduleModel: string) {
+    getDownloadReadyHint(moduleModel: string) {
         let coreDownloadReadyHint: string;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
@@ -749,7 +730,7 @@ export class PluginCoreUpate {
     }
 
     // 获取进度条展示中的提示标题内容
-    async getDownloadingHint(moduleModel: string) {
+    getDownloadingHint(moduleModel: string) {
         let coreDownloadingHint: string;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
@@ -774,9 +755,7 @@ export class PluginCoreUpate {
             if (result !== undefined) {
                 await this.updateProgressView(result, moduleModel);
             }
-
         });
-
     }
 
     //更新进度条展示
@@ -822,16 +801,18 @@ export class CorePullDownload {
     // 下载远端core到本地
     async corePullDownload(moduleModel: any) {
         const pullRequestUrl: any = this.getPullRequestUrl(moduleModel);
-        const jsonResult: any = this.getApiJsonFromRemoteServer(pullRequestUrl);
-        const sourceUrl: any = this.parseJsonReturnSourceUrl(moduleModel, jsonResult);  //依据传入的不同型号做不同的解析
-        const sourceDistPath: any = this.getSourceDistPath(moduleModel, sourceUrl);
-        // await this.download(sourceUrl,sourceDistPath);
-        await this.unzip(sourceUrl, sourceDistPath);
-        await this.deleteRedundantSource(moduleModel, sourceDistPath);
+        const jsonResult: any = await this.getApiJsonFromRemoteServer(pullRequestUrl);
+        const sourceUrl: any = await this.parseJsonReturnSourceUrl(moduleModel, jsonResult);  //依据传入的不同型号做不同的解析
+        const zipsourceDistPath: any = await this.getzipSourceDistPath(moduleModel,sourceUrl);
+        const sourceDistPath:string = this.pluginVariablesInit.getCorePathBaseModuleModel(moduleModel);
+        await this.download(sourceUrl,zipsourceDistPath);
+        await this.unzip(zipsourceDistPath, sourceDistPath).then(async ()=>{
+            await this.deleteRedundantSource(moduleModel, sourceDistPath);
+        });
     }
 
     // 获取更新api接口url
-    async getPullRequestUrl(moduleModel: any) {
+    getPullRequestUrl(moduleModel: any) {
         let requestUrl: any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
@@ -879,7 +860,7 @@ export class CorePullDownload {
     }
 
     // 依据模块型号及资源url名称，返回下载要保存的目的文件名
-    async getSourceDistPath(moduleModel: any, sourceUrl: any) {
+    async getzipSourceDistPath(moduleModel: any, sourceUrl: any) {
         const sourcezipName: any = sourceUrl.split('/').reverse()[0];
         let sourceDistPath: any;
         switch (moduleModel) {
@@ -888,31 +869,31 @@ export class CorePullDownload {
                 sourceDistPath = path.join(air72xCorePath, sourcezipName);
                 return sourceDistPath;
             case 'air101':
-                const air101CorePath = this.pluginVariablesInit.getAir101DefaultLatestCorePath();
+                const air101CorePath = this.pluginVariablesInit.getAir101DefaultCorePath();
                 sourceDistPath = path.join(air101CorePath, sourcezipName);
                 return sourceDistPath;
             case 'air103':
-                const air103CorePath = this.pluginVariablesInit.getAir103DefaultLatestCorePath();
+                const air103CorePath = this.pluginVariablesInit.getAir103DefaultCorePath();
                 sourceDistPath = path.join(air103CorePath, sourcezipName);
                 return sourceDistPath;
             case 'air105':
-                const air105CorePath = this.pluginVariablesInit.getAir105DefaultLatestCorePath();
+                const air105CorePath = this.pluginVariablesInit.getAir105DefaultCorePath();
                 sourceDistPath = path.join(air105CorePath, sourcezipName);
                 return sourceDistPath;
         }
     }
 
     // 请求服务器执行二进制下载操作
-    // async download(url: any, filePath: any) {
-    //     let headers:any = {};
-    //     headers['Content-Type'] = 'application/octet-stream';
-    //     await fetch(url, {
-    //         method: 'GET',
-    //         headers: headers,
-    //     }).then(res => res.buffer()).then(_ => {
-    //         fs.writeFileSync(filePath, _, 'binary');
-    //     });
-    //   }
+    async download(url: any, filePath: any) {
+        let headers:any = {};
+        headers['Content-Type'] = 'application/octet-stream';
+        await fetch(url, {
+            method: 'GET',
+            headers: headers,
+        }).then(res => res.buffer()).then(_ => {
+            fs.writeFileSync(filePath, _, 'binary');
+        });
+      }
 
     // 对下载完毕的zip文件进行解压缩
     async unzip(srcpath: any, distpath: any) {
@@ -928,7 +909,7 @@ export class CorePullDownload {
     //   清理文件夹内冗余资源
     async deleteRedundantSource(moudleModel: any, distpath: any) {
         const files = fs.readdirSync(distpath);
-        const pathExtname = await this.pluginVariablesInit.getRegBaseModel(moudleModel);
+        const pathExtname = await this.pluginVariablesInit.getExtnameBaseModel(moudleModel);
         files.forEach(async (file, index) => {
             const extname = path.extname(file);
             // 删除解压缩后无关文件干扰
