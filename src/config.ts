@@ -540,6 +540,11 @@ export class PluginConfigInit {
     private air105Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air105_CORE');
 
     constructor() {
+
+    }
+
+    // config实例化
+    configInit(){
         this.folderInit(this.plugDataPath);
         this.folderInit(this.historyLibpath);
         this.folderInit(this.historyDemopath);
@@ -626,6 +631,11 @@ export class PluginCoreUpate {
     model103Name = 'air103';
     model105Name = 'air105';
     constructor() {
+
+    }
+
+    // core更新处理
+    updateCoreHandle(){
         this.updateCore(this.model72XName);
         this.updateCore(this.model72XName);
         this.updateCore(this.model101Name);

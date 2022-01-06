@@ -51,8 +51,10 @@ function debugProject(resource: vscode.Uri): void {
 		});
 	}
 }
-
+let pluginConfigInit = new PluginConfigInit();
 // let pluginVariablesInit = new PluginVariablesInit();
+let pluginCoreUpate = new PluginCoreUpate();
+
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
@@ -72,6 +74,11 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
+	// 插件配置实例化
+	pluginConfigInit.configInit();
+	// 插件core文件自动更新处理
+	pluginCoreUpate.updateCoreHandle();
+	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
 	// 插件配置文件兼容执行
 	pluginJsonParse.pluginConfigCompatible();
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
