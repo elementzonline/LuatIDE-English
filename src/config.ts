@@ -56,6 +56,26 @@ export class PluginVariablesInit {
         return air72xCorepath;
     }
 
+    // 依据模块型号获取core路径
+    getCorePathBaseModuleModel(moduleModel: any) {
+        let corePath: any;
+        switch (moduleModel) {
+            case 'air72XUX/air82XUX':
+                corePath = this.getAir72xCorepath();
+                break;
+            case 'air101':
+                corePath = this.getAir101DefaultCorePath();
+                break;
+            case 'air103':
+                corePath = this.getAir103DefaultCorePath();
+                break;
+            case 'air105':
+                corePath = this.getAir105DefaultCorePath();
+                break;
+        }
+        return corePath;
+    }
+
     // 获取获取Air72X固件版本号正则解析表达式
     getAir72XReg() {
         const reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
