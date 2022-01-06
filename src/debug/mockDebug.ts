@@ -1204,7 +1204,7 @@ export class MockDebugSession extends LoggingDebugSession {
 					}
 					var table_name = JSON.parse(exts)['name'];
 					var tables = JSON.parse(exts)['data']["Tables"];
-					if (tables === []) {
+					if (tables.length === 0) {
 						continue;
 					}
 					for (var i = 0; i < tables.length; i++) {
