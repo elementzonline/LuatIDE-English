@@ -6,6 +6,7 @@ import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { PluginJsonParse } from '../plugConfigParse';
 import {checkSameProjectExistStatusForPluginConfig} from '../project/projectApi';
+const {fetch} = require('node-fetch');
 let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 let pluginJsonParse = new PluginJsonParse();
