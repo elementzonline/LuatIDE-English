@@ -639,12 +639,12 @@ export class PluginCoreUpate {
     }
 
     // core更新处理
-    updateCoreHandle(){
-        this.updateCore(this.model72XName);
-        this.updateCore(this.model72XName);
-        this.updateCore(this.model101Name);
-        this.updateCore(this.model103Name);
-        this.updateCore(this.model105Name);
+    async updateCoreHandle(){
+        await this.updateCore(this.model72XName);
+        await this.updateCore(this.model72XName);
+        await this.updateCore(this.model101Name);
+        await this.updateCore(this.model103Name);
+        await this.updateCore(this.model105Name);
     }
 
     // 更新指定模块的Core文件
@@ -709,7 +709,7 @@ export class PluginCoreUpate {
     // 获取远端固件版本号
     async getRemoteCoreVersion(moduleModel: any) {
             const reg: any = this.plugVariablesInit.getRegBaseModel(moduleModel);
-            const coreExtname = this.plugVariablesInit.getExtnameBaseModel(moduleModel);
+            // const coreExtname = this.plugVariablesInit.getExtnameBaseModel(moduleModel);
             const requestUrl: any = this.corePullDownload.getPullRequestUrl(moduleModel);
             const jsonData: any = await this.corePullDownload.getApiJsonFromRemoteServer(requestUrl);
             const remoteUrl: any = await this.corePullDownload.parseJsonReturnSourceUrl(moduleModel, jsonData);
