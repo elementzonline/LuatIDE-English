@@ -495,6 +495,26 @@ export class PluginVariablesInit {
         const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion,'lib');
         return libLatestPath;
     }
+
+    // 依据模块型号获取文件名后缀
+    getExtnameBaseModel(moduleModel: any) {
+        let extname: any;
+        switch (moduleModel) {
+            case 'air72XUX/air82XUX':
+                extname = '.pac';
+                break;
+            case 'air101':
+                extname = '.soc';
+                break;
+            case 'air103':
+                extname = '.soc';
+                break;
+            case 'air105':
+                extname = '.soc';
+                break;
+        }
+        return extname;
+    }
 }
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
