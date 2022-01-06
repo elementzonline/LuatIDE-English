@@ -725,7 +725,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
 		// 执行前先杀掉服务器可能残留的exe进程
 		console.log("initializeRequest");
-		require('child_process').exec('taskkill -f -im LuatideService.exe');
+		require('child_process').exec('taskkill -f -im ide_service.exe');
 		// kill活动终端
 		vscode.commands.executeCommand("workbench.action.terminal.kill");
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
@@ -959,7 +959,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		clearInterval(this.timer1);
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
-		child_process.exec('taskkill -f -im LuatideService.exe');
+		child_process.exec('taskkill -f -im ide_service.exe');
 		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "Simulator") {
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
