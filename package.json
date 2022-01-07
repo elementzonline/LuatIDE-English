@@ -12,7 +12,7 @@
 	],
 	"author": {
 		"name": "LUATER"
-	  },
+	},
 	"license": "LGPL",
 	"keywords": [
 		"luat",
@@ -21,7 +21,7 @@
 		"harmony",
 		"liteos",
 		"embedded"
-	  ],
+	],
 	"repository": {
 		"type": "git",
 		"url": "http://github.com/openLuat/luatide"
@@ -343,7 +343,6 @@
 		"test": "mocha -u tdd ./out/tests/",
 		"package": "vsce package",
 		"publish": "vsce publish"
-
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.4",
