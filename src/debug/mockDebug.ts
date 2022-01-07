@@ -774,6 +774,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		let socketstat: number = 0;
 		while (true) {
 			const socket = Net.createConnection(21331, '127.0.0.1', () => {
+				console.log("Net.createConnection ok");
 				socketstat = 1;
 				this._socket_connect_ok.notify();
 			});
@@ -787,9 +788,11 @@ export class MockDebugSession extends LoggingDebugSession {
 			});
 			await this.timesleep.wait(300);
 			if (socketstat === 0) {
+				console.log("等待socketstat");
 				continue;
 			}
 			else {
+				console.log("socket connect ok");
 				this.bindSocket(socket);
 				break;
 			}
@@ -803,6 +806,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if (this.download_state === 0) {
+				console.log("等待download_state");
 				await this.download_success.wait(300);
 			} else {
 				break;
@@ -945,6 +949,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.sendResponse(response);
 	}
 	//断开连接请求
+	
 	protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
 		// this.dbg_write_cmd("dbg disconnect " + args.restart)
 		// 清除队列
