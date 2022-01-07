@@ -362,7 +362,6 @@
 	"dependencies": {
 		"await-notify": "^1.0.1",
 		"compressing": "^1.5.1",
-		"esbuild": "^0.14.10",
 		"node-fetch": "^2.6.6",
 		"uuid": "^8.3.2",
 		"vscode-debugadapter": "^1.51.0"
