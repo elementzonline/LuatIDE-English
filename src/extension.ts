@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 // import { LuatideProvider } from './project/projectView';
 // import {OperationExplorer} from './project/toolshub';
-import { PluginConfigInit, PluginCoreUpate, PluginVariablesInit } from './config';
+import { PluginConfigInit, PluginCoreUpate } from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
@@ -80,6 +80,8 @@ export function activate(context: vscode.ExtensionContext) {
 	pluginConfigInit.configInit();
 	// 插件core文件自动更新处理
 	pluginCoreUpate.updateCoreHandle();
+	// demo和lib兼容性临时处理
+	pluginJsonParse.demoAndCompatible();
 	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
 	// 插件配置文件兼容执行
 	pluginJsonParse.pluginConfigCompatible();
