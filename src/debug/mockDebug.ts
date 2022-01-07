@@ -144,7 +144,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private bt_lock_done = new Subject();
 
 	private download_success = new Subject();
-	protected _socket: any;
+	protected _socket: any = null;
 
 	private timesleep = new Subject();
 
