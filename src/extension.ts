@@ -17,7 +17,7 @@ import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityPr
 import { OpenProject } from './project/openProject';
 import { PluginJsonParse } from './plugConfigParse';
 import * as fs from 'fs';
-import { UiDesign } from './webview/uiDesignWebview';
+// import { UiDesign } from './webview/uiDesignWebview';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 
@@ -66,7 +66,7 @@ let historyProvider = new HistoryProjectDataProvider();
 let pluginJsonParse = new PluginJsonParse();
 let testDependenciesProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
-let uiDesign = new UiDesign();
+// let uiDesign = new UiDesign();
 // let operationExplorer = new OperationExplorer();
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
@@ -131,7 +131,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => testDependenciesProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
+	// context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
 	// 注册快速点击命令，点击后打开浏览器文档
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
