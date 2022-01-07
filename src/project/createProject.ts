@@ -49,7 +49,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
-        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
@@ -147,7 +147,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
-        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
@@ -190,7 +190,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigCorePath(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
-        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath);
+        const createProjectLibPath:string = this.getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
@@ -200,13 +200,16 @@ export class CreateProject {
     }
 
     // 接收到的webview发送的lib处理
-    getCreateProjectLibpathHandle(libPath:string){
+    getCreateProjectLibpathHandle(libPath:string,moduleModel:string){
         const air72XDefaultLibPath = pluginVariablesInit.getAir72XDefaultLibPath();
         if (fs.existsSync(libPath)) {
             libPath = libPath;
         }
-        else if (libPath==='') {
+        else if (libPath==='' && moduleModel!=='air101'  && moduleModel!=='air103'  && moduleModel!=='air105') {
             libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+        }
+        else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105') {
+            libPath = '';
         }
         else{
             libPath = path.join(air72XDefaultLibPath,libPath,'lib');
