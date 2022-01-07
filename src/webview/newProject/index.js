@@ -1167,9 +1167,6 @@ function changeThemeColor(theme) {
             "background": "#ffffff",
             "color": "rgb(0, 0, 0)",
         });
-        $(".active").css({
-            "border": "1px solid rgba(26, 25, 24, 0.3)",
-        });
         $(".content").css({
             "color": "rgb(22, 20, 20)",
         });
@@ -1186,9 +1183,6 @@ function changeThemeColor(theme) {
         $(".mainBody").css({
             "background": "#231f20",
             "color": "rgba(223, 190, 106, 0.7)",
-        });
-        $(".active").css({
-            "border": "1px solid rgba(223, 190, 106, 0.3)",
         });
         $(".content").css({
             "color": "rgba(223, 190, 106, 0.5)",
