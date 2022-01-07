@@ -51,6 +51,18 @@ export class ProjectManage {
         // );
 
 
+        let temPanel = this.projectPanel;
+        
+        /* 实时检测主题颜色变化 */
+        vscode.window.onDidChangeActiveColorTheme((e)=> {
+            temPanel.webview.postMessage(
+                {
+                    command: "switchTheme", 
+                    text: e.kind === 1 ? "light" : "dark"
+                }
+            );
+        });
+
         this.projectPanel.webview.onDidReceiveMessage(
             message => this.receiveMessageHandle(this.projectPanel, message)
         );
