@@ -203,4 +203,68 @@ let pluginVariablesInit = new PluginVariablesInit();
              fs.writeFileSync(projectConfigPath, projectConfigJsonNew,);
          }
      }
+
+    // 临时处理，demo和lib兼容,自动拉取接口未成功前处理
+    demoAndCompatible(){
+        // 用户插件路径
+        const userPlugDataPath:string = path.join(__dirname,'../.','LuatIDEData');
+        const air72xDemoPath:string = pluginVariablesInit.getAir72XDefaultDemoPath();
+        const air101DemoPath:string = pluginVariablesInit.getAir101DefaultDemoPath();
+        const air103DemoPath:string = pluginVariablesInit.getAir103DefaultDemoPath();
+        const air105DemoPath:string = pluginVariablesInit.getAir105DefaultDemoPath();
+        const air72xLibPath:string = pluginVariablesInit.getAir72XDefaultLibPath();
+        const air72xDemoSourcePath:string = path.join(userPlugDataPath,'Air72X_DEMO');
+        const air101DemoSourcePath:string = path.join(userPlugDataPath,'Air101_DEMO');
+        const air103DemoSourcePath:string = path.join(userPlugDataPath,'Air103_DEMO');
+        const air105DemoSourcePath:string = path.join(userPlugDataPath,'Air105_DEMO');
+        const air72xLibSourcePath:string = path.join(userPlugDataPath,'Air72X_LIB');
+        if (fs.readdirSync(air72xDemoPath).length===0) {
+            this.copyDir(air72xDemoSourcePath,air72xDemoPath);
+        }
+        if (fs.readdirSync(air101DemoPath).length===0) {
+            this.copyDir(air101DemoSourcePath,air101DemoPath);
+        }
+        if (fs.readdirSync(air103DemoPath).length===0) {
+            this.copyDir(air103DemoSourcePath,air103DemoPath);
+        }
+        if (fs.readdirSync(air105DemoPath).length===0) {
+            this.copyDir(air105DemoSourcePath,air105DemoPath);
+        }
+        if (fs.readdirSync(air72xLibPath).length===0) {
+            this.copyDir(air72xLibSourcePath,air72xLibPath);
+        }
+    }
+
+    /*
+    * 复制目录、子目录，及其中的文件
+    * @param src {String} 要复制的目录
+    * @param dist {String} 复制到目标目录
+    */  
+    copyDir(src: any, dist: any) {
+    var b = fs.existsSync(dist);
+    console.log("dist = " + dist);
+    if (!b) {
+        console.log("mk dist = ", dist);
+        fs.mkdirSync(dist);//创建目录
+    }
+    console.log("_copy start");
+    this.copyOperation(src, dist);
+    }
+
+/*
+* 复制目录子操作
+*/
+copyOperation(src: any, dist: any) {
+    var paths = fs.readdirSync(src);
+    paths.forEach((p) => {
+        var _src = src + '/' + p;
+        var _dist = dist + '/' + p;
+        var stat = fs.statSync(_src);
+        if (stat.isFile()) {// 判断是文件还是目录
+            fs.writeFileSync(_dist, fs.readFileSync(_src));
+        } else if (stat.isDirectory()) {
+            this.copyDir(_src, _dist);// 当是目录是，递归复制
+        }
+    });
+}
  }
