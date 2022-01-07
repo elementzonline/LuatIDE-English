@@ -194,6 +194,12 @@ export class PluginVariablesInit {
 
     // 获取Air72X默认demo
     getAir72XDefaultDemoPath() {
+        const air72XDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air72X_Demo");
+        return air72XDefaultDemoPath;
+    }
+
+    // 获取Air72X默认demo版本路径
+    getAir72XDefaultDemoVersionPath() {
         const air72XDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air72X_Demo", "Air72X_DEMO_V2.4.0");
         return air72XDefaultDemoPath;
     }
