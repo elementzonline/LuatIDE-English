@@ -232,11 +232,11 @@ export class PluginVariablesInit {
     // 获取Air72X默认示例demo列表
     getAir72XDefaultExampleList() {
         const demoList: string[] = [];
-        const air72XDefaultDemoPath: string = this.getAir72XDefaultDemoPath();
-        const files: string[] = fs.readdirSync(air72XDefaultDemoPath);
+        const air72XDefaultVersionDemoPath: string = this.getAir72XDefaultDemoVersionPath();
+        const files: string[] = fs.readdirSync(air72XDefaultVersionDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(path.join(air72XDefaultDemoPath,element)).isDirectory()) {
+            if (fs.statSync(path.join(air72XDefaultVersionDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
