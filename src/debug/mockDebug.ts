@@ -144,7 +144,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private bt_lock_done = new Subject();
 
 	private download_success = new Subject();
-	protected _socket: any;
+	protected _socket: any = null;
 
 	private timesleep = new Subject();
 
@@ -723,9 +723,13 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
-		// 执行前先杀掉服务器可能残留的exe进程
-		console.log("initializeRequest");
-		require('child_process').exec('taskkill -f -im ide_service.exe');
+		while(this._socket !== null)
+		{
+			console.log("wait socket reset");
+			await this.sleep(500);
+		}
+		console.log("initializeRequest",this._socket);
+		// require('child_process').exec('taskkill -f -im ide_service.exe');
 		// kill活动终端
 		vscode.commands.executeCommand("workbench.action.terminal.kill");
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
@@ -774,6 +778,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		let socketstat: number = 0;
 		while (true) {
 			const socket = Net.createConnection(21331, '127.0.0.1', () => {
+				console.log("Net.createConnection ok");
 				socketstat = 1;
 				this._socket_connect_ok.notify();
 			});
@@ -787,9 +792,11 @@ export class MockDebugSession extends LoggingDebugSession {
 			});
 			await this.timesleep.wait(300);
 			if (socketstat === 0) {
+				console.log("等待socketstat");
 				continue;
 			}
 			else {
+				console.log("socket connect ok");
 				this.bindSocket(socket);
 				break;
 			}
@@ -803,6 +810,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if (this.download_state === 0) {
+				console.log("等待download_state");
 				await this.download_success.wait(300);
 			} else {
 				break;
@@ -945,6 +953,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.sendResponse(response);
 	}
 	//断开连接请求
+	
 	protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
 		// this.dbg_write_cmd("dbg disconnect " + args.restart)
 		// 清除队列
@@ -959,7 +968,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		clearInterval(this.timer1);
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
-		child_process.exec('taskkill -f -im ide_service.exe');
+		// child_process.exec('taskkill -f -im ide_service.exe');
 		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "Simulator") {
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
