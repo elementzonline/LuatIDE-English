@@ -12,7 +12,7 @@ import * as path from "path";
     }
     // 获取当前工程文件初始化版本号
     getprojectConfigInitVersion(){
-        const projectConfigInitVersion:string = '2.0';
+        const projectConfigInitVersion:string = '2.1';
         return projectConfigInitVersion;
     }
 

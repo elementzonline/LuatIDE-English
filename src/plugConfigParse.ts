@@ -155,11 +155,11 @@ let pluginVariablesInit = new PluginVariablesInit();
              projectType: 'pure',
              corePath: '',
              libPath: '',
-             modulePath: '',
+             moduleModel: '',
              appFile: [],
              modulePort: '',
          };
-         if (projectOldJsonObj.version!=="" &&Number(projectOldJsonObj.version) < 2.0) {
+         if (projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) < 2.0) {
              // 用户core路径兼容
              const corePath: string = projectOldJsonObj['corefile_path'];
              luatideProjectNewJson.corePath = corePath;
@@ -200,7 +200,27 @@ let pluginVariablesInit = new PluginVariablesInit();
                  luatideProjectNewJson.modulePort = projectOldJsonObj['module_port'];
              }
              const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
-             fs.writeFileSync(projectConfigPath, projectConfigJsonNew,);
+             fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+         }
+        //  工程配置文件2.1版本增加了
+         else if(projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) === 2.0){
+            // 用户appFile文件兼容
+            const appFileOld: string[] = projectOldJsonObj['appFile'];
+            for (let i = 0; i < appFileOld.length; i++) {
+                const appFilePath:string = appFileOld[i];
+                if (appFilePath.toLowerCase().indexOf(projectPath.toLowerCase())!==-1) {
+                    const appFileRelativePath = path.relative(projectPath,appFilePath);
+                    luatideProjectNewJson.appFile.push(appFileRelativePath);
+                }
+            }
+            luatideProjectNewJson.version = '2.1';
+            luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+            luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
+            luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+            luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
+            luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+            const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
+            fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
          }
      }
 
