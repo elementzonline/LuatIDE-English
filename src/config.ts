@@ -647,7 +647,6 @@ export class PluginCoreUpate {
     // core更新处理
     async updateCoreHandle(){
         await this.updateCore(this.model72XName);
-        await this.updateCore(this.model72XName);
         await this.updateCore(this.model101Name);
         await this.updateCore(this.model103Name);
         await this.updateCore(this.model105Name);
