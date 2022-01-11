@@ -44,7 +44,8 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       for (let i = 0; i < files.length; i++) {
         const childrenFileName:string  = files[i];
         const childrenFilePath:string = path.join(filePath,childrenFileName);
-          if (appFile.indexOf(childrenFilePath)!==-1) {
+        const relativeFilePath:string = path.relative(activityPath,childrenFilePath);
+          if (appFile.indexOf(relativeFilePath)!==-1) {
             if (fs.statSync(childrenFilePath).isFile()) {
               treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
             }
