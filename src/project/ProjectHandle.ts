@@ -293,13 +293,14 @@ export class ProjectConfigOperation {
             let folderPathList: string[] = [];
             for (let index = 0; index < fileObjList.length; index++) {
                 const filePath: string = fileObjList[index].fsPath;
+                const relativeFilePath:string = path.relative(activityProjectPath,filePath);
                 const projectAddCheckState: boolean = this.projectAddCheck(filePath);
                 if (!projectAddCheckState) {
                     return false;
                 }
                 // 获取添加文件夹内所有子文件夹内容并加上文件夹自身
-                const folderChildrenList:string[] = getFileForDirRecursion(filePath);
-                folderChildrenList.push(filePath);
+                const folderChildrenList:string[] = getFileForDirRecursion(activityProjectPath,filePath);
+                folderChildrenList.push(relativeFilePath);
                 folderPathList = folderPathList.concat(folderChildrenList);
             }
             projectJsonParse.pushProjectConfigAppFile(folderPathList, activityProjectPath);

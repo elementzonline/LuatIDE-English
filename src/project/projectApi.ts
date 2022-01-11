@@ -46,24 +46,33 @@ export function copyOperation(src:any, dist:any) {
         var _dist = dist + '/' +p;
         var stat = fs.statSync(_src);
         if(stat.isFile()) {// 判断是文件还是目录
-        fs.writeFileSync(_dist, fs.readFileSync(_src));
+            fs.writeFileSync(_dist, fs.readFileSync(_src));
         } else if(stat.isDirectory()) {
-        copyDir(_src, _dist);// 当是目录是，递归复制
+            copyDir(_src, _dist);// 当是目录是，递归复制
         }
     });
     }
     
-// 获取文件夹内文件列表
-export function getFileForDirRecursion(dir:any,filesList:string[] = []){
-    const files:any = fs.readdirSync(dir);
+/*
+* 获取指定文件夹内所有基于基于指定文件夹的文件相对路径列表
+* @param dir{String} 指定文件夹路径
+* @param childrenDir{String} 目录内子文件夹路径
+* @param filesList{stringList} 文件路径列表
+* @returns filesList 指定路径内所有文件夹的名称
+*/  
+export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:string[] = []){
+    if (childrenDir==='') {
+        childrenDir = dir;
+    }
+    const files:any = fs.readdirSync(childrenDir);
     for (let index = 0; index < files.length; index++) {
-        const filePath:string = path.join(dir,files[index]);
+        const filePath:string = path.join(childrenDir,files[index]);
         if (fs.statSync(filePath).isDirectory()) {
-            filesList.push(filePath);
-            getFileForDirRecursion(filePath,filesList);
+            filesList.push(path.relative(dir,filePath));
+            getFileForDirRecursion(dir,filePath,filesList);
         }
         else{
-            filesList.push(filePath);
+            filesList.push(path.relative(dir,filePath));
         }
     }
     return filesList;
