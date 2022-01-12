@@ -283,7 +283,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		let configSource_filepathList: string[] = [];
 		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < project_fileslist.length; index++) {
-			const project_absolute_file = project_fileslist[index];
+			const project_absolute_file = path.join(this.activeWorkspace, project_fileslist[index]) ;
 			const project_file = path.basename(project_absolute_file);
 			if (fs.statSync(project_absolute_file).isFile()) {
 				configSource_fileList.push(project_file);
