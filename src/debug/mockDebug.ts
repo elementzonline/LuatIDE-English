@@ -821,6 +821,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		console.log("等待waiting for debugger");
 		for (var i = 0; i < 120 * 3; i++) {
+			if(this._socket == null)
+				return
 			if (this.dbg_state === 1) {
 				console.log("waiting for debugger ok");
 				break;
