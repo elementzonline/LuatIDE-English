@@ -809,6 +809,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
+			if(this._socket == null)
+				return
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
