@@ -144,85 +144,97 @@ let pluginVariablesInit = new PluginVariablesInit();
 
      // 工程配置文件兼容
      projectConfigCompatible(projectPath: string) {
-         const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
-         if (!fs.existsSync(projectConfigPath)) {
-             return;
-         }
-         const projectOldJson: string = fs.readFileSync(projectConfigPath, 'utf-8');
-         const projectOldJsonObj = JSON.parse(projectOldJson);
-         let luatideProjectNewJson: any = {
-             version: '',
-             projectType: 'pure',
-             corePath: '',
-             libPath: '',
-             moduleModel: '',
-             appFile: [],
-             modulePort: '',
-         };
-         if (projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) < 2.0) {
-             // 用户core路径兼容
-             const corePath: string = projectOldJsonObj['corefile_path'];
-             luatideProjectNewJson.corePath = corePath;
-             // 用户lib路径兼容
-             let libPath: string = projectOldJsonObj['lib_path'];
-             if (libPath === '' && projectOldJsonObj['module_model'] !== 'Air10X') {
-                 libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
-             }
-             luatideProjectNewJson.libPath = libPath;
-             // 用户模块型号判断
-             const moduleModelOld: string = projectOldJsonObj['module_model'];
-             switch (moduleModelOld) {
-                 case 'Air72XUX/Air82XUX':
-                     luatideProjectNewJson.moduleModel = 'air72XUX/air82XUX';
-                     break;
-                 case 'Air72XCX':
-                     luatideProjectNewJson.moduleModel = 'air72XCX';
-                     break;
-                 case 'Air10X':
-                     luatideProjectNewJson.moduleModel = 'air10X';
-                     break;
-                 case 'Simulator':
-                     luatideProjectNewJson.moduleModel = 'simulator';
-                     break;
-             }
-             // 用户appFile文件兼容
-             const appFileOld: string[] = projectOldJsonObj['app_file'];
-             for (let i = 0; i < appFileOld.length; i++) {
-                 const appFileOldPath: string = appFileOld[i];
-                 if (appFileOldPath.indexOf(projectPath) !== -1) {
-                     luatideProjectNewJson.appFile.push(appFileOldPath);
-                 }
-             }
-             // 用户工程版本兼容
-             luatideProjectNewJson.version = '2.0';
-             //用户modulePort兼容
-             if (projectOldJsonObj['module_port']) {
-                 luatideProjectNewJson.modulePort = projectOldJsonObj['module_port'];
-             }
-             const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
-             fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
-         }
-        //  工程配置文件2.1版本增加了
-         else if(projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) === 2.0){
-            // 用户appFile文件兼容
-            const appFileOld: string[] = projectOldJsonObj['appFile'];
-            for (let i = 0; i < appFileOld.length; i++) {
-                const appFilePath:string = appFileOld[i];
-                if (appFilePath.toLowerCase().indexOf(projectPath.toLowerCase())!==-1) {
-                    const appFileRelativePath = path.relative(projectPath,appFilePath);
-                    luatideProjectNewJson.appFile.push(appFileRelativePath);
-                }
+        const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+        if (!fs.existsSync(projectConfigPath)) {
+            return;
+        }
+        const projectOldJson: string = fs.readFileSync(projectConfigPath, 'utf-8');
+        const projectOldJsonObj = JSON.parse(projectOldJson);
+        let luatideProjectNewJson: any = {
+            version: '',
+            projectType: 'pure',
+            corePath: '',
+            libPath: '',
+            moduleModel: '',
+            appFile: [],
+            modulePort: '',
+        };
+        if (projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) < 2.0) {
+            this.projectConfigCompatibleVersionLessThanTwo(projectPath,projectOldJsonObj,luatideProjectNewJson);
+            this.projectConfigCompatibleVersionTwo(projectPath,projectOldJsonObj,luatideProjectNewJson);
+        }
+        else if(projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) === 2.0){
+            this.projectConfigCompatibleVersionTwo(projectPath,projectOldJsonObj,luatideProjectNewJson);
+        }
+    }
+
+    // 工程配置文件2.0以下版本配置文件兼容至2.0版本
+    projectConfigCompatibleVersionLessThanTwo(projectPath:string,projectOldJsonObj:any,luatideProjectNewJson:any){
+        const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+          // 用户core路径兼容
+          const corePath: string = projectOldJsonObj['corefile_path'];
+          luatideProjectNewJson.corePath = corePath;
+          // 用户lib路径兼容
+          let libPath: string = projectOldJsonObj['lib_path'];
+          if (libPath === '' && projectOldJsonObj['module_model'] !== 'Air10X') {
+              libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+          }
+          luatideProjectNewJson.libPath = libPath;
+          // 用户模块型号判断
+          const moduleModelOld: string = projectOldJsonObj['module_model'];
+          switch (moduleModelOld) {
+              case 'Air72XUX/Air82XUX':
+                  luatideProjectNewJson.moduleModel = 'air72XUX/air82XUX';
+                  break;
+              case 'Air72XCX':
+                  luatideProjectNewJson.moduleModel = 'air72XCX';
+                  break;
+              case 'Air10X':
+                  luatideProjectNewJson.moduleModel = 'air10X';
+                  break;
+              case 'Simulator':
+                  luatideProjectNewJson.moduleModel = 'simulator';
+                  break;
+          }
+          // 用户appFile文件兼容
+          const appFileOld: string[] = projectOldJsonObj['app_file'];
+          for (let i = 0; i < appFileOld.length; i++) {
+              const appFileOldPath: string = appFileOld[i];
+              if (appFileOldPath.indexOf(projectPath) !== -1) {
+                  luatideProjectNewJson.appFile.push(appFileOldPath);
+              }
+          }
+          // 用户工程版本兼容
+          luatideProjectNewJson.version = '2.0';
+          //用户modulePort兼容
+          if (projectOldJsonObj['module_port']) {
+              luatideProjectNewJson.modulePort = projectOldJsonObj['module_port'];
+          }
+          const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
+          fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+    }
+
+    // 工程配置文件2.0版本配置文件兼容至2.1版本
+    projectConfigCompatibleVersionTwo(projectPath:string,projectOldJsonObj:any,luatideProjectNewJson:any){
+        const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+        // 用户appFile文件兼容
+        const appFileOld: string[] = projectOldJsonObj['appFile'];
+        for (let i = 0; i < appFileOld.length; i++) {
+            const appFilePath:string = appFileOld[i];
+            if (appFilePath.toLowerCase().indexOf(projectPath.toLowerCase())!==-1) {
+                const appFileRelativePath = path.relative(projectPath,appFilePath);
+                luatideProjectNewJson.appFile.push(appFileRelativePath);
             }
-            luatideProjectNewJson.version = '2.1';
-            luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
-            luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
-            luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
-            luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
-            luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
-            const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
-            fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
-         }
-     }
+        }
+        luatideProjectNewJson.version = '2.1';
+        luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+        luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
+        luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+        luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
+        luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+        const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
+        fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+    }
 
     // 临时处理，demo和lib兼容,自动拉取接口未成功前处理
     demoAndCompatible(){
