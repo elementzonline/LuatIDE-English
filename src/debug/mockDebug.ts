@@ -283,7 +283,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		let configSource_filepathList: string[] = [];
 		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < project_fileslist.length; index++) {
-			const project_absolute_file = project_fileslist[index];
+			const project_absolute_file = path.join(this.activeWorkspace, project_fileslist[index]) ;
 			const project_file = path.basename(project_absolute_file);
 			if (fs.statSync(project_absolute_file).isFile()) {
 				configSource_fileList.push(project_file);
@@ -776,7 +776,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
 		let socketstat: number = 0;
-		while (true) {
+		for (var i = 0; i < 20 * 3; i++) {
 			const socket = Net.createConnection(21331, '127.0.0.1', () => {
 				console.log("Net.createConnection ok");
 				socketstat = 1;
@@ -809,6 +809,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
+			if(this._socket == null)
+				return
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
@@ -819,6 +821,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		console.log("等待waiting for debugger");
 		for (var i = 0; i < 120 * 3; i++) {
+			if(this._socket == null)
+				return
 			if (this.dbg_state === 1) {
 				console.log("waiting for debugger ok");
 				break;
