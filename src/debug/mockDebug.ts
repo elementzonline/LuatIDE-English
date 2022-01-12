@@ -776,7 +776,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
 		let socketstat: number = 0;
-		while (true) {
+		for (var i = 0; i < 20 * 3; i++) {
 			const socket = Net.createConnection(21331, '127.0.0.1', () => {
 				console.log("Net.createConnection ok");
 				socketstat = 1;
