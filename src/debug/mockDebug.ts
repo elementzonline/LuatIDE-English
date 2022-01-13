@@ -734,7 +734,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			socketstat = -1;
 			console.log("socketConnect err",err);
 		});
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 20; i++) {
 			await this.timesleep.wait(100);
 			if (socketstat === 1) {
 				return socket;
@@ -805,7 +805,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
 
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 50; i++) {
 			let socket_handle:any = null;
 			socket_handle = await this.socketConnect();
 			console.log("socket",socket_handle);
@@ -817,12 +817,14 @@ export class MockDebugSession extends LoggingDebugSession {
 				this.bindSocket(socket_handle);			
 				break;
 			}
-			if(i === 19)
+			if(i === 50-1)
 			{
 				console.log("socket too many retries,over");
 				vscode.debug.stopDebugging();
 				return;
 			}
+			await this.timesleep.wait(100);
+			console.log(formatConsoleDate(new Date()));
 		}
 		const flag: any = await this.downpath_send();
 		if (flag === false) {
