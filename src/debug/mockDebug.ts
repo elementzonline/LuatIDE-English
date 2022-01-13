@@ -734,7 +734,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			socketstat = -1;
 			console.log("socketConnect err",err);
 		});
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 20; i++) {
 			await this.timesleep.wait(100);
 			if (socketstat === 1) {
 				return socket;
@@ -805,7 +805,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
 
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 50; i++) {
 			let socket_handle:any = null;
 			socket_handle = await this.socketConnect();
 			console.log("socket",socket_handle);
@@ -817,12 +817,14 @@ export class MockDebugSession extends LoggingDebugSession {
 				this.bindSocket(socket_handle);			
 				break;
 			}
-			if(i === 19)
+			if(i === 50-1)
 			{
 				console.log("socket too many retries,over");
 				vscode.debug.stopDebugging();
 				return;
 			}
+			await this.timesleep.wait(100);
+			console.log(formatConsoleDate(new Date()));
 		}
 		const flag: any = await this.downpath_send();
 		if (flag === false) {
@@ -832,8 +834,10 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket == null)
+			if(this._socket === null)
+			{
 				return;
+			}
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
@@ -844,8 +848,10 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		console.log("等待waiting for debugger");
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket == null)
-				return
+			if(this._socket === null)
+			{
+				return;
+			}
 			if (this.dbg_state === 1) {
 				console.log("waiting for debugger ok");
 				break;
