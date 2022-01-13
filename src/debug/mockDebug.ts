@@ -137,7 +137,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
 	private _socketReady = new Subject();
-	private _socket_connect_ok = new Subject();
+	// private _socket_connect_ok = new Subject();
 	private dbg_input_buffer = Buffer.from("");
 
 	private bt_lock = true;
@@ -480,8 +480,15 @@ export class MockDebugSession extends LoggingDebugSession {
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	public module_model_flag = undefined;
 	public bindSocket(socket: Net.Socket) {
+
+		socket.on('close', () => {
+			console.log(">> client connection closed\n");
+			socket.destroy();
+			this._socket = null;
+		});
 		socket.on('end', () => {
-			console.log('>> client connection closed\n');
+			console.log('>> client connection end\n');
+			socket.destroy();
 			this._socket = null;
 		});
 		//vscode接收来自python服务器数据
@@ -715,7 +722,29 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		catch (e) { }
 	}
-
+	protected async socketConnect(){
+		let socketstat : number = 0;
+		const socket = Net.connect(21331, '127.0.0.1', () => {
+			// this._socket_connect_ok.notify();
+			socketstat = 1;
+			console.log("socketConnect ok socketstat",socketstat);
+		});
+		socket.on('error', function (err) {
+			socket.destroy();
+			socketstat = -1;
+			console.log("socketConnect err",err);
+		});
+		for (var i = 0; i < 10; i++) {
+			await this.timesleep.wait(100);
+			if (socketstat === 1) {
+				return socket;
+			}
+			else if (socketstat === -1){
+				return null;
+			}
+		}
+		return null;
+	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
@@ -775,30 +804,24 @@ export class MockDebugSession extends LoggingDebugSession {
 		queue.clear();
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
-		let socketstat: number = 0;
-		for (var i = 0; i < 20 * 3; i++) {
-			const socket = Net.createConnection(21331, '127.0.0.1', () => {
-				console.log("Net.createConnection ok");
-				socketstat = 1;
-				this._socket_connect_ok.notify();
-			});
-			socket.on('error', function (err) {
-				socket.destroy();
-				socketstat = 0;
-			});
-			socket.on('close', function () {
-				socket.destroy();
-				socketstat = 0;
-			});
-			await this.timesleep.wait(300);
-			if (socketstat === 0) {
-				console.log("等待socketstat");
-				continue;
+
+		for (var i = 0; i < 20; i++) {
+			let socket_handle:any = null;
+			socket_handle = await this.socketConnect();
+			console.log("socket",socket_handle);
+			if (socket_handle === null) {
+				console.log("socketConnect flase,trying");
 			}
-			else {
-				console.log("socket connect ok");
-				this.bindSocket(socket);
+			else
+			{
+				this.bindSocket(socket_handle);			
 				break;
+			}
+			if(i === 19)
+			{
+				console.log("socket too many retries,over");
+				vscode.debug.stopDebugging();
+				return;
 			}
 		}
 		const flag: any = await this.downpath_send();
@@ -810,7 +833,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if(this._socket == null)
-				return
+				return;
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
@@ -978,6 +1001,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
 		}
 		console.log("执行了断开连接的请求");
+		this._socket = null;
 		/*-\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		this.sendResponse(response);
 
