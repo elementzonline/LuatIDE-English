@@ -137,7 +137,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
 	private _socketReady = new Subject();
-	private _socket_connect_ok = new Subject();
+	// private _socket_connect_ok = new Subject();
 	private dbg_input_buffer = Buffer.from("");
 
 	private bt_lock = true;
@@ -833,7 +833,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if(this._socket == null)
-				return
+				return;
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
