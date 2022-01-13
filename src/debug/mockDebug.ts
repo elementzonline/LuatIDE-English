@@ -722,7 +722,29 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		catch (e) { }
 	}
-
+	protected async socketConnect(){
+		let socketstat : number = 0;
+		const socket = Net.connect(21331, '127.0.0.1', () => {
+			// this._socket_connect_ok.notify();
+			socketstat = 1;
+			console.log("socketConnect ok socketstat",socketstat);
+		});
+		socket.on('error', function (err) {
+			socket.destroy();
+			socketstat = -1;
+			console.log("socketConnect err",err);
+		});
+		for (var i = 0; i < 10; i++) {
+			await this.timesleep.wait(100);
+			if (socketstat === 1) {
+				return socket;
+			}
+			else if (socketstat === -1){
+				return null;
+			}
+		}
+		return null;
+	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
@@ -782,30 +804,24 @@ export class MockDebugSession extends LoggingDebugSession {
 		queue.clear();
 		this.fullvarsArray = [];
 		//监听21331端口，准备tcp连接。
-		let socketstat: number = 0;
-		for (var i = 0; i < 20 * 3; i++) {
-			const socket = Net.createConnection(21331, '127.0.0.1', () => {
-				console.log("Net.createConnection ok");
-				socketstat = 1;
-				this._socket_connect_ok.notify();
-			});
-			socket.on('error', function (err) {
-				socket.destroy();
-				socketstat = 0;
-			});
-			socket.on('close', function () {
-				socket.destroy();
-				socketstat = 0;
-			});
-			await this.timesleep.wait(300);
-			if (socketstat === 0) {
-				console.log("等待socketstat");
-				continue;
+
+		for (var i = 0; i < 20; i++) {
+			let socket_handle:any = null;
+			socket_handle = await this.socketConnect();
+			console.log("socket",socket_handle);
+			if (socket_handle === null) {
+				console.log("socketConnect flase,trying");
 			}
-			else {
-				console.log("socket connect ok");
-				this.bindSocket(socket);
+			else
+			{
+				this.bindSocket(socket_handle);			
 				break;
+			}
+			if(i === 19)
+			{
+				console.log("socket too many retries,over");
+				vscode.debug.stopDebugging();
+				return;
 			}
 		}
 		const flag: any = await this.downpath_send();
