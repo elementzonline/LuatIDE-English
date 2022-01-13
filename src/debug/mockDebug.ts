@@ -480,8 +480,15 @@ export class MockDebugSession extends LoggingDebugSession {
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	public module_model_flag = undefined;
 	public bindSocket(socket: Net.Socket) {
+
+		socket.on('close', () => {
+			console.log(">> client connection closed\n");
+			socket.destroy();
+			this._socket = null;
+		});
 		socket.on('end', () => {
-			console.log('>> client connection closed\n');
+			console.log('>> client connection end\n');
+			socket.destroy();
 			this._socket = null;
 		});
 		//vscode接收来自python服务器数据
