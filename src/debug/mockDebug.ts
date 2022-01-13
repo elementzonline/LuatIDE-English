@@ -1001,6 +1001,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
 		}
 		console.log("执行了断开连接的请求");
+		this._socket = null;
 		/*-\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		this.sendResponse(response);
 
