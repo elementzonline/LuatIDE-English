@@ -67,17 +67,17 @@ export class OpenProject {
 			if (result !== undefined) {
 				const importProjectPath = result[0].fsPath.toString();
 				if (!fs.existsSync(path.join(importProjectPath,'luatide_project.json'))) {
-					const selectProjectPath:any =  await vscode.window.showErrorMessage("该项目未配置工程，是否配置？", { modal: true }, "是", "否").then(optionsResult =>  {
+					const selectProjectPath:any =  await vscode.window.showErrorMessage("该项目未配置工程，是否配置？", { modal: true }, "是").then(optionsResult =>  {
 						if (optionsResult === '是') {
                             projectJsonParse.generateProjectJson(importProjectPath);
                             const appFile:string[] = getFileForDirRecursion(importProjectPath);
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}
-						else if (optionsResult === '否') {
-							vscode.window.showInformationMessage("不是有效的工程,请重新选择");
-                            return undefined;
-						}
+						// else if (optionsResult === '否') {
+						// 	vscode.window.showInformationMessage("不是有效的工程,请重新选择");
+                        //     return undefined;
+						// }
 				});
                 return selectProjectPath;
             }
