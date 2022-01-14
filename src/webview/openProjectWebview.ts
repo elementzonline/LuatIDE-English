@@ -120,7 +120,14 @@ export class OpenProjectManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
-                        const customProjectPath = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        let customProjectPath:string|undefined;
+                        if (customProjectPathResult!==undefined) {
+                            customProjectPath = customProjectPathResult[0].fsPath;
+                        }
+                        else {
+                            customProjectPath = undefined;
+                        }
                         openProjectPanel.webview.postMessage(
                             {
                                 command: "customProjectPath",
@@ -139,7 +146,14 @@ export class OpenProjectManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
-                        const customLibPath = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        let customLibPath:string|undefined;
+                        if (customLibPathResult!==undefined) {
+                            customLibPath = customLibPathResult[0].fsPath;
+                        }
+                        else {
+                            customLibPath = undefined;
+                        }
                         openProjectPanel.webview.postMessage(
                             {
                                 command: "customLibPath",
@@ -162,7 +176,14 @@ export class OpenProjectManage {
                                 json: ['pac', "soc"], // 文件类型过滤
                             },
                         };
-                        const customCorePath = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        let customCorePath:string|undefined;
+                        if (customCorePathResult!==undefined) {
+                            customCorePath = customCorePathResult[0].fsPath;
+                        }
+                        else {
+                            customCorePath = undefined;
+                        }
                         openProjectPanel.webview.postMessage(
                             {
                                 command: "customCorePath",
