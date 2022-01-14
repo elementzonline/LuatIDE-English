@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 // import { LuatideProvider } from './project/projectView';
 // import {OperationExplorer} from './project/toolshub';
-import { PluginConfigInit, PluginCoreUpate } from './config';
+import { PluginConfigInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
 import { ProjectManage } from './webview/projectWebview';
@@ -20,6 +20,8 @@ import * as fs from 'fs';
 // import { UiDesign } from './webview/uiDesignWebview';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
+import {checkSourceUpdate} from './serverSourceUpdate';
+
 
 function runProject(resource: vscode.Uri): void {
 	let targetResource = resource;
@@ -54,7 +56,7 @@ function debugProject(resource: vscode.Uri): void {
 }
 let pluginConfigInit = new PluginConfigInit();
 // let pluginVariablesInit = new PluginVariablesInit();
-let pluginCoreUpate = new PluginCoreUpate();
+// let pluginCoreUpate = new PluginCoreUpate();
 
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
@@ -79,9 +81,10 @@ export function activate(context: vscode.ExtensionContext) {
 	// 插件配置实例化
 	pluginConfigInit.configInit();
 	// 插件core文件自动更新处理
-	pluginCoreUpate.updateCoreHandle();
+	// pluginCoreUpate.updateCoreHandle();
+	checkSourceUpdate();
 	// demo和lib兼容性临时处理
-	pluginJsonParse.demoAndCompatible();
+	// pluginJsonParse.demoAndCompatible();
 	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
 	// 插件配置文件兼容执行
 	pluginJsonParse.pluginConfigCompatible();
