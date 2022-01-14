@@ -488,6 +488,7 @@ export class PluginVariablesInit {
         for (let index = 0; index < libList.length; index++) {
             const currentLibName:string = libList[index];
             const libNameVersionArray = reg.exec(currentLibName);
+            reg.lastIndex = 0;
             if (libNameVersionArray === null) {
                 break;
             }
