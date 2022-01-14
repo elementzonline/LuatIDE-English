@@ -226,11 +226,11 @@ export class PluginVariablesInit {
     // 获取Air72X默认示例demo列表
     getAir72XDefaultExampleList() {
         const demoList: string[] = [];
-        const air72XDefaultVersionDemoPath: string = this.getAir72XDefaultDemoPath();
-        const files: string[] = fs.readdirSync(air72XDefaultVersionDemoPath);
+        const air72XDefaultLatestDemoPath: string = this.getAir72XDefaultLatestDemoPath();
+        const files: string[] = fs.readdirSync(air72XDefaultLatestDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(path.join(air72XDefaultVersionDemoPath,element)).isDirectory()) {
+            if (fs.statSync(path.join(air72XDefaultLatestDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
