@@ -198,12 +198,6 @@ export class PluginVariablesInit {
         return air72XDefaultDemoPath;
     }
 
-    // 获取Air72X默认demo版本路径
-    getAir72XDefaultDemoVersionPath() {
-        const air72XDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air72X_Demo", "Air72X_DEMO_V2.4.0");
-        return air72XDefaultDemoPath;
-    }
-
     // 获取air101默认demo
     getAir101DefaultDemoPath() {
         const air101DefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
@@ -501,6 +495,30 @@ export class PluginVariablesInit {
         }
         const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion,'lib');
         return libLatestPath;
+    }
+
+    // 获取airr72x默认最新demo路径
+    getAir72XDefaultLatestDemoPath(){
+        const air72xDemoPath:string = this.getAir72XDefaultDemoPath();
+        const demoList:string[] = fs.readdirSync(air72xDemoPath);
+        const reg = /V([\d\.]+)/gi;
+        let currentVersion:string|undefined = undefined;
+        for (let index = 0; index < demoList.length; index++) {
+            const currentDemoName:string = demoList[index];
+            const demoNameVersionArray = reg.exec(currentDemoName);
+            reg.lastIndex = 0;
+            if (demoNameVersionArray === null) {
+                break;
+            }
+            else if (currentVersion === undefined) {
+                currentVersion = demoNameVersionArray[1];
+            }
+            else if (demoNameVersionArray[1] > currentVersion) {
+                currentVersion = demoNameVersionArray[1];
+            }
+        }
+        const demoLatestPath:string = path.join(air72xDemoPath,'V'+currentVersion);
+        return demoLatestPath;
     }
 
     // 依据模块型号获取文件名后缀
