@@ -368,7 +368,7 @@ export class CreateProject {
         const air105DefaultDemoPath: string = pluginVariablesInit.getAir105DefaultDemoPath();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                const air72XDefaultVersionDemoPath: string = pluginVariablesInit.getAir72XDefaultDemoVersionPath();
+                const air72XDefaultVersionDemoPath: string = pluginVariablesInit.getAir72XDefaultLatestDemoPath();
                 demoPath = path.join(air72XDefaultVersionDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
