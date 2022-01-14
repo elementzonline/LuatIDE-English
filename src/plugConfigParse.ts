@@ -250,36 +250,36 @@ let pluginVariablesInit = new PluginVariablesInit();
         fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
     }
 
-    // 临时处理，demo和lib兼容,自动拉取接口未成功前处理
-    demoAndCompatible(){
-        // 用户插件路径
-        const userPlugDataPath:string = path.join(__dirname,'../.','LuatIDEData');
-        const air72xDemoPath:string = pluginVariablesInit.getAir72XDefaultDemoPath();
-        const air101DemoPath:string = pluginVariablesInit.getAir101DefaultDemoPath();
-        const air103DemoPath:string = pluginVariablesInit.getAir103DefaultDemoPath();
-        const air105DemoPath:string = pluginVariablesInit.getAir105DefaultDemoPath();
-        const air72xLibPath:string = pluginVariablesInit.getAir72XDefaultLibPath();
-        const air72xDemoSourcePath:string = path.join(userPlugDataPath,'Air72X_DEMO');
-        const air101DemoSourcePath:string = path.join(userPlugDataPath,'Air101_DEMO');
-        const air103DemoSourcePath:string = path.join(userPlugDataPath,'Air103_DEMO');
-        const air105DemoSourcePath:string = path.join(userPlugDataPath,'Air105_DEMO');
-        const air72xLibSourcePath:string = path.join(userPlugDataPath,'Air72X_LIB');
-        if (fs.readdirSync(air72xDemoPath).length===0) {
-            this.copyDir(air72xDemoSourcePath,air72xDemoPath);
-        }
-        if (fs.readdirSync(air101DemoPath).length===0) {
-            this.copyDir(air101DemoSourcePath,air101DemoPath);
-        }
-        if (fs.readdirSync(air103DemoPath).length===0) {
-            this.copyDir(air103DemoSourcePath,air103DemoPath);
-        }
-        if (fs.readdirSync(air105DemoPath).length===0) {
-            this.copyDir(air105DemoSourcePath,air105DemoPath);
-        }
-        if (fs.readdirSync(air72xLibPath).length===0) {
-            this.copyDir(air72xLibSourcePath,air72xLibPath);
-        }
-    }
+    // // 临时处理，demo和lib兼容,自动拉取接口未成功前处理
+    // demoAndCompatible(){
+    //     // 用户插件路径
+    //     const userPlugDataPath:string = path.join(__dirname,'../.','LuatIDEData');
+    //     const air72xDemoPath:string = pluginVariablesInit.getAir72XDefaultDemoPath();
+    //     const air101DemoPath:string = pluginVariablesInit.getAir101DefaultDemoPath();
+    //     const air103DemoPath:string = pluginVariablesInit.getAir103DefaultDemoPath();
+    //     const air105DemoPath:string = pluginVariablesInit.getAir105DefaultDemoPath();
+    //     const air72xLibPath:string = pluginVariablesInit.getAir72XDefaultLibPath();
+    //     const air72xDemoSourcePath:string = path.join(userPlugDataPath,'Air72X_DEMO');
+    //     const air101DemoSourcePath:string = path.join(userPlugDataPath,'Air101_DEMO');
+    //     const air103DemoSourcePath:string = path.join(userPlugDataPath,'Air103_DEMO');
+    //     const air105DemoSourcePath:string = path.join(userPlugDataPath,'Air105_DEMO');
+    //     const air72xLibSourcePath:string = path.join(userPlugDataPath,'Air72X_LIB');
+    //     if (fs.readdirSync(air72xDemoPath).length===0) {
+    //         this.copyDir(air72xDemoSourcePath,air72xDemoPath);
+    //     }
+    //     if (fs.readdirSync(air101DemoPath).length===0) {
+    //         this.copyDir(air101DemoSourcePath,air101DemoPath);
+    //     }
+    //     if (fs.readdirSync(air103DemoPath).length===0) {
+    //         this.copyDir(air103DemoSourcePath,air103DemoPath);
+    //     }
+    //     if (fs.readdirSync(air105DemoPath).length===0) {
+    //         this.copyDir(air105DemoSourcePath,air105DemoPath);
+    //     }
+    //     if (fs.readdirSync(air72xLibPath).length===0) {
+    //         this.copyDir(air72xLibSourcePath,air72xLibPath);
+    //     }
+    // }
 
     /*
     * 复制目录、子目录，及其中的文件
