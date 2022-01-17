@@ -362,7 +362,7 @@
 		"viewsWelcome": [
 			{
 				"view": "luatide-history-project",
-				"contents": "[欢迎下载LuatIDE插件.](command:luatide.quickstart)\n[点击快速上手](command:luatide.quickstart)"
+				"contents": "[快速上手](command:luatide.quickstart)\n[技术支持](command:luatide.technicalSupport)\n[工具源码](command:luatide.SourceCode)"
 			}
 		]
 	}

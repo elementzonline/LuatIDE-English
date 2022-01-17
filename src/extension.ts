@@ -135,9 +135,17 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => testDependenciesProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
 	// context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
-	// 注册快速点击命令，点击后打开浏览器文档
+	// 注册快速上手命令，点击后打开doc使用说明文档
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
+	}));
+	// 注册技术支持命令，点击后打开luatide用户支持群链接
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport',async ()=> {
+		vscode.env.openExternal(vscode.Uri.parse('https://jq.qq.com/?_wv=1027&k=cl7grKU4'));
+	}));
+	// 注册命令，点击后打开浏览器文档
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.SourceCode',async ()=> {
+		vscode.env.openExternal(vscode.Uri.parse('https://gitee.com/openLuat/luatide'));
 	}));
 }
 
