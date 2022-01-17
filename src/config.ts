@@ -484,7 +484,7 @@ export class PluginVariablesInit {
             const libNameVersionArray = reg.exec(currentLibName);
             reg.lastIndex = 0;
             if (libNameVersionArray === null) {
-                break;
+                continue;
             }
             else if (currentVersion === undefined) {
                 currentVersion = libNameVersionArray[1];
@@ -508,7 +508,7 @@ export class PluginVariablesInit {
             const demoNameVersionArray = reg.exec(currentDemoName);
             reg.lastIndex = 0;
             if (demoNameVersionArray === null) {
-                break;
+                continue;
             }
             else if (currentVersion === undefined) {
                 currentVersion = demoNameVersionArray[1];
