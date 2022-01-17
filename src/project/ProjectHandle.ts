@@ -77,13 +77,13 @@ export class ProjectDeleteHandle {
 
     }
 
-    deleteProject(filePath: any) {
+    async deleteProject(filePath: any) {
         // const clickPath: string = filePath.path;
-        const deletProjectCheckState: boolean = this.deletProjectCheck(filePath);
+        const deletProjectCheckState: boolean = await this.deletProjectCheck(filePath);
         if (!deletProjectCheckState) {   //工程删除必要条件检查未通过
             return false;
         }
-        vscode.window.showWarningMessage('是否删除该工程', { modal: true }, '移除工程', '删除本地文件').then(result => {
+        await vscode.window.showWarningMessage('是否删除该工程', { modal: true }, '移除工程', '删除本地文件').then(result => {
             this.deleteProjectUserInteractionHint(result, filePath);
         });
     }
@@ -124,7 +124,14 @@ export class ProjectDeleteHandle {
     // 工程删除必要条件检查
     deletProjectCheck(filePath: any) {
         if (!fs.existsSync(path.join(filePath.path,filePath.label))) {
-            vscode.window.showErrorMessage("选定的路径文件状态已改变，将从配置文件列表中删除该工程");
+            pluginJsonParse.popPluginConfigProject(filePath.label);
+            const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+            if (path.join(filePath.path,filePath.label)===activityProjectPath) {
+                pluginJsonParse.setPluginConfigActivityProject = '';
+            }
+            vscode.window.showInformationMessage(`选定的${filePath.label}工程路径状态已改变，已从配置文件列表中删除该工程`);
+            vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return false;
         }
         const pluginConfigAppFile: any = pluginJsonParse.getPluginConfigUserProjectList();

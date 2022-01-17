@@ -29,14 +29,17 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 
     for (let index = 0; index < userProjectAbsulutePathList.length; index++) {
       const projectAbsolutePath = userProjectAbsulutePathList[index];
+      const nameIndex = projectAbsolutePath.lastIndexOf('\\');
+      const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
+      const projectPath = projectAbsolutePath.substring(0, nameIndex);
       if (fs.existsSync(projectAbsolutePath)) {
-        const nameIndex = projectAbsolutePath.lastIndexOf('\\');
-        const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
-        const projectPath = projectAbsolutePath.substring(0, nameIndex);
         this.rootloadUrlArray.push(new HistoryProjectTreeItem(projectName, projectPath, vscode.TreeItemCollapsibleState.None));
       }
+      else{
+        vscode.window.showInformationMessage(`工程${projectName}路径已发生改变,已从您的用户工程列表中移除`);
+        pluginJsonParse.popPluginConfigProject(projectName);
+      }
     }
-
   }
 
   // private pathExists(p: string): boolean {
