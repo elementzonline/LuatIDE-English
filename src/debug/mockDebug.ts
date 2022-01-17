@@ -130,18 +130,18 @@ export class MockDebugSession extends LoggingDebugSession {
 
 
 	/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-	private dbg_jvarsArray = new Array();
-	private dbg_varsArray = new Array();
-	private dbg_gvarsArray = new Array();
+	private dbgJvarsArray = new Array();
+	private dbgVarsArray = new Array();
+	private dbgGvarsArray = new Array();
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
 	private _socketReady = new Subject();
 	// private _socket_connect_ok = new Subject();
-	private dbg_input_buffer = Buffer.from("");
+	private dbgInputBuffer = Buffer.from("");
 
-	private bt_lock = true;
-	private bt_lock_done = new Subject();
+	private btLock = true;
+	private btLockDone = new Subject();
 
 	private download_success = new Subject();
 	protected _socket: any = null;
@@ -151,7 +151,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected dbg_state: Number = 0;
 	protected download_state: Number = 0;
 
-	protected source_mapping = new Map();
+	protected sourceMaping = new Map();
 	/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	protected varsDataRecvStartFlag: boolean = false;//开始接收vars的body
 	protected varsData: string = "";
@@ -350,7 +350,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			/*+\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
 			const src = new Source(sourceName);
 			/*-\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
-			src.path = this.source_mapping.get(source) || source;
+			src.path = this.sourceMaping.get(source) || source;
 			//logger.verbose("" + source + " => " + src.path)
 			const frame = new StackFrame(level, fullname, src, line);
 			this.dbg_stack.push(frame);
@@ -369,7 +369,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		// 补丁：过滤模块上报空json文件干扰
 		else if (index !== 5) {
-			this.dbg_varsArray.push(exts);
+			this.dbgVarsArray.push(exts);
 			// console.log("dbg_vars");
 		}
 	}
@@ -380,7 +380,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			this._gvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
-			this.dbg_gvarsArray.push(exts);
+			this.dbgGvarsArray.push(exts);
 		}
 	}
 	public dbg_resp_jvars(heads: any, exts: string) {
@@ -391,7 +391,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			this._watchvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
-			this.dbg_jvarsArray.push(exts);
+			this.dbgJvarsArray.push(exts);
 		}
 	}
 
@@ -494,11 +494,11 @@ export class MockDebugSession extends LoggingDebugSession {
 		});
 		//vscode接收来自python服务器数据
 		socket.on('data', async (data: Buffer) => {
-			if (this.dbg_input_buffer.length > 0) {
-				this.dbg_input_buffer = Buffer.concat([this.dbg_input_buffer, data]);
+			if (this.dbgInputBuffer.length > 0) {
+				this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
 			}
 			else {
-				this.dbg_input_buffer = data;
+				this.dbgInputBuffer = data;
 			}
 
 			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
@@ -506,10 +506,10 @@ export class MockDebugSession extends LoggingDebugSession {
 				let msg: any;
 				let msglen: number = 0;
 				if (this.varsDataRecvStartFlag === false) {
-					var offset = this.dbg_input_buffer.indexOf('\n');
+					var offset = this.dbgInputBuffer.indexOf('\n');
 					if (offset > - 1) {
 						msglen = offset + 1;
-						msg = this.dbg_input_buffer.subarray(0, msglen).toString("utf-8");
+						msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
 						console.log(msg, "数据接收成功:", msg);
 
 						if (!queue.isEmpty()) {
@@ -540,7 +540,7 @@ export class MockDebugSession extends LoggingDebugSession {
 					if (this.varsDataLen !== 0) {
 						msglen = this.varsDataLen - this.varsDataRecvLen;
 
-						msg = this.dbg_input_buffer.subarray(0, msglen);
+						msg = this.dbgInputBuffer.subarray(0, msglen);
 						if (msg.length <= 0) {
 							break;
 						}
@@ -553,7 +553,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 				// 	//原有处理逻辑
 				this.dbg_handle_msg(msg);
-				this.dbg_input_buffer = this.dbg_input_buffer.slice(msglen);
+				this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
 			}
 			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 		});
@@ -954,7 +954,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			console.log("break clr 入队成功");
 
 			var srcname = args.source.name;
-			this.source_mapping.set(srcname, args.source.path);
+			this.sourceMaping.set(srcname, args.source.path);
 			if (args.breakpoints) {
 				for (var i = 0; i < args.breakpoints.length; i++) {
 					var point = args.breakpoints[i];
@@ -1028,13 +1028,13 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stackTraceRequest(response: DebugProtocol.StackTraceResponse, args: DebugProtocol.StackTraceArguments) {
 
 		// 不知道为啥, stackTrace总是请求2次, 那是相当蛋疼, 需要干掉
-		if (this.bt_lock === false) {
-			this.bt_lock = true;
+		if (this.btLock === false) {
+			this.btLock = true;
 		}
 		else {
 			for (var i = 0; i < 5; i++) {
-				if (this.bt_lock) {
-					this.bt_lock_done.wait(1000);
+				if (this.btLock) {
+					this.btLockDone.wait(1000);
 				}
 			}
 		}
@@ -1057,8 +1057,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		};
 		this.sendResponse(response);
 
-		this.bt_lock = false;
-		this.bt_lock_done.notify();
+		this.btLock = false;
+		this.btLockDone.notify();
 	}
 
 	protected scopesRequest(response: DebugProtocol.ScopesResponse, args: DebugProtocol.ScopesArguments): void {
@@ -1096,7 +1096,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				let exts: string = "";
 				// this.localvarsArray = [];
 				while (1) {
-					exts = this.dbg_varsArray.shift();
+					exts = this.dbgVarsArray.shift();
 					//console.log("variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
@@ -1145,7 +1145,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				await this._gvarsDone.wait(500);//接收到全局变量接收完成通知
 				let exts: string = "";
 				while (1) {
-					exts = this.dbg_gvarsArray.shift();
+					exts = this.dbgGvarsArray.shift();
 					//console.log("variables 出栈2",exts);
 					if (typeof exts === "undefined") {
 						break;
@@ -1243,7 +1243,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				await this._watchvarsDone.wait(500);//接收到变量接收完成通知
 				let exts: string = "";
 				while (1) {
-					exts = this.dbg_jvarsArray.shift();
+					exts = this.dbgJvarsArray.shift();
 					//console.log("variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
