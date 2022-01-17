@@ -143,7 +143,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://jq.qq.com/?_wv=1027&k=cl7grKU4'));
 	}));
-	// 注册命令，点击后打开浏览器文档
+	// 注册命令，点击后打开luatide源码
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.SourceCode',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://gitee.com/openLuat/luatide'));
 	}));

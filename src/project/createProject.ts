@@ -3,7 +3,7 @@ import * as path from "path";
 import * as vscode from 'vscode';
 import { PluginVariablesInit } from "../config";
 import { PluginJsonParse } from "../plugConfigParse";
-import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getFileForDirRecursion } from "./projectApi";
+import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
 
 let pluginVariablesInit = new PluginVariablesInit();
@@ -55,9 +55,10 @@ export class CreateProject {
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
-        vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        // vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建示例工程
@@ -105,9 +106,10 @@ export class CreateProject {
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
-        vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        // vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建ndk工程
@@ -157,9 +159,10 @@ export class CreateProject {
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
-        vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        // vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 新建ui工程
@@ -202,9 +205,10 @@ export class CreateProject {
         projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
-        vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
+        projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        // vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 接收到的webview发送的lib处理

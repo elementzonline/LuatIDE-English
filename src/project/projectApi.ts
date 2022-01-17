@@ -97,3 +97,19 @@ export function deleteDirRecursive(dir:any){
         vscode.window.showErrorMessage(`${dir}路径已改变，请重新确认`);
     }
 }
+
+export function projectActiveInterfact(activityProjectName:string,activityProjectPath:string) {
+    // 执行激活到资源管理器命令
+    vscode.window.showInformationMessage(`请选择激活${activityProjectName}工程的打开方式`,{modal:true},"当前窗口打开","新窗口打开").then(
+        result =>{
+            if (result==='当前窗口打开') {
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+                vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(activityProjectPath),false);
+            }
+            else if(result === '新窗口打开'){
+                vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+                vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(activityProjectPath),true);
+            }
+        }
+    ); 
+}

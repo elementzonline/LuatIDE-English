@@ -5,7 +5,7 @@ import path = require('path');
 import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { PluginJsonParse } from '../plugConfigParse';
-import {checkSameProjectExistStatusForPluginConfig} from '../project/projectApi';
+import {checkSameProjectExistStatusForPluginConfig, projectActiveInterfact} from '../project/projectApi';
 import * as fetch from 'node-fetch';
 let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
@@ -231,16 +231,18 @@ export class OpenProjectManage {
         projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigCorePath(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectPath);
-        // 如果非10x且lib为空，则为
+        // 如果非10x且lib为空，则为默认lib
         if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
         openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105') {
             openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
         projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
-        vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
+        // vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
+        // 执行激活工程到活动工程操作
+        projectActiveInterfact(openProjectMessage.openProjectName,openProjectMessage.openProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        // vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 打开工程必要条件检查
