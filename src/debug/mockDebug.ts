@@ -248,25 +248,25 @@ export class MockDebugSession extends LoggingDebugSession {
 	private userSourceListPath: string[] = [];
 	public fileDisplay(filePath: string) {
 		// 根据文件路径读取文件，返回一个文件列表
-		const userSourceList_tmp = fs.readdirSync(filePath);
+		const userSourceListTmp = fs.readdirSync(filePath);
 		// 遍历读取到的文件列表
-		for (let i = 0; i < userSourceList_tmp.length; i++) {
+		for (let i = 0; i < userSourceListTmp.length; i++) {
 			// path.join得到当前文件的绝对路径
-			const filepath = path.join(filePath, userSourceList_tmp[i]);
+			const filepath = path.join(filePath, userSourceListTmp[i]);
 			// 根据文件路径获取文件信息
 			const stats = fs.statSync(filepath);
 			const isFile = stats.isFile(); // 是否为文件
 			const isDir = stats.isDirectory(); // 是否为文件夹
 			if (isFile) {
-				if (userSourceList_tmp[i].lastIndexOf('.lua') !== -1) {
+				if (userSourceListTmp[i].lastIndexOf('.lua') !== -1) {
 					console.log(filePath);
-					this.userSourceList.push(userSourceList_tmp[i]);
-					this.userSourceListPath.push(path.join(filePath, userSourceList_tmp[i]));
-					console.log("当前文件：", userSourceList_tmp[i]);
+					this.userSourceList.push(userSourceListTmp[i]);
+					this.userSourceListPath.push(path.join(filePath, userSourceListTmp[i]));
+					console.log("当前文件：", userSourceListTmp[i]);
 				}
 			} else if (isDir) {
 				this.fileDisplay(filepath); // 递归，如果是文件夹，就继续遍历该文件夹里面的文件	
-				console.log(userSourceList_tmp);
+				console.log(userSourceListTmp);
 
 			}
 		};
@@ -278,19 +278,19 @@ export class MockDebugSession extends LoggingDebugSession {
 	//-----------------------------------------------------------------
 	// 读取配置文件路径
 
-	private generate_project_filepath() {
-		let configSource_fileList: string[] = [];
-		let configSource_filepathList: string[] = [];
-		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
-		for (let index = 0; index < project_fileslist.length; index++) {
-			const project_absolute_file = path.join(this.activeWorkspace, project_fileslist[index]) ;
-			const project_file = path.basename(project_absolute_file);
-			if (fs.statSync(project_absolute_file).isFile()) {
-				configSource_fileList.push(project_file);
-				configSource_filepathList.push(project_absolute_file);
+	private generateProjectFilePath() {
+		let configSourceFileList: string[] = [];
+		let configSourceFilepathList: string[] = [];
+		let projectFileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
+		for (let index = 0; index < projectFileslist.length; index++) {
+			const projectAbsoluteFile = path.join(this.activeWorkspace, projectFileslist[index]) ;
+			const projectFile = path.basename(projectAbsoluteFile);
+			if (fs.statSync(projectAbsoluteFile).isFile()) {
+				configSourceFileList.push(projectFile);
+				configSourceFilepathList.push(projectAbsoluteFile);
 			}
 		}
-		const temp = [configSource_fileList, configSource_filepathList];
+		const temp = [configSourceFileList, configSourceFilepathList];
 		return temp;
 	}
 	//打印指定深度或打印全部堆栈信息。
@@ -304,39 +304,39 @@ export class MockDebugSession extends LoggingDebugSession {
 			var fullname = exts.trim();
 			let tmp = fullname.split(":");
 			// 跳转路径修改
-			let currentconfigSource_fileList: any = [];
-			let configSource_filepathList: any = this.generate_project_filepath()[1];
-			currentconfigSource_fileList = this.generate_project_filepath()[0];
-			let source_name: string = "";
+			let currentconfigSourceFileList: any = [];
+			let configSourceFilepathList: any = this.generateProjectFilePath()[1];
+			currentconfigSourceFileList = this.generateProjectFilePath()[0];
+			let sourceName: string = "";
 			if (tmp[0].indexOf("/lua/") !== -1) {
-				source_name = tmp[0].substring(4 + 1,);
+				sourceName = tmp[0].substring(4 + 1,);
 			}
 			else if (tmp[0].indexOf("/luadb/") !== -1) {
-				source_name = tmp[0].substring(6 + 1,);
+				sourceName = tmp[0].substring(6 + 1,);
 			}
 			else {
-				source_name = tmp[0].substring(1,);
+				sourceName = tmp[0].substring(1,);
 			}
 			let source: string = "";
 			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 
-			if (currentconfigSource_fileList.indexOf(source_name) !== -1) {
-				console.log("当前", currentconfigSource_fileList);
-				for (let i = 0; i < currentconfigSource_fileList.length; i++) {
-					const projectFile = path.basename(configSource_filepathList[i]);
-					if (projectFile === source_name) {
-						source = configSource_filepathList[i];
+			if (currentconfigSourceFileList.indexOf(sourceName) !== -1) {
+				console.log("当前", currentconfigSourceFileList);
+				for (let i = 0; i < currentconfigSourceFileList.length; i++) {
+					const projectFile = path.basename(configSourceFilepathList[i]);
+					if (projectFile === sourceName) {
+						source = configSourceFilepathList[i];
 						break;
 					}
 				}
 			}
 			else {
-				source = path.join(__dirname, "../..", "lib_merge_temp", source_name);
+				source = path.join(__dirname, "../..", "lib_merge_temp", sourceName);
 			}
 			// /*-\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 			// const line = parseInt(tmp[1])
 			let line: number;
-			if (source_name === "main.lua") {
+			if (sourceName === "main.lua") {
 				line = parseInt(tmp[1]) - 1;
 			}
 			else {
@@ -348,7 +348,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 			fullname = tmp[0] + ":" + line;
 			/*+\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
-			const src = new Source(source_name);
+			const src = new Source(sourceName);
 			/*-\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
 			src.path = this.source_mapping.get(source) || source;
 			//logger.verbose("" + source + " => " + src.path)
@@ -925,7 +925,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			const pathIndex = args.source.path.lastIndexOf("\\");
 			let path: string = args.source.path.substring(0, pathIndex);
 			// 修改不能跳转到其它地方问题,解析json
-			const project_filelist_temp = this.generate_project_filepath()[1];
+			const project_filelist_temp = this.generateProjectFilePath()[1];
 			// 遍历json文件
 			let temp_flag = false;
 			for (let i = 0; i < project_filelist_temp.length; i++) {
