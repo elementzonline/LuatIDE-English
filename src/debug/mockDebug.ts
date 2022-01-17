@@ -130,18 +130,18 @@ export class MockDebugSession extends LoggingDebugSession {
 
 
 	/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-	private dbg_jvarsArray = new Array();
-	private dbg_varsArray = new Array();
-	private dbg_gvarsArray = new Array();
+	private dbgJvarsArray = new Array();
+	private dbgVarsArray = new Array();
+	private dbgGvarsArray = new Array();
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
 	private _socketReady = new Subject();
 	// private _socket_connect_ok = new Subject();
-	private dbg_input_buffer = Buffer.from("");
+	private dbgInputBuffer = Buffer.from("");
 
-	private bt_lock = true;
-	private bt_lock_done = new Subject();
+	private btLock = true;
+	private btLockDone = new Subject();
 
 	private download_success = new Subject();
 	protected _socket: any = null;
@@ -151,7 +151,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected dbg_state: Number = 0;
 	protected download_state: Number = 0;
 
-	protected source_mapping = new Map();
+	protected sourceMaping = new Map();
 	/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	protected varsDataRecvStartFlag: boolean = false;//开始接收vars的body
 	protected varsData: string = "";
@@ -248,25 +248,25 @@ export class MockDebugSession extends LoggingDebugSession {
 	private userSourceListPath: string[] = [];
 	public fileDisplay(filePath: string) {
 		// 根据文件路径读取文件，返回一个文件列表
-		const userSourceList_tmp = fs.readdirSync(filePath);
+		const userSourceListTmp = fs.readdirSync(filePath);
 		// 遍历读取到的文件列表
-		for (let i = 0; i < userSourceList_tmp.length; i++) {
+		for (let i = 0; i < userSourceListTmp.length; i++) {
 			// path.join得到当前文件的绝对路径
-			const filepath = path.join(filePath, userSourceList_tmp[i]);
+			const filepath = path.join(filePath, userSourceListTmp[i]);
 			// 根据文件路径获取文件信息
 			const stats = fs.statSync(filepath);
 			const isFile = stats.isFile(); // 是否为文件
 			const isDir = stats.isDirectory(); // 是否为文件夹
 			if (isFile) {
-				if (userSourceList_tmp[i].lastIndexOf('.lua') !== -1) {
+				if (userSourceListTmp[i].lastIndexOf('.lua') !== -1) {
 					console.log(filePath);
-					this.userSourceList.push(userSourceList_tmp[i]);
-					this.userSourceListPath.push(path.join(filePath, userSourceList_tmp[i]));
-					console.log("当前文件：", userSourceList_tmp[i]);
+					this.userSourceList.push(userSourceListTmp[i]);
+					this.userSourceListPath.push(path.join(filePath, userSourceListTmp[i]));
+					console.log("当前文件：", userSourceListTmp[i]);
 				}
 			} else if (isDir) {
 				this.fileDisplay(filepath); // 递归，如果是文件夹，就继续遍历该文件夹里面的文件	
-				console.log(userSourceList_tmp);
+				console.log(userSourceListTmp);
 
 			}
 		};
@@ -278,19 +278,19 @@ export class MockDebugSession extends LoggingDebugSession {
 	//-----------------------------------------------------------------
 	// 读取配置文件路径
 
-	private generate_project_filepath() {
-		let configSource_fileList: string[] = [];
-		let configSource_filepathList: string[] = [];
-		let project_fileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
-		for (let index = 0; index < project_fileslist.length; index++) {
-			const project_absolute_file = path.join(this.activeWorkspace, project_fileslist[index]) ;
-			const project_file = path.basename(project_absolute_file);
-			if (fs.statSync(project_absolute_file).isFile()) {
-				configSource_fileList.push(project_file);
-				configSource_filepathList.push(project_absolute_file);
+	private generateProjectFilePath() {
+		let configSourceFileList: string[] = [];
+		let configSourceFilepathList: string[] = [];
+		let projectFileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
+		for (let index = 0; index < projectFileslist.length; index++) {
+			const projectAbsoluteFile = path.join(this.activeWorkspace, projectFileslist[index]) ;
+			const projectFile = path.basename(projectAbsoluteFile);
+			if (fs.statSync(projectAbsoluteFile).isFile()) {
+				configSourceFileList.push(projectFile);
+				configSourceFilepathList.push(projectAbsoluteFile);
 			}
 		}
-		const temp = [configSource_fileList, configSource_filepathList];
+		const temp = [configSourceFileList, configSourceFilepathList];
 		return temp;
 	}
 	//打印指定深度或打印全部堆栈信息。
@@ -304,38 +304,39 @@ export class MockDebugSession extends LoggingDebugSession {
 			var fullname = exts.trim();
 			let tmp = fullname.split(":");
 			// 跳转路径修改
-			let currentconfigSource_fileList: any = [];
-			let configSource_filepathList: any = this.generate_project_filepath()[1];
-			currentconfigSource_fileList = this.generate_project_filepath()[0];
-			let source_name: string = "";
+			let currentconfigSourceFileList: any = [];
+			let configSourceFilepathList: any = this.generateProjectFilePath()[1];
+			currentconfigSourceFileList = this.generateProjectFilePath()[0];
+			let sourceName: string = "";
 			if (tmp[0].indexOf("/lua/") !== -1) {
-				source_name = tmp[0].substring(4 + 1,);
+				sourceName = tmp[0].substring(4 + 1,);
 			}
 			else if (tmp[0].indexOf("/luadb/") !== -1) {
-				source_name = tmp[0].substring(6 + 1,);
+				sourceName = tmp[0].substring(6 + 1,);
 			}
 			else {
-				source_name = tmp[0].substring(1,);
+				sourceName = tmp[0].substring(1,);
 			}
 			let source: string = "";
 			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 
-			if (currentconfigSource_fileList.indexOf(source_name) !== -1) {
-				console.log("当前", currentconfigSource_fileList);
-				for (let i = 0; i < currentconfigSource_fileList.length; i++) {
-					if (configSource_filepathList[i].indexOf(source_name) !== -1) {
-						source = configSource_filepathList[i];
+			if (currentconfigSourceFileList.indexOf(sourceName) !== -1) {
+				console.log("当前", currentconfigSourceFileList);
+				for (let i = 0; i < currentconfigSourceFileList.length; i++) {
+					const projectFile = path.basename(configSourceFilepathList[i]);
+					if (projectFile === sourceName) {
+						source = configSourceFilepathList[i];
 						break;
 					}
 				}
 			}
 			else {
-				source = path.join(__dirname, "../..", "lib_merge_temp", source_name);
+				source = path.join(__dirname, "../..", "lib_merge_temp", sourceName);
 			}
 			// /*-\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 			// const line = parseInt(tmp[1])
 			let line: number;
-			if (source_name === "main.lua") {
+			if (sourceName === "main.lua") {
 				line = parseInt(tmp[1]) - 1;
 			}
 			else {
@@ -347,9 +348,9 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 			fullname = tmp[0] + ":" + line;
 			/*+\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
-			const src = new Source(source_name);
+			const src = new Source(sourceName);
 			/*-\NEW\czm\2021.05.27\添加断点获取到的文件名有问题*/
-			src.path = this.source_mapping.get(source) || source;
+			src.path = this.sourceMaping.get(source) || source;
 			//logger.verbose("" + source + " => " + src.path)
 			const frame = new StackFrame(level, fullname, src, line);
 			this.dbg_stack.push(frame);
@@ -368,7 +369,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		// 补丁：过滤模块上报空json文件干扰
 		else if (index !== 5) {
-			this.dbg_varsArray.push(exts);
+			this.dbgVarsArray.push(exts);
 			// console.log("dbg_vars");
 		}
 	}
@@ -379,7 +380,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			this._gvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
-			this.dbg_gvarsArray.push(exts);
+			this.dbgGvarsArray.push(exts);
 		}
 	}
 	public dbg_resp_jvars(heads: any, exts: string) {
@@ -390,7 +391,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			this._watchvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
-			this.dbg_jvarsArray.push(exts);
+			this.dbgJvarsArray.push(exts);
 		}
 	}
 
@@ -493,11 +494,11 @@ export class MockDebugSession extends LoggingDebugSession {
 		});
 		//vscode接收来自python服务器数据
 		socket.on('data', async (data: Buffer) => {
-			if (this.dbg_input_buffer.length > 0) {
-				this.dbg_input_buffer = Buffer.concat([this.dbg_input_buffer, data]);
+			if (this.dbgInputBuffer.length > 0) {
+				this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
 			}
 			else {
-				this.dbg_input_buffer = data;
+				this.dbgInputBuffer = data;
 			}
 
 			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
@@ -505,10 +506,10 @@ export class MockDebugSession extends LoggingDebugSession {
 				let msg: any;
 				let msglen: number = 0;
 				if (this.varsDataRecvStartFlag === false) {
-					var offset = this.dbg_input_buffer.indexOf('\n');
+					var offset = this.dbgInputBuffer.indexOf('\n');
 					if (offset > - 1) {
 						msglen = offset + 1;
-						msg = this.dbg_input_buffer.subarray(0, msglen).toString("utf-8");
+						msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
 						console.log(msg, "数据接收成功:", msg);
 
 						if (!queue.isEmpty()) {
@@ -539,7 +540,7 @@ export class MockDebugSession extends LoggingDebugSession {
 					if (this.varsDataLen !== 0) {
 						msglen = this.varsDataLen - this.varsDataRecvLen;
 
-						msg = this.dbg_input_buffer.subarray(0, msglen);
+						msg = this.dbgInputBuffer.subarray(0, msglen);
 						if (msg.length <= 0) {
 							break;
 						}
@@ -552,7 +553,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 				// 	//原有处理逻辑
 				this.dbg_handle_msg(msg);
-				this.dbg_input_buffer = this.dbg_input_buffer.slice(msglen);
+				this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
 			}
 			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 		});
@@ -924,7 +925,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			const pathIndex = args.source.path.lastIndexOf("\\");
 			let path: string = args.source.path.substring(0, pathIndex);
 			// 修改不能跳转到其它地方问题,解析json
-			const project_filelist_temp = this.generate_project_filepath()[1];
+			const project_filelist_temp = this.generateProjectFilePath()[1];
 			// 遍历json文件
 			let temp_flag = false;
 			for (let i = 0; i < project_filelist_temp.length; i++) {
@@ -953,7 +954,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			console.log("break clr 入队成功");
 
 			var srcname = args.source.name;
-			this.source_mapping.set(srcname, args.source.path);
+			this.sourceMaping.set(srcname, args.source.path);
 			if (args.breakpoints) {
 				for (var i = 0; i < args.breakpoints.length; i++) {
 					var point = args.breakpoints[i];
@@ -1027,13 +1028,13 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stackTraceRequest(response: DebugProtocol.StackTraceResponse, args: DebugProtocol.StackTraceArguments) {
 
 		// 不知道为啥, stackTrace总是请求2次, 那是相当蛋疼, 需要干掉
-		if (this.bt_lock === false) {
-			this.bt_lock = true;
+		if (this.btLock === false) {
+			this.btLock = true;
 		}
 		else {
 			for (var i = 0; i < 5; i++) {
-				if (this.bt_lock) {
-					this.bt_lock_done.wait(1000);
+				if (this.btLock) {
+					this.btLockDone.wait(1000);
 				}
 			}
 		}
@@ -1056,8 +1057,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		};
 		this.sendResponse(response);
 
-		this.bt_lock = false;
-		this.bt_lock_done.notify();
+		this.btLock = false;
+		this.btLockDone.notify();
 	}
 
 	protected scopesRequest(response: DebugProtocol.ScopesResponse, args: DebugProtocol.ScopesArguments): void {
@@ -1095,7 +1096,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				let exts: string = "";
 				// this.localvarsArray = [];
 				while (1) {
-					exts = this.dbg_varsArray.shift();
+					exts = this.dbgVarsArray.shift();
 					//console.log("variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
@@ -1144,7 +1145,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				await this._gvarsDone.wait(500);//接收到全局变量接收完成通知
 				let exts: string = "";
 				while (1) {
-					exts = this.dbg_gvarsArray.shift();
+					exts = this.dbgGvarsArray.shift();
 					//console.log("variables 出栈2",exts);
 					if (typeof exts === "undefined") {
 						break;
@@ -1242,7 +1243,7 @@ export class MockDebugSession extends LoggingDebugSession {
 				await this._watchvarsDone.wait(500);//接收到变量接收完成通知
 				let exts: string = "";
 				while (1) {
-					exts = this.dbg_jvarsArray.shift();
+					exts = this.dbgJvarsArray.shift();
 					//console.log("variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
