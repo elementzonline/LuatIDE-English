@@ -323,7 +323,8 @@ export class MockDebugSession extends LoggingDebugSession {
 			if (currentconfigSource_fileList.indexOf(source_name) !== -1) {
 				console.log("当前", currentconfigSource_fileList);
 				for (let i = 0; i < currentconfigSource_fileList.length; i++) {
-					if (configSource_filepathList[i].indexOf(source_name) !== -1) {
+					const projectFile = path.basename(configSource_filepathList[i]);
+					if (projectFile === source_name) {
 						source = configSource_filepathList[i];
 						break;
 					}
