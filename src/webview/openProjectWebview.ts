@@ -15,19 +15,19 @@ export class OpenProjectManage {
     constructor() {
 
     }
-    openopenProjectPanel: vscode.WebviewPanel | undefined = undefined;
+    openProjectPanel: vscode.WebviewPanel | undefined = undefined;
     // 工程主页webview管理
     openProjectManage(context:vscode.ExtensionContext,openProjectJson:any) {
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
         // 如果检测到编辑器区域已存在home面板，则展示它
-        if (this.openopenProjectPanel) {
-            this.openopenProjectPanel.reveal(columnToShowIn);
+        if (this.openProjectPanel) {
+            this.openProjectPanel.reveal(columnToShowIn);
             return;
         }
         else {
-            this.openopenProjectPanel = vscode.window.createWebviewPanel(
+            this.openProjectPanel = vscode.window.createWebviewPanel(
                 'OpenProject', //仅供内部使用的面板类型
                 '打开工程配置', //webview 展示标题
                 vscode.ViewColumn.Active,
@@ -38,24 +38,24 @@ export class OpenProjectManage {
             );
         }
         // 获取webview界面
-        this.openopenProjectPanel.webview.html = this.getProjectWebviewContent();
+        this.openProjectPanel.webview.html = this.getProjectWebviewContent();
 
         //  数据通信：发送导入工程数据至webview
-        this.openopenProjectPanel.webview.postMessage(
+        this.openProjectPanel.webview.postMessage(
             {
                 command: 'importProjectData',
                 text: openProjectJson
             }
         );
 
-        this.openopenProjectPanel.webview.onDidReceiveMessage(
-            message => this.receiveMessageHandle(this.openopenProjectPanel, message)
+        this.openProjectPanel.webview.onDidReceiveMessage(
+            message => this.receiveMessageHandle(this.openProjectPanel, message)
         );
 
         // Reset when the current panel is closed
-        this.openopenProjectPanel.onDidDispose(
+        this.openProjectPanel.onDidDispose(
             () => {
-                this.openopenProjectPanel = undefined;
+                this.openProjectPanel = undefined;
             },
             null,
             context.subscriptions
