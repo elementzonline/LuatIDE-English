@@ -278,7 +278,8 @@ export class ProjectConfigOperation {
                 if (!projectAddCheckState) {
                     return false;
                 }
-                filePathList.push(filePath);
+                const relativeFilePath:string = path.relative(activityProjectPath,filePath);
+                filePathList.push(relativeFilePath);
             }
             projectJsonParse.pushProjectConfigAppFile(filePathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
