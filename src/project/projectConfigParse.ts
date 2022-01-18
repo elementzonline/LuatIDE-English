@@ -132,7 +132,8 @@ import * as path from "path";
     popProjectConfigAppFile(appFilePath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
-        const index = projectJsonObj.appFile.indexOf(appFilePath);
+        const relativeFilePath:string = path.relative(projectPath,appFilePath);
+        const index = projectJsonObj.appFile.indexOf(relativeFilePath);
         if (index!==-1) {
             projectJsonObj.appFile.splice(index,1);
             if (fs.statSync(appFilePath).isDirectory()) {

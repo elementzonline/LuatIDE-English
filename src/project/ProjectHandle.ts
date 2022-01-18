@@ -422,10 +422,11 @@ export class ProjectSoruceFileDelete{
         const selectPath:any = path.join(filePath.parentPath,filePath.label);
         const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
         const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        const relativeSelectFilePath:string = path.relative(activityPath,selectPath);
         if (selectPath===activityPath) {
             this.deleteActivityProject();
         }
-        else if (projectAppFile.indexOf(selectPath)!==-1) {
+        else if (projectAppFile.indexOf(relativeSelectFilePath)!==-1) {
             this.projectSourceFileDeleteHint(selectPath);
         }
     }
