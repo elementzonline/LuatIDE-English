@@ -140,7 +140,7 @@ import * as path from "path";
                 // 若用户删除的是文件夹，则删除appfile目录中其所有子文件
                 for (let i = 0; i < projectJsonObj.appFile.length; i++) {
                     const element:string = projectJsonObj.appFile[i];
-                    if (element.indexOf(appFilePath)!==-1) {
+                    if (element.indexOf(relativeFilePath)!==-1) {
                         projectJsonObj.appFile.splice(i,1);
                         i = i-1;
                     }

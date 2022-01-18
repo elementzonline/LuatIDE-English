@@ -421,6 +421,10 @@ export class ProjectSoruceFileDelete{
     // 删除工程内指定文件或文件夹
     projectSourceFileDelete(filePath:any){
         const selectPath:any = path.join(filePath.parentPath,filePath.label);
+        if (!fs.existsSync(selectPath)) {
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            return;
+        }
         const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
         const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
         const relativeSelectFilePath:string = path.relative(activityPath,selectPath);
