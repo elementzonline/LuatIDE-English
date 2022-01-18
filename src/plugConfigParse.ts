@@ -229,15 +229,26 @@ let pluginVariablesInit = new PluginVariablesInit();
 
     // 工程配置文件2.0版本配置文件兼容至2.1版本
     projectConfigCompatibleVersionTwo(projectPath:string,projectOldJsonObj:any){
+        const projectName:string = path.basename(projectPath);
         const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
         const luatideProjectNewJson:any = this.getProjectJsonObjVersionTwo();
         // 用户appFile文件兼容
         const appFileOld: string[] = projectOldJsonObj['appFile'];
         for (let i = 0; i < appFileOld.length; i++) {
             const appFilePath:string = appFileOld[i];
-            if (appFilePath.toLowerCase().indexOf(projectPath.toLowerCase())!==-1) {
-                const appFileRelativePath = path.relative(projectPath,appFilePath);
-                luatideProjectNewJson.appFile.push(appFileRelativePath);
+            if (fs.existsSync(appFilePath)) {
+                if (appFilePath.toLowerCase().indexOf(projectPath.toLowerCase())!==-1) {
+                    const appFileRelativePath = path.relative(projectPath,appFilePath);
+                    luatideProjectNewJson.appFile.push(appFileRelativePath);
+                }
+            }
+            else{
+                const reg = new RegExp(`${projectName}[\\\\|/](.*)`,'ig');
+                const array = reg.exec(appFilePath);
+                if (array!==null) {
+                    const appFileRelativePath = array[1];
+                    luatideProjectNewJson.appFile.push(appFileRelativePath);
+                }
             }
         }
         luatideProjectNewJson.version = '2.1';
