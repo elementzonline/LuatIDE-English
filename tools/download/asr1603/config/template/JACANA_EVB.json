@@ -1,0 +1,99 @@
+{
+  "name": "JACANA_EVB",
+  "commands": [
+    {
+      "command": "require",
+      "name": "product",
+      "type": "value",
+      "group": "0"
+    },
+    {
+      "command": "require",
+      "name": "version",
+      "type": "value",
+      "group": "0"
+    },
+    {
+      "command": "require",
+      "name": "version-bootrom",
+      "type": "value",
+      "group": "0"
+    },
+    {
+      "command": "progress",
+      "name": "weight",
+      "type": "value",
+      "group": "0"
+    },
+    {
+      "command": "call",
+      "name": "flasher",
+      "type": "image",
+      "group": "0"
+    },
+    {
+      "command": "partition",
+      "name": "flashinfo",
+      "type": "image",
+      "group": "0"
+    },
+    {
+      "command": "partition",
+      "name": "partition",
+      "type": "image",
+      "group": "0"
+    },
+    {
+      "command": "flash",
+      "name": "firmware",
+      "type": "image",
+      "partition": "firmware",
+      "group": "1"
+    },
+    {
+      "command": "flash",
+      "name": "pvt",
+      "type": "image",
+      "partition": "pvt",
+      "group": "2"
+    }
+  ],
+  "images": [
+    {
+      "name": "flasher",
+      "image": "flasher.bin",
+      "io": "in",
+      "format": "raw"
+    },
+    {
+      "name": "firmware",
+      "image": "jacana.bin",
+      "io": "in",
+      "format": "raw"
+    },
+    {
+      "name": "pvt",
+      "image": "pvt.bin",
+      "io": "in",
+      "format": "raw"
+    },
+    {
+      "name": "flashinfo",
+      "image": "flashinfo.bin",
+      "io": "out",
+      "format": "finf"
+    },
+    {
+      "name": "partition",
+      "image": "partition.bin",
+      "io": "out",
+      "format": "aptb"
+    }
+  ],
+  "values": {
+    "product": "arom-tiny",
+    "version": "",
+    "version-bootrom": "",
+    "weight": 0
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "QSPI_NOR_16X2MB_B64KB_S4KB_P256",
+  "type": "QSPI_NOR",
+  "minIoSize": 1,
+  "pageSize": 256,
+  "pebSize": "4KiB",
+  "sectorSize": "4KiB",
+  "blockSize": "64KiB",
+  "flashSize": "16MiB",
+  "erasedValue": "0xFF",
+  "combinedFlashSize": "16MiB",
+  "devices": [
+    {
+      "name": "GD25LQ128D",
+      "manufacturer": "GigaDevice",
+      "vendorId": "0xC8",
+      "deviceId": "0x6018"
+    }
+  ]
+}

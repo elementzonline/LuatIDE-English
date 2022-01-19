@@ -1,0 +1,32 @@
+{
+  "name": "JACANA_MEM_FLASH_LAYOUT",
+  "partitions": [
+    {
+      "name": "external",
+      "format": "flash",
+      "vstart": "0x10000000",
+      "partitions": [
+        {
+          "name": "firmware",
+          "format": "raw",
+          "size": "512KiB"
+        },
+        {
+          "name": "reserved",
+          "format": "raw",
+          "size": "-1"
+        },
+        {
+          "name": "pvt",
+          "format": "raw",
+          "size": "128KiB"
+        },
+        {
+          "name": "reserved2",
+          "format": "raw",
+          "size": "896KiB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "ASR_SC2_EVB",
+  "version": "0.5",
+  "version-bootrom": "2021.02.18",
+  "template": "SC2_EVB",
+  "flashes": [
+    {
+      "name": "external",
+      "port": "QSPI",
+      "flash": "QSPI_NOR_32MB_B64KB_S4KB_P256"
+    }
+  ],
+  "layout": "SC2_SINGLE_FLASH_LAYOUT",
+  "keyAlg": "rsa",
+  "hashAlg": "sha256",
+  "secureBoot": false,
+  "variants": [
+    {
+      "name": "SC2_Z1_32MB"
+    },
+    {
+      "name": "SC2_Z1_MEM",
+      "template": "SC2_MEM_EVB",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "MEM",
+          "flash": "MEM_SIMULATION_FLASH"
+        }
+      ],
+      "layout": "SC2_MEM_FLASH_LAYOUT"
+    }
+  ]
+}

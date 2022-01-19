@@ -1,0 +1,27 @@
+{
+  "name": "ASR_JACANA_EVB",
+  "version": "0.5",
+  "version-bootrom": "2020.09.28",
+  "template": "JACANA_EVB",
+  "flashes": [
+    {
+      "name": "external",
+      "port": "MEM",
+      "flash": "MEM_SIMULATION_FLASH"
+    }
+  ],
+  "layout": "JACANA_MEM_FLASH_LAYOUT",
+  "keyAlg": "rsa",
+  "hashAlg": "sha256",
+  "secureBoot": false,
+  "firmwareGenerator": {
+    "name": "jacana",
+    "call-max-download-size": "32KiB",
+    "flash-max-download-size": "32KiB"
+  },
+  "variants": [
+    {
+      "name": "JACANA_EVB"
+    }
+  ]
+}

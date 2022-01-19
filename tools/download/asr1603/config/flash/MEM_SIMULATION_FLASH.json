@@ -1,0 +1,19 @@
+{
+  "name": "MEM_SIMULATION_FLASH",
+  "type": "MEM",
+  "minIoSize": 1,
+  "pageSize": 256,
+  "pebSize": "4KiB",
+  "sectorSize": "4KiB",
+  "blockSize": "64KiB",
+  "flashSize": "257MiB",
+  "erasedValue": "0x00",
+  "devices": [
+    {
+      "name": "JACANA_MEM_FLASH",
+      "manufacturer": "Asr microelectronics",
+      "vendorId": "0x2ecc",
+      "deviceId": "0xffff"
+    }
+  ]
+}
