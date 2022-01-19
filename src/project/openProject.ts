@@ -51,12 +51,22 @@ export class OpenProject {
         openProjectJson.type = projectConfigProjectType;
         openProjectJson.importInitData = '';
         openProjectJson.correctData = {};
+        openProjectJson.errorData = {};
         openProjectJson.correctData.projectName = projectConfigProjectName;
         openProjectJson.correctData.projectPath = projectConfigProjectPath;
         openProjectJson.correctData.moduleModel = porjectConfigModuleModel;
-        openProjectJson.correctData.libPath = projectConfigLibPath;
-        openProjectJson.correctData.corePath = projectConfigCorePath;
-        openProjectJson.errorData = '';
+        if (!fs.existsSync(projectConfigCorePath)) {
+            openProjectJson.errorData.corePath = projectConfigCorePath;
+        }
+        else{
+            openProjectJson.correctData.corePath = projectConfigCorePath;
+        }
+        if (!fs.existsSync(projectConfigLibPath)) {
+            openProjectJson.errorData.libPath = projectConfigLibPath;
+        }
+        else{
+            openProjectJson.correctData.libPath = projectConfigLibPath;
+        }
         return openProjectJson;
     }
 

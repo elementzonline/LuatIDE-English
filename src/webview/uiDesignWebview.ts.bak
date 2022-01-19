@@ -181,11 +181,12 @@ export class UiDesign{
         }
 
         // 更新uidesign生成的代码到活动工程
-        public updateUiCodeToProjectConfig(path) {
+        public updateUiCodeToProjectConfig(filePath:string) {
             try {
                 const appFile:string[] = projectJsonParse.getProjectConfigAppFile(this.activeProjectPath);
-                if (appFile.indexOf(path)===-1) {
-                    projectJsonParse.pushProjectConfigAppFile([path],this.activeProjectPath);
+                const relativePath:string = path.relative(this.activeProjectPath,filePath);
+                if (appFile.indexOf(relativePath)===-1) {
+                    projectJsonParse.pushProjectConfigAppFile([relativePath],this.activeProjectPath);
                 }
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }

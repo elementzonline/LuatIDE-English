@@ -9,7 +9,6 @@ import { ProjectJsonParse } from './projectConfigParse';
 let pluginVariablesInit = new PluginVariablesInit();
 let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
-
 export class CreateProject {
     constructor() {
 
@@ -190,8 +189,10 @@ export class CreateProject {
         pluginJsonParse.pushPluginConfigProject(projectObj);
         pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
-        const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
-        this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
+        // const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
+        // this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
+        this.createUiData(createProjectMessage.createProjectPath);
+        vscode.commands.executeCommand('luatide-ui.design');
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
@@ -363,6 +364,50 @@ export class CreateProject {
         }
     }
 
+    // 向工程中写入初始化的ui工程
+    createUiData(projectPath:string){
+        const uiLuaData: string = `{
+            "device": {
+                "width": 640,
+                "height": 480
+            },
+            "screens": [
+                {
+                    "name": "ScreenA",
+                    "layout": {
+                        "type": "free",
+                        "blocks": [
+                            {
+                                "width": 230,
+                                "height": 33,
+                                "name": "LvglBar1",
+                                "body": "LvglBar1",
+                                "x": 183,
+                                "y": 109
+                            }
+                        ]
+                    }
+                }
+            ],
+            "schema": {
+                "LvglBar1": {
+                    "comType": "LvglBar",
+                    "comConf": {
+                        "anim": "OFF",
+                        "defaultStatus": {
+                            "bgPart": {},
+                            "indicPart": {}
+                        }
+                    }
+                }
+            }
+        }`;
+        if (!fs.existsSync(path.join(projectPath, ".luatide"))) {
+            fs.mkdirSync(path.join(projectPath, ".luatide"));
+        }
+        const mainUiPath: string = path.join(projectPath, ".luatide",'test.ui');
+        fs.writeFileSync(mainUiPath,uiLuaData);
+    }
     // 向工程中copy用户所选择的demo
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
         let demoPath: any;

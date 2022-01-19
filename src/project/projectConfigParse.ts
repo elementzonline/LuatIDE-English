@@ -132,14 +132,15 @@ import * as path from "path";
     popProjectConfigAppFile(appFilePath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJsonObj:any =  this.getProjectConfigJson(projectPath);
-        const index = projectJsonObj.appFile.indexOf(appFilePath);
+        const relativeFilePath:string = path.relative(projectPath,appFilePath);
+        const index = projectJsonObj.appFile.indexOf(relativeFilePath);
         if (index!==-1) {
             projectJsonObj.appFile.splice(index,1);
             if (fs.statSync(appFilePath).isDirectory()) {
                 // 若用户删除的是文件夹，则删除appfile目录中其所有子文件
                 for (let i = 0; i < projectJsonObj.appFile.length; i++) {
                     const element:string = projectJsonObj.appFile[i];
-                    if (element.indexOf(appFilePath)!==-1) {
+                    if (element.indexOf(relativeFilePath)!==-1) {
                         projectJsonObj.appFile.splice(i,1);
                         i = i-1;
                     }
