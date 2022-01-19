@@ -1,0 +1,28 @@
+{
+  "name": "SC2_SINGLE_FLASH_LAYOUT",
+  "partitions": [
+    {
+      "name": "external",
+      "format": "flash",
+      "vstart": "0x70300000",
+      "partitions": [
+        {
+          "name": "bootloader",
+          "format": "ubi",
+          "size": "60KiB"
+        },
+        {
+          "name": "ptable",
+          "format": "raw",
+          "size": "4KiB"
+        },
+        {
+          "vstart": "0x20000000",
+          "name": "firmware",
+          "format": "raw",
+          "size": "768KiB"
+        }
+      ]
+    }
+  ]
+}

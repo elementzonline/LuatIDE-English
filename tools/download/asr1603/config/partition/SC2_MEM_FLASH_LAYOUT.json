@@ -1,0 +1,22 @@
+{
+  "name": "SC2_MEM_FLASH_LAYOUT",
+  "partitions": [
+    {
+      "name": "external",
+      "format": "flash",
+      "vstart": "0x20000000",
+      "partitions": [
+        {
+          "name": "firmware",
+          "format": "raw",
+          "size": "768KiB"
+        },
+        {
+          "name": "reserved",
+          "format": "raw",
+          "size": "64KiB"
+        }
+      ]
+    }
+  ]
+}

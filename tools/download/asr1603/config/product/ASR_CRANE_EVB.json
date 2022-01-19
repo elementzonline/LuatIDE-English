@@ -1,0 +1,186 @@
+{
+  "name": "ASR_CRANE_EVB",
+  "version": "0.5",
+  "version-bootrom": "2019.01.15",
+  "template": "CRANE_EVB",
+  "flashes": [
+    {
+      "name": "external",
+      "port": "QSPI",
+      "flash": "QSPI_NOR_16MB_B64KB_S4KB_P256"
+    }
+  ],
+  "layout": "CRANE_SINGLE_FLASH_LAYOUT",
+  "keyAlg": "rsa",
+  "hashAlg": "sha256",
+  "secureBoot": false,
+  "firmwareGenerator": {
+    "name": "crane",
+    "call-max-download-size": "60KiB",
+    "flash-max-download-size": "1MiB"
+  },
+  "fota": [
+    "system"
+  ],
+  "variants": [
+    {
+      "name": "CRANE_A0_08MB",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_8MB_B64KB_S4KB_P256"
+        }
+      ],
+      "partitions": [
+        {
+          "name": "nvm",
+          "size": "1024KiB"
+        },
+        {
+          "name": "fota_pkg",
+          "size": "2800KiB"
+        }
+      ]
+    },
+    {
+      "name": "CRANE_A0_16MB",
+      "partitions": [
+        {
+          "name": "nvm",
+          "size": "1024KiB"
+        },
+        {
+          "name": "fota_pkg",
+          "size": "2800KiB"
+        }
+      ]
+    },
+    {
+      "name": "CRANE_A0_16+8MB",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_16MB_B64KB_S4KB_P256"
+        },
+        {
+          "name": "internal",
+          "port": "SSP2",
+          "flash": "SPI_NOR_8MB_B64KB_S4KB_P256"
+        }
+      ],
+      "layout": "CRANE_DUAL_FLASH_LAYOUT",
+      "fota": [
+        "system",
+        "system2"
+      ]
+    },
+    {
+      "name": "CRANE_A0_32MB",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_32MB_B64KB_S4KB_P256"
+        }
+      ]
+    },
+    {
+      "name": "CRANEGM_A0_08MB",
+      "product": "arom-tiny",
+      "version-bootrom": "2020.07.30",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_8MB_B64KB_S4KB_P256"
+        }
+      ],
+      "partitions": [
+        {
+          "name": "nvm",
+          "size": "1024KiB"
+        },
+        {
+          "name": "fota_pkg",
+          "size": "2800KiB"
+        }
+      ]
+    },
+    {
+      "name": "CRANEGM_A0_16MB",
+      "product": "arom-tiny",
+      "version-bootrom": "2020.07.30",
+      "partitions": [
+        {
+          "name": "nvm",
+          "size": "3072KiB"
+        },
+        {
+          "name": "fota_pkg",
+          "size": "3800KiB"
+        },
+        {
+          "name": "APP",
+          "size": "1024KiB"
+        }
+      ]
+    },
+    {
+      "name": "CRANEGM_A0_16+8MB",
+      "product": "arom-tiny",
+      "version-bootrom": "2020.07.30",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_16MB_B64KB_S4KB_P256"
+        },
+        {
+          "name": "internal",
+          "port": "SSP2",
+          "flash": "SPI_NOR_8MB_B64KB_S4KB_P256"
+        }
+      ],
+      "layout": "CRANE_DUAL_FLASH_LAYOUT",
+      "fota": [
+        "system",
+        "system2"
+      ]
+    },
+    {
+      "name": "CRANEGM_A0_16X2+8MB",
+      "product": "arom-tiny",
+      "version-bootrom": "2020.07.30",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_16X2MB_B64KB_S4KB_P256"
+        },
+        {
+          "name": "internal",
+          "port": "SSP2",
+          "flash": "SPI_NOR_8MB_B64KB_S4KB_P256"
+        }
+      ],
+      "layout": "CRANE_TRIPLE_FLASH_LAYOUT",
+      "fota": [
+        "system"
+      ]
+    },
+    {
+      "name": "CRANEGM_A0_32MB",
+      "product": "arom-tiny",
+      "version-bootrom": "2020.07.30",
+      "flashes": [
+        {
+          "name": "external",
+          "port": "QSPI",
+          "flash": "QSPI_NOR_32MB_B64KB_S4KB_P256"
+        }
+      ]
+    }
+  ]
+}
