@@ -48,8 +48,9 @@ export class OpenProjectManage {
             }
         );
 
+
         this.openProjectPanel.webview.onDidReceiveMessage(
-            message => this.receiveMessageHandle(this.openProjectPanel, message)
+            message => this.receiveMessageHandle(this.openProjectPanel, message, importProjectInitJson)
         );
 
         // Reset when the current panel is closed
@@ -97,7 +98,7 @@ export class OpenProjectManage {
     }
 
     // 处理从webview传来的命令
-    async receiveMessageHandle(openProjectPanel: any, message: any) {
+    async receiveMessageHandle(openProjectPanel: any, message: any,importProjectInitJson:any) {
         switch (message.command) {
             // 用户导入工程信息接收
             case 'importProject':
@@ -197,6 +198,14 @@ export class OpenProjectManage {
                 break;
             case 'cancelProject':
                 openProjectPanel.dispose();
+                break;
+            case 'getImportProjectInitData':
+                // console.log('test');
+                openProjectPanel.webview.postMessage(
+                    {
+                        command: "importProjectInitData",
+                        text: importProjectInitJson,
+                    });
                 break;
         }
     }
