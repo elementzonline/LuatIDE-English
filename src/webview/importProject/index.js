@@ -45,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 //初始化激活空白工程
@@ -252,50 +252,23 @@ $(".select_getSpace_CoreInfo").on("change", function () {
 
 /* 新建工程初始化数据管理[空白工程] */
 function pureProjectInitDataManagment(initData) {
-    /* 添加初始化模块型号 */
-    for (let i = 0; i < initData.moduleList.length; i++) {
-        autoProduceOption($(".select_getSpace_ModuleInfo"), initData.moduleList[i]);
-    }
-
-    let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
     let libSelected = $(".select_getSpace_LibInfo");
     let coreSelected = $(".select_getSpace_CoreInfo");
 
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAir101 = false;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, initData.libList, moduleOne);
-            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            addOptionToSelect(libSelected, initData.libList, moduleTwo);
-            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
-            break;
-        case moduleThree:
-            addOptionToSelect(libSelected, initData.libList, moduleThree);
-            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
-            break;
-        case moduleFour:
-            addOptionToSelect(libSelected, initData.libList, moduleFour);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
-            break;
-        case moduleFive:
-            addOptionToSelect(libSelected, initData.libList, moduleFive);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
-            break;
-        case moduleSix:
-            addOptionToSelect(libSelected, initData.libList, moduleSix);
-            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
-            break;
-        default:
-            break;
+    /* 添加工程初始化数据 */
+    for (let key in initData){
+        if (key === "libList"){
+            for (let i = 0; i < initData[key].length; i++){
+                autoProduceOption(libSelected, initData[key][i])
+            }
+        }
+        if (key === "coreList"){
+            for (let i = 0; i < initData[key]; i++){
+                autoProduceOption(coreSelected, initData[key][i])
+            }
+        }
     }
+
     /* 添加初始化option用来承载自定义选项 */
     libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
@@ -304,10 +277,8 @@ function pureProjectInitDataManagment(initData) {
     $(".tip_spaceLib").hide();
     $(".tip_spaceCore").hide();
 
-    /* 导入工程操作 */
-    if (isInImportProject) {
-        importSpaceProject(temImportData);
-    }
+    /* 导入数据操作 */
+    importSpaceProject(temImportData);
 }
 
 
@@ -324,97 +295,51 @@ $(".select_getExample_CoreInfo").on("change", function () {
 
 /* 新建工程初始化数据管理[示例工程] */
 function exampleProjectInitDataManagment(initData) {
-    /* 添加初始化模块型号 */
-    for (let i = 0; i < initData.moduleList.length; i++) {
-        autoProduceOption($(".select_getExample_ModuleInfo"), initData.moduleList[i]);
-    }
-
     let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
     let exampleSelected = $(".select_getExample_ExampleInfo");
     let coreSelected = $(".select_getExample_CoreInfo");
 
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
-            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
-            /* 添加自定义选项 */
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleTwo);
-            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
-            break;
-        case moduleThree:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleThree);
-            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
-            break;
-        case moduleFour:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
-            break;
-        case moduleFive:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleFive);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
-            break;
-        case moduleSix:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleSix);
-            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
-            break;
-        default:
-            break;
+    /* 添加工程初始化数据 */
+    for (let key in initData){
+        if (key === "exampleList"){
+            for (let i = 0; i < initData[key].length; i++){
+                autoProduceOption(exampleSelected, initData[key][i])
+            }
+        }
+        if (key === "coreList"){
+            for (let i = 0; i < initData[key]; i++){
+                autoProduceOption(coreSelected, initData[key][i])
+            }
+        }
     }
+
     /* 添加初始化option用来承载自定义选项 */
     coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
 
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
 
-    /* 导入工程操作 */
-    if (isInImportProject) {
-        importExampleProject(temImportData);
-    }
+    /* 导入数据操作 */
+    importExampleProject(temImportData);
 }
 
 
 /* 新建工程初始化数据管理[NDK工程] */
 function ndkProjectInitDataManagment(initData) {
-    /* 添加初始化模块型号 */
-    for (let i = 0; i < initData.moduleList.length; i++) {
-        autoProduceOption($(".select_getNDK_ModuleInfo"), initData.moduleList[i]);
-    }
-
     let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
     let exampleSelected = $(".select_getNDK_ExampleInfo");
 
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
-            break;
-        case moduleTwo:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleTwo);
-            break;
-        case moduleThree:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleThree);
-            break;
-        case moduleFour:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
-            break;
-        case moduleFive:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleFive);
-            break;
-        case moduleSix:
-            addOptionToSelect(exampleSelected, initData.exampleList, moduleSix);
-            break;
-        default:
-            break;
+    /* 添加工程初始化数据 */
+    for (let key in initData){
+        if (key === "exampleList"){
+            for (let i = 0; i < initData[key].length; i++){
+                autoProduceOption(exampleSelected, initData[key][i])
+            }
+        }
     }
 
-    /* 导入工程操作 */
-    if (isInImportProject) {
-        importNdkProject(temImportData);
-    }
+    /* 导入工程数据 */
+    importNdkProject(temImportData);
 }
 
 
@@ -440,50 +365,24 @@ $(".select_getUi_CoreInfo").on("change", function () {
 
 /* 新建工程初始化数据管理[UI工程] */
 function uiProjectInitDataManagment(initData) {
-    /* 添加初始化模块型号 */
-    for (let i = 0; i < initData.moduleList.length; i++) {
-        autoProduceOption($(".select_getUi_ModuleInfo"), initData.moduleList[i]);
-    }
-
     let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
     let libSelected = $(".select_getUi_LibInfo");
     let coreSelected = $(".select_getUi_CoreInfo");
 
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAirCx72 = false;
-            isInAir101 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, initData.libList, moduleOne);
-            addOptionToSelect(coreSelected, initData.coreList, moduleOne);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            addOptionToSelect(libSelected, initData.libList, moduleTwo);
-            addOptionToSelect(coreSelected, initData.coreList, moduleTwo);
-            break;
-        case moduleThree:
-            addOptionToSelect(libSelected, initData.libList, moduleThree);
-            addOptionToSelect(coreSelected, initData.coreList, moduleThree);
-            break;
-        case moduleFour:
-            addOptionToSelect(libSelected, initData.libList, moduleFour);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFour);
-            break;
-        case moduleFive:
-            addOptionToSelect(libSelected, initData.libList, moduleFive);
-            addOptionToSelect(coreSelected, initData.coreList, moduleFive);
-            break;
-        case moduleSix:
-            addOptionToSelect(libSelected, initData.libList, moduleSix);
-            addOptionToSelect(coreSelected, initData.coreList, moduleSix);
-            break;
-        default:
-            break;
+    /* 添加工程初始化数据 */
+    for (let key in initData){
+        if (key === "libList"){
+            for (let i = 0; i < initData[key].length; i++){
+                autoProduceOption(libSelected, initData[key][i])
+            }
+        }
+        if (key === "coreList"){
+            for (let i = 0; i < initData[key]; i++){
+                autoProduceOption(coreSelected, initData[key][i])
+            }
+        }
     }
+
     /* 添加初始化option用来承载自定义选项 */
     libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
@@ -492,10 +391,7 @@ function uiProjectInitDataManagment(initData) {
     $(".tip_uiLib").hide();
     $(".tip_uiCore").hide();
 
-    /* 导入工程操作 */
-    if (isInImportProject) {
-        importUiProject(temImportData);
-    }
+    importUiProject(temImportData);
 }
 
 
@@ -994,6 +890,7 @@ window.addEventListener('message', event => {
         case "customCorePath":
             customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
+            /* 获取导入工程数据[用户] */
         case "importProjectData":
             let targetProject = null;
             isInImportProject = true;
