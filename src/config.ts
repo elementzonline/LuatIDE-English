@@ -552,6 +552,70 @@ export class PluginVariablesInit {
         }
         return extname;
     }
+
+    // 依据模块型号获取core文件列表
+    getCoreListBaseMoudeleMode(moduleModel: any){
+        let coreList:any;
+        switch (moduleModel) {
+            case 'air72XUX/air82XUX':
+                coreList = this.getAir72XDefaultCoreList();
+                break;
+            case 'air101':
+                coreList = this.getAir101DefaultCoreList();
+                break;
+            case 'air103':
+                coreList = this.getAir103DefaultCoreList();
+                break;
+            case 'air105':
+                coreList = this.getAir105DefaultCoreList();
+                break;
+            default:
+                coreList = this.getAir72XDefaultCoreList();
+        }
+        return coreList;
+    }
+    // 依据模块型号获取lib文件列表
+    getLibListBaseMoudeleMode(moduleModel: any){
+        let libList:any;
+        switch (moduleModel) {
+            case 'air72XUX/air82XUX':
+                libList = this.getAir72XDefaultLibList();
+                break;
+            case 'air101':
+                libList = '';
+                break;
+            case 'air103':
+                libList = '';
+                break;
+            case 'air105':
+                libList = '';
+                break;
+            default:
+                libList = this.getAir72XDefaultLibList();
+        }
+        return libList;
+    }
+    // 依据模块型号获取example文件列表
+    getExampleListBaseMoudeleMode(moduleModel: any){
+        let exampleList:any;
+        switch (moduleModel) {
+            case 'air72XUX/air82XUX':
+                exampleList = this.getAir72XDefaultExampleList();
+                break;
+            case 'air101':
+                exampleList = this.getAir101DefaultExampleList();
+                break;
+            case 'air103':
+                exampleList = this.getAir103DefaultExampleList();
+                break;
+            case 'air105':
+                exampleList = this.getAir105DefaultExampleList();
+                break;
+            default:
+                exampleList = this.getAir72XDefaultExampleList();
+        }
+        return exampleList;
+    }
 }
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
