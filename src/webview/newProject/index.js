@@ -1254,7 +1254,7 @@ function importProjectDisplay(whichDsp, projectType, importData) {
 }
 
 
-/* 导入工程数据提交 */
+// /* 导入工程数据提交 */
 function getImportProjectData(tar) {
     let projectPath = $("input[name=" + tar + "_project_path]").val();
     let projectName = $("input[name=" + tar + "_project_name]").val();
@@ -1353,7 +1353,7 @@ function changeThemeColor(theme) {
     if (theme === "light") {
         document.documentElement.style.setProperty("--default-bgColor", 'white');
         document.documentElement.style.setProperty("--default-fontColor", 'black');
-        document.documentElement.style.setProperty("--default-border", '1px solid black');
+        document.documentElement.style.setProperty("--default-border", '1px solid rgb(0, 0, 0, 0.3)');
         document.documentElement.style.setProperty("--default-hoverColor", 'black');
         document.documentElement.style.setProperty("--default-active", 'rgb(190, 157, 9)');
         document.documentElement.style.setProperty("--default-inputBgColor", 'white');
@@ -1398,31 +1398,6 @@ window.addEventListener('message', event => {
             break;
         case "customCorePath":
             customPathManagment(curActiveContent, "customCorePath", message.text);
-            break;
-        case "importProjectData":
-            let targetProject = null;
-            isInImportProject = true;
-            switch (message.text.type) {
-                case "pure":
-                    curActiveContent = "space";
-                    targetProject = $(".content_space");
-                    break;
-                case "example":
-                    curActiveContent = "example";
-                    targetProject = $(".content_example");
-                    break;
-                case "ndk":
-                    curActiveContent = "ndk";
-                    targetProject = $(".content_ndk");
-                    break;
-                case "ui":
-                    curActiveContent = "ui";
-                    targetProject = $(".content_ui");
-                    break;
-                default:
-                    break;
-            }
-            importProjectDisplay(targetProject, curActiveContent, message.text);
             break;
         case "switchTheme":
             changeThemeColor(message.text);

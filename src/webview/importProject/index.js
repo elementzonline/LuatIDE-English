@@ -48,15 +48,6 @@ let isInAirCx72 = false;
 // const vscode = acquireVsCodeApi();
 
 
-//初始化激活空白工程
-$(allHideStr).hide();
-$(".content_space").show();
-$("#space").addClass("active");
-if (!isInImportProject) {
-    getMessagePerSwitch("pure");
-}
-
-
 //清楚工程临时数据
 function clearTempData(tar1, tar2) {
     for (let i = 0; i < tar1.length; i++) {
@@ -105,7 +96,8 @@ function addOptionToSelect(whichSelect, arr, whichModule) {
 /* 获取导入工程初始化数据命令 */
 function getImportProjectInitData(para) {
     vscode.postMessage({
-        command: 'getImportProjectInitData'
+        command: 'getImportProjectInitData',
+        text : para
     });
 }
 
@@ -145,7 +137,7 @@ function Alert(msg) {
 }
 
 
-/* 新建工程 接受VsCode发送的自定义路径 */
+/* 导入工程 接受VsCode发送的自定义路径 */
 function customPathManagment(whichProject, whichCustom, pathData) {
     switch (whichProject) {
         case "space":
@@ -223,12 +215,6 @@ const moduleFour = "air101";
 const moduleFive = "air103";
 const moduleSix = "air105";
 
-/* 新建工程 暂存VsCode发送的工程数据 */
-let temPureProjectData = null;
-let temExampleProjectData = null;
-let temNdkProjectData = null;
-let temUiProjectData = null;
-
 
 /* 对组件选择做特殊处理[空白工程] */
 $(".select_getSpace_LibInfo").on("change", function () {
@@ -273,6 +259,10 @@ function pureProjectInitDataManagment(initData) {
     libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
 
+    /* 添加自定义选项 */ 
+    libSelected.append('<option class="space_customeLibOption">自定义</option>');
+    coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+
     /* 隐藏提示信息 */
     $(".tip_spaceLib").hide();
     $(".tip_spaceCore").hide();
@@ -315,6 +305,9 @@ function exampleProjectInitDataManagment(initData) {
 
     /* 添加初始化option用来承载自定义选项 */
     coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
+    
+    /* 添加自定义选项 */
+    coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
@@ -386,6 +379,10 @@ function uiProjectInitDataManagment(initData) {
     /* 添加初始化option用来承载自定义选项 */
     libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
+    
+    /* 添加自定义选项 */
+    libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+    coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
     $(".tip_uiLib").hide();
@@ -395,7 +392,7 @@ function uiProjectInitDataManagment(initData) {
 }
 
 
-/********************************************** 导入工程 **********************************************/
+/********************************************** 导入工程[用户原始数据] **********************************************/
 
 /* 添加红框提示错误 */
 function addTips(tar) {
@@ -832,7 +829,7 @@ function getImportProjectData(tar) {
         }
     });
 }
-/********************************************** 导入工程 **********************************************/
+/********************************************** 导入工程[用户原始数据] **********************************************/
 
 
 /* 改变主题颜色 */
@@ -840,7 +837,7 @@ function changeThemeColor(theme) {
     if (theme === "light") {
         document.documentElement.style.setProperty("--default-bgColor", 'white');
         document.documentElement.style.setProperty("--default-fontColor", 'black');
-        document.documentElement.style.setProperty("--default-border", '1px solid black');
+        document.documentElement.style.setProperty("--default-border", '1px solid rgb(0, 0, 0, 0.3)');
         document.documentElement.style.setProperty("--default-hoverColor", 'black');
         document.documentElement.style.setProperty("--default-active", 'rgb(190, 157, 9)');
         document.documentElement.style.setProperty("--default-inputBgColor", 'white');
