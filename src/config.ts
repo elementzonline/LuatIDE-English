@@ -132,9 +132,15 @@ export class PluginVariablesInit {
         return homeHtmlPath;
     }
 
-    // 获取project主页资源文件路径
+    // 获取新建project主页资源文件路径
     getProjectSourcePath() {
         const projectSourcePath: string = path.join(this.extensionPath, 'src', 'webview', 'newProject');
+        return projectSourcePath;
+    }
+
+    // 获取打开工程project主页
+    getOpenProjectSourcePath(){
+        const projectSourcePath: string = path.join(this.extensionPath, 'src', 'webview', 'importProject');
         return projectSourcePath;
     }
 
@@ -144,9 +150,15 @@ export class PluginVariablesInit {
         return projectSourcePath;
     }
 
-    // 获取project主页html按钮
+    // 获取新建project主页html按钮
     getProjectHtmlPath() {
         const projectHtmlPath: string = path.join(this.extensionPath, 'src', 'webview', 'newProject', 'index.html');
+        return projectHtmlPath;
+    }
+
+    // 获取打开project主页html按钮
+    getOpenProjectHtmlPath() {
+        const projectHtmlPath: string = path.join(this.extensionPath, 'src', 'webview', 'importProject', 'index.html');
         return projectHtmlPath;
     }
 
