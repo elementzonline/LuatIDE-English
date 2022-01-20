@@ -24,7 +24,10 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
     var treeDir: ActivityTreeItem[] = [];
     if (element === undefined) {
       const activityPath: string = pluginJsonParse.getPluginConfigActivityProject();
-      if (activityPath === '' || !fs.existsSync(activityPath)) {
+      if (activityPath === '') {
+        return Promise.resolve([]);
+      }
+      else if (!fs.existsSync(activityPath)) {
         pluginJsonParse.setPluginConfigActivityProject('');
         return Promise.resolve([]);
       }
