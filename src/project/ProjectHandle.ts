@@ -136,7 +136,9 @@ export class ProjectDeleteHandle {
         }
         const pluginConfigAppFile: any = pluginJsonParse.getPluginConfigUserProjectList();
         if (pluginConfigAppFile.indexOf(filePath.label) === -1) {
-            vscode.window.showErrorMessage(`用户工程列表中未检测到${filePath.lable}工程,请重新确认`);
+            vscode.window.showInformationMessage(`用户工程列表中未检测到${filePath.label}工程,已为您刷新用户工程`);
+            vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return false;
         }
         if (fs.statSync(path.join(filePath.path,filePath.label)).isFile()) {
