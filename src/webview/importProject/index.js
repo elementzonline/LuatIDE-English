@@ -45,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
 //清楚工程临时数据
@@ -245,12 +245,12 @@ function pureProjectInitDataManagment(initData) {
     for (let key in initData){
         if (key === "libList"){
             for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(libSelected, initData[key][i])
+                autoProduceOption(libSelected, initData[key][i]);
             }
         }
         if (key === "coreList"){
-            for (let i = 0; i < initData[key]; i++){
-                autoProduceOption(coreSelected, initData[key][i])
+            for (let i = 0; i < initData[key].length; i++){
+                autoProduceOption(coreSelected, initData[key][i]);
             }
         }
     }
