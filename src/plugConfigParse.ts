@@ -2,8 +2,10 @@
 import {PluginVariablesInit} from './config';
 import * as fs from 'fs';
 import * as path from 'path';
-
+import {activityMemoryProjectPathBuffer} from './extension';
 let pluginVariablesInit = new PluginVariablesInit();
+
+
 /**
  * 解析插件配置文件
  */
@@ -50,8 +52,20 @@ let pluginVariablesInit = new PluginVariablesInit();
         return pluginConfigProjecAbsolutePathtList;
     }
 
-    // 获取当前活动工程名称
+        // 获取当前活动工程名称
     getPluginConfigActivityProject(){
+        // const context:any = await vscode.commands.executeCommand("getContext") as vscode.ExtensionContext;
+        // const activityProject = context.globalState.get('activityMemoryProjectPath');
+        // return activityProject;
+        // const pluginConfigJsonObj:any =  this.getPluginConfigJson();
+        // const pluginConfigActivityProject:string = pluginConfigJsonObj.activeProject;
+        // return pluginConfigActivityProject;
+        const activityMemoryProjectPath = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
+        return activityMemoryProjectPath;
+    }
+    
+    // 获取实时活动工程名称
+    getCurrentPluginConfigActivityProject(){
         const pluginConfigJsonObj:any =  this.getPluginConfigJson();
         const pluginConfigActivityProject:string = pluginConfigJsonObj.activeProject;
         return pluginConfigActivityProject;
