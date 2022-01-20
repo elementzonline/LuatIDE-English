@@ -7,9 +7,11 @@ import {getFileForDirRecursion} from './projectApi';
 import * as path from 'path';
 import * as fs from 'fs';
 import { OpenProjectManage } from '../webview/openProjectWebview';
+import { PluginVariablesInit } from '../config';
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 let projectJsonParse:any = new ProjectJsonParse(); 
+let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation:any = new ProjectConfigOperation();
 export class OpenProject {
     constructor() {
@@ -32,10 +34,38 @@ export class OpenProject {
         pluginJsonParse.projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
+        const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
+        const importProjectInitJson = this.getImportProjectInitJson(projectJson);
         let openProjectManage =  new OpenProjectManage();
-        openProjectManage.openProjectManage(context,openProjectJson);
+        openProjectManage.openProjectManage(context,openProjectJson,importProjectInitJson);
     }
 
+    // 获取数据接口工程
+    getImportProjectInitJson(projectJson:any){
+        let importProjectInitJson = {
+            "projectType":"",
+            "data":{
+                "libList":[],
+                "coreList":[],
+                "exampleList":[]
+            }
+        };
+        const projectType:string = projectJson.projectType;
+        const moudleModel:string = projectJson.moduleModel;
+        const libList = pluginVariablesInit.getLibListBaseMoudeleMode(moudleModel);
+        const coreList = pluginVariablesInit.getCoreListBaseMoudeleMode(moudleModel);
+        const exampleList = pluginVariablesInit.getExampleListBaseMoudeleMode(moudleModel);
+        importProjectInitJson.projectType=projectType;
+        importProjectInitJson.data.libList=libList;
+        importProjectInitJson.data.coreList=coreList;
+        if (projectType==='example') {
+            importProjectInitJson.data.exampleList=exampleList;
+        }
+        return importProjectInitJson;
+    }   
+
+
+    //打开工程工程配置文件数据处理 
     openProjectDataParse(importProjectPath:any){
         const nameIndex:number = importProjectPath.lastIndexOf("\\");
         const projectConfigProjectPath:string = importProjectPath.substring(0,nameIndex);
