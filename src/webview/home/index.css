@@ -1,332 +1,363 @@
 * {
-    padding: 0px;
-    margin: 0px;
+  padding: 0;
+  margin: 0;
 }
 
-body {
-    background: #231f20;
-    color: #fff;
-    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+a {
+  text-decoration: none;
+  color: var(--default-fontColor);
 }
 
-.father {
-    height: 100vh;
+i {
+  color: black;
 }
 
-h1 {
-    padding-top: 20px;
-    text-align: center;
-    color: rgba(223, 190, 106, 0.8);
-    font-family: 'Montserrat';
-    font-size: 3em;
-    letter-spacing: 0.5em;
+:root {
+  /* 默认样式 */
+  --default-bgColor: white;
+  --default-fontColor: black;
+  --default-borderColor: 2px solid black;
+  --default-hoverColor: rgb(8, 60, 201);
+  --default-modalBgColor: rgb(255, 255, 255, 0.8);
+  --default-fontStyle: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+  
+  --default-bgColor: rgb(37, 37, 38);
+  --default-fontColor: white;
+  --default-borderColor: 2px solid white;
+  --default-hoverColor: rgb(15, 204, 109);
+  --default-modalBgColor: rgb(0, 0, 0, 0.5);
 }
 
-.videoBox {
-    text-align: center;
-    max-height: 100px;
+#root {
+  background-color: var(--default-bgColor);
+  color: var(--default-fontColor);
+  font-weight: 500;
+  font-family: var(--default-fontStyle);
+  display: grid;
+  height: 100vh;
+  grid-gap: 24px;
+  grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 11fr;
+  grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
+    'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
 }
 
-/*弹窗按钮 bar*/
-.bar {
-    color: rgba(223, 190, 106, 0.7);
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 0.6em 1.5em;
-    margin-top: 5vh;
-    position: absolute;
-    right: 0;
-    z-index: 3;
-    font-family: 'Montserrat';
-    overflow-x: hidden;
+.header {
+  grid-area: g-header;
+  /* background-color: red; */
 }
 
-.bar:after {
-    content: '';
-    width: 5%;
-    position: absolute;
-    left: 95%;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
-    background-color: rgba(223, 190, 106, 0.8);
+.leftContent {
+  grid-area: g-left;
+  /* background-color: blue; */
 }
 
-.bar:hover:after {
-    animation: hover 1.5s 1 both;
+.rightContent {
+  grid-area: g-right;
+  /* background-color: green; */
 }
 
-.bar.animateout:after {
-    animation: hover 0.75s 1 reverse;
+/* 登录按钮 */
+.userBtn {
+  float: right;
+  background: none;
+  border: none;
+  outline: none;
 }
 
-/*弹窗按钮 bar 动画*/
-@keyframes hover {
-
-    0%,
-    20% {
-        width: 5%;
-        position: absolute;
-        left: 95%;
-        top: 0;
-        bottom: 0;
-        z-index: -1;
-    }
-
-    2%,
-    6%,
-    10% {
-        opacity: 0;
-    }
-
-    4%,
-    8%,
-    12% {
-        opacity: 1;
-    }
-
-    49% {
-        width: 100%;
-    }
-
-    55% {
-        width: 0;
-        left: 0;
-        background-color: rgba(223, 190, 106, 0.4);
-    }
-
-    56% {
-        width: 0;
-        background-color: rgba(223, 190, 106, 0.2);
-    }
-
-    100% {
-        width: 100%;
-        background-color: rgba(223, 190, 106, 0.2);
-        left: 0;
-    }
+.userBox {
+  margin: 15px;
+  display: inline-block;
+  flex: none;
 }
-
-/********************弹窗按钮 ↑*********************/
-
-/********************反馈 ↓*********************/
-/*反馈吐槽按钮*/
-.feedback {
-    margin-top: 15vh;
-}
-
-.feedback-box {
-    top: 35%;
-    left: 50%;
-    width: 500px;
-    height: 500px;
-    position: relative;
-    transform: translate(-50%, -50%);
-    background: #231f20;
-    border-width: 0.1px;
-    border: solid;
-    border-color: rgba(223, 190, 106, 0.1);
-    text-align: center;
-    display: none;
-}
-
-.feedback-box input {
-    width: 80%;
-    margin-top: 40px;
-    padding: 10px 0;
-    font-size: 16px;
-    color: rgb(228, 227, 227, 0.3);
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1.5px solid rgb(223, 190, 106, 0.4);
-    outline: none;
-    background: transparent;
-}
-
-.feedback-box label {
-    position: absolute;
-    top: 8%;
-    left: 10%;
-    padding: 10px 0;
-    font-size: 16px;
-    color: rgba(223, 190, 106, 0.6);
-    pointer-events: none;
-    transition: .5s;
-}
-
-.feedback-box input:focus~label,
-.feedback-box input:valid~label {
-    top: 2%;
-    color: #2e8388;
-    font-size: 12px;
-}
-
-.feedback-box textarea {
-    margin-top: 6%;
-    height: 240px;
-    width: 80%;
-    position: relative;
-    background-color: #231f20;
-    padding: 10px 10px 10px 30px;
-    resize: none;
-    border-color: rgba(223, 190, 106, 0.4);
-    caret-color: rgba(255, 230, 0, 0.6);
-}
-
-.feedback-box textarea::placeholder {
-    color: rgba(223, 190, 106, 0.4);
-}
-
-.feedback-box textarea {
-    color: rgba(223, 190, 106, 0.4);
-}
-
-.feedback-box textarea:focus {
-    outline-style: none;
-    border-color: rgba(223, 190, 106, 0.6);
-}
-
-.feedback-submit,
-.feedback-cancel {
-    width: 80px;
-    height: 25px;
-    margin-top: 5%;
-    background-color: #231f20;
-    border-radius: 20px;
-    border-color: rgba(223, 190, 106, 0.5);
-    color: rgba(223, 190, 106, 0.6);
-    outline-width: 0;
-}
-
-.feedback-cancel {
-    margin-left: 100px;
-}
-
-.feedback-submit:hover,
-.feedback-cancel:hover {
-    border-color: rgba(223, 190, 106, 0.6);
-    color: rgba(223, 190, 106, 0.8);
-}
-
-/********************反馈 ↑*********************/
-
 
 /********************登录 ↓*********************/
+/* 模态框样式 */
+.loginModal,
+.forgetModal {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 /*登录box样式*/
 .login,
 .forgetPw {
-    top: 30%;
-    left: 50%;
-    width: 400px;
-    position: relative;
-    transform: translate(-50%, -50%);
-    background: #231f20;
-    display: none;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 50px;
+  position: relative;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
+  background: var(--default-modalBgColor);
+  display: block;
 }
 
 .login h2,
 .forgetPw h2 {
-    margin: 0 0 30px;
-    padding: 0;
-    color: rgba(223, 190, 106, 0.6);
-    text-align: center;
+  margin: 0 0 30px;
+  padding: 0;
+  color: var(--default-fontColor);
+  text-align: center;
 }
 
 .form-box {
-    position: relative;
+  position: relative;
+}
+
+/* 登录按钮的居中 */
+.form-box1 {
+  text-align: center;
 }
 
 .form-box input {
-    width: 100%;
-    padding: 15px 0;
-    font-size: 16px;
-    color: rgb(228, 227, 227, 0.3);
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1.5px solid rgb(228, 227, 227, 0.5);
-    outline: none;
-    background: transparent;
+  width: 100%;
+  padding: 15px 0;
+  font-size: 16px;
+  color: var(--default-fontColor);
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1.5px solid rgb(228, 227, 227, 0.5);
+  outline: none;
+  background: transparent;
 }
 
 .form-box label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px 0;
-    font-size: 16px;
-    color: rgba(223, 190, 106, 0.6);
-    pointer-events: none;
-    transition: .5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: var(--default-fontColor);
+  pointer-events: none;
+  transition: .5s;
 }
 
 .form-box input:focus~label,
 .form-box input:valid~label {
-    top: -20px;
-    left: 0;
-    color: #2e8388;
-    font-size: 12px;
+  top: -20px;
+  left: 0;
+  color: var(--default-hoverColor);
+  font-size: 12px;
 }
 
 .form-box input:focus {
-    border-color: rgba(223, 190, 106, 0.6);
+  border-color: var(--default-borderColor);
 }
 
 .loginbtn {
-    width: 140px;
-    height: 30px;
-    background-color: #231f20;
-    border-radius: 20px;
-    border-color: rgba(223, 190, 106, 0.5);
-    color: rgba(223, 190, 106, 0.6);
-    outline-width: 0;
-    margin-top: 50px;
+  width: 200px;
+  height: 40px;
+  background-color: var(--default-bgColor);
+  border-radius: 20px;
+  border-color: var(--default-borderColor);
+  color: var(--default-fontColor);
+  outline-width: 0;
 }
 
 .loginbtn:hover {
-    border-color: rgb(235, 154, 5, 0.5);
-    color: rgba(223, 190, 106);
-}
-
-.btLogin {
-    margin-right: 25px;
+  border-color: var(--default-borderColor);
+  color: var(--default-hoverColor);
 }
 
 .btCancel {
-    width: 60px;
+  margin: 0;
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--default-fontColor);
 }
 
-.btNoAcc {
-    margin-left: 25px;
+/* 忘记密码和注册盒子 */
+.exterBox {
+  width: 100%;
+  height: 20px;
+  color: var(--default-fontColor);
+  text-align: center;
 }
 
+.btNoAcc,
 .btforgetPw {
-    margin-left: 130px;
+  margin: 10px;
+  float: right;
 }
+
+/* 忘记密码样式 */
 
 .forgitPw-cancel {
-    margin-left: 110px;
+  margin: 0;
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--default-fontColor);
 }
 
 .form-box #forgetPw-code {
-    width: 200px;
+  width: 200px;
 }
 
 .forgitPw-sentVerCode {
-    margin-left: 12%;
-    margin-top: 0;
+  width: 100px;
+  margin-left: 12%;
+  margin-top: 0;
 }
+
 /********************登录 ↑*********************/
 
-.news,
-.study {
-    margin: auto;
-    padding: auto;
-    top: 35%;
-    text-align: center;
-    position: relative;
-    background: #231f20;
+/* 欢迎标语 */
+.welcomeTitle {
+  margin: 20px;
+  color: var(--default-fontColor);
 }
 
-.news img {
-    width: 33%;
+/* 图标 */
+.ideIcon {
+  margin-top: 2%;
+  margin-left: 12%;
+  vertical-align: top;
+  display: inline-block;
+}
+
+/* 工程按钮 ↓ */
+.operatBox {
+  text-align: center;
+  vertical-align: top;
+  float: right;
+  /* margin-right: 20px; */
+}
+
+.operatBox ul li {
+  list-style: none;
+  margin: 60px;
+}
+
+.select {
+  width: 200px;
+  height: 50px;
+  background: none;
+  outline: none;
+  border-radius: 5px;
+  border: var(--default-borderColor);
+  color: var(--default-fontColor);
+}
+
+/* 工程按钮 ↑ */
+
+/* 最新资讯 */
+.newsBox{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.newsBox div {
+  text-align: center;
+  width: 32%;
+  float: left;
+  margin-left: 6px;
+}
+
+.newItem {
+  width: 100%;
+  height: 200px;
+}
+
+/* 分割线 */
+.hr-solid-content {
+  color: var(--default-fontColor);
+  border: 0;
+  font-size: 15px;
+  padding: 1em 0;
+  position: relative;
+}
+
+.hr-solid-content::before {
+  content: attr(data-content);
+  position: absolute;
+  padding: 0 1ch;
+  line-height: 1px;
+  border: var(--default-borderColor);
+  border-width: 0 99vw;
+  width: fit-content;
+  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 底部信息 */
+.footer ul {
+  justify-content: center;
+  flex-direction: row;
+  display: flex;
+}
+
+.footer ul li {
+  list-style: none;
+  float: left;
+  margin: 10px;
+}
+
+.commentBtn {
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--default-fontColor);
+}
+
+/* *******************************响应式******************************** */
+/* Small */
+@media only screen and (max-width:800px) {
+  #root {
+    grid-gap: 16px;
+    grid-template-columns: 5px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 11fr;
+    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
+      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+  }
+
+  .newsBox div {
+    text-align: center;
+    float: left;
+    width: 90%;
+    margin: 10px;
+  }
+}
+
+/* Medium */
+@media only screen and (min-width:800px) {
+  #root {
+    grid-gap: 16px;
+    grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 11fr;
+    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
+      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+  }
+}
+
+/* Large */
+@media only screen and (min-width:1000px) {
+  #root {
+    grid-gap: 16px;
+    grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 11fr;
+    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
+      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+  }
+  
+  .operatBox {
+    text-align: center;
+    vertical-align: top;
+    float: right;
+    margin-right: 15%;
+  }
+  
+  .newItem {
+    width: 100%;
+    height: 260px;
+  }
 }
