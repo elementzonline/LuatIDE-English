@@ -45,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
 //初始化激活空白工程
@@ -66,45 +66,6 @@ function clearTempData(tar1, tar2) {
         $("." + tar2[j]).empty();
     }
 }
-
-
-//不同新建工程切换逻辑
-tarActive.on("click", function () {
-    tarActive.removeClass("active");
-    $(this).addClass("active");
-    $(allHideStr).hide();
-    switch ($(this).attr("id")) {
-        case "space":
-            clearTempData(sapceData, spaceDynData);
-            /* 添加初始化option */
-            getMessagePerSwitch("pure");
-            curActiveContent = "space";
-            $(".content_space").show();
-            break;
-        case "example":
-            clearTempData(exampleData, exampleDynData);
-            /* 添加初始化option */
-            getMessagePerSwitch("example");
-            curActiveContent = "example";
-            $(".content_example").show();
-            break;
-        case "ndk":
-            clearTempData(ndkData, ndkDynData);
-            getMessagePerSwitch("ndk");
-            curActiveContent = "ndk";
-            $(".content_ndk").show();
-            break;
-        case "ui":
-            clearTempData(uiData, uiDynData);
-            /* 添加初始化option */
-            getMessagePerSwitch("ui");
-            curActiveContent = "ui";
-            $(".content_ui").show();
-            break;
-        default:
-            break;
-    }
-});
 
 
 //按钮取消逻辑
@@ -141,11 +102,10 @@ function addOptionToSelect(whichSelect, arr, whichModule) {
 }
 
 
-/* 获取新建工程初始化数据命令(每次切换工程发送相应的工程类型) */
-function getMessagePerSwitch(para) {
+/* 获取导入工程初始化数据命令 */
+function getImportProjectInitData(para) {
     vscode.postMessage({
-        command: 'projectType',
-        text: para,
+        command: 'getImportProjectInitData'
     });
 }
 
@@ -184,79 +144,6 @@ function Alert(msg) {
     });
 }
 
-
-/* 新建工程提交 */
-function handleSubmit(tar) {
-    let projectPath = $("input[name=" + tar + "_project_path]").val();
-    let projectName = $("input[name=" + tar + "_project_name]").val();
-    if (!projectName.trim() || !projectPath) {
-        Alert('名称或路径不能为空！');
-        return false;
-    } else {
-        //验证上传文件的文件名是否合法
-        var reg = new RegExp('[\\\\/:*?\"<>|]');
-        if (reg.test(projectName) || reg.length > 255) {
-            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
-            return false;
-        }
-    }
-    switch (tar) {
-        case "space":
-            vscode.postMessage({
-                command: "pureProject",
-                text: {
-                    "projectName": projectName,
-                    "projectPath": (projectPath + "\\" + projectName),
-                    "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
-                    "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
-                }
-            });
-            break;
-        case "example":
-            vscode.postMessage({
-                command: "exampleProject",
-                text: {
-                    "projectName": projectName,
-                    "projectPath": (projectPath + "\\" + projectName),
-                    "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
-                    "example": $(".select_getExample_ExampleInfo option:selected").text(),
-                }
-            });
-            break;
-        case "ndk":
-            vscode.postMessage({
-                command: "ndkProject",
-                text: {
-                    "projectName": projectName,
-                    "projectPath": (projectPath + "\\" + projectName),
-                    "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
-                }
-            });
-            break;
-        case "ui":
-            vscode.postMessage({
-                command: "uiProject",
-                text: {
-                    "projectName": projectName,
-                    "projectPath": (projectPath + "\\" + projectName),
-                    "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
-                    "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
-                    "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
-                }
-            });
-            break;
-        default:
-            break;
-    }
-    $(".father").hide();
-    //关闭 WebView
-    vscode.postMessage({
-        command: "cancelProject",
-    });
-}
 
 /* 新建工程 接受VsCode发送的自定义路径 */
 function customPathManagment(whichProject, whichCustom, pathData) {
@@ -344,121 +231,22 @@ let temUiProjectData = null;
 
 
 /* 对组件选择做特殊处理[空白工程] */
-$(".select_getSpace_LibInfo").on("change", function() {
-    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption'){
+$(".select_getSpace_LibInfo").on("change", function () {
+    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption') {
         $('.select_getSpace_LibInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customLibPath');
-    }
-    else{
+    } else {
         $("#space_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[空白工程] */
-$(".select_getSpace_CoreInfo").on("change", function() {
-    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption'){
+$(".select_getSpace_CoreInfo").on("change", function () {
+    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption') {
         $('.select_getSpace_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#space_customeCore").prop("display", "none");
     }
-});
-
-
-/* 新建工程 模块型号select添加刷新数据[空白工程] */
-$(".select_getSpace_ModuleInfo").on("change", function () {
-    let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
-    let libSelected = $(".select_getSpace_LibInfo");
-    let coreSelected = $(".select_getSpace_CoreInfo");
-
-    libSelected.empty();
-    coreSelected.empty();
-
-    /* 隐藏提示信息 */
-    $(".tip_spaceLib").hide();
-    $(".tip_spaceCore").hide();
-
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAir101 = false;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleOne);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleOne);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            /* 目前 Air72CXC 没有 Core */
-            isInAir101 = false;
-            isInAirCx72 = true;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", true);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleTwo);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleTwo);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            $(".tip_spaceCore").show();
-            break;
-        case moduleThree:
-            isInAir101 = false;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleThree);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleThree);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            break;
-        case moduleFour:
-            /* 目前 Air10X 没有 lib */
-            isInAir101 = true;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            $(".tip_spaceLib").show();
-            break;
-        case moduleFive:
-            /* 目前 Air10X 没有 lib */
-            isInAir101 = true;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleFive);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFive);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            $(".tip_spaceLib").show();
-            break;
-        case moduleSix:
-            /* 目前 Air10X 没有 lib */
-            isInAir101 = true;
-            isInAirCx72 = false;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temPureProjectData.libList, moduleSix);
-            addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleSix);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="space_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
-            $(".tip_spaceLib").show();
-            break;
-        default:
-            break;
-    }
-    /* 添加初始化option用来承载自定义选项 */
-    libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
-    coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -517,85 +305,20 @@ function pureProjectInitDataManagment(initData) {
     $(".tip_spaceCore").hide();
 
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importSpaceProject(temImportData);
     }
 }
 
 
 /* 对组件选择做特殊处理[示例工程] */
-$(".select_getExample_CoreInfo").on("change", function() {
-    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption'){
+$(".select_getExample_CoreInfo").on("change", function () {
+    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption') {
         $('.select_getExample_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#example_customeCore").prop("display", "none");
     }
-});
-
-
-/* 新建工程 模块型号select添加刷新数据[示例工程] */
-$(".select_getExample_ModuleInfo").on("change", function () {
-    let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
-    let exampleSelected = $(".select_getExample_ExampleInfo");
-    let coreSelected = $(".select_getExample_CoreInfo");
-
-    exampleSelected.empty();
-    coreSelected.empty();
-
-    /* 隐藏提示信息 */
-    $(".tip_exampleCore").hide();
-
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleOne);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleOne);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            isInAirCx72 = true;
-            coreSelected.prop("disabled", true);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleTwo);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleTwo);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            $(".tip_exampleCore").show();
-            break;
-        case moduleThree:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleThree);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleThree);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        case moduleFour:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFour);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        case moduleFive:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFive);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFive);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        case moduleSix:
-            isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleSix);
-            addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleSix);
-            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
-            break;
-        default:
-            break;
-    }
-    /* 添加初始化option用来承载自定义选项 */
-    coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -649,42 +372,10 @@ function exampleProjectInitDataManagment(initData) {
     $(".tip_exampleCore").hide();
 
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importExampleProject(temImportData);
     }
 }
-
-
-/* 新建工程 模块型号select添加刷新数据[NDK工程] */
-$(".select_getNDK_ModuleInfo").on("change", function () {
-    let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
-    let exampleSelected = $(".select_getNDK_ExampleInfo");
-
-    exampleSelected.empty();
-
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleOne);
-            break;
-        case moduleTwo:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleTwo);
-            break;
-        case moduleThree:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleThree);
-            break;
-        case moduleFour:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFour);
-            break;
-        case moduleFive:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFive);
-            break;
-        case moduleSix:
-            addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleSix);
-            break;
-        default:
-            break;
-    }
-});
 
 
 /* 新建工程初始化数据管理[NDK工程] */
@@ -719,126 +410,31 @@ function ndkProjectInitDataManagment(initData) {
         default:
             break;
     }
-    
+
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importNdkProject(temImportData);
     }
 }
 
 
 /* 对组件选择做特殊处理[UI工程] */
-$(".select_getUi_LibInfo").on("change", function() {
-    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption'){
+$(".select_getUi_LibInfo").on("change", function () {
+    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption') {
         $('.select_getUi_LibInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customLibPath');
-    }
-    else{
+    } else {
         $("#ui_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[UI工程] */
-$(".select_getUi_CoreInfo").on("change", function() {
-    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption'){
+$(".select_getUi_CoreInfo").on("change", function () {
+    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption') {
         $('.select_getUi_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#ui_customeCore").prop("display", "none");
     }
-});
-
-
-/* 新建工程 模块型号select添加刷新数据[UI工程] */
-$(".select_getUi_ModuleInfo").on("change", function () {
-    let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
-    let libSelected = $(".select_getUi_LibInfo");
-    let coreSelected = $(".select_getUi_CoreInfo");
-
-    libSelected.empty();
-    coreSelected.empty();
-    
-    /* 隐藏提示信息 */
-    $(".tip_uiLib").hide();
-    $(".tip_uiCore").hide();
-
-    switch (moduleSelected.text()) {
-        case moduleOne:
-            isInAirCx72 = false;
-            isInAir101 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleOne);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleOne);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            break;
-        case moduleTwo:
-            isInAirCx72 = true;
-            isInAir101 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", true);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleTwo);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleTwo);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            $(".tip_uiCore").show();
-            break;
-        case moduleThree:
-            isInAirCx72 = false;
-            isInAir101 = false;
-            libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleThree);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleThree);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            break;
-        case moduleFour:
-            isInAirCx72 = false;
-            isInAir101 = true;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleFour);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFour);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            $(".tip_uiLib").show();
-            break;
-        case moduleFive:
-            isInAirCx72 = false;
-            isInAir101 = true;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleFive);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFive);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            $(".tip_uiLib").show();
-            break;
-        case moduleSix:
-            isInAirCx72 = false;
-            isInAir101 = true;
-            libSelected.prop("disabled", true);
-            coreSelected.prop("disabled", false);
-            addOptionToSelect(libSelected, temUiProjectData.libList, moduleSix);
-            addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleSix);
-            /* 添加自定义选项 */
-            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            $(".tip_uiLib").show();
-            break;
-        default:
-            break;
-    }
-    /* 添加初始化option用来承载自定义选项 */
-    libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
-    coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -895,13 +491,12 @@ function uiProjectInitDataManagment(initData) {
     /* 隐藏提示信息 */
     $(".tip_uiLib").hide();
     $(".tip_uiCore").hide();
-    
+
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importUiProject(temImportData);
     }
 }
-
 
 
 /********************************************** 导入工程 **********************************************/
@@ -1222,7 +817,7 @@ function importUiProject(importData) {
 /* 导入工程界面初始化 */
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
-    $(".navbar").hide();
+    $(".tip_title").hide();
     if (importData.errorData !== "") {
         $(".tips").show();
     }
@@ -1231,22 +826,18 @@ function importProjectDisplay(whichDsp, projectType, importData) {
     temImportData = importData;
 
     switch (projectType) {
+        /* 获取工程初始化数据 */
         case "space":
-            $(".tip_title").hide();
-            /* 获取工程初始化数据 */
-            getMessagePerSwitch("pure");
+            getImportProjectInitData("pure");
             break;
         case "example":
-            /* 获取工程初始化数据 */
-            getMessagePerSwitch("example");
+            getImportProjectInitData("example");
             break;
         case "ndk":
-            /* 获取工程初始化数据 */
-            getMessagePerSwitch("ndk");
+            getImportProjectInitData("ndk");
             break;
         case "ui":
-            /* 获取工程初始化数据 */
-            getMessagePerSwitch("ui");
+            getImportProjectInitData("ui");
             break;
         default:
             break;
@@ -1372,21 +963,25 @@ function changeThemeColor(theme) {
 window.addEventListener('message', event => {
     const message = event.data;
     switch (message.command) {
-        /* 新建工程初始化数据获取 */
-        case "pureProjectInitData":
-            temPureProjectData = message.text;
-            pureProjectInitDataManagment(message.text);
-            break;
-        case "exampleProjectInitData":
-            temExampleProjectData = message.text;
-            exampleProjectInitDataManagment(message.text);
-            break;
-        case "ndkProjectInitData":
-            temNdkProjectData = message.text;
-            ndkProjectInitDataManagment(message.text);
-            break;
-        case "uiProjectInitData":
-            temUiProjectData = message.text;
+        /* 导入工程初始化数据获取 */
+        case "importProjectInitData":
+            importProjectInitData = message.text.data;
+            switch (message.text.projectType) {
+                case "pure":
+                    pureProjectInitDataManagment(message.text.data);
+                    break;
+                case "example":
+                    exampleProjectInitDataManagment(message.text.data);
+                    break;
+                case "ndk":
+                    ndkProjectInitDataManagment(message.text.data);
+                    break;
+                case "ui":
+                    uiProjectInitDataManagment(message.text.data);
+                    break;
+                default:
+                    break;
+            }
             uiProjectInitDataManagment(message.text);
             break;
             /* 自定义工程路径, lib库, core文件 */

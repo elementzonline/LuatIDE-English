@@ -38,35 +38,6 @@ h2 {
     display: none;
 }
 
-/*导航栏样式*/
-.navbar {
-    text-align: center;
-    width: auto;
-    height: 100%;
-    display: block;
-    margin-right: 100px;
-    margin-left: auto;
-    padding-left: 0;
-    padding-right: 0;
-    position: relative;
-    float: left;
-}
-
-.navbarChild{
-    top: 30%;
-    position:absolute;
-}
-
-div.navbar:before,
-div.navbar:after {
-    content: "";
-    display: table;
-}
-
-div.navbar:after {
-    clear: both;
-}
-
 /*导航栏中选项样式*/
 .menu {
     display: block;
@@ -111,7 +82,6 @@ div.navbar:after {
     padding-left: 0;
     padding-right: 0;
     color: var(--default-fontColor);
-    float: right;
     position: relative;
 }
 
