@@ -101,6 +101,14 @@ export class HomeManage {
 
     // 处理从webview传来的命令
     async receiveMessageHandle(homePanel: any, message: any) {
+        switch (message.command) {
+            case 'openNewProjectWebview':
+                await vscode.commands.executeCommand('luatide-history-project.createProject');
+                break;
+            case 'openProjectWebview':
+                await vscode.commands.executeCommand('luatide-history-project.openProject');
+                break;
+        }
     }
 
 
