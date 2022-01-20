@@ -1,0 +1,152 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+:root{
+    --default-bgColor: rgb(37, 37, 38);
+    --default-fontColor: white;
+    --default-hoverColor: white;
+    --default-border: 1px solid white;
+    --default-active: rgb(0, 238, 0);
+    --default-inputBgColor: rgb(45, 45, 45);
+
+    --default-bgColor: white;
+    --default-fontColor: black;
+    --default-hoverColor: black;
+    --default-border: 1px solid black;
+    --default-active: rgb(190, 157, 9);
+    --default-inputBgColor: white;
+}
+
+body {
+    background: var(--default-bgColor);
+    color: rgba(223, 190, 106, 0.7);
+    /* background: #8f8e85; */
+    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+}
+
+.father {
+    height: 100vh;
+}
+
+/* 错误提示 */
+h2 {
+    margin-top: 16px;
+    color: red;
+    margin-bottom: 30px;
+    display: none;
+}
+
+/*导航栏中选项样式*/
+.menu {
+    display: block;
+    width: 200px;
+    background: transparent;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--default-fontColor);
+    border-radius: 0;
+    padding: 18px 60px 20px;
+    text-decoration: none;
+    margin: 0.625rem;
+    border: var(--default-border);
+}
+
+.menu:hover {
+    border: var(--default-border);
+    background-position: 50% 50%;
+}
+
+/*被选中激活样式*/
+.active {
+    border: var(--default-border);
+    color: var(--default-active);
+    background-position: 60% 50%;
+    background-size: 300% 300%;
+}
+
+.content {
+    text-align: center;
+    height: 100%;
+}
+
+.contentChild{
+    top: 20%;
+    text-align: center;
+    align-content: center;
+    margin-right: 50px;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    color: var(--default-fontColor);
+    position: relative;
+}
+
+/*初始化页面内容样式*/
+.form {
+    margin: 30px auto;
+    position: relative;
+    padding-bottom: 70px;
+}
+
+.form .item {
+    margin: auto;
+    height: 30px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+}
+
+.form input,
+.form select {
+    outline-style: none;
+    height: 24px;
+    width: 280px;
+    border-radius: 15px;
+    background-color: var(--default-inputBgColor);
+    border: 1px solid rgb(81, 81, 81);
+    color: var(--default-fontColor);
+    text-align: center;
+}
+
+.exBtn {
+    position: absolute;
+    width: 50px;
+    right: 15%;
+    height: 25px;
+    border-radius: 20px;
+    border-radius: 15px;
+    background-color: rgb(45, 45, 45);
+    border: 1px solid rgb(81, 81, 81);
+    color: rgba(223, 190, 106, 0.7);
+    font-size: 11px;
+}
+
+.exBtn:hover,
+.form input:hover,
+.form select:hover {
+    border: var(--default-border);
+}
+
+.form input[type="button"] {
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/**************************空白工程**************************/
+/*设置提示样式*/
+.content_space .tip_title {
+    font-size: 15px;
+    margin-bottom: 50px;
+    color: var(--default-fontColor);
+}
