@@ -42,13 +42,27 @@ export class HomeManage {
         // 获取webview界面
         this.homePanel.webview.html = this.getHomeWebviewContent();
 
-        // // 数据通信：发送数据至webview
-        // this.homePanel.webview.postMessage(
-        //     {
-        //         command: 'refactor',
-        //         text: ""
-        //     }
-        // );
+        // 获取vscode初始主题
+        const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
+        this.homePanel.webview.postMessage(
+            {
+                command: 'switchTheme',
+                text: colorTheme
+            }
+        );
+
+        let temPanel = this.homePanel;
+
+        /* 实时检测主题颜色变化 */
+        vscode.window.onDidChangeActiveColorTheme((e) => {
+            temPanel.webview.postMessage(
+                {
+                    command: "switchTheme",
+                    text: e.kind === 1 ? "light" : "dark"
+                }
+            );
+        });
+
 
 
         this.homePanel.webview.onDidReceiveMessage(

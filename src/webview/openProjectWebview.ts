@@ -39,6 +39,26 @@ export class OpenProjectManage {
         }
         // 获取webview界面
         this.openProjectPanel.webview.html = this.getProjectWebviewContent();
+        // 获取vscode初始主题
+        const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
+        this.openProjectPanel.webview.postMessage(
+            {
+                command: 'switchTheme',
+                text: colorTheme
+            }
+        );
+
+        let temPanel = this.openProjectPanel;
+
+        /* 实时检测主题颜色变化 */
+        vscode.window.onDidChangeActiveColorTheme((e) => {
+            temPanel.webview.postMessage(
+                {
+                    command: "switchTheme",
+                    text: e.kind === 1 ? "light" : "dark"
+                }
+            );
+        });
 
         //  数据通信：发送导入工程数据至webview
         this.openProjectPanel.webview.postMessage(

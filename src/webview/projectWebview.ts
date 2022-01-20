@@ -42,14 +42,14 @@ export class ProjectManage {
         // 获取webview界面
         this.projectPanel.webview.html = this.getProjectWebviewContent();
 
-        // // 数据通信：发送数据至webview
-        // this.projectPanel.webview.postMessage(
-        //     {
-        //         command: 'refactor',
-        //         text: ""
-        //     }
-        // );
-
+        // 获取vscode初始主题
+        const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
+        this.projectPanel.webview.postMessage(
+            {
+                command: 'switchTheme',
+                text: colorTheme
+            }
+        );
 
         let temPanel = this.projectPanel;
         
