@@ -17,7 +17,7 @@ export class OpenProjectManage {
     }
     openProjectPanel: vscode.WebviewPanel | undefined = undefined;
     // 工程主页webview管理
-    openProjectManage(context:vscode.ExtensionContext,openProjectJson:any) {
+    openProjectManage(context:vscode.ExtensionContext,openProjectJson:any,importProjectInitJson:any) {
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -65,8 +65,8 @@ export class OpenProjectManage {
 
     // 获取webview的html内容
     getProjectWebviewContent() {
-        const projectHtmlJsPath = pluginVariablesInit.getProjectSourcePath();
-        const projectHtmlPath: string = pluginVariablesInit.getProjectHtmlPath();
+        const projectHtmlJsPath = pluginVariablesInit.getOpenProjectSourcePath();
+        const projectHtmlPath: string = pluginVariablesInit.getOpenProjectHtmlPath();
         let homeHtml: string = fs.readFileSync(projectHtmlPath, "utf-8");
         homeHtml = homeHtml.replace(
             /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
