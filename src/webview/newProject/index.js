@@ -45,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
 //初始化激活空白工程
