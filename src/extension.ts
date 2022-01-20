@@ -22,6 +22,10 @@ import * as fs from 'fs';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 import {checkSourceUpdate} from './serverSourceUpdate';
 
+// 定义保存到到缓冲区的活动工程每次加载路径
+export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
+	'activityMemoryProjectPath': ''
+}));
 
 function runProject(resource: vscode.Uri): void {
 	let targetResource = resource;
@@ -88,6 +92,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
 	// 插件配置文件兼容执行
 	pluginJsonParse.pluginConfigCompatible();
+	const activityProject: string = pluginJsonParse.getCurrentPluginConfigActivityProject();
+	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => projectManage.projectManage(context)));
 	// 注册打开工程命令,当点击用户历史工程标题区域打开工程按钮时触发
@@ -98,7 +104,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.debugProject', debugProject));
 	// 激活插件debug
 	activateMockDebug(context, runMode);
-	// 注册删除工程命令,当点击活动工程内部区域删除工程按钮时触发
+	// 注册删除工程命令,当点击历史工程内部区域删除工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.deleteProject', async (filePath: HistoryProjectTreeItem) => projectDeleteHandle.deleteProject(filePath)));
 	// 注册激活工程命令,当点击历史工程内部区域激活工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active', async (filePath) => projectActiveHandle.projectActive(filePath)));

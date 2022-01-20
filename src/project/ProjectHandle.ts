@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
+import { activityMemoryProjectPathBuffer } from "../extension";
 // import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
@@ -416,7 +417,11 @@ export class ProjectSoruceFileDelete{
 
     //删除活动工程所有内容处理
     deleteActivityProject(){
+        if (activityMemoryProjectPathBuffer==='') {
+            return;
+        }
         pluginJsonParse.setPluginConfigActivityProject('');
+        activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
         vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }  
 
