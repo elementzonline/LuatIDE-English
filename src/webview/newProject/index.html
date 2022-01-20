@@ -10,146 +10,155 @@
 <body class="mainBody">
     <div class="father">
         <div class="navbar">
-            <button class="menu" id="space">空白工程</button>
-            <button class="menu" id="example">示例工程</button>
-            <button class="menu" id="ndk">NDK工程</button>
-            <button class="menu" id="ui">UI工程</button>
+            <div class="navbarChild">
+                <button class="menu" id="space">空白工程</button>
+                <button class="menu" id="example">示例工程</button>
+                <button class="menu" id="ndk">NDK工程</button>
+                <button class="menu" id="ui">UI工程</button>
+            </div>
         </div>
         <div class="content">
-            <!-- 空白工程-->
-            <h2 class="tips">请修改提示的错误选项</h2>
-            <div class="content_space">
-                <div class="tip_title">空白工程(空文件夹)默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
-                <form class="form" name="project_space">
-                    <div class="project_path item">
-                        <label>工程路径</label>
-                        <input name="space_project_path" id="space_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
-                    </div>
-                    <div class="project_name item">
-                        <label>工程名称</label>
-                        <input name="space_project_name" type="text">
-                    </div>
-                    <div class="module_type item">
-                        <label>模块型号</label>
-                        <select class="select_getSpace_ModuleInfo">
-                        </select>
-                    </div>
-                    <div class="lib_path item">
-                        <label>组件库选择</label>
-                        <select class="select_getSpace_LibInfo">
-                            <option value="default" selected id="space_customeLib">点击选择</option>
-                        </select>
-                            <button type="button" class="space_lib_btn exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button>
-                    </div>
-                    <div class="core item">
-                        <label>core文件</label>
-                        <select class="select_getSpace_CoreInfo">
-                            <option value="default" selected id="space_customeCore">点击选择</option>
-                        </select>
-                            <button type="button" class="space_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button>
-                    </div>
-                    <div class="btn">
-                        <input class="cancel" type="button" value="取消" />
-                        <input class="submit" type="button" value="完成" />
-                    </div>
-                </form>
-            </div>
-            <!-- 示例工程-->
-            <div class="content_example">
-                <form class="form" name="project_example">
-                    <div class="project_path item">
-                        <label>工程路径</label>
-                        <input name="example_project_path" id="example_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
-                    </div>
-                    <div class="project_name item">
-                        <label>工程名称</label>
-                        <input name="example_project_name" type="text">
-                    </div>
-                    <div class="module_type item">
-                        <label>模块型号</label>
-                        <select class="select_getExample_ModuleInfo">
-                        </select>
-                    </div>
-                    <div class="example item">
-                        <label>示例选择</label>
-                        <select class="select_getExample_ExampleInfo">
-                        </select>
-                    </div>
-                    <div class="core item">
-                        <label>core文件</label>
-                        <select class="select_getExample_CoreInfo">
-                            <option value="default" selected id="example_customeCore">点击选择</option>
-                        </select>
-                            <button type="button" class="example_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button>
-                    </div>
-                    <div class="btn">
-                        <input class="cancel" type="button" value="取消" />
-                        <input class="submit" type="button" value="完成" />
-                    </div>
-                </form>
-            </div>
-            <!-- NDK-->
-            <div class="content_ndk">
-                <form class="form" name="project_ndk">
-                    <div class="project_path item">
-                        <label>工程路径</label>
-                        <input name="ndk_project_path" id="ndk_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
-                    </div>
-                    <div class="project_name item">
-                        <label>工程名称</label>
-                        <input name="ndk_project_name" type="text">
-                    </div>
-                    <div class="module_type item">
-                        <label>模块型号</label>
-                        <select class="select_getNDK_ModuleInfo">
-                        </select>
-                    </div>
-                    <div class="example item">
-                        <label>示例选择</label>
-                        <select class="select_getNDK_ExampleInfo">
-                        </select>
-                    </div>
-                    <div class="btn">
-                        <input class="cancel" type="button" value="取消" />
-                        <input class="submit" type="button" value="完成" />
-                    </div>
-                </form>
-            </div>
-            <!-- UI-->
-            <div class="content_ui">
-                <form class="form" name="project_ui">
-                    <div class="project_path item">
-                        <label>工程路径</label>
-                        <input name="ui_project_path" id="ui_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
-                    </div>
-                    <div class="project_name item">
-                        <label>工程名称</label>
-                        <input name="ui_project_name" type="text">
-                    </div>
-                    <div class="module_type item">
-                        <label>模块型号</label>
-                        <select class="select_getUi_ModuleInfo">
-                        </select>
-                    </div>
-                    <div class="lib_path item">
-                        <label>组件库选择</label>
-                        <select class="select_getUi_LibInfo">
-                            <option value="default" selected id="ui_customeLib">点击选择</option>
-                        </select>
-                            <button type="button" class="ui_lib_btn exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button>
-                    </div>
-                    <div class="core item">
-                        <label>core文件</label>
-                        <select class="select_getUi_CoreInfo">
-                            <option value="default" selected id="ui_customeCore">点击选择</option>
-                        </select>
-                            <button type="button" class="ui_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button>
-                    </div>
-                    <div class="btn">
-                        <input class="cancel" type="button" value="取消" />
-                        <input class="submit" type="button" value="完成" />
-                    </div>
-                </form>
+            <div class="contentChild">
+                <!-- 空白工程-->
+                <h2 class="tips">请修改提示的错误选项</h2>
+                <div class="content_space">
+                    <div class="tip_title">空白工程(空文件夹)默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
+                    <form class="form" name="project_space">
+                        <div class="project_path item">
+                            <label>工程路径</label>
+                            <input name="space_project_path" id="space_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
+                        </div>
+                        <div class="project_name item">
+                            <label>工程名称</label>
+                            <input name="space_project_name" type="text">
+                        </div>
+                        <div class="module_type item">
+                            <label>模块型号</label>
+                            <select class="select_getSpace_ModuleInfo">
+                            </select>
+                        </div>
+                        <div class="lib_path item">
+                            <label>组件库选择</label>
+                            <select class="select_getSpace_LibInfo">
+                                <!-- <option value="default" id="space_customeLib" style="display: none;">点击选择</option> -->
+                            </select>
+                                <!-- <button type="button" class="space_lib_btn exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                        </div>
+                        <h6 style="margin-left: 50px;" class="tip_spaceLib">该模块型号不支持 lib 文件</h6>
+                        <div class="core item">
+                            <label>core文件</label>
+                            <select class="select_getSpace_CoreInfo">
+                                <!-- <option value="default" id="space_customeCore" style="display: none;">点击选择</option> -->
+                            </select>
+                                <!-- <button type="button" class="space_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                        </div>
+                        <h6 style="margin-left: 50px;" class="tip_spaceCore">该模块型号不支持 core 文件</h6>
+                        <div class="btn">
+                            <input class="cancel" type="button" value="取消" />
+                            <input class="submit" type="button" value="完成" />
+                        </div>
+                    </form>
+                </div>
+                <!-- 示例工程-->
+                <div class="content_example">
+                    <form class="form" name="project_example">
+                        <div class="project_path item">
+                            <label>工程路径</label>
+                            <input name="example_project_path" id="example_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
+                        </div>
+                        <div class="project_name item">
+                            <label>工程名称</label>
+                            <input name="example_project_name" type="text">
+                        </div>
+                        <div class="module_type item">
+                            <label>模块型号</label>
+                            <select class="select_getExample_ModuleInfo">
+                            </select>
+                        </div>
+                        <div class="example item">
+                            <label>示例选择</label>
+                            <select class="select_getExample_ExampleInfo">
+                            </select>
+                        </div>
+                        <div class="core item">
+                            <label>core文件</label>
+                            <select class="select_getExample_CoreInfo">
+                                <!-- <option value="default" id="example_customeCore" style="display: none;">点击选择</option> -->
+                            </select>
+                                <!-- <button type="button" class="example_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                        </div>
+                        <h6 style="margin-left: 50px;" class="tip_exampleCore">该模块型号不支持 core 文件</h6>
+                        <div class="btn">
+                            <input class="cancel" type="button" value="取消" />
+                            <input class="submit" type="button" value="完成" />
+                        </div>
+                    </form>
+                </div>
+                <!-- NDK-->
+                <div class="content_ndk">
+                    <form class="form" name="project_ndk">
+                        <div class="project_path item">
+                            <label>工程路径</label>
+                            <input name="ndk_project_path" id="ndk_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
+                        </div>
+                        <div class="project_name item">
+                            <label>工程名称</label>
+                            <input name="ndk_project_name" type="text">
+                        </div>
+                        <div class="module_type item">
+                            <label>模块型号</label>
+                            <select class="select_getNDK_ModuleInfo">
+                            </select>
+                        </div>
+                        <div class="example item">
+                            <label>示例选择</label>
+                            <select class="select_getNDK_ExampleInfo">
+                            </select>
+                        </div>
+                        <div class="btn">
+                            <input class="cancel" type="button" value="取消" />
+                            <input class="submit" type="button" value="完成" />
+                        </div>
+                    </form>
+                </div>
+                <!-- UI-->
+                <div class="content_ui">
+                    <form class="form" name="project_ui">
+                        <div class="project_path item">
+                            <label>工程路径</label>
+                            <input name="ui_project_path" id="ui_customepath" type="text" onclick="handelBackstage('openSource', 'customProjectPath')" readonly>
+                        </div>
+                        <div class="project_name item">
+                            <label>工程名称</label>
+                            <input name="ui_project_name" type="text">
+                        </div>
+                        <div class="module_type item">
+                            <label>模块型号</label>
+                            <select class="select_getUi_ModuleInfo">
+                            </select>
+                        </div>
+                        <div class="lib_path item">
+                            <label>组件库选择</label>
+                            <select class="select_getUi_LibInfo">
+                                <!-- <option value="default" id="ui_customeLib" style="display: none;">点击选择</option> -->
+                            </select>
+                                <!-- <button type="button" class="ui_lib_btn exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                        </div>
+                        <h6 style="margin-left: 50px;" class="tip_uiLib">该模块型号不支持 lib 文件</h6>
+                        <div class="core item">
+                            <label>core文件</label>
+                            <select class="select_getUi_CoreInfo">
+                                <!-- <option value="default" id="ui_customeCore" style="display: none;">点击选择</option> -->
+                            </select>
+                                <!-- <button type="button" class="ui_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                        </div>
+                        <h6 style="margin-left: 50px;" class="tip_uiCore">该模块型号不支持 core 文件</h6>
+                        <div class="btn">
+                            <input class="cancel" type="button" value="取消" />
+                            <input class="submit" type="button" value="完成" />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="../jquery-3.6.0.js"></script>

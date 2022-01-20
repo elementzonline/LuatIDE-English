@@ -4,7 +4,8 @@ let allContent = $(".content");
 let allHideStr = ".content_space, .content_example, .content_ndk, .content_ui";
 let cancelBtn = $(".cancel");
 let submitBtn = $(".submit");
-let curActiveContent = "space"
+let curActiveContent = "space";
+let temImportData = null;
 //工程初始化form
 let formArr = $(".form");
 //空白工程数据
@@ -44,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 //初始化激活空白工程
@@ -76,8 +77,6 @@ tarActive.on("click", function () {
         case "space":
             clearTempData(sapceData, spaceDynData);
             /* 添加初始化option */
-            $(".select_getSpace_LibInfo").append('<option value="default" selected id="space_customeLib">点击选择</option>');
-            $(".select_getSpace_CoreInfo").append('<option value="default" selected id="space_customeCore">点击选择</option>');
             getMessagePerSwitch("pure");
             curActiveContent = "space";
             $(".content_space").show();
@@ -85,7 +84,6 @@ tarActive.on("click", function () {
         case "example":
             clearTempData(exampleData, exampleDynData);
             /* 添加初始化option */
-            $(".select_getExample_CoreInfo").append('<option value="default" selected id="example_customeCore">点击选择</option>');
             getMessagePerSwitch("example");
             curActiveContent = "example";
             $(".content_example").show();
@@ -99,8 +97,6 @@ tarActive.on("click", function () {
         case "ui":
             clearTempData(uiData, uiDynData);
             /* 添加初始化option */
-            $(".select_getUi_LibInfo").append('<option value="default" selected id="ui_customeLib">点击选择</option>');
-            $(".select_getUi_CoreInfo").append('<option value="default" selected id="ui_customeCore">点击选择</option>');
             getMessagePerSwitch("ui");
             curActiveContent = "ui";
             $(".content_ui").show();
@@ -262,7 +258,6 @@ function handleSubmit(tar) {
     });
 }
 
-
 /* 新建工程 接受VsCode发送的自定义路径 */
 function customPathManagment(whichProject, whichCustom, pathData) {
     switch (whichProject) {
@@ -274,10 +269,12 @@ function customPathManagment(whichProject, whichCustom, pathData) {
                 case "customLibPath":
                     $("#space_customeLib").text(pathData);
                     $("#space_customeLib").prop("selected", true);
+                    $("#space_customeLib").prop("display", "block");
                     break;
                 case "customCorePath":
                     $("#space_customeCore").text(pathData);
                     $("#space_customeCore").prop("selected", true);
+                    $("#space_customeCore").prop("display", "block");
                     break;
                 default:
                     break;
@@ -291,6 +288,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
                 case "customCorePath":
                     $("#example_customeCore").text(pathData);
                     $("#example_customeCore").prop("selected", true);
+                    $("#example_customeCore").prop("display", "block");
                     break;
                 default:
                     break;
@@ -313,10 +311,12 @@ function customPathManagment(whichProject, whichCustom, pathData) {
                 case "customLibPath":
                     $("#ui_customeLib").text(pathData);
                     $("#ui_customeLib").prop("selected", true);
+                    $("#ui_customeLib").prop("display", "block");
                     break;
                 case "customCorePath":
                     $("#ui_customeCore").text(pathData);
                     $("#ui_customeCore").prop("selected", true);
+                    $("#ui_customeLib").prop("display", "block");
                     break;
                 default:
                     break;
@@ -343,6 +343,28 @@ let temNdkProjectData = null;
 let temUiProjectData = null;
 
 
+/* 对组件选择做特殊处理[空白工程] */
+$(".select_getSpace_LibInfo").on("change", function() {
+    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption'){
+        $('.select_getSpace_LibInfo option:first').prop("selected", "selected");
+        handelBackstageExtra('openSource', 'customLibPath');
+    }
+    else{
+        $("#space_customeLib").prop("display", "none");
+    }
+});
+/* 对Core选择做特殊处理[空白工程] */
+$(".select_getSpace_CoreInfo").on("change", function() {
+    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption'){
+        $('.select_getSpace_CoreInfo option:first').prop("selected", "selected");
+        handelBackstageExtra('openSource', 'customCorePath');
+    }
+    else{
+        $("#space_customeCore").prop("display", "none");
+    }
+});
+
+
 /* 新建工程 模块型号select添加刷新数据[空白工程] */
 $(".select_getSpace_ModuleInfo").on("change", function () {
     let moduleSelected = $(".select_getSpace_ModuleInfo option:selected");
@@ -351,9 +373,10 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
 
     libSelected.empty();
     coreSelected.empty();
-    /* 添加初始化option */
-    libSelected.append('<option value="default" selected id="space_customeLib">点击选择</option>');
-    coreSelected.append('<option value="default" selected id="space_customeCore">点击选择</option>');
+
+    /* 隐藏提示信息 */
+    $(".tip_spaceLib").hide();
+    $(".tip_spaceCore").hide();
 
     switch (moduleSelected.text()) {
         case moduleOne:
@@ -363,6 +386,9 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleOne);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleOne);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             /* 目前 Air72CXC 没有 Core */
@@ -372,6 +398,10 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", true);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleTwo);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleTwo);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+            $(".tip_spaceCore").show();
             break;
         case moduleThree:
             isInAir101 = false;
@@ -380,6 +410,9 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleThree);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleThree);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
             /* 目前 Air10X 没有 lib */
@@ -389,6 +422,10 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFour);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+            $(".tip_spaceLib").show();
             break;
         case moduleFive:
             /* 目前 Air10X 没有 lib */
@@ -398,6 +435,10 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleFive);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleFive);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+            $(".tip_spaceLib").show();
             break;
         case moduleSix:
             /* 目前 Air10X 没有 lib */
@@ -407,10 +448,17 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temPureProjectData.libList, moduleSix);
             addOptionToSelect(coreSelected, temPureProjectData.coreList, moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+            $(".tip_spaceLib").show();
             break;
         default:
             break;
     }
+    /* 添加初始化option用来承载自定义选项 */
+    libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
+    coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -433,6 +481,9 @@ function pureProjectInitDataManagment(initData) {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             addOptionToSelect(libSelected, initData.libList, moduleTwo);
@@ -457,7 +508,31 @@ function pureProjectInitDataManagment(initData) {
         default:
             break;
     }
+    /* 添加初始化option用来承载自定义选项 */
+    libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
+    coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
+
+    /* 隐藏提示信息 */
+    $(".tip_spaceLib").hide();
+    $(".tip_spaceCore").hide();
+
+    /* 导入工程操作 */
+    if (isInImportProject){
+        importSpaceProject(temImportData);
+    }
 }
+
+
+/* 对组件选择做特殊处理[示例工程] */
+$(".select_getExample_CoreInfo").on("change", function() {
+    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption'){
+        $('.select_getExample_CoreInfo option:first').prop("selected", "selected");
+        handelBackstageExtra('openSource', 'customCorePath');
+    }
+    else{
+        $("#example_customeCore").prop("display", "none");
+    }
+});
 
 
 /* 新建工程 模块型号select添加刷新数据[示例工程] */
@@ -468,8 +543,9 @@ $(".select_getExample_ModuleInfo").on("change", function () {
 
     exampleSelected.empty();
     coreSelected.empty();
-    /* 添加初始化option */
-    coreSelected.append('<option value="default" selected id="example_customeCore">点击选择</option>');
+
+    /* 隐藏提示信息 */
+    $(".tip_exampleCore").hide();
 
     switch (moduleSelected.text()) {
         case moduleOne:
@@ -477,40 +553,49 @@ $(".select_getExample_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleOne);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleOne);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             isInAirCx72 = true;
             coreSelected.prop("disabled", true);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleTwo);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleTwo);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
+            $(".tip_exampleCore").show();
             break;
         case moduleThree:
             isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleThree);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleThree);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
             isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFour);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleFive:
             isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFive);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleFive);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleSix:
             isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleSix);
             addOptionToSelect(coreSelected, temExampleProjectData.coreList, moduleSix);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         default:
             break;
     }
+    /* 添加初始化option用来承载自定义选项 */
+    coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -531,6 +616,8 @@ function exampleProjectInitDataManagment(initData) {
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, initData.exampleList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
+            /* 添加自定义选项 */
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             addOptionToSelect(exampleSelected, initData.exampleList, moduleTwo);
@@ -554,6 +641,16 @@ function exampleProjectInitDataManagment(initData) {
             break;
         default:
             break;
+    }
+    /* 添加初始化option用来承载自定义选项 */
+    coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
+
+    /* 隐藏提示信息 */
+    $(".tip_exampleCore").hide();
+
+    /* 导入工程操作 */
+    if (isInImportProject){
+        importExampleProject(temImportData);
     }
 }
 
@@ -622,7 +719,34 @@ function ndkProjectInitDataManagment(initData) {
         default:
             break;
     }
+    
+    /* 导入工程操作 */
+    if (isInImportProject){
+        importNdkProject(temImportData);
+    }
 }
+
+
+/* 对组件选择做特殊处理[UI工程] */
+$(".select_getUi_LibInfo").on("change", function() {
+    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption'){
+        $('.select_getUi_LibInfo option:first').prop("selected", "selected");
+        handelBackstageExtra('openSource', 'customLibPath');
+    }
+    else{
+        $("#ui_customeLib").prop("display", "none");
+    }
+});
+/* 对Core选择做特殊处理[UI工程] */
+$(".select_getUi_CoreInfo").on("change", function() {
+    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption'){
+        $('.select_getUi_CoreInfo option:first').prop("selected", "selected");
+        handelBackstageExtra('openSource', 'customCorePath');
+    }
+    else{
+        $("#ui_customeCore").prop("display", "none");
+    }
+});
 
 
 /* 新建工程 模块型号select添加刷新数据[UI工程] */
@@ -633,9 +757,10 @@ $(".select_getUi_ModuleInfo").on("change", function () {
 
     libSelected.empty();
     coreSelected.empty();
-    /* 添加初始化option */
-    libSelected.append('<option value="default" selected id="ui_customeLib">点击选择</option>');
-    coreSelected.append('<option value="default" selected id="ui_customeCore">点击选择</option>');
+    
+    /* 隐藏提示信息 */
+    $(".tip_uiLib").hide();
+    $(".tip_uiCore").hide();
 
     switch (moduleSelected.text()) {
         case moduleOne:
@@ -645,6 +770,9 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleOne);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleOne);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             isInAirCx72 = true;
@@ -653,6 +781,10 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", true);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleTwo);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleTwo);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+            $(".tip_uiCore").show();
             break;
         case moduleThree:
             isInAirCx72 = false;
@@ -661,6 +793,9 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleThree);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleThree);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
             isInAirCx72 = false;
@@ -669,6 +804,10 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleFour);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFour);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+            $(".tip_uiLib").show();
             break;
         case moduleFive:
             isInAirCx72 = false;
@@ -677,6 +816,10 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleFive);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleFive);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+            $(".tip_uiLib").show();
             break;
         case moduleSix:
             isInAirCx72 = false;
@@ -685,10 +828,17 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, temUiProjectData.libList, moduleSix);
             addOptionToSelect(coreSelected, temUiProjectData.coreList, moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+            $(".tip_uiLib").show();
             break;
         default:
             break;
     }
+    /* 添加初始化option用来承载自定义选项 */
+    libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
+    coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
 });
 
 
@@ -711,6 +861,9 @@ function uiProjectInitDataManagment(initData) {
             coreSelected.prop("disabled", false);
             addOptionToSelect(libSelected, initData.libList, moduleOne);
             addOptionToSelect(coreSelected, initData.coreList, moduleOne);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
             break;
         case moduleTwo:
             addOptionToSelect(libSelected, initData.libList, moduleTwo);
@@ -734,6 +887,18 @@ function uiProjectInitDataManagment(initData) {
             break;
         default:
             break;
+    }
+    /* 添加初始化option用来承载自定义选项 */
+    libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
+    coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
+
+    /* 隐藏提示信息 */
+    $(".tip_uiLib").hide();
+    $(".tip_uiCore").hide();
+    
+    /* 导入工程操作 */
+    if (isInImportProject){
+        importUiProject(temImportData);
     }
 }
 
@@ -761,14 +926,15 @@ function importSpaceProject(importData) {
                 $("input[name=space_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.correctData[key1] === temModule[i]) {
-                        $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.correctData[key1] === temModule[i]) {
+                //         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "libPath":
                 $("#space_customeLib").text(importData.correctData[key1]);
@@ -794,14 +960,15 @@ function importSpaceProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getSpace_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.errorData[key2] === temModule[i]) {
-                        $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.errorData[key2] === temModule[i]) {
+                //         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "libPath":
                 addTips($(".select_getSpace_LibInfo"));
@@ -816,10 +983,13 @@ function importSpaceProject(importData) {
         }
     }
 
-    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+    $('.select_getSpace_LibInfo').find("option[id=space_customeLib]").prop("selected", "selected");
+    $('.select_getSpace_CoreInfo').find("option[id=space_customeCore]").prop("selected", "selected");
 
-    addOptionToSelect($(".select_getSpace_LibInfo"), importData.importInitData.libList[curModule], curModule);
-    addOptionToSelect($(".select_getSpace_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+    /* 禁用工程路径, 工程名称, 模块信号的修改 */
+    $("input[name=space_project_path]").prop("disabled", true);
+    $("input[name=space_project_name]").prop("disabled", true);
+    $(".select_getSpace_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -835,14 +1005,15 @@ function importExampleProject(importData) {
                 $("input[name=example_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.correctData[key1] === temModule[i]) {
-                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.correctData[key1] === temModule[i]) {
+                //         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "example":
                 $(".select_getExample_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
@@ -868,14 +1039,15 @@ function importExampleProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getExample_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.errorData[key2] === temModule[i]) {
-                        $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.errorData[key2] === temModule[i]) {
+                //         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "example":
                 addTips($(".select_getExample_ExampleInfo"));
@@ -890,10 +1062,12 @@ function importExampleProject(importData) {
         }
     }
 
-    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+    $('.select_getExample_CoreInfo').find("option[id=example_customeCore]").prop("selected", "selected");
 
-    addOptionToSelect($(".select_getExample_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
-    addOptionToSelect($(".select_getExample_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+    /* 禁用工程路径, 工程名称, 模块信号的修改 */
+    $("input[name=example_project_path]").prop("disabled", true);
+    $("input[name=example_project_name]").prop("disabled", true);
+    $(".select_getExample_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -909,14 +1083,15 @@ function importNdkProject(importData) {
                 $("input[name=ndk_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.correctData[key1] === temModule[i]) {
-                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.correctData[key1] === temModule[i]) {
+                //         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "example":
                 $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
@@ -939,14 +1114,15 @@ function importNdkProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getNDK_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.errorData[key2] === temModule[i]) {
-                        $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.errorData[key2] === temModule[i]) {
+                //         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "example":
                 addTips($(".select_getNDK_ExampleInfo"));
@@ -957,9 +1133,10 @@ function importNdkProject(importData) {
         }
     }
 
-    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
-
-    addOptionToSelect($(".select_getNDK_ExampleInfo"), importData.importInitData.exampleList[curModule], curModule);
+    /* 禁用工程路径, 工程名称, 模块信号的修改 */
+    $("input[name=ndk_project_path]").prop("disabled", true);
+    $("input[name=ndk_project_name]").prop("disabled", true);
+    $(".select_getNDK_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -975,14 +1152,15 @@ function importUiProject(importData) {
                 $("input[name=ui_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.correctData[key1] === temModule[i]) {
-                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.correctData[key1] === temModule[i]) {
+                //         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "libPath":
                 $("#ui_customeLib").text(importData.correctData[key1]);
@@ -1008,14 +1186,15 @@ function importUiProject(importData) {
                 break;
             case "moduleModel":
                 addTips($(".select_getUi_ModuleInfo"));
-                let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
-                for (let i = 0; i < temModule.length; i++) {
-                    if (importData.errorData[key2] === temModule[i]) {
-                        $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
-                    } else {
-                        autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
-                    }
-                }
+                // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
+                // for (let i = 0; i < temModule.length; i++) {
+                //     if (importData.errorData[key2] === temModule[i]) {
+                //         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //     } else {
+                //         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                //     }
+                // }
+                $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "libPath":
                 addTips($(".select_getUi_LibInfo"));
@@ -1030,10 +1209,13 @@ function importUiProject(importData) {
         }
     }
 
-    let curModule = importData.correctData["moduleModel"] | importData.errorData["moduleModel"];
+    $('.select_getUi_LibInfo').find("option[id=ui_customeLib]").prop("selected", "selected");
+    $('.select_getUi_CoreInfo').find("option[id=ui_customeCore]").prop("selected", "selected");
 
-    addOptionToSelect($(".select_getUi_LibInfo"), importData.importInitData.libList[curModule], curModule);
-    addOptionToSelect($(".select_getUi_CoreInfo"), importData.importInitData.coreList[curModule], curModule);
+    /* 禁用工程路径, 工程名称, 模块信号的修改 */
+    $("input[name=ui_project_path]").prop("disabled", true);
+    $("input[name=ui_project_name]").prop("disabled", true);
+    $(".select_getUi_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -1046,19 +1228,25 @@ function importProjectDisplay(whichDsp, projectType, importData) {
     }
     $(allHideStr).hide();
     whichDsp.show();
+    temImportData = importData;
 
     switch (projectType) {
         case "space":
-            importSpaceProject(importData);
+            $(".tip_title").hide();
+            /* 获取工程初始化数据 */
+            getMessagePerSwitch("pure");
             break;
         case "example":
-            importExampleProject(importData);
+            /* 获取工程初始化数据 */
+            getMessagePerSwitch("example");
             break;
         case "ndk":
-            importNdkProject(importData);
+            /* 获取工程初始化数据 */
+            getMessagePerSwitch("ndk");
             break;
         case "ui":
-            importUiProject(importData);
+            /* 获取工程初始化数据 */
+            getMessagePerSwitch("ui");
             break;
         default:
             break;
@@ -1163,39 +1351,19 @@ function getImportProjectData(tar) {
 /* 改变主题颜色 */
 function changeThemeColor(theme) {
     if (theme === "light") {
-        $(".mainBody").css({
-            "background": "#ffffff",
-            "color": "rgb(0, 0, 0)",
-        });
-        $(".content").css({
-            "color": "rgb(22, 20, 20)",
-        });
-        $(".form input, .form select").css({
-            "background-color": "rgb(192, 187, 187)",
-            "color": "rgb(22, 20, 20)",
-        });
-        $(".exBtn").css({
-            "background-color": "rgb(168, 162, 162)",
-            "border": "1px solid rgba(26, 25, 24, 0.3)",
-            "color": "rgb(22, 20, 20)",
-        });
+        document.documentElement.style.setProperty("--default-bgColor", 'white');
+        document.documentElement.style.setProperty("--default-fontColor", 'black');
+        document.documentElement.style.setProperty("--default-border", '1px solid black');
+        document.documentElement.style.setProperty("--default-hoverColor", 'black');
+        document.documentElement.style.setProperty("--default-active", 'rgb(190, 157, 9)');
+        document.documentElement.style.setProperty("--default-inputBgColor", 'white');
     } else {
-        $(".mainBody").css({
-            "background": "#231f20",
-            "color": "rgba(223, 190, 106, 0.7)",
-        });
-        $(".content").css({
-            "color": "rgba(223, 190, 106, 0.5)",
-        });
-        $(".form input, .form select").css({
-            "background-color": "rgb(45, 45, 45)",
-            "color": "rgba(223, 190, 106, 0.7)",
-        });
-        $(".exBtn").css({
-            "background-color": "rgb(45, 45, 45)",
-            "border": "1px solid rgb(81, 81, 81)",
-            "color": "rgba(223, 190, 106, 0.7)",
-        });
+        document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
+        document.documentElement.style.setProperty("--default-fontColor", 'white');
+        document.documentElement.style.setProperty("--default-border", '1px solid white');
+        document.documentElement.style.setProperty("--default-hoverColor", 'white');
+        document.documentElement.style.setProperty("--default-active", 'rgb(0, 238, 0)');
+        document.documentElement.style.setProperty("--default-inputBgColor", 'rgb(45, 45, 45)');
     }
 }
 
@@ -1238,7 +1406,6 @@ window.addEventListener('message', event => {
                 case "pure":
                     curActiveContent = "space";
                     targetProject = $(".content_space");
-                    // 添加相应的导入数据
                     break;
                 case "example":
                     curActiveContent = "example";

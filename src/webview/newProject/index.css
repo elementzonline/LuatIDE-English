@@ -3,8 +3,24 @@
     margin: 0px;
 }
 
+:root{
+    --default-bgColor: rgb(37, 37, 38);
+    --default-fontColor: white;
+    --default-hoverColor: white;
+    --default-border: 1px solid white;
+    --default-active: rgb(0, 238, 0);
+    --default-inputBgColor: rgb(45, 45, 45);
+
+    --default-bgColor: white;
+    --default-fontColor: black;
+    --default-hoverColor: black;
+    --default-border: 1px solid black;
+    --default-active: rgb(190, 157, 9);
+    --default-inputBgColor: white;
+}
+
 body {
-    background: #231f20;
+    background: var(--default-bgColor);
     color: rgba(223, 190, 106, 0.7);
     /* background: #8f8e85; */
     font-family: "Helvetica Neue", Helvetica, Arials, sans;
@@ -24,21 +40,21 @@ h2 {
 
 /*导航栏样式*/
 .navbar {
-    height: 13vh;
     text-align: center;
-    *zoom: 1;
     width: auto;
-    max-width: 800px;
-    float: none;
+    height: 100%;
     display: block;
-    margin-right: auto;
+    margin-right: 100px;
     margin-left: auto;
     padding-left: 0;
     padding-right: 0;
     position: relative;
-    top: 8%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    float: left;
+}
+
+.navbarChild{
+    top: 30%;
+    position:absolute;
 }
 
 div.navbar:before,
@@ -53,55 +69,50 @@ div.navbar:after {
 
 /*导航栏中选项样式*/
 .menu {
-    display: inline-block;
+    display: block;
+    width: 200px;
     background: transparent;
-    text-transform: uppercase;
     font-weight: normal;
     font-style: normal;
-    font-size: 0.625rem;
+    font-size: 0.8rem;
     letter-spacing: 0.3em;
-    color: rgba(223, 190, 106, 0.7);
+    color: var(--default-fontColor);
     border-radius: 0;
     padding: 18px 60px 20px;
-    -webkit-transition: all 0.7s ease-out;
-    transition: all 0.7s ease-out;
-    background: -webkit-linear-gradient(180deg,
-            rgba(223, 190, 106, 0.8),
-            rgba(146, 111, 52, 0.8),
-            rgba(34, 34, 34, 0),
-            rgba(34, 34, 34, 0));
-    background: linear-gradient(270deg,
-            rgba(223, 190, 106, 0.8),
-            rgba(146, 111, 52, 0.8),
-            rgba(34, 34, 34, 0),
-            rgba(34, 34, 34, 0));
-    background-position: 1% 50%;
-    background-size: 300% 300%;
     text-decoration: none;
     margin: 0.625rem;
-    border: none;
-    border: 1px solid rgba(223, 190, 106, 0.3);
+    border: var(--default-border);
 }
 
 .menu:hover {
-    border: 1px solid rgba(223, 190, 106, 0);
+    border: var(--default-border);
     background-position: 50% 50%;
 }
 
 /*被选中激活样式*/
 .active {
-    border: 1px solid rgba(223, 190, 106, 0.3);
-    color: white;
-    background: -webkit-linear-gradient(180deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
-    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    border: var(--default-border);
+    color: var(--default-active);
     background-position: 60% 50%;
     background-size: 300% 300%;
 }
 
 .content {
     text-align: center;
+    height: 100%;
+}
+
+.contentChild{
+    top: 20%;
+    text-align: center;
     align-content: center;
-    color: rgba(223, 190, 106, 0.5);
+    margin-right: 50px;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    color: var(--default-fontColor);
+    float: right;
+    position: relative;
 }
 
 /*初始化页面内容样式*/
@@ -127,9 +138,9 @@ div.navbar:after {
     height: 24px;
     width: 280px;
     border-radius: 15px;
-    background-color: rgb(45, 45, 45);
+    background-color: var(--default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
-    color: rgba(223, 190, 106, 0.7);
+    color: var(--default-fontColor);
     text-align: center;
 }
 
@@ -149,7 +160,7 @@ div.navbar:after {
 .exBtn:hover,
 .form input:hover,
 .form select:hover {
-    border: 1px solid #815e11;
+    border: var(--default-border);
 }
 
 .form input[type="button"] {
@@ -167,5 +178,5 @@ div.navbar:after {
 .content_space .tip_title {
     font-size: 15px;
     margin-bottom: 50px;
-    color: rgb(82, 105, 105);
+    color: var(--default-fontColor);
 }
