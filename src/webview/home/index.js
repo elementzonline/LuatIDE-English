@@ -1,6 +1,6 @@
 
 /* 激活 VsCode 通信 */
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
 /* 新建工程和打开工程 */
