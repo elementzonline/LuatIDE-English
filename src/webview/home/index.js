@@ -1,16 +1,18 @@
 
 /* 激活 VsCode 通信 */
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 /* 新建工程和打开工程 */
 $(".newProject").on("click", function () {
+  $(".newProjectHtml").show();
   vscode.postMessage({
       command: 'openNewProjectWebview'
   });
 });
 
 $(".openProject").on("click", function () {
+  $(".openProjectHtml").show();
   vscode.postMessage({
       command: 'openProjectWebview'
   });
@@ -293,12 +295,14 @@ function changeThemeColor(style){
     document.documentElement.style.setProperty("--default-borderColor", '2px solid black');
     document.documentElement.style.setProperty("--default-hoverColor", 'rgb(18, 194, 141)');
     document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(255, 255, 255, 0.8)');
+    document.documentElement.style.setProperty("--default-loginImgStyle", 'none');
   }else{
     document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
     document.documentElement.style.setProperty("--default-fontColor", 'white');
     document.documentElement.style.setProperty("--default-borderColor", '2px solid white');
     document.documentElement.style.setProperty("--default-hoverColor", 'rgb(15, 204, 109)');
     document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(0, 0, 0, 0.5)');
+    document.documentElement.style.setProperty("--default-loginImgStyle", 'invert(100%) sepia(0%) saturate(7500%) hue-rotate(56deg) brightness(102%) contrast(101%)');
   }
 }
 
@@ -311,10 +315,6 @@ window.addEventListener('message', event => {
       changeThemeColor(message.text);
       break;
     case "loginVerifyData":
-      break;
-    case "openNewProjectWebview":
-      break;
-    case "openProjectWebview":
       break;
     case "":
       break;

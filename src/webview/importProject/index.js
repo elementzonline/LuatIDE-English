@@ -245,12 +245,12 @@ function pureProjectInitDataManagment(initData) {
     for (let key in initData){
         if (key === "libList"){
             for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(libSelected, initData[key][i]);
+                autoProduceOption(libSelected, initData[key][i])
             }
         }
         if (key === "coreList"){
             for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(coreSelected, initData[key][i]);
+                autoProduceOption(coreSelected, initData[key][i])
             }
         }
     }
@@ -297,7 +297,7 @@ function exampleProjectInitDataManagment(initData) {
             }
         }
         if (key === "coreList"){
-            for (let i = 0; i < initData[key]; i++){
+            for (let i = 0; i < initData[key].length; i++){
                 autoProduceOption(coreSelected, initData[key][i])
             }
         }
@@ -370,7 +370,7 @@ function uiProjectInitDataManagment(initData) {
             }
         }
         if (key === "coreList"){
-            for (let i = 0; i < initData[key]; i++){
+            for (let i = 0; i < initData[key].length; i++){
                 autoProduceOption(coreSelected, initData[key][i])
             }
         }
