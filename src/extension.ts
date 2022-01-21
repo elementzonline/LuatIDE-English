@@ -149,9 +149,13 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://jq.qq.com/?_wv=1027&k=cl7grKU4'));
 	}));
-	// 注册命令，点击后打开luatide源码
+	// 注册工具源码命令，点击后打开luatide源码
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.SourceCode',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://gitee.com/openLuat/luatide'));
+	}));
+	// 注册联系我们命令，点击后打开官网
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs',async ()=> {
+		vscode.env.openExternal(vscode.Uri.parse('https://www.openluat.com/about/contact_us'));
 	}));
 }
 
