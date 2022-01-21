@@ -122,6 +122,21 @@ export class HomeManage {
             case 'openProjectWebview':
                 await vscode.commands.executeCommand('luatide-history-project.openProject');
                 break;
+            case 'Alert':
+                vscode.window.showErrorMessage(message.text['msg'],{modal: true});
+                break;
+            case 'openExternalWeb':
+                switch (message.text) {
+                    case '工具源码': 
+                        vscode.commands.executeCommand('luatide.SourceCode');
+                        break;
+                    case 'QQ':
+                        vscode.commands.executeCommand('luatide.technicalSupport');
+                        break;
+                    case '联系我们':
+                        vscode.commands.executeCommand('luatide.contactUs');
+                        break; 
+                }
         }
     }
 
