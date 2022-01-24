@@ -119,15 +119,18 @@ export class ProjectManage {
         const pluginDefaultAir103Example:string[] = pluginVariablesInit.getAir103DefaultExampleList();
         const pluginDefaultAir105Example:string[] = pluginVariablesInit.getAir105DefaultExampleList();
         const pluginDefaultAir72XExample:string[] = pluginVariablesInit.getAir72XDefaultExampleList();
+        const pluginDefaultEsp32c3Example:string[] = [];
         const air72XUXLibList:string[] = pluginVariablesInit.getAir72XDefaultLibList();
         const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XDefaultCoreList();
         const air101CoreList:string[] = pluginVariablesInit.getAir101DefaultCoreList();
         const air103CoreList:string[] = pluginVariablesInit.getAir103DefaultCoreList();
         const air105CoreList:string[] = pluginVariablesInit.getAir105DefaultCoreList();
         const air72XCXCoreList:string[] = [];
+        const esp32c3CoreList:string[] = [];
         const air101LibList:string[] = []; 
         const air103LibList:string[] = []; 
         const air105LibList:string[] = []; 
+        const esp32c3LibList:string[] = [];
         switch (message.command) {
             // 用户新建工程信息接收
             case 'projectType':
@@ -147,6 +150,7 @@ export class ProjectManage {
                                         "air103": air103LibList,
                                         "air105": air105LibList,
                                         "simulator":air72XUXLibList,
+                                        "esp32c3":esp32c3LibList,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
@@ -155,6 +159,7 @@ export class ProjectManage {
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
+                                        "esp32c3":esp32c3CoreList,
                                     },
                                 }
                             }
@@ -174,6 +179,7 @@ export class ProjectManage {
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,
                                         "simulator":pluginDefaultAir72XExample,
+                                        "esp32c3":pluginDefaultEsp32c3Example,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
@@ -182,6 +188,7 @@ export class ProjectManage {
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
+                                        "esp32c3":esp32c3CoreList,
                                     },
                                 },
                             }
@@ -212,6 +219,7 @@ export class ProjectManage {
                                         "air103": air103LibList,
                                         "air105": air105LibList,
                                         "simulator":air72XUXLibList,
+                                        "esp32c3":esp32c3LibList,
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
@@ -220,6 +228,7 @@ export class ProjectManage {
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
                                         "simulator":air72XUXCoreList,
+                                        "esp32c3":esp32c3CoreList,
                                     },
                                 },
                             }
