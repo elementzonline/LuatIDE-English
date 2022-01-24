@@ -96,7 +96,7 @@ export class CreateProject {
         projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
         let createProjectLibPath:string;
         // lib库路径初始化写入
-        if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105') {
+        if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105' && createProjectMessage.createProjectModuleModel!=='esp32c3') {
             createProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
         else{
@@ -221,7 +221,7 @@ export class CreateProject {
         else if (libPath==='' && moduleModel!=='air101'  && moduleModel!=='air103'  && moduleModel!=='air105') {
             libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
         }
-        else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105') {
+        else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105' || moduleModel === 'esp32c3') {
             libPath = '';
         }
         else{
@@ -251,6 +251,24 @@ export class CreateProject {
             case 'simulator':
                 corePath = this.getCreateProjectAir72XCorepathHandle(corePath);
                 break;
+            case 'esp32c3':
+                corePath = this.getCreateProjectEsp32CorepathHandle(corePath);
+        }
+        return corePath;
+    }
+    
+    // 接收到的webview发送的esp32c3的core处理
+    getCreateProjectEsp32CorepathHandle(corePath:string){
+        const esp32c3DefaultCorePath = pluginVariablesInit.getEsp32c3DefaultCorePath();
+        if (fs.existsSync(corePath)) {
+            corePath = corePath;
+        }
+        else if (corePath==='') {
+            const coreLatestName:string = pluginVariablesInit.getAir101DefaultLatestCorePath();
+            corePath = path.join(esp32c3DefaultCorePath,coreLatestName);
+        }
+        else{
+            corePath = path.join(esp32c3DefaultCorePath,corePath);
         }
         return corePath;
     }
@@ -357,6 +375,9 @@ export class CreateProject {
             case 'air105':
                 fs.writeFileSync(mainLuaPath, air10xMainData);
                 break;
+            case 'esp32c3':
+                // esp32c3 默认demo与air101系列相同
+                fs.writeFileSync(mainLuaPath,air10xMainData);  
             default:
                 const airMainData: string = pluginVariablesInit.getAir72XDefaultMainData();
                 fs.writeFileSync(mainLuaPath, airMainData);
@@ -431,6 +452,11 @@ export class CreateProject {
                 break;
             case 'air105':
                 demoPath = path.join(air105DefaultDemoPath, projectDemo);
+                copyDir(demoPath, projectDemoDistPath);
+                break;
+            case 'esp32c3':
+                // esp32 demo暂未出来,先使用101的demo
+                demoPath = path.join(air101DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
         }
