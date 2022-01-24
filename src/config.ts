@@ -230,7 +230,7 @@ export class PluginVariablesInit {
 
     // 获取插件支持的模块列表
     getPluginDefaultModuleList() {
-        const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator"];
+        const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator","esp32c3"];
         return moduleList;
     }
 
@@ -243,6 +243,20 @@ export class PluginVariablesInit {
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
             if (fs.statSync(path.join(air72XDefaultLatestDemoPath,element)).isDirectory()) {
+                demoList.push(element);
+            }
+        }
+        return demoList;
+    }
+
+    // 获取esp32c3默认示例demo列表
+    getEsp32c3DefaultExampleList(){
+        const demoList: string[] = [];
+        const air101DefaultDemoPath: string = this.getAir101DefaultDemoPath();
+        const files: string[] = fs.readdirSync(air101DefaultDemoPath);
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            if (fs.statSync(path.join(air101DefaultDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
@@ -309,6 +323,13 @@ export class PluginVariablesInit {
     getAir72XDefaultCorePath(){
         const air72xDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air72X_CORE");
         return air72xDefaultCorePath;
+    }
+
+    // 获取esp32c3默认core文件存储路径
+    getEsp32c3DefaultCorePath(){
+        // esp32c3 demo暂无接口,先使用air101的
+        const air101DefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
+        return air101DefaultCorePath;
     }
 
     // 获取101默认core文件存储路径
@@ -569,6 +590,9 @@ export class PluginVariablesInit {
             case 'air105':
                 coreList = this.getAir105DefaultCoreList();
                 break;
+            case 'esp32c3':
+                coreList = this.getAir101DefaultCoreList();
+                break;
             default:
                 coreList = this.getAir72XDefaultCoreList();
         }
@@ -588,6 +612,9 @@ export class PluginVariablesInit {
                 libList = '';
                 break;
             case 'air105':
+                libList = '';
+                break;
+            case 'esp32c3':
                 libList = '';
                 break;
             default:
@@ -610,6 +637,9 @@ export class PluginVariablesInit {
                 break;
             case 'air105':
                 exampleList = this.getAir105DefaultExampleList();
+                break;
+            case 'esp32c3':
+                exampleList = this.getEsp32c3DefaultExampleList();
                 break;
             default:
                 exampleList = this.getAir72XDefaultExampleList();
