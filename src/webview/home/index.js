@@ -1,20 +1,57 @@
-
 /* 激活 VsCode 通信 */
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 /* 新建工程和打开工程 */
 $(".newProject").on("click", function () {
   $(".newProjectHtml").show();
   vscode.postMessage({
-      command: 'openNewProjectWebview'
+    command: 'openNewProjectWebview'
   });
 });
 
 $(".openProject").on("click", function () {
   $(".openProjectHtml").show();
   vscode.postMessage({
-      command: 'openProjectWebview'
+    command: 'openProjectWebview'
+  });
+});
+
+/* 技术支持 */
+$(".header-publicBtn1").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "工具源码"
+  });
+});
+$(".footerBtn1").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "工具源码"
+  });
+});
+$(".header-publicBtn2").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "QQ"
+  });
+});
+$(".footerBtn2").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "QQ"
+  });
+});
+$(".header-publicBtn3").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "联系我们"
+  });
+});
+$(".footerBtn3").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "联系我们"
   });
 });
 
@@ -25,7 +62,7 @@ $(".userBtn").on("click", function () {
 });
 
 /* 取消登录按钮 */
-$(".btCancel").on("click", function () {
+$(".login-cancel").on("click", function () {
   $(".loginModal").hide();
   clearLoginData();
 });
@@ -95,7 +132,7 @@ function Alert(msg) {
     text: {
       "msg": msg,
     }
-  })
+  });
 }
 
 
@@ -287,22 +324,28 @@ function sentComment() {
   };
 }
 
-/* 改变主题样式 */ 
-function changeThemeColor(style){
-  if (style === "light"){
+/* 改变主题样式 */
+function changeThemeColor(style) {
+  if (style === "light") {
     document.documentElement.style.setProperty("--default-bgColor", 'white');
     document.documentElement.style.setProperty("--default-fontColor", 'black');
+    document.documentElement.style.setProperty("--default-segLineColor", 'rgba(0, 0, 0, 0.6)');
     document.documentElement.style.setProperty("--default-borderColor", '2px solid black');
-    document.documentElement.style.setProperty("--default-hoverColor", 'rgb(18, 194, 141)');
+    document.documentElement.style.setProperty("--default-hoverColor", 'rgb(8, 60, 201)');
     document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(255, 255, 255, 0.8)');
+    document.documentElement.style.setProperty("--default-popBgColor", 'rgb(255, 255, 255, 0.7)');
     document.documentElement.style.setProperty("--default-loginImgStyle", 'none');
-  }else{
+    document.documentElement.style.setProperty("--default-loginPopImgStyle", 'invert(0%) sepia(0%) saturate(600%) hue-rotate(277deg) brightness(10%) contrast(100%)');
+  } else {
     document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
-    document.documentElement.style.setProperty("--default-fontColor", 'white');
-    document.documentElement.style.setProperty("--default-borderColor", '2px solid white');
+    document.documentElement.style.setProperty("--default-fontColor", 'rgba(255, 255, 255, 0.851)');
+    document.documentElement.style.setProperty("--default-segLineColor", 'rgba(255, 255, 255, 0.4)');
+    document.documentElement.style.setProperty("--default-borderColor", '2px solid rgba(255, 255, 255, 0.6)');
     document.documentElement.style.setProperty("--default-hoverColor", 'rgb(15, 204, 109)');
     document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(0, 0, 0, 0.5)');
+    document.documentElement.style.setProperty("--default-popBgColor", 'rgba(46, 44, 44, 0.3)');
     document.documentElement.style.setProperty("--default-loginImgStyle", 'invert(100%) sepia(0%) saturate(7500%) hue-rotate(56deg) brightness(102%) contrast(101%)');
+    document.documentElement.style.setProperty("--default-loginPopImgStyle", 'none');
   }
 }
 
@@ -313,10 +356,6 @@ window.addEventListener('message', event => {
   switch (message.command) {
     case "switchTheme":
       changeThemeColor(message.text);
-      break;
-    case "loginVerifyData":
-      break;
-    case "":
       break;
     default:
       break;

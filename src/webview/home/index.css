@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-a {
+a, a:link, a:visited, a:hover, a:active {
   text-decoration: none;
   color: var(--default-fontColor);
 }
@@ -16,17 +16,25 @@ i {
   /* 默认样式 */
   --default-bgColor: white;
   --default-fontColor: black;
+  --default-segLineColor: rgba(0, 0, 0, 0.6);
   --default-borderColor: 2px solid black;
   --default-hoverColor: rgb(8, 60, 201);
   --default-modalBgColor: rgb(255, 255, 255, 0.8);
+  --default-popBgColor: rgb(255, 255, 255, 0.7);
   --default-fontStyle: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+  --default-loginPopImgStyle: invert(0%) sepia(0%) saturate(600%) hue-rotate(277deg) brightness(10%) contrast(100%);
+  --default-pubImgStyle: invert(100%) sepia(13%) saturate(748%) hue-rotate(181deg) brightness(50%) contrast(105%);
   
   --default-bgColor: rgb(37, 37, 38);
-  --default-fontColor: white;
-  --default-borderColor: 2px solid white;
+  --default-fontColor: rgba(255, 255, 255, 0.851);
+  --default-segLineColor: rgba(255, 255, 255, 0.4);
+  --default-borderColor: 2px solid rgba(255, 255, 255, 0.6);
   --default-hoverColor: rgb(15, 204, 109);
   --default-modalBgColor: rgb(0, 0, 0, 0.5);
-  --default-loginImgStyle: invert(100%) sepia(0%) saturate(7500%) hue-rotate(56deg) brightness(102%) contrast(101%);
+  --default-popBgColor: rgba(46, 44, 44, 0.3);
+  --default-loginPopImgStyle: none;
+  --default-loginImgStyle: invert(100%) sepia(13%) saturate(7438%) hue-rotate(181deg) brightness(112%) contrast(105%);
+  --default-pubImgStyle: invert(100%) sepia(13%) saturate(7438%) hue-rotate(181deg) brightness(60%) contrast(105%);
   
 }
 
@@ -39,7 +47,7 @@ i {
   height: 100vh;
   grid-gap: 24px;
   grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 11fr;
+  grid-template-rows: 50px 11fr;
   grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
     'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
 }
@@ -68,13 +76,33 @@ i {
 }
 
 .userBox {
-  margin: 15px;
+  padding: 10px;
   display: inline-block;
   flex: none;
 }
 
 .userImg{
   filter: var(--default-loginImgStyle);
+}
+
+/* 宣传按钮 */
+.header-exterDiv{
+  width: 10px;
+  display: inline-block;
+}
+
+.header-publicBtn1,
+.header-publicBtn2,
+.header-publicBtn3{
+  background: none;
+  border: none;
+  outline: none;
+  width: 50px;
+  height: 50px;
+}
+
+.pubImg{
+  filter: var(--default-pubImgStyle);
 }
 
 /********************登录 ↓*********************/
@@ -101,8 +129,9 @@ i {
   position: relative;
   border-radius: 20px;
   transform: translate(-50%, -50%);
-  background: var(--default-modalBgColor);
+  background: var(--default-popBgColor);
   display: block;
+  border: var(--default-borderColor);
 }
 
 .login h2,
@@ -115,6 +144,11 @@ i {
 
 .form-box {
   position: relative;
+}
+
+/* 登录input */
+.login-formBox{
+  margin-bottom: 35px;
 }
 
 /* 登录按钮的居中 */
@@ -172,12 +206,13 @@ i {
   color: var(--default-hoverColor);
 }
 
-.btCancel {
+.login-cancel {
   margin: 0;
   background: none;
   outline: none;
   border: none;
   color: var(--default-fontColor);
+  margin-left: 90%;
 }
 
 /* 忘记密码和注册盒子 */
@@ -214,11 +249,16 @@ i {
   margin-top: 0;
 }
 
+.cancelImg,
+.backImg{
+  filter: var(--default-loginPopImgStyle)
+}
+
 /********************登录 ↑*********************/
 
 /* 欢迎标语 */
 .welcomeTitle {
-  margin: 20px;
+  margin: 0px;
   color: var(--default-fontColor);
 }
 
@@ -244,13 +284,17 @@ i {
 }
 
 .select {
-  width: 200px;
-  height: 50px;
+  width: 280px;
+  height: 70px;
   background: none;
   outline: none;
   border-radius: 5px;
   border: var(--default-borderColor);
   color: var(--default-fontColor);
+}
+
+.select label{
+  font-size: 1.5em;
 }
 
 /* 工程按钮 ↑ */
@@ -275,7 +319,7 @@ i {
 
 /* 分割线 */
 .hr-solid-content {
-  color: var(--default-fontColor);
+  color: var(--default-segLineColor);
   border: 0;
   font-size: 15px;
   padding: 1em 0;
@@ -321,7 +365,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 5px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 11fr;
+    grid-template-rows: 50px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -339,7 +383,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 11fr;
+    grid-template-rows: 50px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -350,7 +394,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 11fr;
+    grid-template-rows: 50px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -379,4 +423,18 @@ i {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.8);
   text-align: center;
+}
+
+.newProjectHtmlChild,
+.openProjectHtmlChild{
+  display: block;
+  width: 850px;
+  height: 490px;
+  margin: auto;
+  margin-top: 10%;
+  text-align: center;
+}
+
+.openProjectHtmlChild{
+  height: 600px;
 }

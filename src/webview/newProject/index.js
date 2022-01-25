@@ -45,7 +45,7 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 //初始化激活空白工程
@@ -335,6 +335,7 @@ const moduleThree = "simulator";
 const moduleFour = "air101";
 const moduleFive = "air103";
 const moduleSix = "air105";
+const moduleSeven = "esp32c3";
 
 /* 新建工程 暂存VsCode发送的工程数据 */
 let temPureProjectData = null;
@@ -344,22 +345,20 @@ let temUiProjectData = null;
 
 
 /* 对组件选择做特殊处理[空白工程] */
-$(".select_getSpace_LibInfo").on("change", function() {
-    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption'){
+$(".select_getSpace_LibInfo").on("change", function () {
+    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption') {
         $('.select_getSpace_LibInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customLibPath');
-    }
-    else{
+    } else {
         $("#space_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[空白工程] */
-$(".select_getSpace_CoreInfo").on("change", function() {
-    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption'){
+$(".select_getSpace_CoreInfo").on("change", function () {
+    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption') {
         $('.select_getSpace_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#space_customeCore").prop("display", "none");
     }
 });
@@ -415,6 +414,7 @@ $(".select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
+        case moduleSeven:
             /* 目前 Air10X 没有 lib */
             isInAir101 = true;
             isInAirCx72 = false;
@@ -494,6 +494,7 @@ function pureProjectInitDataManagment(initData) {
             addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
         case moduleFour:
+        case moduleSeven:
             addOptionToSelect(libSelected, initData.libList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
@@ -517,19 +518,18 @@ function pureProjectInitDataManagment(initData) {
     $(".tip_spaceCore").hide();
 
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importSpaceProject(temImportData);
     }
 }
 
 
 /* 对组件选择做特殊处理[示例工程] */
-$(".select_getExample_CoreInfo").on("change", function() {
-    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption'){
+$(".select_getExample_CoreInfo").on("change", function () {
+    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption') {
         $('.select_getExample_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#example_customeCore").prop("display", "none");
     }
 });
@@ -571,6 +571,7 @@ $(".select_getExample_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
+        case moduleSeven:
             isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             addOptionToSelect(exampleSelected, temExampleProjectData.exampleList, moduleFour);
@@ -628,6 +629,7 @@ function exampleProjectInitDataManagment(initData) {
             addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
         case moduleFour:
+        case moduleSeven:
             addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
@@ -649,7 +651,7 @@ function exampleProjectInitDataManagment(initData) {
     $(".tip_exampleCore").hide();
 
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importExampleProject(temImportData);
     }
 }
@@ -673,6 +675,7 @@ $(".select_getNDK_ModuleInfo").on("change", function () {
             addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleThree);
             break;
         case moduleFour:
+        case moduleSeven:
             addOptionToSelect(exampleSelected, temNdkProjectData.exampleList, moduleFour);
             break;
         case moduleFive:
@@ -708,6 +711,7 @@ function ndkProjectInitDataManagment(initData) {
             addOptionToSelect(exampleSelected, initData.exampleList, moduleThree);
             break;
         case moduleFour:
+        case moduleSeven:
             addOptionToSelect(exampleSelected, initData.exampleList, moduleFour);
             break;
         case moduleFive:
@@ -719,31 +723,29 @@ function ndkProjectInitDataManagment(initData) {
         default:
             break;
     }
-    
+
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importNdkProject(temImportData);
     }
 }
 
 
 /* 对组件选择做特殊处理[UI工程] */
-$(".select_getUi_LibInfo").on("change", function() {
-    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption'){
+$(".select_getUi_LibInfo").on("change", function () {
+    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption') {
         $('.select_getUi_LibInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customLibPath');
-    }
-    else{
+    } else {
         $("#ui_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[UI工程] */
-$(".select_getUi_CoreInfo").on("change", function() {
-    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption'){
+$(".select_getUi_CoreInfo").on("change", function () {
+    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption') {
         $('.select_getUi_CoreInfo option:first').prop("selected", "selected");
         handelBackstageExtra('openSource', 'customCorePath');
-    }
-    else{
+    } else {
         $("#ui_customeCore").prop("display", "none");
     }
 });
@@ -757,10 +759,10 @@ $(".select_getUi_ModuleInfo").on("change", function () {
 
     libSelected.empty();
     coreSelected.empty();
-    
+
     /* 隐藏提示信息 */
     $(".tip_uiLib").hide();
-    $(".tip_uiCore").hide();
+    // $(".tip_uiCore").hide();
 
     switch (moduleSelected.text()) {
         case moduleOne:
@@ -784,7 +786,7 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             /* 添加自定义选项 */
             libSelected.append('<option class="ui_customeLibOption">自定义</option>');
             coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
-            $(".tip_uiCore").show();
+            // $(".tip_uiCore").show();
             break;
         case moduleThree:
             isInAirCx72 = false;
@@ -798,6 +800,7 @@ $(".select_getUi_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
             break;
         case moduleFour:
+        case moduleSeven:
             isInAirCx72 = false;
             isInAir101 = true;
             libSelected.prop("disabled", true);
@@ -874,6 +877,7 @@ function uiProjectInitDataManagment(initData) {
             addOptionToSelect(coreSelected, initData.coreList, moduleThree);
             break;
         case moduleFour:
+        case moduleSeven:
             addOptionToSelect(libSelected, initData.libList, moduleFour);
             addOptionToSelect(coreSelected, initData.coreList, moduleFour);
             break;
@@ -894,10 +898,10 @@ function uiProjectInitDataManagment(initData) {
 
     /* 隐藏提示信息 */
     $(".tip_uiLib").hide();
-    $(".tip_uiCore").hide();
-    
+    // $(".tip_uiCore").hide();
+
     /* 导入工程操作 */
-    if (isInImportProject){
+    if (isInImportProject) {
         importUiProject(temImportData);
     }
 }
