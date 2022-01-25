@@ -50,10 +50,28 @@ export class PluginVariablesInit {
         return historyDemopath;
     }
 
-    // 获取Air72X固件存储路径
-    getAir72xCorepath() {
-        let air72xCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air72X_CORE');
-        return air72xCorepath;
+    // 获取用户历史core存储路径
+    getHistoryCorePath() {
+        const historyCorePath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore');
+        return historyCorePath;
+    }
+
+    // 获取Air72XUX固件存储路径
+    getAir72XUXCorePath() {
+        let getAir72XUXCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air72XUX_CORE');
+        return getAir72XUXCorepath;
+    }
+
+    // 获取Air72XUX lib存储路径
+    getAir72XUXLibPath() {
+        let getAir72XUXLibPath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib', 'Air72XUX_LIB');
+        return getAir72XUXLibPath;
+    }
+
+        // 获取Air72XUX demo存储路径
+    getAir72XUXDemoPath() {
+        let getAir72XUXDemoPath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72XUX_DEMO');
+        return getAir72XUXDemoPath;
     }
 
     // 依据模块型号获取core路径
@@ -61,7 +79,7 @@ export class PluginVariablesInit {
         let corePath: any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                corePath = this.getAir72xCorepath();
+                corePath = this.getAir72XUXCorePath();
                 break;
             case 'air101':
                 corePath = this.getAir101DefaultCorePath();
@@ -76,8 +94,8 @@ export class PluginVariablesInit {
         return corePath;
     }
 
-    // 获取获取Air72X固件版本号正则解析表达式
-    getAir72XReg() {
+    // 获取获取Air72XUX固件版本号正则解析表达式
+    getAir72XUXReg() {
         const reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
         return reg;
     }
@@ -105,7 +123,7 @@ export class PluginVariablesInit {
         let reg: any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                reg = this.getAir72XReg();
+                reg = this.getAir72XUXReg();
                 break;
             case 'air101':
                 reg = this.getAir101Reg();
@@ -186,10 +204,10 @@ export class PluginVariablesInit {
         return homeModalBoxPath;
     }
 
-    // 获取Air72X系列main文件默认内容
-    getAir72XDefaultMainData() {
-        const air72xMainData: string = 'PROJECT = \'test\'\r\nVERSION = \'2.0.0\'\r\nrequire \'log\'\r\nLOG_LEVEL = log.LOGLEVEL_TRACE\r\nrequire \'sys\'\r\n\r\n\r\n\r\nsys.taskInit(function()\r\n\twhile true do\r\n\t\t-- log.info(\'test\',array)\r\n\t\tlog.info(\'Hello world!\')\r\n\t\tsys.wait(1000)\r\n\tend\r\nend)\r\n\r\nsys.init(0, 0)\r\nsys.run()';
-        return air72xMainData;
+    // 获取Air72XUX系列main文件默认内容
+    getAir72XUXDefaultMainData() {
+        const air72XUXMainData: string = 'PROJECT = \'test\'\r\nVERSION = \'2.0.0\'\r\nrequire \'log\'\r\nLOG_LEVEL = log.LOGLEVEL_TRACE\r\nrequire \'sys\'\r\n\r\n\r\n\r\nsys.taskInit(function()\r\n\twhile true do\r\n\t\t-- log.info(\'test\',array)\r\n\t\tlog.info(\'Hello world!\')\r\n\t\tsys.wait(1000)\r\n\tend\r\nend)\r\n\r\nsys.init(0, 0)\r\nsys.run()';
+        return air72XUXMainData;
     }
 
     // 获取Air10X系列main文件默认内容
@@ -198,16 +216,16 @@ export class PluginVariablesInit {
         return air10xMainData;
     }
 
-    // 获取Air72X默认lib库路径
-    getAir72XDefaultLibPath() {
-        const air72xDefaultLibPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideLib", "Air72X_LIB");
-        return air72xDefaultLibPath;
+    // 获取Air72XUX默认lib库路径
+    getAir72XUXDefaultLibPath() {
+        const air72XUXDefaultLibPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideLib", "Air72XUX_LIB");
+        return air72XUXDefaultLibPath;
     }
 
-    // 获取Air72X默认demo
-    getAir72XDefaultDemoPath() {
-        const air72XDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air72X_Demo");
-        return air72XDefaultDemoPath;
+    // 获取Air72XUX默认demo
+    getAir72XUXDefaultDemoPath() {
+        const air72XUXDefaultDemoPath: string = path.join(this.appDataPath, "LuatIDE", "LuatideDemo", "Air72XUX_Demo");
+        return air72XUXDefaultDemoPath;
     }
 
     // 获取air101默认demo
@@ -235,14 +253,14 @@ export class PluginVariablesInit {
     }
 
 
-    // 获取Air72X默认示例demo列表
-    getAir72XDefaultExampleList() {
+    // 获取Air72XUX默认示例demo列表
+    getAir72XUXDefaultExampleList() {
         const demoList: string[] = [];
-        const air72XDefaultLatestDemoPath: string = this.getAir72XDefaultLatestDemoPath();
-        const files: string[] = fs.readdirSync(air72XDefaultLatestDemoPath);
+        const air72XUXDefaultLatestDemoPath: string = this.getAir72XUXDefaultLatestDemoPath();
+        const files: string[] = fs.readdirSync(air72XUXDefaultLatestDemoPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(path.join(air72XDefaultLatestDemoPath,element)).isDirectory()) {
+            if (fs.statSync(path.join(air72XUXDefaultLatestDemoPath,element)).isDirectory()) {
                 demoList.push(element);
             }
         }
@@ -305,24 +323,24 @@ export class PluginVariablesInit {
         return demoList;
     }
 
-    // 获取air72x默认lib库列表
-    getAir72XDefaultLibList(){
+    // 获取air72XUX默认lib库列表
+    getAir72XUXDefaultLibList(){
         const libList: string[] = [];
-        const air72XDefaultLibPath:string = this.getAir72XDefaultLibPath();
-        const files: string[] = fs.readdirSync(air72XDefaultLibPath);
+        const air72XUXDefaultLibPath:string = this.getAir72XUXDefaultLibPath();
+        const files: string[] = fs.readdirSync(air72XUXDefaultLibPath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (fs.statSync(path.join(air72XDefaultLibPath,element)).isDirectory()) {
+            if (fs.statSync(path.join(air72XUXDefaultLibPath,element)).isDirectory()) {
                 libList.push(element);
             }
         }
         return libList;
     }
 
-    // 获取72x默认core文件存储路径
-    getAir72XDefaultCorePath(){
-        const air72xDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air72X_CORE");
-        return air72xDefaultCorePath;
+    // 获取72XUX默认core文件存储路径
+    getAir72XUXDefaultCorePath(){
+        const air72XUXDefaultCorePath: string = path.join(this.appDataPath, "LuatIDE", "LuatideCore", "Air72XUX_CORE");
+        return air72XUXDefaultCorePath;
     }
 
     // 获取esp32c3默认core文件存储路径
@@ -350,14 +368,14 @@ export class PluginVariablesInit {
         return air105DefaultCorePath;
     }
 
-    // 获取air72x默认core文件列表
-    getAir72XDefaultCoreList(){
+    // 获取air72XUX默认core文件列表
+    getAir72XUXDefaultCoreList(){
         const coreList: string[] = [];
-        const air72XDefaultCorePath:string = this.getAir72XDefaultCorePath();
-        const files: string[] = fs.readdirSync(air72XDefaultCorePath);
+        const air72XUXDefaultCorePath:string = this.getAir72XUXDefaultCorePath();
+        const files: string[] = fs.readdirSync(air72XUXDefaultCorePath);
         for (let index = 0; index < files.length; index++) {
             const element = files[index];
-            if (path.extname(path.join(air72XDefaultCorePath,element))==='.pac') {
+            if (path.extname(path.join(air72XUXDefaultCorePath,element))==='.pac') {
                 coreList.push(element);
             }
         }
@@ -481,11 +499,11 @@ export class PluginVariablesInit {
         return coreName;
     }   
 
-    // 获取air72x默认最新core路径
-    getAir72XDefaultLatestCorePath(){
-        const air72xCorePath:string = this.getAir72XDefaultCorePath();
-        const coreList:string[] = fs.readdirSync(air72xCorePath);
-        const reg = this.getAir72XReg();
+    // 获取air72XUX默认最新core路径
+    getAir72XUXDefaultLatestCorePath(){
+        const air72XUXCorePath:string = this.getAir72XUXDefaultCorePath();
+        const coreList:string[] = fs.readdirSync(air72XUXCorePath);
+        const reg = this.getAir72XUXReg();
         let currentVersion = undefined;
         let coreName = '';
         for (let index = 0; index < coreList.length; index++) {
@@ -506,10 +524,10 @@ export class PluginVariablesInit {
         return coreName;
     }
 
-    // 获取airr72x默认最新lib路径
-    getAir72XDefaultLatestLibPath(){
-        const air72xLibPath:string = this.getAir72XDefaultLibPath();
-        const libList:string[] = fs.readdirSync(air72xLibPath);
+    // 获取air72XUX默认最新lib路径
+    getAir72XUXDefaultLatestLibPath(){
+        const air72XUXLibPath:string = this.getAir72XUXDefaultLibPath();
+        const libList:string[] = fs.readdirSync(air72XUXLibPath);
         const reg = /V([\d\.]+)/gi;
         let currentVersion:string|undefined = undefined;
         for (let index = 0; index < libList.length; index++) {
@@ -526,14 +544,14 @@ export class PluginVariablesInit {
                 currentVersion = libNameVersionArray[1];
             }
         }
-        const libLatestPath:string = path.join(air72xLibPath,'V'+currentVersion,'lib');
+        const libLatestPath:string = path.join(air72XUXLibPath,'V'+currentVersion,'lib');
         return libLatestPath;
     }
 
-    // 获取airr72x默认最新demo路径
-    getAir72XDefaultLatestDemoPath(){
-        const air72xDemoPath:string = this.getAir72XDefaultDemoPath();
-        const demoList:string[] = fs.readdirSync(air72xDemoPath);
+    // 获取airr72XUX默认最新demo路径
+    getAir72XUXDefaultLatestDemoPath(){
+        const air72XUXDemoPath:string = this.getAir72XUXDefaultDemoPath();
+        const demoList:string[] = fs.readdirSync(air72XUXDemoPath);
         const reg = /V([\d\.]+)/gi;
         let currentVersion:string|undefined = undefined;
         for (let index = 0; index < demoList.length; index++) {
@@ -550,7 +568,7 @@ export class PluginVariablesInit {
                 currentVersion = demoNameVersionArray[1];
             }
         }
-        const demoLatestPath:string = path.join(air72xDemoPath,'V'+currentVersion);
+        const demoLatestPath:string = path.join(air72XUXDemoPath,'V'+currentVersion);
         return demoLatestPath;
     }
 
@@ -579,7 +597,7 @@ export class PluginVariablesInit {
         let coreList:any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                coreList = this.getAir72XDefaultCoreList();
+                coreList = this.getAir72XUXDefaultCoreList();
                 break;
             case 'air101':
                 coreList = this.getAir101DefaultCoreList();
@@ -594,7 +612,7 @@ export class PluginVariablesInit {
                 coreList = this.getAir101DefaultCoreList();
                 break;
             default:
-                coreList = this.getAir72XDefaultCoreList();
+                coreList = this.getAir72XUXDefaultCoreList();
         }
         return coreList;
     }
@@ -603,7 +621,7 @@ export class PluginVariablesInit {
         let libList:any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                libList = this.getAir72XDefaultLibList();
+                libList = this.getAir72XUXDefaultLibList();
                 break;
             case 'air101':
                 libList = '';
@@ -618,7 +636,7 @@ export class PluginVariablesInit {
                 libList = '';
                 break;
             default:
-                libList = this.getAir72XDefaultLibList();
+                libList = this.getAir72XUXDefaultLibList();
         }
         return libList;
     }
@@ -627,7 +645,7 @@ export class PluginVariablesInit {
         let exampleList:any;
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                exampleList = this.getAir72XDefaultExampleList();
+                exampleList = this.getAir72XUXDefaultExampleList();
                 break;
             case 'air101':
                 exampleList = this.getAir101DefaultExampleList();
@@ -642,7 +660,7 @@ export class PluginVariablesInit {
                 exampleList = this.getEsp32c3DefaultExampleList();
                 break;
             default:
-                exampleList = this.getAir72XDefaultExampleList();
+                exampleList = this.getAir72XUXDefaultExampleList();
         }
         return exampleList;
     }
@@ -655,17 +673,17 @@ export class PluginConfigInit {
     private plugDataPath: any = path.join(this.appDataPath, 'LuatIDE');
     private historyLibpath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib');
     private historyDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo');
-    private air72xDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72X_DEMO');
+    private air72XUXDemopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72XUX_DEMO');
     private air101Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air101_DEMO');
     private air103Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air103_DEMO');
     private air105Demopath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideDemo', 'Air105_DEMO');
-    private air72xLibpath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib', 'Air72X_LIB');
+    private air72XUXLibpath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideLib', 'Air72XUX_LIB');
     private dataIntroduce: any = path.join(this.appDataPath, 'LuatIDE', '文件夹说明.txt');
     private introduceData: any = '该文件夹为合宙vscode插件LuatIDE的配置保存文件,删除后可能导致插件历史配置丢失,插件不可使用,请谨慎删除';
     private pluginconfigPath: any = path.join(this.appDataPath, 'LuatIDE', 'luatide_workspace.json');
     private uuidPath = path.join(this.appDataPath, 'LuatIDE', 'uuid.txt');
     private corepath = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore');
-    private air72xCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air72X_CORE');
+    private air72XUXCorepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air72XUX_CORE');
     private air101Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air101_CORE');
     private air103Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air103_CORE');
     private air105Corepath: any = path.join(this.appDataPath, 'LuatIDE', 'LuatideCore', 'Air105_CORE');
@@ -679,19 +697,25 @@ export class PluginConfigInit {
         this.folderInit(this.plugDataPath);
         this.folderInit(this.historyLibpath);
         this.folderInit(this.historyDemopath);
-        this.folderInit(this.air72xDemopath);
+        this.folderInit(this.air72XUXDemopath);
         this.folderInit(this.air101Demopath);
         this.folderInit(this.air103Demopath);
         this.folderInit(this.air105Demopath);
-        this.folderInit(this.air72xLibpath);
+        this.folderInit(this.air72XUXLibpath);
         this.fileInit(this.dataIntroduce);
         this.fileInit(this.pluginconfigPath);
         this.fileInit(this.uuidPath);
         this.folderInit(this.corepath);
-        this.folderInit(this.air72xCorepath);
+        this.folderInit(this.air72XUXCorepath);
         this.folderInit(this.air101Corepath);
         this.folderInit(this.air103Corepath);
         this.folderInit(this.air105Corepath);
+    }
+
+    // 获取当前插件配置文件初始化版本号
+    getPlugConfigInitVersion(){
+        const plugConfigInitVersion:string = '2.1';
+        return plugConfigInitVersion;
     }
 
     // 数据存储路径文件初始化
@@ -742,11 +766,12 @@ export class PluginConfigInit {
             return userToken;
         }
     }
-
+    
     // 生成插件配置文件
     configJsonGenerator() {
+        const pluginConfigInitVersion:string = this.getPlugConfigInitVersion();
         const configJson: any = {
-            version: 2.0,
+            version: pluginConfigInitVersion,
             projectList: [],
             activeProject: '',
         };
