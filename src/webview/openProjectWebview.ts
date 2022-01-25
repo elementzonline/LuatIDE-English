@@ -263,7 +263,7 @@ export class OpenProjectManage {
         // 如果非10x且lib为空，则为默认lib
         if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
         openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105' && openProjectMessage.openProjectModuleModel!=='esp32c3') {
-            openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+            openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
         }
         projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
         projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
