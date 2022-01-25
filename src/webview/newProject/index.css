@@ -4,7 +4,7 @@
 }
 
 :root{
-    --default-bgColor: rgb(37, 37, 38);
+    --default-bgColor: rgb(35, 35, 35);
     --default-fontColor: white;
     --default-hoverColor: white;
     --default-border: 1px solid white;
@@ -28,7 +28,7 @@ body {
 
 .father {
     height: 100vh;
-    min-width: 1150px;
+    /* min-width: 830px; */
 }
 
 /* 错误提示 */
@@ -39,6 +39,11 @@ h2 {
     display: none;
 }
 
+.projectTip{
+    color: var(--default-fontColor);
+    display: block;
+}
+
 /*导航栏样式*/
 .navbar {
     text-align: center;
@@ -46,11 +51,15 @@ h2 {
     position: relative;
     float: left;
     height: 100%;
-    width: 40%;
+    width: 25%;
 }
 
 .navbarChild{
-    margin: auto;
+    /* margin: auto; */
+    /* padding: 30px; */
+    border: var(--default-border);
+    border-style:none solid none none;
+    width: 100%;
 }
 
 div.navbar:before,
@@ -66,37 +75,40 @@ div.navbar:after {
 /*导航栏中选项样式*/
 .menu {
     display: block;
-    width: 200px;
+    width: 100%;
     background: transparent;
     font-weight: normal;
     font-style: normal;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 0.3em;
     color: var(--default-fontColor);
     border-radius: 0;
-    padding: 18px 60px 20px;
+    padding: 30px 20px 30px;
     text-decoration: none;
-    margin: 0.625rem;
-    border: var(--default-border);
-    margin: 80px 0;
+    /* margin: 0.625rem; */
+    border: none;
+    /* margin: 50px 0; */
+    /* margin-left: 10px; */
+    right: 0;
 }
 
 .menu:hover {
-    border: var(--default-border);
-    background-position: 50% 50%;
+    /* border: var(--default-border);
+    background-position: 50% 50%; */
 }
 
 /*被选中激活样式*/
 .active {
-    border: var(--default-border);
+    /* border: var(--default-border);
     color: var(--default-active);
     background-position: 60% 50%;
-    background-size: 300% 300%;
+    background-size: 300% 300%; */
+    background-color: rgb(64,128,208);
 }
 
 .content {
     height: 100%;
-    width: 60%;
+    width: 75%;
     float: right;
     display: flex;
     position: relative;
@@ -118,17 +130,17 @@ div.navbar:after {
 .form .item {
     margin: auto;
     height: 30px;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 0px;
     display: flex;
     justify-content: space-between;
-    width: 500px;
+    width: 440px;
 }
 
 .form input,
 .form select {
     outline-style: none;
-    height: 24px;
+    height: 40px;
     width: 280px;
     border-radius: 15px;
     background-color: var(--default-inputBgColor);
@@ -172,4 +184,9 @@ div.navbar:after {
     font-size: 15px;
     margin-bottom: 50px;
     color: var(--default-fontColor);
+}
+
+.specialTips{
+    /* display:flex; */
+    /* float: left; */
 }
