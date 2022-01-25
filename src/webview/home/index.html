@@ -5,15 +5,26 @@
   <meta charset="utf-8" />
   <title>Home</title>
   <link rel="stylesheet" type="text/css" href="./index.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="/newProject/index.css" /> -->
   <link rel="stylesheet" type="text/css" href="../fontawesome.min.css" />
 </head>
 
 <body>
   <div id="root">
     <div class="header">
+      <div class="header-exterDiv"></div>
+      <button class="header-publicBtn1">
+        <img src="resource/gitee.png" class="pubImg" width="83%" style="margin-bottom: 4px;">
+      </button>
+      <button class="header-publicBtn2">
+        <img src="resource/QQ.png" class="pubImg">
+      </button>
+      <button class="header-publicBtn3">
+        <img src="resource/luat.png" class="pubImg" width="83%" style="margin-bottom: 4px;">
+      </button>
       <button class="userBtn">
         <div class="userBox">
-          <img src="user.png" alt="User" class="userImg">
+          <img src="resource/user.png" alt="User" class="userImg">
         </div>
       </button>
     </div>
@@ -22,10 +33,10 @@
     <div class="rightContent">
       <div class="homeHeader">
         <div class="welcomeTitle">
-          <h2>欢迎来到LuatIDE</h2>
+          <h2>欢迎使用LuatIDE</h2>
         </div>
         <div class="ideIcon">
-          <img style="width: 200px; border-radius: 100px;"
+          <img style="width: 260px; border-radius: 130px;"
             src="https://luater.gallerycdn.vsassets.io/extensions/luater/luatide/1.2.8/1640239236341/Microsoft.VisualStudio.Services.Icons.Default"
             alt="LuatIDE">
         </div>
@@ -33,12 +44,12 @@
           <ul>
             <li>
               <button class="select newProject">
-                <label>新建工程</label>
+                <label>新 建 工 程</label>
               </button>
             </li>
             <li>
               <button class="select openProject">
-                <label>打开工程</label>
+                <label>打 开 工 程</label>
               </button>
             </li>
           </ul>
@@ -65,15 +76,13 @@
       <hr class="hr-solid-content" data-content="技术支持">
       <div class="footer">
         <ul>
-          <li><a href="">工具源码</a></li>
+          <li><a href="" class="footerBtn1">工具源码</a></li>
           <li>|</li>
-          <li><a href="">QQ</a></li>
+          <li><a href=""  class="footerBtn2">QQ</a></li>
           <li>|</li>
-          <li><a href="">微信</a></li>
-          <li>|</li>
-          <li><a href="">联系我们</a></li>
-          <li>|</li>
-          <li><button class="commentBtn"><label>问题反馈</label></button></li>
+          <li><a href=""  class="footerBtn3">联系我们</a></li>
+          <!-- <li>|</li>
+          <li><button class="commentBtn"><label>问题反馈</label></button></li> -->
         </ul>
       </div>
     </div>
@@ -81,16 +90,16 @@
   <!-- 登录页面 -->
   <div class="loginModal">
     <div class="login">
-      <button class="btCancel" type="button">
-        返回
+      <button class="login-cancel" type="button">
+        <img class="cancelImg" src="resource/cancel.png" alt="" style="width: 80%;">
       </button>
       <h2>登录</h2>
       <form class="login-Form">
-        <div class="form-box">
+        <div class="form-box login-formBox">
           <input type="text" id="username" required="" placeholder="" autocomplete="off">
           <label>用户名</label>
         </div>
-        <div class="form-box">
+        <div class="form-box login-formBox">
           <input type="password" id="password" name="" required="" autocomplete="off">
           <label>密码</label>
         </div>
@@ -107,7 +116,9 @@
   <!-- 忘记密码 -->
   <div class="forgetModal">
     <div class="forgetPw">
-      <button class="forgitPw-cancel" type="button">返回</button>
+      <button class="forgitPw-cancel" type="button">
+        <img class="backImg" src="resource/back.png" alt="" style="width: 80%;">
+      </button>
       <h2>重置密码</h2>
       <form class="forgetPw-Form">
         <div class="form-box">
@@ -134,10 +145,15 @@
     </div>
   </div>
   <div class="newProjectHtml">
-    <iframe src="../newProject/index.html" height="80%" width="80%"></iframe>
+    <div class="newProjectHtmlChild">
+      <iframe src="../newProject/index.html" height="100%" width="100%" style="border-radius: 20px;"></iframe>
+    </div>
+    </div>
   </div>
   <div class="openProjectHtml">
-    <iframe src="../importProject/index.html" height="80%" width="80%"></iframe>
+    <div class="openProjectHtmlChild">
+      <iframe src="../importProject/index.html" height="80%" width="80%" style="border-radius: 20px;"></iframe>
+    </div>
   </div>
   <script type="text/javascript" src="../jquery-3.6.0.js"></script>
   <script type="text/javascript" src="./index.js"></script>

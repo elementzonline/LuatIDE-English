@@ -45,8 +45,11 @@ let isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
+
+$(allHideStr).hide()
+$(".content_space").show()
 
 //清楚工程临时数据
 function clearTempData(tar1, tar2) {
@@ -214,6 +217,7 @@ const moduleThree = "simulator";
 const moduleFour = "air101";
 const moduleFive = "air103";
 const moduleSix = "air105";
+const moduleSeven = "esp32c3";
 
 
 /* 对组件选择做特殊处理[空白工程] */
@@ -385,8 +389,8 @@ function uiProjectInitDataManagment(initData) {
     coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
-    $(".tip_uiLib").hide();
-    $(".tip_uiCore").hide();
+    // $(".tip_uiLib").hide();
+    // $(".tip_uiCore").hide();
 
     importUiProject(temImportData);
 }
