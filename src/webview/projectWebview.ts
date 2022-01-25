@@ -118,10 +118,10 @@ export class ProjectManage {
         const pluginDefaultAir101Example:string[] = pluginVariablesInit.getAir101DefaultExampleList();
         const pluginDefaultAir103Example:string[] = pluginVariablesInit.getAir103DefaultExampleList();
         const pluginDefaultAir105Example:string[] = pluginVariablesInit.getAir105DefaultExampleList();
-        const pluginDefaultAir72XExample:string[] = pluginVariablesInit.getAir72XDefaultExampleList();
+        const pluginDefaultAir72XUXExample:string[] = pluginVariablesInit.getAir72XUXDefaultExampleList();
         const pluginDefaultEsp32c3Example:string[] = [];
-        const air72XUXLibList:string[] = pluginVariablesInit.getAir72XDefaultLibList();
-        const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XDefaultCoreList();
+        const air72XUXLibList:string[] = pluginVariablesInit.getAir72XUXDefaultLibList();
+        const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XUXDefaultCoreList();
         const air101CoreList:string[] = pluginVariablesInit.getAir101DefaultCoreList();
         const air103CoreList:string[] = pluginVariablesInit.getAir103DefaultCoreList();
         const air105CoreList:string[] = pluginVariablesInit.getAir105DefaultCoreList();
@@ -173,12 +173,12 @@ export class ProjectManage {
                                 text: {
                                     "moduleList": pluginDefaultModuleList,
                                     "exampleList": {
-                                        "air72XUX/air82XUX": pluginDefaultAir72XExample,
-                                        "air72XCX":pluginDefaultAir72XExample,
+                                        "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
+                                        "air72XCX":pluginDefaultAir72XUXExample,
                                         "air101": pluginDefaultAir101Example,
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,
-                                        "simulator":pluginDefaultAir72XExample,
+                                        "simulator":pluginDefaultAir72XUXExample,
                                         "esp32c3":pluginDefaultEsp32c3Example,
                                     },
                                     "coreList": {
