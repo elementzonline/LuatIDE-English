@@ -3,6 +3,7 @@ import {PluginVariablesInit} from './config';
 import * as fs from 'fs';
 import * as path from 'path';
 import {activityMemoryProjectPathBuffer} from './extension';
+import * as vscode from 'vscode';
 let pluginVariablesInit = new PluginVariablesInit();
 
 
@@ -118,44 +119,90 @@ let pluginVariablesInit = new PluginVariablesInit();
         this.refreshPlugintJson(pluginJsonObj);
     }
 
+    // 获取2.0,2.1版本插件配置文件初始化对象
+    getPluginConfigObjVersionTwo(){
+        const luatideWorkspaceJson: any = {
+            version: '',
+            projectList: [],
+            activeProject: '',
+        };
+        return luatideWorkspaceJson;
+    }
+
      // 插件配置文件兼容
      pluginConfigCompatible() {
-         // plugin版本2.0以下兼容
-         const pluginConfigPath: string = pluginVariablesInit.getPluginConfigPath();
-         const pluginJson: string = fs.readFileSync(pluginConfigPath, 'utf-8');
-         const pluginJsonObj = JSON.parse(pluginJson);
-         let luatideWorkspaceJson: any = {
-             version: '',
-             projectList: [],
-             activeProject: '',
-         };
-         if (Number(pluginJsonObj.version) < 2.0) {
-             // 活动工程兼容
-             const activityProject: string = pluginJsonObj['active_workspace'];
-             luatideWorkspaceJson.activeProject = activityProject;
-             // 用户工程数据兼容
-             for (let index = 0; index < pluginJsonObj.data.length; index++) {
-                 const projectObjType = pluginJsonObj.data[index];
-                 if (projectObjType.type === 'user') {
-                     for (let i = 0; i < projectObjType.projects.length; i++) {
-                         const userProjectObj = projectObjType.projects[i];
-                         const projectName = userProjectObj['project_name'];
-                         const projectPath = userProjectObj['project_path'];
-                         let projectObjNew = {
-                             projectName: projectName,
-                             projectPath: projectPath
-                         };
-                         luatideWorkspaceJson.projectList.push(projectObjNew);
-                     }
-                 }
-             }
-             // 插件版本兼容
-             luatideWorkspaceJson.version = '2.0';
-             const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson,null,"\t");
-             fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
-         }
+        // plugin版本2.0以下兼容
+        const pluginConfigPath: string = pluginVariablesInit.getPluginConfigPath();
+        const pluginJson: string = fs.readFileSync(pluginConfigPath, 'utf-8');
+        const pluginJsonObj = JSON.parse(pluginJson);
+        if (Number(pluginJsonObj.version) < 2.0) {
+            this.pluginConfigCompatibleVersionLessThanTwo(pluginConfigPath,pluginJsonObj);
+        }
+        else if (Number(pluginJsonObj.version) === 2.0) {
+            this.pluginConfigCompatibleVersionTwo(pluginConfigPath,pluginJsonObj);
+        }
      }
 
+    //  插件配置文件2.0以下版本配置文件兼容至2.0版本
+    pluginConfigCompatibleVersionLessThanTwo(pluginConfigPath:string,pluginJsonObj:any){
+          // 活动工程兼容
+          const activityProject: string = pluginJsonObj['active_workspace'];
+          const luatideWorkspaceJson:any = this.getPluginConfigObjVersionTwo();
+          luatideWorkspaceJson.activeProject = activityProject;
+          // 用户工程数据兼容
+          for (let index = 0; index < pluginJsonObj.data.length; index++) {
+              const projectObjType = pluginJsonObj.data[index];
+              if (projectObjType.type === 'user') {
+                  for (let i = 0; i < projectObjType.projects.length; i++) {
+                      const userProjectObj = projectObjType.projects[i];
+                      const projectName = userProjectObj['project_name'];
+                      const projectPath = userProjectObj['project_path'];
+                      let projectObjNew = {
+                          projectName: projectName,
+                          projectPath: projectPath
+                      };
+                      luatideWorkspaceJson.projectList.push(projectObjNew);
+                  }
+              }
+          }
+          // 插件版本兼容
+          luatideWorkspaceJson.version = '2.0';
+          const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson,null,"\t");
+          fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
+    }
+    // 插件配置文件2.0版本配置文件兼容至2.1版本
+    pluginConfigCompatibleVersionTwo(pluginConfigPath:string,pluginJsonObj:any){
+        // Air72X_CORE路径内容复制到Air72XUX_CORE路径下
+        const coreDataPath:string = pluginVariablesInit.getHistoryCorePath();
+        const air72XOldCorePath:string = path.join(coreDataPath,'Air72X_CORE');
+        const air72XUXCorePath:string = pluginVariablesInit.getAir72XUXCorePath();
+        this.copyDir(air72XOldCorePath,air72XUXCorePath);
+        // Air72X_DEMO路径内容复制到Air72XUX_DEMO路径下
+        const demoDataPath:string = pluginVariablesInit.getHistoryDemoPath();
+        const air72XOldDemoPath:string = path.join(demoDataPath,'Air72X_DEMO');
+        const air72XUXDemoPath:string = pluginVariablesInit.getAir72XUXDemoPath();
+        this.copyDir(air72XOldDemoPath,air72XUXDemoPath);
+        // Air72X_LIB路径内容复制到Air72XUX_LIB路径下
+        const libDataPath:string = pluginVariablesInit.getHistoryLibPath();
+        const air72XOldLibPath:string = path.join(libDataPath,'Air72X_LIB');
+        const air72XUXLibPath:string = pluginVariablesInit.getAir72XUXLibPath();
+        this.copyDir(air72XOldLibPath,air72XUXLibPath);
+        // 删除Air72X_CORE所有内容
+        this.deleteDirRecursive(air72XOldCorePath);
+        // 删除Air72X_DEMO所有内容
+        this.deleteDirRecursive(air72XOldDemoPath);
+        // 删除Air72X_LIB所有内容
+        this.deleteDirRecursive(air72XOldLibPath);
+        // 更新插件配置文件版本至2.1
+        const activityProject: string = pluginJsonObj.activeProject;
+        let luatideWorkspaceJson:any = this.getPluginConfigObjVersionTwo();
+        luatideWorkspaceJson.activeProject = activityProject;
+        luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
+        // 插件版本兼容
+        luatideWorkspaceJson.version = '2.1';
+        const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson,null,"\t");
+        fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
+    }
      // 工程配置文件兼容
      projectConfigCompatible(projectPath: string) {
         const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
@@ -204,7 +251,7 @@ let pluginVariablesInit = new PluginVariablesInit();
         // 用户lib路径兼容
         let libPath: string = projectOldJsonObj['lib_path'];
         if (libPath === '' && projectOldJsonObj['module_model'] !== 'Air10X') {
-            libPath = pluginVariablesInit.getAir72XDefaultLatestLibPath();
+            libPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
         }
         luatideProjectNewJson.libPath = libPath;
         // 用户模块型号判断
@@ -275,37 +322,6 @@ let pluginVariablesInit = new PluginVariablesInit();
         fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
     }
 
-    // // 临时处理，demo和lib兼容,自动拉取接口未成功前处理
-    // demoAndCompatible(){
-    //     // 用户插件路径
-    //     const userPlugDataPath:string = path.join(__dirname,'../.','LuatIDEData');
-    //     const air72xDemoPath:string = pluginVariablesInit.getAir72XDefaultDemoPath();
-    //     const air101DemoPath:string = pluginVariablesInit.getAir101DefaultDemoPath();
-    //     const air103DemoPath:string = pluginVariablesInit.getAir103DefaultDemoPath();
-    //     const air105DemoPath:string = pluginVariablesInit.getAir105DefaultDemoPath();
-    //     const air72xLibPath:string = pluginVariablesInit.getAir72XDefaultLibPath();
-    //     const air72xDemoSourcePath:string = path.join(userPlugDataPath,'Air72X_DEMO');
-    //     const air101DemoSourcePath:string = path.join(userPlugDataPath,'Air101_DEMO');
-    //     const air103DemoSourcePath:string = path.join(userPlugDataPath,'Air103_DEMO');
-    //     const air105DemoSourcePath:string = path.join(userPlugDataPath,'Air105_DEMO');
-    //     const air72xLibSourcePath:string = path.join(userPlugDataPath,'Air72X_LIB');
-    //     if (fs.readdirSync(air72xDemoPath).length===0) {
-    //         this.copyDir(air72xDemoSourcePath,air72xDemoPath);
-    //     }
-    //     if (fs.readdirSync(air101DemoPath).length===0) {
-    //         this.copyDir(air101DemoSourcePath,air101DemoPath);
-    //     }
-    //     if (fs.readdirSync(air103DemoPath).length===0) {
-    //         this.copyDir(air103DemoSourcePath,air103DemoPath);
-    //     }
-    //     if (fs.readdirSync(air105DemoPath).length===0) {
-    //         this.copyDir(air105DemoSourcePath,air105DemoPath);
-    //     }
-    //     if (fs.readdirSync(air72xLibPath).length===0) {
-    //         this.copyDir(air72xLibSourcePath,air72xLibPath);
-    //     }
-    // }
-
     /*
     * 复制目录、子目录，及其中的文件
     * @param src {String} 要复制的目录
@@ -337,5 +353,24 @@ copyOperation(src: any, dist: any) {
             this.copyDir(_src, _dist);// 当是目录是，递归复制
         }
     });
+}
+// 递归删除文件夹内容
+deleteDirRecursive(dir:any){
+    if (fs.existsSync(dir)) {
+        const files = fs.readdirSync(dir);
+        files.forEach( (file) => {
+            var curPath = path.join(dir,file);
+            // fs.statSync同步读取文件夹文件，如果是文件夹，在重复触发函数
+            if (fs.statSync(curPath).isDirectory()) { // recurse
+                this.deleteDirRecursive(curPath);
+            } else {
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(dir);
+    }
+    else{
+        vscode.window.showErrorMessage(`${dir}路径已改变，请重新确认`);
+    }
 }
  }
