@@ -1,40 +1,40 @@
 //被点击的新建工程选项
 let tarActive = $(".menu");
-let allContent = $(".content");
-let allHideStr = ".content_space, .content_example, .content_ndk, .content_ui";
-let cancelBtn = $(".cancel");
-let submitBtn = $(".submit");
+let allContent = $(".iP-content");
+let allHideStr = ".iP-content_space, .iP-content_example, .iP-content_ndk, .iP-content_ui";
+let cancelBtn = $(".iP-cancel");
+let submitBtn = $(".iP-submit");
 let curActiveContent = "space";
 let temImportData = null;
 //工程初始化form
-let formArr = $(".form");
+let formArr = $(".iP-form");
 //空白工程数据
 let sapceData = [
-    "space_project_path", "space_project_name"
+    "iP-space_project_path", "iP-space_project_name"
 ];
 let spaceDynData = [
-    "select_getSpace_ModuleInfo", "select_getSpace_LibInfo", "select_getSpace_CoreInfo"
+    "iP-select_getSpace_ModuleInfo", "iP-select_getSpace_LibInfo", "iP-select_getSpace_CoreInfo"
 ];
 //示例工程数据
 let exampleData = [
-    "example_project_path", "example_project_name"
+    "iP-example_project_path", "iP-example_project_name"
 ];
 let exampleDynData = [
-    "select_getExample_ModuleInfo", "select_getExample_ExampleInfo", "select_getExample_CoreInfo"
+    "iP-select_getExample_ModuleInfo", "iP-select_getExample_ExampleInfo", "iP-select_getExample_CoreInfo"
 ];
 //NDK数据
 let ndkData = [
-    "ndk_project_path", "ndk_project_name"
+    "iP-ndk_project_path", "iP-ndk_project_name"
 ];
 let ndkDynData = [
-    "select_getNDK_ModuleInfo", "select_getNDK_ExampleInfo"
+    "iP-select_getNDK_ModuleInfo", "iP-select_getNDK_ExampleInfo"
 ];
 //UI工程数据
 let uiData = [
-    "ui_project_path", "ui_project_name"
+    "iP-ui_project_path", "iP-ui_project_name"
 ];
 let uiDynData = [
-    "select_getUi_ModuleInfo", "select_getUi_LibInfo", "select_getUi_CoreInfo"
+    "iP-select_getUi_ModuleInfo", "iP-select_getUi_LibInfo", "iP-select_getUi_CoreInfo"
 ];
 // 判断是否是导入工程
 let isInImportProject = false;
@@ -49,10 +49,10 @@ let isInAirCx72 = false;
 
 
 $(allHideStr).hide()
-$(".content_space").show()
+$(".iP-content_space").show()
 
 //清楚工程临时数据
-function clearTempData(tar1, tar2) {
+function iP_clearTempData(tar1, tar2) {
     for (let i = 0; i < tar1.length; i++) {
         document.getElementsByName(tar1[i])[0].value = null;
     }
@@ -64,34 +64,63 @@ function clearTempData(tar1, tar2) {
 
 //按钮取消逻辑
 cancelBtn.on("click", function () {
-    //关闭 WebView
-    vscode.postMessage({
-        command: "cancelProject",
-    });
+    gl_hideOpenProject();
+    switch (curActiveContent) {
+        case "pure":
+            iP_clearTempData(sapceData, spaceDynData)
+            break;
+        case "example":
+            iP_clearTempData(exampleData, exampleDynData)
+            break;
+        case "ndk":
+            iP_clearTempData(ndkData, ndkDynData)
+            break;
+        case "ui":
+            iP_clearTempData(uiData, uiDynData)
+            break;
+        default:
+            break;
+    }
 });
 
 
 //按钮完成逻辑
 submitBtn.on("click", function () {
     if (isInImportProject) {
-        getImportProjectData(curActiveContent);
+        iP_sendImportProjectData(curActiveContent);
     } else {
-        handleSubmit(curActiveContent);
+        // handleSubmit(curActiveContent);
+    }
+    switch (curActiveContent) {
+        case "pure":
+            iP_clearTempData(sapceData, spaceDynData)
+            break;
+        case "example":
+            iP_clearTempData(exampleData, exampleDynData)
+            break;
+        case "ndk":
+            iP_clearTempData(ndkData, ndkDynData)
+            break;
+        case "ui":
+            iP_clearTempData(uiData, uiDynData)
+            break;
+        default:
+            break;
     }
 });
 
 
 /* 为下拉框添加选项 */
-function autoProduceOption(par, val) {
+function iP_autoProduceOption(par, val) {
     par.append('<option>' + val + '</option>');
 }
 
 
 /*********************************************** 数据交互↓ ************************************************/
 /* 为下拉框添加选项 */
-function addOptionToSelect(whichSelect, arr, whichModule) {
+function iP_addOptionToSelect(whichSelect, arr, whichModule) {
     for (let i = 0; i < arr[whichModule].length; i++) {
-        autoProduceOption(whichSelect, arr[whichModule][i]);
+        iP_autoProduceOption(whichSelect, arr[whichModule][i]);
     }
 }
 
@@ -100,13 +129,13 @@ function addOptionToSelect(whichSelect, arr, whichModule) {
 function getImportProjectInitData(para) {
     vscode.postMessage({
         command: 'getImportProjectInitData',
-        text : para
+        text: para
     });
 }
 
 
 //发送给后台，由后台打开选择文件夹
-function handelBackstage(name, type) {
+function iP_handelBackstage(name, type) {
     vscode.postMessage({
         command: name,
         text: type
@@ -115,11 +144,11 @@ function handelBackstage(name, type) {
 
 
 /* 对 Air10X 和 Air72XCX 模块型号做特殊处理 */
-function handelBackstageExtra(name, type) {
+function iP_handelBackstageExtra(name, type) {
     if (isInAir101 && type === "customLibPath") {
-        Alert("当前模块型号不支持 lib 配置！");
+        iP_Alert("当前模块型号不支持 lib 配置！");
     } else if (isInAirCx72 && type === "customCorePath") {
-        Alert("当前模块型号不支持 core 配置！");
+        iP_Alert("当前模块型号不支持 core 配置！");
     } else {
         vscode.postMessage({
             command: name,
@@ -130,7 +159,7 @@ function handelBackstageExtra(name, type) {
 
 
 //Alert
-function Alert(msg) {
+function iP_Alert(msg) {
     vscode.postMessage({
         command: "Alert",
         text: {
@@ -141,12 +170,12 @@ function Alert(msg) {
 
 
 /* 导入工程 接受VsCode发送的自定义路径 */
-function customPathManagment(whichProject, whichCustom, pathData) {
+function iP_customPathManagment(whichProject, whichCustom, pathData) {
     switch (whichProject) {
         case "space":
             switch (whichCustom) {
                 case "customProjectPath":
-                    $("#space_customepath").val(pathData);
+                    $("#iP-space_customepath").val(pathData);
                     break;
                 case "customLibPath":
                     $("#space_customeLib").text(pathData);
@@ -165,7 +194,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
         case "example":
             switch (whichCustom) {
                 case "customProjectPath":
-                    $("#example_customepath").val(pathData);
+                    $("#iP-example_customepath").val(pathData);
                     break;
                 case "customCorePath":
                     $("#example_customeCore").text(pathData);
@@ -179,7 +208,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
         case "ndk":
             switch (whichCustom) {
                 case "customProjectPath":
-                    $("#ndk_customepath").val(pathData);
+                    $("#iP-ndk_customepath").val(pathData);
                     break;
                 default:
                     break;
@@ -188,7 +217,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
         case "ui":
             switch (whichCustom) {
                 case "customProjectPath":
-                    $("#ui_customepath").val(pathData);
+                    $("#iP-ui_customepath").val(pathData);
                     break;
                 case "customLibPath":
                     $("#ui_customeLib").text(pathData);
@@ -221,19 +250,19 @@ const moduleSeven = "esp32c3";
 
 
 /* 对组件选择做特殊处理[空白工程] */
-$(".select_getSpace_LibInfo").on("change", function () {
-    if ($('.select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption') {
-        $('.select_getSpace_LibInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customLibPath');
+$(".iP-select_getSpace_LibInfo").on("change", function () {
+    if ($('.iP-select_getSpace_LibInfo option:selected').attr("class") === 'iP_space_customeLibOption') {
+        $('.iP-select_getSpace_LibInfo option:first').prop("selected", "selected");
+        iP_handelBackstageExtra('openSource', 'customLibPath');
     } else {
         $("#space_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[空白工程] */
-$(".select_getSpace_CoreInfo").on("change", function () {
-    if ($('.select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption') {
-        $('.select_getSpace_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+$(".iP-select_getSpace_CoreInfo").on("change", function () {
+    if ($('.iP-select_getSpace_CoreInfo option:selected').attr("class") === 'iP_space_customeCoreOption') {
+        $('.iP-select_getSpace_CoreInfo option:first').prop("selected", "selected");
+        iP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#space_customeCore").prop("display", "none");
     }
@@ -241,20 +270,20 @@ $(".select_getSpace_CoreInfo").on("change", function () {
 
 
 /* 新建工程初始化数据管理[空白工程] */
-function pureProjectInitDataManagment(initData) {
-    let libSelected = $(".select_getSpace_LibInfo");
-    let coreSelected = $(".select_getSpace_CoreInfo");
+function iP_pureProjectInitDataManagment(initData) {
+    let libSelected = $(".iP-select_getSpace_LibInfo");
+    let coreSelected = $(".iP-select_getSpace_CoreInfo");
 
     /* 添加工程初始化数据 */
-    for (let key in initData){
-        if (key === "libList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(libSelected, initData[key][i])
+    for (let key in initData) {
+        if (key === "libList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(libSelected, initData[key][i])
             }
         }
-        if (key === "coreList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(coreSelected, initData[key][i])
+        if (key === "coreList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(coreSelected, initData[key][i])
             }
         }
     }
@@ -263,9 +292,9 @@ function pureProjectInitDataManagment(initData) {
     libSelected.append('<option value="default" id="space_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="space_customeCore" style="display: none;">点击选择</option>');
 
-    /* 添加自定义选项 */ 
-    libSelected.append('<option class="space_customeLibOption">自定义</option>');
-    coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+    /* 添加自定义选项 */
+    libSelected.append('<option class="iP_space_customeLibOption">自定义</option>');
+    coreSelected.append('<option class="iP_space_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
     $(".tip_spaceLib").hide();
@@ -277,10 +306,10 @@ function pureProjectInitDataManagment(initData) {
 
 
 /* 对组件选择做特殊处理[示例工程] */
-$(".select_getExample_CoreInfo").on("change", function () {
-    if ($('.select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption') {
-        $('.select_getExample_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+$(".iP-select_getExample_CoreInfo").on("change", function () {
+    if ($('.iP-select_getExample_CoreInfo option:selected').attr("class") === 'iP_example_customeCoreOption') {
+        $('.iP-select_getExample_CoreInfo option:first').prop("selected", "selected");
+        iP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#example_customeCore").prop("display", "none");
     }
@@ -288,30 +317,30 @@ $(".select_getExample_CoreInfo").on("change", function () {
 
 
 /* 新建工程初始化数据管理[示例工程] */
-function exampleProjectInitDataManagment(initData) {
-    let moduleSelected = $(".select_getExample_ModuleInfo option:selected");
-    let exampleSelected = $(".select_getExample_ExampleInfo");
-    let coreSelected = $(".select_getExample_CoreInfo");
+function iP_exampleProjectInitDataManagment(initData) {
+    let moduleSelected = $(".iP-select_getExample_ModuleInfo option:selected");
+    let exampleSelected = $(".iP-select_getExample_ExampleInfo");
+    let coreSelected = $(".iP-select_getExample_CoreInfo");
 
     /* 添加工程初始化数据 */
-    for (let key in initData){
-        if (key === "exampleList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(exampleSelected, initData[key][i])
+    for (let key in initData) {
+        if (key === "exampleList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(exampleSelected, initData[key][i])
             }
         }
-        if (key === "coreList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(coreSelected, initData[key][i])
+        if (key === "coreList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(coreSelected, initData[key][i])
             }
         }
     }
 
     /* 添加初始化option用来承载自定义选项 */
     coreSelected.append('<option value="default" id="example_customeCore" style="display: none;">点击选择</option>');
-    
+
     /* 添加自定义选项 */
-    coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
+    coreSelected.append('<option class="iP_example_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
@@ -322,15 +351,15 @@ function exampleProjectInitDataManagment(initData) {
 
 
 /* 新建工程初始化数据管理[NDK工程] */
-function ndkProjectInitDataManagment(initData) {
-    let moduleSelected = $(".select_getNDK_ModuleInfo option:selected");
-    let exampleSelected = $(".select_getNDK_ExampleInfo");
+function iP_ndkProjectInitDataManagment(initData) {
+    let moduleSelected = $(".iP-select_getNDK_ModuleInfo option:selected");
+    let exampleSelected = $(".iP-select_getNDK_ExampleInfo");
 
     /* 添加工程初始化数据 */
-    for (let key in initData){
-        if (key === "exampleList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(exampleSelected, initData[key][i])
+    for (let key in initData) {
+        if (key === "exampleList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(exampleSelected, initData[key][i])
             }
         }
     }
@@ -341,19 +370,19 @@ function ndkProjectInitDataManagment(initData) {
 
 
 /* 对组件选择做特殊处理[UI工程] */
-$(".select_getUi_LibInfo").on("change", function () {
-    if ($('.select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption') {
-        $('.select_getUi_LibInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customLibPath');
+$(".iP-select_getUi_LibInfo").on("change", function () {
+    if ($('.iP-select_getUi_LibInfo option:selected').attr("class") === 'iP_ui_customeLibOption') {
+        $('.iP-select_getUi_LibInfo option:first').prop("selected", "selected");
+        iP_handelBackstageExtra('openSource', 'customLibPath');
     } else {
         $("#ui_customeLib").prop("display", "none");
     }
 });
 /* 对Core选择做特殊处理[UI工程] */
-$(".select_getUi_CoreInfo").on("change", function () {
-    if ($('.select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption') {
-        $('.select_getUi_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+$(".iP-select_getUi_CoreInfo").on("change", function () {
+    if ($('.iP-select_getUi_CoreInfo option:selected').attr("class") === 'iP_ui_customeCoreOption') {
+        $('.iP-select_getUi_CoreInfo option:first').prop("selected", "selected");
+        iP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#ui_customeCore").prop("display", "none");
     }
@@ -361,21 +390,21 @@ $(".select_getUi_CoreInfo").on("change", function () {
 
 
 /* 新建工程初始化数据管理[UI工程] */
-function uiProjectInitDataManagment(initData) {
-    let moduleSelected = $(".select_getUi_ModuleInfo option:selected");
-    let libSelected = $(".select_getUi_LibInfo");
-    let coreSelected = $(".select_getUi_CoreInfo");
+function iP_uiProjectInitDataManagment(initData) {
+    let moduleSelected = $(".iP-select_getUi_ModuleInfo option:selected");
+    let libSelected = $(".iP-select_getUi_LibInfo");
+    let coreSelected = $(".iP-select_getUi_CoreInfo");
 
     /* 添加工程初始化数据 */
-    for (let key in initData){
-        if (key === "libList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(libSelected, initData[key][i])
+    for (let key in initData) {
+        if (key === "libList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(libSelected, initData[key][i])
             }
         }
-        if (key === "coreList"){
-            for (let i = 0; i < initData[key].length; i++){
-                autoProduceOption(coreSelected, initData[key][i])
+        if (key === "coreList") {
+            for (let i = 0; i < initData[key].length; i++) {
+                iP_autoProduceOption(coreSelected, initData[key][i])
             }
         }
     }
@@ -383,10 +412,10 @@ function uiProjectInitDataManagment(initData) {
     /* 添加初始化option用来承载自定义选项 */
     libSelected.append('<option value="default" id="ui_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="ui_customeCore" style="display: none;">点击选择</option>');
-    
+
     /* 添加自定义选项 */
-    libSelected.append('<option class="ui_customeLibOption">自定义</option>');
-    coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+    libSelected.append('<option class="iP_ui_customeLibOption">自定义</option>');
+    coreSelected.append('<option class="iP_ui_customeCoreOption">自定义</option>');
 
     /* 隐藏提示信息 */
     // $(".tip_uiLib").hide();
@@ -399,7 +428,7 @@ function uiProjectInitDataManagment(initData) {
 /********************************************** 导入工程[用户原始数据] **********************************************/
 
 /* 添加红框提示错误 */
-function addTips(tar) {
+function iP_addTips(tar) {
     tar.css({
         "border": "1px solid #b42525"
     });
@@ -412,21 +441,21 @@ function importSpaceProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=space_project_name]").val(importData.correctData[key1]);
+                $("input[name=iP-space_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=space_project_path]").val(importData.correctData[key1]);
+                $("input[name=iP-space_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.correctData[key1] === temModule[i]) {
-                //         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //         $(".iP-select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getSpace_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getSpace_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "libPath":
                 $("#space_customeLib").text(importData.correctData[key1]);
@@ -443,31 +472,31 @@ function importSpaceProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=space_project_name]"));
-                $("input[name=space_project_name]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-space_project_name]"));
+                $("input[name=iP-space_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=space_project_path]"));
-                $("input[name=space_project_path]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-space_project_path]"));
+                $("input[name=iP-space_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($(".select_getSpace_ModuleInfo"));
+                iP_addTips($(".iP-select_getSpace_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
-                //         $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //         $(".iP-select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getSpace_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getSpace_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                $(".iP-select_getSpace_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "libPath":
-                addTips($(".select_getSpace_LibInfo"));
+                iP_addTips($(".iP-select_getSpace_LibInfo"));
                 $("#space_customeLib").text(importData.errorData[key2]);
                 break;
             case "corePath":
-                addTips($(".select_getSpace_CoreInfo"));
+                iP_addTips($(".iP-select_getSpace_CoreInfo"));
                 $("#space_customeCore").text(importData.errorData[key2]);
                 break;
             default:
@@ -475,13 +504,13 @@ function importSpaceProject(importData) {
         }
     }
 
-    $('.select_getSpace_LibInfo').find("option[id=space_customeLib]").prop("selected", "selected");
-    $('.select_getSpace_CoreInfo').find("option[id=space_customeCore]").prop("selected", "selected");
+    $('.iP-select_getSpace_LibInfo').find("option[id=space_customeLib]").prop("selected", "selected");
+    $('.iP-select_getSpace_CoreInfo').find("option[id=space_customeCore]").prop("selected", "selected");
 
     /* 禁用工程路径, 工程名称, 模块信号的修改 */
-    $("input[name=space_project_path]").prop("disabled", true);
-    $("input[name=space_project_name]").prop("disabled", true);
-    $(".select_getSpace_ModuleInfo").prop("disabled", true);
+    $("input[name=iP-space_project_path]").prop("disabled", true);
+    $("input[name=iP-space_project_name]").prop("disabled", true);
+    $(".iP-select_getSpace_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -491,24 +520,24 @@ function importExampleProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=example_project_name]").val(importData.correctData[key1]);
+                $("input[name=iP-example_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=example_project_path]").val(importData.correctData[key1]);
+                $("input[name=iP-example_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.correctData[key1] === temModule[i]) {
-                //         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //         $(".iP-select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getExample_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getExample_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "example":
-                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getExample_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "corePath":
                 $("#example_customeCore").text(importData.correctData[key1]);
@@ -522,31 +551,31 @@ function importExampleProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=example_project_name]"));
-                $("input[name=example_project_name]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-example_project_name]"));
+                $("input[name=iP-example_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=example_project_path]"));
-                $("input[name=example_project_path]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-example_project_path]"));
+                $("input[name=iP-example_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($(".select_getExample_ModuleInfo"));
+                iP_addTips($(".iP-select_getExample_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
-                //         $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //         $(".iP-select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getExample_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getExample_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                $(".iP-select_getExample_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "example":
-                addTips($(".select_getExample_ExampleInfo"));
-                $(".select_getExample_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                iP_addTips($(".iP-select_getExample_ExampleInfo"));
+                $(".iP-select_getExample_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "corePath":
-                addTips($(".select_getExample_CoreInfo"));
+                iP_addTips($(".iP-select_getExample_CoreInfo"));
                 $("#example_customeCore").text(importData.errorData[key2]);
                 break;
             default:
@@ -554,12 +583,12 @@ function importExampleProject(importData) {
         }
     }
 
-    $('.select_getExample_CoreInfo').find("option[id=example_customeCore]").prop("selected", "selected");
+    $('.iP-select_getExample_CoreInfo').find("option[id=example_customeCore]").prop("selected", "selected");
 
     /* 禁用工程路径, 工程名称, 模块信号的修改 */
-    $("input[name=example_project_path]").prop("disabled", true);
-    $("input[name=example_project_name]").prop("disabled", true);
-    $(".select_getExample_ModuleInfo").prop("disabled", true);
+    $("input[name=iP-example_project_path]").prop("disabled", true);
+    $("input[name=iP-example_project_name]").prop("disabled", true);
+    $(".iP-select_getExample_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -569,24 +598,24 @@ function importNdkProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=ndk_project_name]").val(importData.correctData[key1]);
+                $("input[name=iP-ndk_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=ndk_project_path]").val(importData.correctData[key1]);
+                $("input[name=iP-ndk_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.correctData[key1] === temModule[i]) {
-                //         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //         $(".iP-select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getNDK_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getNDK_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "example":
-                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getNDK_ExampleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             default:
                 break;
@@ -597,28 +626,28 @@ function importNdkProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=ndk_project_name]"));
-                $("input[name=ndk_project_name]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-ndk_project_name]"));
+                $("input[name=iP-ndk_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=ndk_project_path]"));
-                $("input[name=ndk_project_path]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-ndk_project_path]"));
+                $("input[name=iP-ndk_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($(".select_getNDK_ModuleInfo"));
+                iP_addTips($(".iP-select_getNDK_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
-                //         $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //         $(".iP-select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getNDK_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getNDK_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                $(".iP-select_getNDK_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "example":
-                addTips($(".select_getNDK_ExampleInfo"));
-                $(".select_getNDK_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                iP_addTips($(".iP-select_getNDK_ExampleInfo"));
+                $(".iP-select_getNDK_ExampleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             default:
                 break;
@@ -626,9 +655,9 @@ function importNdkProject(importData) {
     }
 
     /* 禁用工程路径, 工程名称, 模块信号的修改 */
-    $("input[name=ndk_project_path]").prop("disabled", true);
-    $("input[name=ndk_project_name]").prop("disabled", true);
-    $(".select_getNDK_ModuleInfo").prop("disabled", true);
+    $("input[name=iP-ndk_project_path]").prop("disabled", true);
+    $("input[name=iP-ndk_project_name]").prop("disabled", true);
+    $(".iP-select_getNDK_ModuleInfo").prop("disabled", true);
 }
 
 
@@ -638,21 +667,21 @@ function importUiProject(importData) {
     for (let key1 in importData.correctData) {
         switch (key1) {
             case "projectName":
-                $("input[name=ui_project_name]").val(importData.correctData[key1]);
+                $("input[name=iP-ui_project_name]").val(importData.correctData[key1]);
                 break;
             case "projectPath":
-                $("input[name=ui_project_path]").val(importData.correctData[key1]);
+                $("input[name=iP-ui_project_path]").val(importData.correctData[key1]);
                 break;
             case "moduleModel":
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.correctData[key1] === temModule[i]) {
-                //         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                //         $(".iP-select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getUi_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
+                $(".iP-select_getUi_ModuleInfo").append('<option selected>' + importData.correctData[key1] + '</option>');
                 break;
             case "libPath":
                 $("#ui_customeLib").text(importData.correctData[key1]);
@@ -669,31 +698,31 @@ function importUiProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                addTips($("input[name=ui_project_name]"));
-                $("input[name=ui_project_name]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-ui_project_name]"));
+                $("input[name=iP-ui_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                addTips($("input[name=ui_project_path]"));
-                $("input[name=ui_project_path]").val(importData.errorData[key2]);
+                iP_addTips($("input[name=iP-ui_project_path]"));
+                $("input[name=iP-ui_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                addTips($(".select_getUi_ModuleInfo"));
+                iP_addTips($(".iP-select_getUi_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
-                //         $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                //         $(".iP-select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 //     } else {
-                //         autoProduceOption($(".select_getUi_ModuleInfo"), temModule[i]);
+                //         iP_autoProduceOption($(".iP-select_getUi_ModuleInfo"), temModule[i]);
                 //     }
                 // }
-                $(".select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
+                $(".iP-select_getUi_ModuleInfo").append('<option selected>' + importData.errorData[key2] + '</option>');
                 break;
             case "libPath":
-                addTips($(".select_getUi_LibInfo"));
+                iP_addTips($(".iP-select_getUi_LibInfo"));
                 $("#ui_customeLib").text(importData.errorData[key2]);
                 break;
             case "corePath":
-                addTips($(".select_getUi_CoreInfo"));
+                iP_addTips($(".iP-select_getUi_CoreInfo"));
                 $("#ui_customeCore").text(importData.errorData[key2]);
                 break;
             default:
@@ -701,22 +730,22 @@ function importUiProject(importData) {
         }
     }
 
-    $('.select_getUi_LibInfo').find("option[id=ui_customeLib]").prop("selected", "selected");
-    $('.select_getUi_CoreInfo').find("option[id=ui_customeCore]").prop("selected", "selected");
+    $('.iP-select_getUi_LibInfo').find("option[id=ui_customeLib]").prop("selected", "selected");
+    $('.iP-select_getUi_CoreInfo').find("option[id=ui_customeCore]").prop("selected", "selected");
 
     /* 禁用工程路径, 工程名称, 模块信号的修改 */
-    $("input[name=ui_project_path]").prop("disabled", true);
-    $("input[name=ui_project_name]").prop("disabled", true);
-    $(".select_getUi_ModuleInfo").prop("disabled", true);
+    $("input[name=iP-ui_project_path]").prop("disabled", true);
+    $("input[name=iP-ui_project_name]").prop("disabled", true);
+    $(".iP-select_getUi_ModuleInfo").prop("disabled", true);
 }
 
 
 /* 导入工程界面初始化 */
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
-    $(".tip_title").hide();
+    $(".iP-tip_title").hide();
     if (importData.errorData !== "") {
-        $(".tips").show();
+        $(".iP-tips").show();
     }
     $(allHideStr).hide();
     whichDsp.show();
@@ -743,17 +772,17 @@ function importProjectDisplay(whichDsp, projectType, importData) {
 
 
 /* 导入工程数据提交 */
-function getImportProjectData(tar) {
+function iP_sendImportProjectData(tar) {
     let projectPath = $("input[name=" + tar + "_project_path]").val();
     let projectName = $("input[name=" + tar + "_project_name]").val();
     if (!projectName.trim() || !projectPath) {
-        Alert('名称或路径不能为空！');
+        iP_Alert('名称或路径不能为空！');
         return false;
     } else {
         //验证上传文件的文件名是否合法
         var reg = new RegExp('[\\\\/:*?\"<>|]');
         if (reg.test(projectName) || reg.length > 255) {
-            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
+            iP_Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
             return false;
         }
     }
@@ -766,9 +795,9 @@ function getImportProjectData(tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_LibInfo option:selected").text(),
-                        "moduleModel": $(".select_getSpace_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getSpace_CoreInfo option:selected").text(),
+                        "libPath": $(".iP-select_getSpace_LibInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getSpace_LibInfo option:selected").text(),
+                        "moduleModel": $(".iP-select_getSpace_ModuleInfo option:selected").text(),
+                        "corePath": $(".iP-select_getSpace_CoreInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getSpace_CoreInfo option:selected").text(),
                         "example": "",
                     }
                 }
@@ -782,9 +811,9 @@ function getImportProjectData(tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "moduleModel": $(".select_getExample_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getExample_CoreInfo option:selected").text(),
-                        "example": $(".select_getExample_ExampleInfo option:selected").text(),
+                        "moduleModel": $(".iP-select_getExample_ModuleInfo option:selected").text(),
+                        "corePath": $(".iP-select_getExample_CoreInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getExample_CoreInfo option:selected").text(),
+                        "example": $(".iP-select_getExample_ExampleInfo option:selected").text(),
                         "libPath": "",
                     }
                 }
@@ -798,8 +827,8 @@ function getImportProjectData(tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "moduleModel": $(".select_getNDK_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getNDK_ExampleInfo option:selected").text(),
+                        "moduleModel": $(".iP-select_getNDK_ModuleInfo option:selected").text(),
+                        "corePath": $(".iP-select_getNDK_ExampleInfo option:selected").text(),
                         "libPath": "",
                         "example": "",
                     }
@@ -814,9 +843,9 @@ function getImportProjectData(tar) {
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
-                        "libPath": $(".select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_LibInfo option:selected").text(),
-                        "moduleModel": $(".select_getUi_ModuleInfo option:selected").text(),
-                        "corePath": $(".select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".select_getUi_CoreInfo option:selected").text(),
+                        "libPath": $(".iP-select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getUi_LibInfo option:selected").text(),
+                        "moduleModel": $(".iP-select_getUi_ModuleInfo option:selected").text(),
+                        "corePath": $(".iP-select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getUi_CoreInfo option:selected").text(),
                         "libPath": "",
                         "example": "",
                     }
@@ -836,26 +865,6 @@ function getImportProjectData(tar) {
 /********************************************** 导入工程[用户原始数据] **********************************************/
 
 
-/* 改变主题颜色 */
-function changeThemeColor(theme) {
-    if (theme === "light") {
-        document.documentElement.style.setProperty("--default-bgColor", 'white');
-        document.documentElement.style.setProperty("--default-fontColor", 'black');
-        document.documentElement.style.setProperty("--default-border", '1px solid rgb(0, 0, 0, 0.3)');
-        document.documentElement.style.setProperty("--default-hoverColor", 'black');
-        document.documentElement.style.setProperty("--default-active", 'rgb(190, 157, 9)');
-        document.documentElement.style.setProperty("--default-inputBgColor", 'white');
-    } else {
-        document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
-        document.documentElement.style.setProperty("--default-fontColor", 'white');
-        document.documentElement.style.setProperty("--default-border", '1px solid white');
-        document.documentElement.style.setProperty("--default-hoverColor", 'white');
-        document.documentElement.style.setProperty("--default-active", 'rgb(0, 238, 0)');
-        document.documentElement.style.setProperty("--default-inputBgColor", 'rgb(45, 45, 45)');
-    }
-}
-
-
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
     const message = event.data;
@@ -865,31 +874,30 @@ window.addEventListener('message', event => {
             importProjectInitData = message.text.data;
             switch (message.text.projectType) {
                 case "pure":
-                    pureProjectInitDataManagment(message.text.data);
+                    iP_pureProjectInitDataManagment(message.text.data);
                     break;
                 case "example":
-                    exampleProjectInitDataManagment(message.text.data);
+                    iP_exampleProjectInitDataManagment(message.text.data);
                     break;
                 case "ndk":
-                    ndkProjectInitDataManagment(message.text.data);
+                    iP_ndkProjectInitDataManagment(message.text.data);
                     break;
                 case "ui":
-                    uiProjectInitDataManagment(message.text.data);
+                    iP_uiProjectInitDataManagment(message.text.data);
                     break;
                 default:
                     break;
             }
-            uiProjectInitDataManagment(message.text);
             break;
             /* 自定义工程路径, lib库, core文件 */
-        case "customProjectPath":
-            customPathManagment(curActiveContent, "customProjectPath", message.text);
+        case "customProjectPathOpenProject":
+            iP_customPathManagment(curActiveContent, "customProjectPath", message.text);
             break;
-        case "customLibPath":
-            customPathManagment(curActiveContent, "customLibPath", message.text);
+        case "customLibPathOpenProject":
+            iP_customPathManagment(curActiveContent, "customLibPath", message.text);
             break;
-        case "customCorePath":
-            customPathManagment(curActiveContent, "customCorePath", message.text);
+        case "customCorePathOpenProject":
+            iP_customPathManagment(curActiveContent, "customCorePath", message.text);
             break;
             /* 获取导入工程数据[用户] */
         case "importProjectData":
@@ -898,27 +906,24 @@ window.addEventListener('message', event => {
             switch (message.text.type) {
                 case "pure":
                     curActiveContent = "space";
-                    targetProject = $(".content_space");
+                    targetProject = $(".iP-content_space");
                     break;
                 case "example":
                     curActiveContent = "example";
-                    targetProject = $(".content_example");
+                    targetProject = $(".iP-content_example");
                     break;
                 case "ndk":
                     curActiveContent = "ndk";
-                    targetProject = $(".content_ndk");
+                    targetProject = $(".iP-content_ndk");
                     break;
                 case "ui":
                     curActiveContent = "ui";
-                    targetProject = $(".content_ui");
+                    targetProject = $(".iP-content_ui");
                     break;
                 default:
                     break;
             }
             importProjectDisplay(targetProject, curActiveContent, message.text);
-            break;
-        case "switchTheme":
-            changeThemeColor(message.text);
             break;
         default:
             break;

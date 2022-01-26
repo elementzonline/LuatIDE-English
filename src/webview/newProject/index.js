@@ -123,7 +123,7 @@ submitBtn.on("click", function () {
     if (isInImportProject) {
         // getImportProjectData(curActiveContent);
     } else {
-        handleSubmit(curActiveContent);
+        newProjectHandleSubmit(curActiveContent);
     }
 });
 
@@ -153,7 +153,7 @@ function getMessagePerSwitch(para) {
 
 
 //发送给后台，由后台打开选择文件夹
-function handelBackstage(name, type) {
+function nP_handelBackstage(name, type) {
     vscode.postMessage({
         command: name,
         text: type
@@ -162,11 +162,11 @@ function handelBackstage(name, type) {
 
 
 /* 对 Air10X 和 Air72XCX 模块型号做特殊处理 */
-function handelBackstageExtra(name, type) {
+function nP_handelBackstageExtra(name, type) {
     if (isInAir101 && type === "customLibPath") {
-        Alert("当前模块型号不支持 lib 配置！");
+        nP_Alert("当前模块型号不支持 lib 配置！");
     } else if (isInAirCx72 && type === "customCorePath") {
-        Alert("当前模块型号不支持 core 配置！");
+        nP_Alert("当前模块型号不支持 core 配置！");
     } else {
         vscode.postMessage({
             command: name,
@@ -177,7 +177,7 @@ function handelBackstageExtra(name, type) {
 
 
 //Alert
-function Alert(msg) {
+function nP_Alert(msg) {
     vscode.postMessage({
         command: "Alert",
         text: {
@@ -188,17 +188,17 @@ function Alert(msg) {
 
 
 /* 新建工程提交 */
-function handleSubmit(tar) {
+function newProjectHandleSubmit(tar) {
     let projectPath = $("input[name=nP-" + tar + "_project_path]").val();
     let projectName = $("input[name=nP-" + tar + "_project_name]").val();
     if (!projectName.trim() || !projectPath) {
-        Alert('名称或路径不能为空！');
+        nP_Alert('名称或路径不能为空！');
         return false;
     } else {
         //验证上传文件的文件名是否合法
         var reg = new RegExp('[\\\\/:*?\"<>|]');
         if (reg.test(projectName) || reg.length > 255) {
-            Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
+            nP_Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
             return false;
         }
     }
@@ -350,7 +350,7 @@ let temUiProjectData = null;
 $(".nP-select_getSpace_LibInfo").on("change", function () {
     if ($('.nP-select_getSpace_LibInfo option:selected').attr("class") === 'space_customeLibOption') {
         $('.nP-select_getSpace_LibInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customLibPath');
+        nP_handelBackstageExtra('openSource', 'customLibPath');
     } else {
         $("#space_customeLib").prop("display", "none");
     }
@@ -359,7 +359,7 @@ $(".nP-select_getSpace_LibInfo").on("change", function () {
 $(".nP-select_getSpace_CoreInfo").on("change", function () {
     if ($('.nP-select_getSpace_CoreInfo option:selected').attr("class") === 'space_customeCoreOption') {
         $('.nP-select_getSpace_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+        nP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#space_customeCore").prop("display", "none");
     }
@@ -530,7 +530,7 @@ function pureProjectInitDataManagment(initData) {
 $(".nP-select_getExample_CoreInfo").on("change", function () {
     if ($('.nP-select_getExample_CoreInfo option:selected').attr("class") === 'example_customeCoreOption') {
         $('.nP-select_getExample_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+        nP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#example_customeCore").prop("display", "none");
     }
@@ -737,7 +737,7 @@ function ndkProjectInitDataManagment(initData) {
 $(".nP-select_getUi_LibInfo").on("change", function () {
     if ($('.nP-select_getUi_LibInfo option:selected').attr("class") === 'ui_customeLibOption') {
         $('.nP-select_getUi_LibInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customLibPath');
+        nP_handelBackstageExtra('openSource', 'customLibPath');
     } else {
         $("#ui_customeLib").prop("display", "none");
     }
@@ -746,7 +746,7 @@ $(".nP-select_getUi_LibInfo").on("change", function () {
 $(".nP-select_getUi_CoreInfo").on("change", function () {
     if ($('.nP-select_getUi_CoreInfo option:selected').attr("class") === 'ui_customeCoreOption') {
         $('.nP-select_getUi_CoreInfo option:first').prop("selected", "selected");
-        handelBackstageExtra('openSource', 'customCorePath');
+        nP_handelBackstageExtra('openSource', 'customCorePath');
     } else {
         $("#ui_customeCore").prop("display", "none");
     }
@@ -949,6 +949,14 @@ function changeThemeColor(style) {
         document.documentElement.style.setProperty("--nP-default-hoverColor", 'black');
         document.documentElement.style.setProperty("--nP-default-active", 'rgb(190, 157, 9)');
         document.documentElement.style.setProperty("--nP-default-inputBgColor", 'white');
+
+        //导入工程
+        document.documentElement.style.setProperty("--iP-default-bgColor", 'white');
+        document.documentElement.style.setProperty("--iP-default-fontColor", 'black');
+        document.documentElement.style.setProperty("--iP-default-border", '1px solid rgb(0, 0, 0, 0.3)');
+        document.documentElement.style.setProperty("--iP-default-hoverColor", 'black');
+        document.documentElement.style.setProperty("--iP-default-active", 'rgb(190, 157, 9)');
+        document.documentElement.style.setProperty("--iP-default-inputBgColor", 'white');
     } else {
         document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
         document.documentElement.style.setProperty("--default-fontColor", 'rgba(255, 255, 255, 0.851)');
@@ -967,6 +975,14 @@ function changeThemeColor(style) {
         document.documentElement.style.setProperty("--nP-default-hoverColor", 'white');
         document.documentElement.style.setProperty("--nP-default-active", 'rgb(0, 238, 0)');
         document.documentElement.style.setProperty("--nP-default-inputBgColor", 'rgb(45, 45, 45)');
+        
+        //导入工程
+        document.documentElement.style.setProperty("--iP-default-bgColor", 'rgb(37, 37, 38)');
+        document.documentElement.style.setProperty("--iP-default-fontColor", 'white');
+        document.documentElement.style.setProperty("--iP-default-border", '1px solid white');
+        document.documentElement.style.setProperty("--iP-default-hoverColor", 'white');
+        document.documentElement.style.setProperty("--iP-default-active", 'rgb(0, 238, 0)');
+        document.documentElement.style.setProperty("--iP-default-inputBgColor", 'rgb(45, 45, 45)');
     }
 }
 
@@ -1005,6 +1021,13 @@ window.addEventListener('message', event => {
             break;
         case "switchTheme":
             changeThemeColor(message.text);
+            break;
+        case "loadNewProjectModelBox":
+            $(".newProjectHtml").show();
+            gl_newProjectInit();
+            break;
+        case "loadOpenProjectModelBox":
+            $(".openProjectHtml").show();
             break;
         default:
             break;

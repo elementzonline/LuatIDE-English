@@ -33,6 +33,16 @@ i {
   --nP-default-active: rgb(190, 157, 9);
   --nP-default-inputBgColor: white;
 
+  /* 导入工程 */
+  --iP-default-bgColor: white;
+  --iP-default-fontColor: black;
+  --iP-default-hoverColor: black;
+  --iP-default-border: 1px solid rgb(0, 0, 0, 0.3);
+  --iP-default-active: rgb(190, 157, 9);
+  --iP-default-inputBgColor: white;
+
+  /* ************************************* */
+
   --default-bgColor: rgb(37, 37, 38);
   --default-fontColor: rgba(255, 255, 255, 0.851);
   --default-segLineColor: rgba(255, 255, 255, 0.4);
@@ -51,6 +61,14 @@ i {
   --nP-default-border: 1px solid white;
   --nP-default-active: rgb(0, 238, 0);
   --nP-default-inputBgColor: rgb(45, 45, 45);
+
+  /* 导入工程 */
+  --iP-default-bgColor: rgb(37, 37, 38);
+  --iP-default-fontColor: white;
+  --iP-default-hoverColor: white;
+  --iP-default-border: 1px solid white;
+  --iP-default-active: rgb(0, 238, 0);
+  --iP-default-inputBgColor: rgb(45, 45, 45);
   
 }
 
@@ -459,5 +477,7 @@ i {
 }
 
 .openProjectHtmlChild{
+  background: var(--iP-default-bgColor);
+  color: rgba(223, 190, 106, 0.7);
   height: 600px;
 }

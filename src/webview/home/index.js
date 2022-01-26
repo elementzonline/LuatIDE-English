@@ -8,6 +8,12 @@ function gl_hideNewProject(){
 }
 
 
+/* 隐藏导入工程[全局函数多文件调用] */
+function gl_hideOpenProject(){
+  $(".openProjectHtml").hide();
+}
+
+
 /* 新建工程和打开工程 */
 $(".newProject").on("click", function () {
   $(".newProjectHtml").show();
@@ -18,7 +24,6 @@ $(".newProject").on("click", function () {
 });
 
 $(".openProject").on("click", function () {
-  $(".openProjectHtml").show();
   // vscode.postMessage({
   //   command: 'openProjectWebview'
   // });
