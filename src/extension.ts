@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import { PluginConfigInit} from './config';
 import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
-import { ProjectManage } from './webview/projectWebview';
+// import { ProjectManage } from './webview/projectWebview';
 import { HistoryProjectDataProvider, HistoryProjectTreeItem } from './project/projectTreeView';
 import * as path from 'path';
 import { HomeManage } from './webview/homeWebview';
@@ -65,7 +65,7 @@ let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
-let projectManage = new ProjectManage();
+// let projectManage = new ProjectManage();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let historyProvider = new HistoryProjectDataProvider();
@@ -95,9 +95,9 @@ export function activate(context: vscode.ExtensionContext) {
 	const activityProject: string = pluginJsonParse.getCurrentPluginConfigActivityProject();
 	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => projectManage.projectManage(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => homeManage.homeManage(context,'loadNewProjectModelBox')));
 	// 注册打开工程命令,当点击用户历史工程标题区域打开工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject', async () => openProject.openProject(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject', async () => openProject.openProject(context,homeManage)));
 	// 注册运行工程命令,当点击活动工程标题区域运行工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.runProject', runProject));
 	// 注册调试工程命令,当点击活动工程标题区域调试工程按钮时触发
