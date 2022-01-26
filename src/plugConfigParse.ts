@@ -221,10 +221,17 @@ let pluginVariablesInit = new PluginVariablesInit();
             this.projectConfigCompatibleVersionLessThanTwo(projectPath,projectOldJsonObj);
             projectOldJsonObj = this.getProjectConfigObj(projectConfigPath);
             this.projectConfigCompatibleVersionTwo(projectPath,projectOldJsonObj);
+            projectOldJsonObj = this.getProjectConfigObj(projectConfigPath);
+            this.projectConfigCompatibleVersionTwoPointOne(projectPath,projectOldJsonObj);
         }
         else if(projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) === 2.0){
             this.projectConfigCompatibleVersionTwo(projectPath,projectOldJsonObj);
+            projectOldJsonObj = this.getProjectConfigObj(projectConfigPath);
+            this.projectConfigCompatibleVersionTwoPointOne(projectPath,projectOldJsonObj);
         }
+        else if (projectOldJsonObj.version!=="" && Number(projectOldJsonObj.version) === 2.1) {
+            this.projectConfigCompatibleVersionTwoPointOne(projectPath,projectOldJsonObj);
+            }
     }
 
     // 获取指定路径工程配置的对象
@@ -324,6 +331,36 @@ let pluginVariablesInit = new PluginVariablesInit();
         luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
         luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
         luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
+        luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+        const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
+        fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+    }
+
+    // 工程配置文件2.1版本配置文件兼容至2.2版本
+    projectConfigCompatibleVersionTwoPointOne(projectPath:string,projectOldJsonObj:any){
+        const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+        const luatideProjectNewJson:any = this.getProjectJsonObjVersionTwo();
+        // 工程模块型号兼容
+        let moduleModel:string = projectOldJsonObj.moduleModel;
+        if (moduleModel==='air10X') {
+            moduleModel = 'air101';
+        }
+        // 工程core文件兼容
+        let corePath:string = projectOldJsonObj.corePath;
+        if (corePath!=='' && corePath.indexOf('Air72X_CORE')!==-1) {
+            corePath = corePath.replace('\\LuatIDE\\LuatideLib\\Air72X_CORE','\\LuatIDE\\LuatideLib\\Air72XUX_CORE');
+        }
+        // 工程lib文件兼容
+        let libPath:string = projectOldJsonObj.libPath;
+        if (libPath!=='' && libPath.indexOf('Air72X_LIB')!==-1) {
+            libPath = libPath.replace('\\LuatIDE\\LuatideLib\\Air72X_LIB','\\LuatIDE\\LuatideLib\\Air72XUX_LIB');
+        }
+        luatideProjectNewJson.version = '2.2';
+        luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+        luatideProjectNewJson.corePath = corePath;
+        luatideProjectNewJson.libPath = libPath;
+        luatideProjectNewJson.appFile = projectOldJsonObj.appFile;                                                                                                                
+        luatideProjectNewJson.moduleModel = moduleModel;
         luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
         const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
         fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
