@@ -2,20 +2,28 @@
 // const vscode = acquireVsCodeApi();
 
 
+/* 隐藏新建工程[全局函数多文件调用] */
+function gl_hideNewProject(){
+  $(".newProjectHtml").hide();
+}
+
+
 /* 新建工程和打开工程 */
 $(".newProject").on("click", function () {
   $(".newProjectHtml").show();
-  vscode.postMessage({
-    command: 'openNewProjectWebview'
-  });
+  gl_newProjectInit();
+  // vscode.postMessage({
+  //   command: 'openNewProjectWebview'
+  // });
 });
 
 $(".openProject").on("click", function () {
   $(".openProjectHtml").show();
-  vscode.postMessage({
-    command: 'openProjectWebview'
-  });
+  // vscode.postMessage({
+  //   command: 'openProjectWebview'
+  // });
 });
+
 
 /* 技术支持 */
 $(".header-publicBtn1").on("click", function () {
@@ -324,40 +332,15 @@ function sentComment() {
   };
 }
 
-/* 改变主题样式 */
-function changeThemeColor(style) {
-  if (style === "light") {
-    document.documentElement.style.setProperty("--default-bgColor", 'white');
-    document.documentElement.style.setProperty("--default-fontColor", 'black');
-    document.documentElement.style.setProperty("--default-segLineColor", 'rgba(0, 0, 0, 0.6)');
-    document.documentElement.style.setProperty("--default-borderColor", '2px solid black');
-    document.documentElement.style.setProperty("--default-hoverColor", 'rgb(8, 60, 201)');
-    document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(255, 255, 255, 0.8)');
-    document.documentElement.style.setProperty("--default-popBgColor", 'rgb(255, 255, 255, 0.7)');
-    document.documentElement.style.setProperty("--default-loginImgStyle", 'none');
-    document.documentElement.style.setProperty("--default-loginPopImgStyle", 'invert(0%) sepia(0%) saturate(600%) hue-rotate(277deg) brightness(10%) contrast(100%)');
-  } else {
-    document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
-    document.documentElement.style.setProperty("--default-fontColor", 'rgba(255, 255, 255, 0.851)');
-    document.documentElement.style.setProperty("--default-segLineColor", 'rgba(255, 255, 255, 0.4)');
-    document.documentElement.style.setProperty("--default-borderColor", '2px solid rgba(255, 255, 255, 0.6)');
-    document.documentElement.style.setProperty("--default-hoverColor", 'rgb(15, 204, 109)');
-    document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(0, 0, 0, 0.5)');
-    document.documentElement.style.setProperty("--default-popBgColor", 'rgba(46, 44, 44, 0.3)');
-    document.documentElement.style.setProperty("--default-loginImgStyle", 'invert(100%) sepia(0%) saturate(7500%) hue-rotate(56deg) brightness(102%) contrast(101%)');
-    document.documentElement.style.setProperty("--default-loginPopImgStyle", 'none');
-  }
-}
-
 
 /* 获取vscode端发送的数据 */
-window.addEventListener('message', event => {
-  const message = event.data;
-  switch (message.command) {
-    case "switchTheme":
-      changeThemeColor(message.text);
-      break;
-    default:
-      break;
-  }
-});
+// window.addEventListener('message', event => {
+//   const message = event.data;
+//   switch (message.command) {
+//     case "switchTheme":
+//       changeThemeColor(message.text);
+//       break;
+//     default:
+//       break;
+//   }
+// });

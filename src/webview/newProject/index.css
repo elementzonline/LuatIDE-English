@@ -3,32 +3,34 @@
     margin: 0px;
 }
 
-:root{
-    --default-bgColor: rgb(35, 35, 35);
-    --default-fontColor: white;
-    --default-hoverColor: white;
-    --default-border: 1px solid white;
-    --default-active: rgb(0, 238, 0);
-    --default-inputBgColor: rgb(45, 45, 45);
 
-    /* --default-bgColor: white;
-    --default-fontColor: black;
-    --default-hoverColor: black;
-    --default-border: 1px solid rgb(0, 0, 0, 0.3);
-    --default-active: rgb(190, 157, 9);
-    --default-inputBgColor: white; */
-}
+    /* --nP-default-bgColor: rgb(35, 35, 35);
+    --nP-default-fontColor: white;
+    --nP-default-hoverColor: white;
+    --nP-default-border: 1px solid white;
+    --nP-default-active: rgb(0, 238, 0);
+    --nP-default-inputBgColor: rgb(45, 45, 45); */
 
-body {
-    background: var(--default-bgColor);
+    /* --nP-default-bgColor: white;
+    --nP-default-fontColor: black;
+    --nP-default-hoverColor: black;
+    --nP-default-border: 1px solid rgb(0, 0, 0, 0.3);
+    --nP-default-active: rgb(190, 157, 9);
+    --nP-default-inputBgColor: white; */
+
+
+.nP-mainBody {
+    background: var(--nP-default-bgColor);
     color: rgba(223, 190, 106, 0.7);
-    /* background: #8f8e85; */
     font-family: "Helvetica Neue", Helvetica, Arials, sans;
 }
 
-.father {
+.nP-father {
     height: 100vh;
     /* min-width: 830px; */
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 /* 错误提示 */
@@ -39,13 +41,13 @@ h2 {
     display: none;
 }
 
-.projectTip{
-    color: var(--default-fontColor);
+.nP-projectTip{
+    color: var(--nP-default-fontColor);
     display: block;
 }
 
 /*导航栏样式*/
-.navbar {
+.nP-navbar {
     text-align: center;
     display: flex;
     position: relative;
@@ -54,26 +56,28 @@ h2 {
     width: 25%;
 }
 
-.navbarChild{
+.nP-navbarChild{
     /* margin: auto; */
     /* padding: 30px; */
-    border: var(--default-border);
+    border: var(--nP-default-border);
     border-style:none solid none none;
     width: 100%;
+    border-radius: 30px 0 0 0 ;
+    overflow: hidden;
 }
 
-div.navbar:before,
-div.navbar:after {
+div.nP-navbar:before,
+div.nP-navbar:after {
     content: "";
     display: table;
 }
 
-div.navbar:after {
+div.nP-navbar:after {
     clear: both;
 }
 
 /*导航栏中选项样式*/
-.menu {
+.nP-menu {
     display: block;
     width: 100%;
     background: transparent;
@@ -81,7 +85,7 @@ div.navbar:after {
     font-style: normal;
     font-size: 0.85rem;
     letter-spacing: 0.3em;
-    color: var(--default-fontColor);
+    color: var(--nP-default-fontColor);
     border-radius: 0;
     padding: 30px 20px 30px;
     text-decoration: none;
@@ -92,21 +96,21 @@ div.navbar:after {
     right: 0;
 }
 
-.menu:hover {
-    /* border: var(--default-border);
+.nP-menu:hover {
+    /* border: var(--nP-default-border);
     background-position: 50% 50%; */
 }
 
 /*被选中激活样式*/
 .active {
-    /* border: var(--default-border);
-    color: var(--default-active);
+    /* border: var(--nP-default-border);
+    color: var(--nP-default-active);
     background-position: 60% 50%;
     background-size: 300% 300%; */
     background-color: rgb(64,128,208);
 }
 
-.content {
+.nP-content {
     height: 100%;
     width: 75%;
     float: right;
@@ -116,18 +120,18 @@ div.navbar:after {
     align-items: center;
 }
 
-.contentChild{
+.nP-contentChild{
     text-align: center;
-    color: var(--default-fontColor);
+    color: var(--nP-default-fontColor);
 }
 
 /*初始化页面内容样式*/
-.form {
+.nP-form {
     margin: 30px auto;
     position: relative;
 }
 
-.form .item {
+.nP-form .nP-item {
     margin: auto;
     height: 30px;
     margin-top: 20px;
@@ -137,15 +141,15 @@ div.navbar:after {
     width: 440px;
 }
 
-.form input,
-.form select {
+.nP-form input,
+.nP-form select {
     outline-style: none;
     height: 40px;
     width: 280px;
     border-radius: 15px;
-    background-color: var(--default-inputBgColor);
+    background-color: var(--nP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
-    color: var(--default-fontColor);
+    color: var(--nP-default-fontColor);
     text-align: center;
 }
 
@@ -163,12 +167,12 @@ div.navbar:after {
 }
 
 .exBtn:hover,
-.form input:hover,
-.form select:hover {
-    border: var(--default-border);
+.nP-form input:hover,
+.nP-form select:hover {
+    border: var(--nP-default-border);
 }
 
-.form input[type="button"] {
+.nP-form input[type="button"] {
     width: 200px;
     height: 30px;
     border-radius: 20px;
@@ -180,10 +184,10 @@ div.navbar:after {
 
 /**************************空白工程**************************/
 /*设置提示样式*/
-.content_space .tip_title {
+.nP-content_space .tip_title {
     font-size: 15px;
     margin-bottom: 50px;
-    color: var(--default-fontColor);
+    color: var(--nP-default-fontColor);
 }
 
 .specialTips{
