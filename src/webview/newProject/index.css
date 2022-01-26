@@ -3,22 +3,6 @@
     margin: 0px;
 }
 
-
-    /* --nP-default-bgColor: rgb(35, 35, 35);
-    --nP-default-fontColor: white;
-    --nP-default-hoverColor: white;
-    --nP-default-border: 1px solid white;
-    --nP-default-active: rgb(0, 238, 0);
-    --nP-default-inputBgColor: rgb(45, 45, 45); */
-
-    /* --nP-default-bgColor: white;
-    --nP-default-fontColor: black;
-    --nP-default-hoverColor: black;
-    --nP-default-border: 1px solid rgb(0, 0, 0, 0.3);
-    --nP-default-active: rgb(190, 157, 9);
-    --nP-default-inputBgColor: white; */
-
-
 .nP-mainBody {
     background: var(--nP-default-bgColor);
     color: rgba(223, 190, 106, 0.7);
