@@ -24,9 +24,9 @@ $(".newProject").on("click", function () {
 });
 
 $(".openProject").on("click", function () {
-  // vscode.postMessage({
-  //   command: 'openProjectWebview'
-  // });
+  vscode.postMessage({
+    command: 'openProjectWebview'
+  });
 });
 
 
