@@ -6,7 +6,7 @@ import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
-import { OpenProjectManage } from '../webview/openProjectWebview';
+// import { openProjectManage } from '../webview/openProjectWebview';
 import { PluginVariablesInit } from '../config';
 
 let pluginJsonParse:any = new PluginJsonParse(); 
@@ -18,7 +18,7 @@ export class OpenProject {
     }
 
     // 打开工程
-    async openProject(context:vscode.ExtensionContext){
+    async openProject(context:vscode.ExtensionContext,homeManage:any,panel:any=undefined){
         const options = {
 			canSelectFiles: false,		//是否选择文件
 			canSelectFolders: true,		//是否选择文件夹
@@ -36,8 +36,22 @@ export class OpenProject {
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
         const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        let openProjectManage =  new OpenProjectManage();
-        openProjectManage.openProjectManage(context,openProjectJson,importProjectInitJson);
+        if (!panel) {
+            homeManage.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
+        }
+        else{
+            panel.webview.postMessage(
+                {
+                    command: 'importProjectData',
+                    text: openProjectJson
+                }
+            );
+            panel.webview.postMessage(
+                {
+                    command: "importProjectInitData",
+                    text: importProjectInitJson,
+                });
+        }
     }
 
     // 获取数据接口工程
