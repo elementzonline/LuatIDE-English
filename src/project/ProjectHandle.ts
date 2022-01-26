@@ -31,11 +31,13 @@ export class ProjectActiveHandle {
             result =>{
                 if (result==='当前窗口打开') {
                     pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
                     vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
                 }
                 else if(result === '新窗口打开'){
                     pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
                     vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
                 }
@@ -98,9 +100,10 @@ export class ProjectDeleteHandle {
         switch (result) {
             case '移除工程':
                 pluginJsonParse.popPluginConfigProject(projectName);
-                if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
+                if (activeProject!=='' && projectPath.toLowerCase().indexOf(activeProject.toLowerCase())!==-1) {
                     // 活动工程置空
                     activeProject = '';
+                    activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
                     pluginJsonParse.setPluginConfigActivityProject(activeProject);
                 }
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -112,6 +115,7 @@ export class ProjectDeleteHandle {
                     if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
                         // 活动工程置空
                         activeProject = '';
+                        activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
                         pluginJsonParse.setPluginConfigActivityProject(activeProject);
                     }
                     deleteDirRecursive(projectPath);
