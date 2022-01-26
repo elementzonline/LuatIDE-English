@@ -194,7 +194,14 @@ let pluginVariablesInit = new PluginVariablesInit();
         // 删除Air72X_LIB所有内容
         this.deleteDirRecursive(air72XOldLibPath);
         // 更新插件配置文件版本至2.1
-        const activityProject: string = pluginJsonObj.activeProject;
+        let activityProject: string = pluginJsonObj.activeProject;
+        // 对活动工程的插件配置文件进行兼容
+        if (fs.existsSync(activityProject)) {
+            this.projectConfigCompatible(activityProject);
+        }
+        else{
+            activityProject='';
+        }
         let luatideWorkspaceJson:any = this.getPluginConfigObjVersionTwo();
         luatideWorkspaceJson.activeProject = activityProject;
         luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
