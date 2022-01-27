@@ -91,7 +91,12 @@ export function deleteDirRecursive(dir:any){
                 fs.unlinkSync(curPath);
             }
         });
-        fs.rmdirSync(dir);
+        try {
+            fs.rmdirSync(dir);
+        } catch (error) {
+            console.log('删除失败',error);
+        }
+        
     }
     else{
         vscode.window.showErrorMessage(`${dir}路径已改变，请重新确认`);
