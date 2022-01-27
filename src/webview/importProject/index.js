@@ -44,7 +44,7 @@ let iP_isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
 
 
 $(iP_allHideStr).hide()
