@@ -348,7 +348,7 @@ let pluginVariablesInit = new PluginVariablesInit();
         // 工程core文件兼容
         let corePath:string = projectOldJsonObj.corePath;
         if (corePath!=='' && corePath.indexOf('Air72X_CORE')!==-1) {
-            corePath = corePath.replace('\\LuatIDE\\LuatideLib\\Air72X_CORE','\\LuatIDE\\LuatideLib\\Air72XUX_CORE');
+            corePath = corePath.replace('\\LuatIDE\\LuatideCore\\Air72X_CORE','\\LuatIDE\\LuatideCore\\Air72XUX_CORE');
         }
         // 工程lib文件兼容
         let libPath:string = projectOldJsonObj.libPath;
