@@ -70,7 +70,7 @@ import * as path from "path";
     getProjectConfigProjectType(projectPath:any){
         const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
         let projectConfigProjectType:string;
-        if (projectConfigJsonObj.projectTypero && projectConfigJsonObj.projectTypero!=='') {
+        if (projectConfigJsonObj.projectType && projectConfigJsonObj.projectTypero!=='') {
             projectConfigProjectType =projectConfigJsonObj.projectType;
         }
         else{
