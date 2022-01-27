@@ -18,7 +18,7 @@ export class OpenProject {
     }
 
     // 打开工程
-    async openProject(context:vscode.ExtensionContext,homeManage:any,panel:any=undefined){
+    async openProject(context:vscode.ExtensionContext,homeManageObj:any,panel:any=undefined){
         const options = {
 			canSelectFiles: false,		//是否选择文件
 			canSelectFolders: true,		//是否选择文件夹
@@ -36,8 +36,8 @@ export class OpenProject {
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
         const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        if (!panel) {
-            homeManage.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
+        if (panel!==undefined) {
+            homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
         }
         else{
             panel.webview.postMessage(
