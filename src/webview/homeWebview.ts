@@ -85,7 +85,12 @@ export class HomeManage {
                             command: 'loadOpenProjectModelBox'
                         }
                     );
-                    break;
+                    temPanel.webview.postMessage(
+                        {
+                            command: 'importProjectData',
+                            text: openProjectJson
+                        }
+                    );
             }
         }
 
@@ -161,7 +166,16 @@ export class HomeManage {
             case 'openNewProjectWebview':
                 break;
             case 'openProjectWebview':
-                openProject.openProject(context,homePanel);
+                const openProjectArrayList:string[]|undefined = await openProject.openProjectUserControl(context);
+                if (openProjectArrayList!==undefined) {
+                    const openProjectJson:any = openProjectArrayList[0];
+                    homePanel.webview.postMessage(
+                        {
+                            command: 'importProjectData',
+                            text: openProjectJson
+                        }
+                    );
+                }
                 break;
             case 'openExternalWeb':
                 switch (message.text) {
@@ -359,18 +373,18 @@ export class HomeManage {
             case 'cancelProject':
                 homePanel.dispose();
                 break;
-            case 'importProject':
-                switch(message.text){
-                    case "pure":
-                        break;
-                    case "example":
-                        break;
-                    case "ndk":
-                        break;
-                    case "ui":
-                        break;
-                }
-                break;
+            // case 'importProject':
+            //     switch(message.text){
+            //         case "pure":
+            //             break;
+            //         case "example":
+            //             break;
+            //         case "ndk":
+            //             break;
+            //         case "ui":
+            //             break;
+            //     }
+            //     break;
             case 'Alert':
                 vscode.window.showErrorMessage(message.text['msg'],{modal: true});
                 break;
@@ -395,9 +409,6 @@ export class HomeManage {
         case 'importProject':
             // 处理导入工程传过来的路径数据
             this.openProjectReceiveDataHandle(message);
-            break;
-        case 'Alert':
-            vscode.window.showErrorMessage(message.text['msg'],{modal: true});
             break;
         // 接收webview提交的打开资源管理器选择用户工程路径请求
         case 'openSourceOpenProject':

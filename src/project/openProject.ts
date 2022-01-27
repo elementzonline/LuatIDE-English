@@ -17,8 +17,8 @@ export class OpenProject {
     constructor() {
     }
 
-    // 打开工程
-    async openProject(context:vscode.ExtensionContext,homeManageObj:any,panel:any=undefined){
+    // 点击侧边栏打开工程显示
+    async openProject(context:vscode.ExtensionContext,homeManageObj:any){
         const options = {
 			canSelectFiles: false,		//是否选择文件
 			canSelectFolders: true,		//是否选择文件夹
@@ -36,22 +36,45 @@ export class OpenProject {
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
         const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        if (panel===undefined) {
-            homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
+        homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
+        // if (panel===undefined) {
+        //     homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
+        // }
+        // else{
+        //     panel.webview.postMessage(
+        //         {
+        //             command: 'importProjectData',
+        //             text: openProjectJson
+        //         }
+        //     );
+        //     panel.webview.postMessage(
+        //         {
+        //             command: "importProjectInitData",
+        //             text: importProjectInitJson,
+        //         });
+        // }
+    }
+
+    // 用户点击home界面内打开工程显示内容 
+    async openProjectUserControl(context:vscode.ExtensionContext){
+        const options = {
+			canSelectFiles: false,		//是否选择文件
+			canSelectFolders: true,		//是否选择文件夹
+			canSelectMany: false,		//是否选择多个文件
+			defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
+			openLabel: '选择您需要打开的工程目录'
+		};
+        const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);
+        if (importProjectPath === undefined) {
+            return;
         }
-        else{
-            panel.webview.postMessage(
-                {
-                    command: 'importProjectData',
-                    text: openProjectJson
-                }
-            );
-            panel.webview.postMessage(
-                {
-                    command: "importProjectInitData",
-                    text: importProjectInitJson,
-                });
-        }
+        // 打开工程导入前做兼容性处理
+        pluginJsonParse.projectConfigCompatible(importProjectPath);
+        // 解析活动工程配置传送至打开工程webview
+        const openProjectJson  = this.openProjectDataParse(importProjectPath);
+        const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
+        const importProjectInitJson = this.getImportProjectInitJson(projectJson);
+        return [openProjectJson,importProjectInitJson];
     }
 
     // 获取数据接口工程
