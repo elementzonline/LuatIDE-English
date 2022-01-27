@@ -109,7 +109,7 @@ export class OpenProject {
         const projectConfigProjectName:string = importProjectPath.substring(nameIndex+1);
         const projectConfigProjectType:string =  projectJsonParse.getProjectConfigProjectType(importProjectPath);
         // const porjectConfigVersion:string = projectJsonParse.getProjectConfigVersion(importProjectPath);
-        const porjectConfigModuleModel:string = projectJsonParse.getProjectConfigModuleModel(importProjectPath);
+        let porjectConfigModuleModel:string = projectJsonParse.getProjectConfigModuleModel(importProjectPath);
         const projectConfigCorePath:string = projectJsonParse.getProjectConfigCorePath(importProjectPath);
         const projectConfigLibPath:string = projectJsonParse.getProjectConfigLibPath(importProjectPath);
         // const projectConfigModulePort:string = projectJsonParse.getProjectConfigMoudlePort(importProjectPath);
@@ -121,6 +121,9 @@ export class OpenProject {
         openProjectJson.errorData = {};
         openProjectJson.correctData.projectName = projectConfigProjectName;
         openProjectJson.correctData.projectPath = projectConfigProjectPath;
+        if (porjectConfigModuleModel==='') {
+            porjectConfigModuleModel = 'air72XUX/air82XUX';
+        }
         openProjectJson.correctData.moduleModel = porjectConfigModuleModel;
         if (!fs.existsSync(projectConfigCorePath)) {
             openProjectJson.errorData.corePath = projectConfigCorePath;
