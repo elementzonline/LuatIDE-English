@@ -1043,6 +1043,7 @@ window.addEventListener('message', event => {
             gl_iP_customPathManagment("customCorePath", message.text);
             break;
         case "importProjectData":
+            $(".openProjectHtml").show();
             gl_importProjectData(message.text.type, message.text);
             break;
         /* 导入工程命令 上*/

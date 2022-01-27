@@ -63,9 +63,9 @@ function iP_clearTempData(tar1, tar2) {
 
 //按钮取消逻辑
 iP_cancelBtn.on("click", function () {
-    gl_hideOpenProject();
+    $(".newProjectHtml").hide();
     switch (iP_curActiveContent) {
-        case "pure":
+        case "space":
             iP_clearTempData(iP_sapceData, iP_spaceDynData)
             break;
         case "example":
@@ -91,7 +91,7 @@ iP_submitBtn.on("click", function () {
         // handleSubmit(iP_curActiveContent);
     }
     switch (iP_curActiveContent) {
-        case "pure":
+        case "space":
             iP_clearTempData(iP_sapceData, iP_spaceDynData)
             break;
         case "example":
@@ -772,8 +772,8 @@ function importProjectDisplay(whichDsp, projectType, importData) {
 
 /* 导入工程数据提交 */
 function iP_sendImportProjectData(tar) {
-    let projectPath = $("input[name=" + tar + "_project_path]").val();
-    let projectName = $("input[name=" + tar + "_project_name]").val();
+    let projectPath = $("input[name=iP-" + tar + "_project_path]").val();
+    let projectName = $("input[name=iP-" + tar + "_project_name]").val();
     if (!projectName.trim() || !projectPath) {
         iP_Alert('名称或路径不能为空！');
         return false;
@@ -854,12 +854,8 @@ function iP_sendImportProjectData(tar) {
         default:
             break;
     }
-    vscode.postMessage({
-        command: 'cancelProject',
-        text: {
-            "type": "importProjectWebview",
-        }
-    });
+    iP_isInImportProject = false;
+    $(".newProjectHtml").hide();
 }
 /********************************************** 导入工程[用户原始数据] **********************************************/
 
