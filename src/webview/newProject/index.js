@@ -975,7 +975,7 @@ function changeThemeColor(style) {
         document.documentElement.style.setProperty("--nP-default-hoverColor", 'white');
         document.documentElement.style.setProperty("--nP-default-active", 'rgb(0, 238, 0)');
         document.documentElement.style.setProperty("--nP-default-inputBgColor", 'rgb(45, 45, 45)');
-        
+
         //导入工程
         document.documentElement.style.setProperty("--iP-default-bgColor", 'rgb(37, 37, 38)');
         document.documentElement.style.setProperty("--iP-default-fontColor", 'white');
@@ -1029,6 +1029,23 @@ window.addEventListener('message', event => {
         case "loadOpenProjectModelBox":
             $(".openProjectHtml").show();
             break;
+        /* 导入工程命令 ↓*/
+        case "importProjectInitData":
+            gl_importProjectInitData(message.text.projectType, message.text.data);
+            break;
+        case "customProjectPathOpenProject":
+            gl_iP_customPathManagment("customProjectPath", message.text);
+            break;
+        case "customLibPathOpenProject":
+            gl_iP_customPathManagment("customLibPath", message.text);
+            break;
+        case "customCorePathOpenProject":
+            gl_iP_customPathManagment("customCorePath", message.text);
+            break;
+        case "importProjectData":
+            gl_importProjectData(message.text.type, message.text);
+            break;
+        /* 导入工程命令 上*/
         default:
             break;
     }

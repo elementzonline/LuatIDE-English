@@ -1,5 +1,5 @@
 /* 激活 VsCode 通信 */
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
 /* 隐藏新建工程[全局函数多文件调用] */
@@ -18,9 +18,6 @@ function gl_hideOpenProject(){
 $(".newProject").on("click", function () {
   $(".newProjectHtml").show();
   gl_newProjectInit();
-  // vscode.postMessage({
-  //   command: 'openNewProjectWebview'
-  // });
 });
 
 $(".openProject").on("click", function () {
