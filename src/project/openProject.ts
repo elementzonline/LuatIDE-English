@@ -36,7 +36,7 @@ export class OpenProject {
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
         const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        if (panel!==undefined) {
+        if (panel===undefined) {
             homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
         }
         else{
