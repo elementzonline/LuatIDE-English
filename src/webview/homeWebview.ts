@@ -30,6 +30,30 @@ export class HomeManage {
         // 如果检测到编辑器区域已存在home面板，则展示它
         if (this.homePanel) {
             this.homePanel.reveal(columnToShowIn);
+            if (homeLoadingState) {
+                switch (homeLoadingState) {
+                    case 'loadNewProjectModelBox':
+                        this.homePanel.webview.postMessage(
+                            {
+                                command: 'loadNewProjectModelBox'
+                            }
+                        );
+                        break;
+                
+                    case 'loadOpenProjectModelBox':
+                        this.homePanel.webview.postMessage(
+                            {
+                                command: 'loadOpenProjectModelBox'
+                            }
+                        );
+                        this.homePanel.webview.postMessage(
+                            {
+                                command: 'importProjectData',
+                                text: openProjectJson
+                            }
+                        );
+                }
+            }
             return;
         }
         else {
