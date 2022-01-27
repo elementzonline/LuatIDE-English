@@ -1,54 +1,53 @@
 //被点击的新建工程选项
-let tarActive = $(".menu");
-let allContent = $(".iP-content");
-let allHideStr = ".iP-content_space, .iP-content_example, .iP-content_ndk, .iP-content_ui";
-let cancelBtn = $(".iP-cancel");
-let submitBtn = $(".iP-submit");
-let curActiveContent = "space";
-let temImportData = null;
+let iP_allContent = $(".iP-content");
+let iP_allHideStr = ".iP-content_space, .iP-content_example, .iP-content_ndk, .iP-content_ui";
+let iP_cancelBtn = $(".iP-cancel");
+let iP_submitBtn = $(".iP-submit");
+let iP_curActiveContent = "space";
+let iP_temImportData = null;
 //工程初始化form
 let formArr = $(".iP-form");
 //空白工程数据
-let sapceData = [
+let iP_sapceData = [
     "iP-space_project_path", "iP-space_project_name"
 ];
-let spaceDynData = [
+let iP_spaceDynData = [
     "iP-select_getSpace_ModuleInfo", "iP-select_getSpace_LibInfo", "iP-select_getSpace_CoreInfo"
 ];
 //示例工程数据
-let exampleData = [
+let iP_exampleData = [
     "iP-example_project_path", "iP-example_project_name"
 ];
-let exampleDynData = [
+let iP_exampleDynData = [
     "iP-select_getExample_ModuleInfo", "iP-select_getExample_ExampleInfo", "iP-select_getExample_CoreInfo"
 ];
 //NDK数据
-let ndkData = [
+let iP_ndkData = [
     "iP-ndk_project_path", "iP-ndk_project_name"
 ];
-let ndkDynData = [
+let iP_ndkDynData = [
     "iP-select_getNDK_ModuleInfo", "iP-select_getNDK_ExampleInfo"
 ];
 //UI工程数据
-let uiData = [
+let iP_uiData = [
     "iP-ui_project_path", "iP-ui_project_name"
 ];
-let uiDynData = [
+let iP_uiDynData = [
     "iP-select_getUi_ModuleInfo", "iP-select_getUi_LibInfo", "iP-select_getUi_CoreInfo"
 ];
 // 判断是否是导入工程
-let isInImportProject = false;
+let iP_isInImportProject = false;
 // 判断是否是 Air10X 模块型号
-let isInAir101 = false;
+let iP_isInAir101 = false;
 // 判断是否是 Air72XCX 模块型号
-let isInAirCx72 = false;
+let iP_isInAirCx72 = false;
 
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 
-$(allHideStr).hide()
+$(iP_allHideStr).hide()
 $(".iP-content_space").show()
 
 //清楚工程临时数据
@@ -63,20 +62,20 @@ function iP_clearTempData(tar1, tar2) {
 
 
 //按钮取消逻辑
-cancelBtn.on("click", function () {
+iP_cancelBtn.on("click", function () {
     gl_hideOpenProject();
-    switch (curActiveContent) {
+    switch (iP_curActiveContent) {
         case "pure":
-            iP_clearTempData(sapceData, spaceDynData)
+            iP_clearTempData(iP_sapceData, iP_spaceDynData)
             break;
         case "example":
-            iP_clearTempData(exampleData, exampleDynData)
+            iP_clearTempData(iP_exampleData, iP_exampleDynData)
             break;
         case "ndk":
-            iP_clearTempData(ndkData, ndkDynData)
+            iP_clearTempData(iP_ndkData, iP_ndkDynData)
             break;
         case "ui":
-            iP_clearTempData(uiData, uiDynData)
+            iP_clearTempData(iP_uiData, iP_uiDynData)
             break;
         default:
             break;
@@ -85,24 +84,24 @@ cancelBtn.on("click", function () {
 
 
 //按钮完成逻辑
-submitBtn.on("click", function () {
-    if (isInImportProject) {
-        iP_sendImportProjectData(curActiveContent);
+iP_submitBtn.on("click", function () {
+    if (iP_isInImportProject) {
+        iP_sendImportProjectData(iP_curActiveContent);
     } else {
-        // handleSubmit(curActiveContent);
+        // handleSubmit(iP_curActiveContent);
     }
-    switch (curActiveContent) {
+    switch (iP_curActiveContent) {
         case "pure":
-            iP_clearTempData(sapceData, spaceDynData)
+            iP_clearTempData(iP_sapceData, iP_spaceDynData)
             break;
         case "example":
-            iP_clearTempData(exampleData, exampleDynData)
+            iP_clearTempData(iP_exampleData, iP_exampleDynData)
             break;
         case "ndk":
-            iP_clearTempData(ndkData, ndkDynData)
+            iP_clearTempData(iP_ndkData, iP_ndkDynData)
             break;
         case "ui":
-            iP_clearTempData(uiData, uiDynData)
+            iP_clearTempData(iP_uiData, iP_uiDynData)
             break;
         default:
             break;
@@ -145,9 +144,9 @@ function iP_handelBackstage(name, type) {
 
 /* 对 Air10X 和 Air72XCX 模块型号做特殊处理 */
 function iP_handelBackstageExtra(name, type) {
-    if (isInAir101 && type === "customLibPath") {
+    if (iP_isInAir101 && type === "customLibPath") {
         iP_Alert("当前模块型号不支持 lib 配置！");
-    } else if (isInAirCx72 && type === "customCorePath") {
+    } else if (iP_isInAirCx72 && type === "customCorePath") {
         iP_Alert("当前模块型号不支持 core 配置！");
     } else {
         vscode.postMessage({
@@ -301,7 +300,7 @@ function iP_pureProjectInitDataManagment(initData) {
     $(".tip_spaceCore").hide();
 
     /* 导入数据操作 */
-    importSpaceProject(temImportData);
+    importSpaceProject(iP_temImportData);
 }
 
 
@@ -346,7 +345,7 @@ function iP_exampleProjectInitDataManagment(initData) {
     $(".tip_exampleCore").hide();
 
     /* 导入数据操作 */
-    importExampleProject(temImportData);
+    importExampleProject(iP_temImportData);
 }
 
 
@@ -365,7 +364,7 @@ function iP_ndkProjectInitDataManagment(initData) {
     }
 
     /* 导入工程数据 */
-    importNdkProject(temImportData);
+    importNdkProject(iP_temImportData);
 }
 
 
@@ -421,7 +420,7 @@ function iP_uiProjectInitDataManagment(initData) {
     // $(".tip_uiLib").hide();
     // $(".tip_uiCore").hide();
 
-    importUiProject(temImportData);
+    importUiProject(iP_temImportData);
 }
 
 
@@ -747,9 +746,9 @@ function importProjectDisplay(whichDsp, projectType, importData) {
     if (importData.errorData !== "") {
         $(".iP-tips").show();
     }
-    $(allHideStr).hide();
+    $(iP_allHideStr).hide();
     whichDsp.show();
-    temImportData = importData;
+    iP_temImportData = importData;
 
     switch (projectType) {
         /* 获取工程初始化数据 */
@@ -865,67 +864,127 @@ function iP_sendImportProjectData(tar) {
 /********************************************** 导入工程[用户原始数据] **********************************************/
 
 
-/* 获取vscode端发送的数据 */
-window.addEventListener('message', event => {
-    const message = event.data;
-    switch (message.command) {
-        /* 导入工程初始化数据获取 */
-        case "importProjectInitData":
-            importProjectInitData = message.text.data;
-            switch (message.text.projectType) {
-                case "pure":
-                    iP_pureProjectInitDataManagment(message.text.data);
-                    break;
-                case "example":
-                    iP_exampleProjectInitDataManagment(message.text.data);
-                    break;
-                case "ndk":
-                    iP_ndkProjectInitDataManagment(message.text.data);
-                    break;
-                case "ui":
-                    iP_uiProjectInitDataManagment(message.text.data);
-                    break;
-                default:
-                    break;
-            }
+// /* 获取vscode端发送的数据 */
+// window.addEventListener('message', event => {
+//     const message = event.data;
+//     switch (message.command) {
+//         /* 导入工程初始化数据获取 */
+//         case "importProjectInitData":
+//             importProjectInitData = message.text.data;
+//             switch (message.text.projectType) {
+//                 case "pure":
+//                     iP_pureProjectInitDataManagment(message.text.data);
+//                     break;
+//                 case "example":
+//                     iP_exampleProjectInitDataManagment(message.text.data);
+//                     break;
+//                 case "ndk":
+//                     iP_ndkProjectInitDataManagment(message.text.data);
+//                     break;
+//                 case "ui":
+//                     iP_uiProjectInitDataManagment(message.text.data);
+//                     break;
+//                 default:
+//                     break;
+//             }
+//             break;
+//             /* 自定义工程路径, lib库, core文件 */
+//         case "customProjectPathOpenProject":
+//             iP_customPathManagment(iP_curActiveContent, "customProjectPath", message.text);
+//             break;
+//         case "customLibPathOpenProject":
+//             iP_customPathManagment(iP_curActiveContent, "customLibPath", message.text);
+//             break;
+//         case "customCorePathOpenProject":
+//             iP_customPathManagment(iP_curActiveContent, "customCorePath", message.text);
+//             break;
+//             /* 获取导入工程数据[用户] */
+//         case "importProjectData":
+//             let targetProject = null;
+//             iP_isInImportProject = true;
+//             switch (message.text.type) {
+//                 case "pure":
+//                     iP_curActiveContent = "space";
+//                     targetProject = $(".iP-content_space");
+//                     break;
+//                 case "example":
+//                     iP_curActiveContent = "example";
+//                     targetProject = $(".iP-content_example");
+//                     break;
+//                 case "ndk":
+//                     iP_curActiveContent = "ndk";
+//                     targetProject = $(".iP-content_ndk");
+//                     break;
+//                 case "ui":
+//                     iP_curActiveContent = "ui";
+//                     targetProject = $(".iP-content_ui");
+//                     break;
+//                 default:
+//                     break;
+//             }
+//             importProjectDisplay(targetProject, iP_curActiveContent, message.text);
+//             break;
+//         default:
+//             break;
+//     }
+// });
+
+/*********************************************外部全局函数***************************************************/
+
+/* 导入工程初始化数据获取 */
+function gl_importProjectInitData(type, data) {
+    importProjectInitData = data;
+    switch (type) {
+        case "pure":
+            iP_pureProjectInitDataManagment(data);
             break;
-            /* 自定义工程路径, lib库, core文件 */
-        case "customProjectPathOpenProject":
-            iP_customPathManagment(curActiveContent, "customProjectPath", message.text);
+        case "example":
+            iP_exampleProjectInitDataManagment(data);
             break;
-        case "customLibPathOpenProject":
-            iP_customPathManagment(curActiveContent, "customLibPath", message.text);
+        case "ndk":
+            iP_ndkProjectInitDataManagment(data);
             break;
-        case "customCorePathOpenProject":
-            iP_customPathManagment(curActiveContent, "customCorePath", message.text);
-            break;
-            /* 获取导入工程数据[用户] */
-        case "importProjectData":
-            let targetProject = null;
-            isInImportProject = true;
-            switch (message.text.type) {
-                case "pure":
-                    curActiveContent = "space";
-                    targetProject = $(".iP-content_space");
-                    break;
-                case "example":
-                    curActiveContent = "example";
-                    targetProject = $(".iP-content_example");
-                    break;
-                case "ndk":
-                    curActiveContent = "ndk";
-                    targetProject = $(".iP-content_ndk");
-                    break;
-                case "ui":
-                    curActiveContent = "ui";
-                    targetProject = $(".iP-content_ui");
-                    break;
-                default:
-                    break;
-            }
-            importProjectDisplay(targetProject, curActiveContent, message.text);
+        case "ui":
+            iP_uiProjectInitDataManagment(data);
             break;
         default:
             break;
     }
-});
+}
+
+/* 自定义工程路径, lib库, core文件 */
+// data 数据
+// type 具体自定义类型
+// 1 customProjectPath
+// 2 customLibPath
+// 3 customCorePath
+function gl_iP_customPathManagment(type, data) {
+    iP_customPathManagment(iP_curActiveContent, type, data);
+}
+
+/* 获取导入工程数据[用户] */
+function gl_importProjectData(type, data) {
+    let targetProject = null;
+    iP_isInImportProject = true;
+    switch (type) {
+        case "pure":
+            iP_curActiveContent = "space";
+            targetProject = $(".iP-content_space");
+            break;
+        case "example":
+            iP_curActiveContent = "example";
+            targetProject = $(".iP-content_example");
+            break;
+        case "ndk":
+            iP_curActiveContent = "ndk";
+            targetProject = $(".iP-content_ndk");
+            break;
+        case "ui":
+            iP_curActiveContent = "ui";
+            targetProject = $(".iP-content_ui");
+            break;
+        default:
+            break;
+    }
+    importProjectDisplay(targetProject, iP_curActiveContent, data);
+}
