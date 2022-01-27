@@ -471,15 +471,15 @@ function importSpaceProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                iP_addTips($("input[name=iP-space_project_name]"));
+                // iP_addTips($("input[name=iP-space_project_name]"));
                 $("input[name=iP-space_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                iP_addTips($("input[name=iP-space_project_path]"));
+                // iP_addTips($("input[name=iP-space_project_path]"));
                 $("input[name=iP-space_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                iP_addTips($(".iP-select_getSpace_ModuleInfo"));
+                // iP_addTips($(".iP-select_getSpace_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
@@ -550,15 +550,15 @@ function importExampleProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                iP_addTips($("input[name=iP-example_project_name]"));
+                // iP_addTips($("input[name=iP-example_project_name]"));
                 $("input[name=iP-example_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                iP_addTips($("input[name=iP-example_project_path]"));
+                // iP_addTips($("input[name=iP-example_project_path]"));
                 $("input[name=iP-example_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                iP_addTips($(".iP-select_getExample_ModuleInfo"));
+                // iP_addTips($(".iP-select_getExample_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
@@ -625,15 +625,15 @@ function importNdkProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                iP_addTips($("input[name=iP-ndk_project_name]"));
+                // iP_addTips($("input[name=iP-ndk_project_name]"));
                 $("input[name=iP-ndk_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                iP_addTips($("input[name=iP-ndk_project_path]"));
+                // iP_addTips($("input[name=iP-ndk_project_path]"));
                 $("input[name=iP-ndk_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                iP_addTips($(".iP-select_getNDK_ModuleInfo"));
+                // iP_addTips($(".iP-select_getNDK_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
@@ -697,15 +697,15 @@ function importUiProject(importData) {
     for (let key2 in importData.errorData) {
         switch (key2) {
             case "projectName":
-                iP_addTips($("input[name=iP-ui_project_name]"));
+                // iP_addTips($("input[name=iP-ui_project_name]"));
                 $("input[name=iP-ui_project_name]").val(importData.errorData[key2]);
                 break;
             case "projectPath":
-                iP_addTips($("input[name=iP-ui_project_path]"));
+                // iP_addTips($("input[name=iP-ui_project_path]"));
                 $("input[name=iP-ui_project_path]").val(importData.errorData[key2]);
                 break;
             case "moduleModel":
-                iP_addTips($(".iP-select_getUi_ModuleInfo"));
+                // iP_addTips($(".iP-select_getUi_ModuleInfo"));
                 // let temModule = [moduleOne, moduleTwo, moduleThree, moduleFour, moduleFive, moduleSix];
                 // for (let i = 0; i < temModule.length; i++) {
                 //     if (importData.errorData[key2] === temModule[i]) {
@@ -744,7 +744,7 @@ function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
     $(".iP-tip_title").hide();
     $(".iP-tips").hide();
-    if (Object.keys(importData.errorData).length!==0) {
+    if ((Object.keys(importData.errorData)).length !== 0) {
         $(".iP-tips").show();
     }
     $(iP_allHideStr).hide();
