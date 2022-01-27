@@ -63,7 +63,7 @@ function iP_clearTempData(tar1, tar2) {
 
 //按钮取消逻辑
 iP_cancelBtn.on("click", function () {
-    $(".newProjectHtml").hide();
+    $(".openProjectHtml").hide();
     switch (iP_curActiveContent) {
         case "space":
             iP_clearTempData(iP_sapceData, iP_spaceDynData)
@@ -855,7 +855,7 @@ function iP_sendImportProjectData(tar) {
             break;
     }
     iP_isInImportProject = false;
-    $(".newProjectHtml").hide();
+    $(".openProjectHtml").hide();
 }
 /********************************************** 导入工程[用户原始数据] **********************************************/
 
