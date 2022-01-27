@@ -479,5 +479,5 @@ i {
 .openProjectHtmlChild{
   background: var(--iP-default-bgColor);
   color: rgba(223, 190, 106, 0.7);
-  height: 600px;
+  width: 700px;
 }

@@ -743,7 +743,8 @@ function importUiProject(importData) {
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
     $(".iP-tip_title").hide();
-    if (importData.errorData !== "") {
+    $(".iP-tips").hide();
+    if (Object.keys(importData.errorData).length!==0) {
         $(".iP-tips").show();
     }
     $(iP_allHideStr).hide();
