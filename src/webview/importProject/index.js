@@ -80,6 +80,7 @@ iP_cancelBtn.on("click", function () {
         default:
             break;
     }
+    isDisOpenProjectHtml = false;
 });
 
 
