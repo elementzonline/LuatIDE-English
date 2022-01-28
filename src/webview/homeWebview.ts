@@ -22,11 +22,16 @@ export class HomeManage {
 
     }
     homePanel: vscode.WebviewPanel | undefined = undefined;
+    private importProjectInitJson:any;
+    private openProjectJson:any;
     // 工程主页webview管理
     homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={},importProjectInitJson:any={}) {
+        this.importProjectInitJson = importProjectInitJson;
+        this.openProjectJson =openProjectJson;
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
+
         // 如果检测到编辑器区域已存在home面板，则展示它
         if (this.homePanel) {
             this.homePanel.reveal(columnToShowIn);
@@ -49,7 +54,7 @@ export class HomeManage {
                         this.homePanel.webview.postMessage(
                             {
                                 command: 'importProjectData',
-                                text: openProjectJson
+                                text: this.openProjectJson
                             }
                         );
                 }
@@ -112,14 +117,14 @@ export class HomeManage {
                     temPanel.webview.postMessage(
                         {
                             command: 'importProjectData',
-                            text: openProjectJson
+                            text: this.openProjectJson
                         }
                     );
             }
         }
 
         this.homePanel.webview.onDidReceiveMessage(
-            message => this.receiveMessageHandle(context,this.homePanel, message,importProjectInitJson,openProjectJson)
+            message => this.receiveMessageHandle(context,this.homePanel, message)
         );
 
         // Reset when the current panel is closed
@@ -167,7 +172,7 @@ export class HomeManage {
     }
 
     // 处理从webview传来的命令
-    async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any,importProjectInitJson:any,openProjectJson:any) {
+    async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
         const pluginDefaultAir101Example:string[] = pluginVariablesInit.getAir101DefaultExampleList();
@@ -192,11 +197,12 @@ export class HomeManage {
             case 'openProjectWebview':
                 const openProjectArrayList:string[]|undefined = await openProject.openProjectUserControl(context);
                 if (openProjectArrayList!==undefined) {
-                    const openProjectJson:any = openProjectArrayList[0];
+                    this.openProjectJson = openProjectArrayList[0];
+                    this.importProjectInitJson = openProjectArrayList[1];
                     homePanel.webview.postMessage(
                         {
                             command: 'importProjectData',
-                            text: openProjectJson
+                            text: this.openProjectJson
                         }
                     );
                 }
@@ -526,7 +532,7 @@ export class HomeManage {
             homePanel.webview.postMessage(
                 {
                     command: "importProjectInitData",
-                    text: importProjectInitJson,
+                    text: this.importProjectInitJson,
                 });
             break;
         }
