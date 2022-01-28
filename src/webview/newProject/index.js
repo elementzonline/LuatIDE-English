@@ -51,7 +51,9 @@ const vscode = acquireVsCodeApi();
 /* 新建工程初始化[全局函数多文件调用] */
 function gl_newProjectInit() {
     //初始化激活空白工程
+    isDisNewProjectHtml = true;
     $(nP_allHideStr).hide();
+    nP_tarActive.removeClass("active");
     $(".nP-content_space").show();
     $("#space").addClass("active");
     nP_clearTempData(nP_sapceData, nP_spaceDynData);
@@ -115,6 +117,7 @@ nP_tarActive.on("click", function () {
 nP_cancelBtn.on("click", function () {
     //关闭新建工程
     gl_hideNewProject();
+    isDisNewProjectHtml = false;
 });
 
 
@@ -1023,11 +1026,20 @@ window.addEventListener('message', event => {
             changeThemeColor(message.text);
             break;
         case "loadNewProjectModelBox":
+            /* 新建工程和导入工程互斥出现 */
+            if(isDisOpenProjectHtml){
+                $(".openProjectHtml").hide();
+            }
             $(".newProjectHtml").show();
             gl_newProjectInit();
             break;
         case "loadOpenProjectModelBox":
+            /* 新建工程和导入工程互斥出现 */
+            if(isDisNewProjectHtml){
+                $(".newProjectHtml").hide();
+            }
             $(".openProjectHtml").show();
+            isDisOpenProjectHtml = true;
             break;
         /* 导入工程命令 ↓*/
         case "importProjectInitData":

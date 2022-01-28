@@ -1,6 +1,5 @@
-/* 激活 VsCode 通信 */
-// const vscode = acquireVsCodeApi();
-
+var isDisNewProjectHtml = false;
+var isDisOpenProjectHtml = false;
 
 /* 隐藏新建工程[全局函数多文件调用] */
 function gl_hideNewProject(){
