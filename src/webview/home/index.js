@@ -65,7 +65,7 @@ $(".footerBtn3").on("click", function () {
 });
 
 /*****************************登录 ↓******************************/
-/* 登录 */
+/* 登录头像 */
 $(".userBtn").on("click", function () {
   $(".loginModal").show();
 });
@@ -85,7 +85,7 @@ function clearLoginData() {
 //登录
 $(".btLogin").on("click", function () {
   /* 发送登录信息 */
-  handleSubmit();
+  // handleSubmit();
 })
 
 //没有账号按钮
