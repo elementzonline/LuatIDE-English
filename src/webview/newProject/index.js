@@ -1029,20 +1029,25 @@ window.addEventListener('message', event => {
             /* 新建工程和导入工程互斥出现 */
             if(isDisOpenProjectHtml){
                 $(".openProjectHtml").hide();
+                isDisOpenProjectHtml = false;
             }
             $(".newProjectHtml").show();
             gl_newProjectInit();
+            isDisNewProjectHtml = true;
             break;
         case "loadOpenProjectModelBox":
             /* 新建工程和导入工程互斥出现 */
             if(isDisNewProjectHtml){
                 $(".newProjectHtml").hide();
+                isDisNewProjectHtml = false;
             }
             $(".openProjectHtml").show();
             isDisOpenProjectHtml = true;
             break;
         /* 导入工程命令 ↓*/
         case "importProjectInitData":
+            /* 激活导入工程使其显示 */
+            isDisOpenProjectHtml = true;
             gl_importProjectInitData(message.text.projectType, message.text.data);
             break;
         case "customProjectPathOpenProject":
