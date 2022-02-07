@@ -6,12 +6,13 @@ import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
+import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
-import { PluginVariablesInit } from '../config';
+// import { PluginVariablesInit } from '../config';
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 let projectJsonParse:any = new ProjectJsonParse(); 
-let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation:any = new ProjectConfigOperation();
 export class OpenProject {
     constructor() {
@@ -89,9 +90,9 @@ export class OpenProject {
         };
         const projectType:string = projectJson.projectType;
         const moudleModel:string = projectJson.moduleModel;
-        const libList = pluginVariablesInit.getLibListBaseMoudeleMode(moudleModel);
-        const coreList = pluginVariablesInit.getCoreListBaseMoudeleMode(moudleModel);
-        const exampleList = pluginVariablesInit.getExampleListBaseMoudeleMode(moudleModel);
+        const libList = getLibListBaseMoudeleMode(moudleModel);
+        const coreList = getCoreListBaseMoudeleMode(moudleModel);
+        const exampleList = getExampleListBaseMoudeleMode(moudleModel);
         importProjectInitJson.projectType=projectType;
         importProjectInitJson.data.libList=libList;
         importProjectInitJson.data.coreList=coreList;

@@ -1,12 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { PluginVariablesInit } from "../config";
+import { getAir101DefaultCorePath, getAir101DefaultDemoPath, getAir101DefaultLatestCorePath, getAir103DefaultCorePath, getAir103DefaultDemoPath, getAir103DefaultLatestCorePath, getAir105DefaultCorePath, getAir105DefaultDemoPath, getAir105DefaultLatestCorePath, getAir10XDefaultMainData, getAir72XUXDefaultCorePath, getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibPath, getAir72XUXDefaultMainData, getEsp32c3DefaultCorePath, getPluginConfigPath } from "../variableInterface";
+// import { PluginVariablesInit } from "../config";
 import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
 
-let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();
 let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
 export class CreateProject {
@@ -97,7 +98,7 @@ export class CreateProject {
         let createProjectLibPath:string;
         // lib库路径初始化写入
         if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105' && createProjectMessage.createProjectModuleModel!=='esp32c3') {
-            createProjectLibPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
+            createProjectLibPath = getAir72XUXDefaultLatestLibPath();
         }
         else{
             createProjectLibPath = '';
@@ -214,12 +215,12 @@ export class CreateProject {
 
     // 接收到的webview发送的lib处理
     getCreateProjectLibpathHandle(libPath:string,moduleModel:string){
-        const air72XUXDefaultLibPath = pluginVariablesInit.getAir72XUXDefaultLibPath();
+        const air72XUXDefaultLibPath = getAir72XUXDefaultLibPath();
         if (fs.existsSync(libPath)) {
             libPath = libPath;
         }
         else if (libPath==='' && moduleModel!=='air101'  && moduleModel!=='air103'  && moduleModel!=='air105') {
-            libPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
+            libPath = getAir72XUXDefaultLatestLibPath();
         }
         else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105' || moduleModel === 'esp32c3') {
             libPath = '';
@@ -259,12 +260,12 @@ export class CreateProject {
     
     // 接收到的webview发送的esp32c3的core处理
     getCreateProjectEsp32CorepathHandle(corePath:string){
-        const esp32c3DefaultCorePath = pluginVariablesInit.getEsp32c3DefaultCorePath();
+        const esp32c3DefaultCorePath = getEsp32c3DefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir101DefaultLatestCorePath();
+            const coreLatestName:string = getAir101DefaultLatestCorePath();
             corePath = path.join(esp32c3DefaultCorePath,coreLatestName);
         }
         else{
@@ -275,12 +276,12 @@ export class CreateProject {
 
     // 接收到的webview发送的air101的core处理
     getCreateProjectAir101CorepathHandle(corePath:string){
-        const air101DefaultCorePath = pluginVariablesInit.getAir101DefaultCorePath();
+        const air101DefaultCorePath = getAir101DefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir101DefaultLatestCorePath();
+            const coreLatestName:string = getAir101DefaultLatestCorePath();
             corePath = path.join(air101DefaultCorePath,coreLatestName);
         }
         else{
@@ -291,12 +292,12 @@ export class CreateProject {
 
     // 接收到的webview发送的air103的core处理
     getCreateProjectAir103CorepathHandle(corePath:string){
-        const air103DefaultCorePath = pluginVariablesInit.getAir103DefaultCorePath();
+        const air103DefaultCorePath = getAir103DefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir103DefaultLatestCorePath();
+            const coreLatestName:string = getAir103DefaultLatestCorePath();
             corePath = path.join(air103DefaultCorePath,coreLatestName);
         }
         else{
@@ -307,12 +308,12 @@ export class CreateProject {
 
     // 接收到的webview发送的air105的core处理
     getCreateProjectAir105CorepathHandle(corePath:string){
-        const air105DefaultCorePath = pluginVariablesInit.getAir105DefaultCorePath();
+        const air105DefaultCorePath = getAir105DefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir105DefaultLatestCorePath();
+            const coreLatestName:string = getAir105DefaultLatestCorePath();
             corePath = path.join(air105DefaultCorePath,coreLatestName);
         }
         else{
@@ -323,12 +324,12 @@ export class CreateProject {
 
     // 接收到的webview发送的air72XUX的core处理
     getCreateProjectAir72XUXCorepathHandle(corePath:string){
-        const air72XUXDefaultCorePath = pluginVariablesInit.getAir72XUXDefaultCorePath();
+        const air72XUXDefaultCorePath = getAir72XUXDefaultCorePath();
         if (fs.existsSync(corePath)) {
             corePath = corePath;
         }
         else if (corePath==='') {
-            const coreLatestName:string = pluginVariablesInit.getAir72XUXDefaultLatestCorePath();
+            const coreLatestName:string = getAir72XUXDefaultLatestCorePath();
             corePath = path.join(air72XUXDefaultCorePath,coreLatestName);
         }
         else{
@@ -360,10 +361,10 @@ export class CreateProject {
 
     // 向工程中写入初始的main脚本
     createMainLuaData(moduleModel: any, mainLuaPath: any) {
-        const air10xMainData: string = pluginVariablesInit.getAir10XDefaultMainData();
+        const air10xMainData: string = getAir10XDefaultMainData();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                const air72XUXMainData: string = pluginVariablesInit.getAir72XUXDefaultMainData();
+                const air72XUXMainData: string = getAir72XUXDefaultMainData();
                 fs.writeFileSync(mainLuaPath, air72XUXMainData);
                 break;
             case 'air101':
@@ -379,7 +380,7 @@ export class CreateProject {
                 // esp32c3 默认demo与air101系列相同
                 fs.writeFileSync(mainLuaPath,air10xMainData);  
             default:
-                const airMainData: string = pluginVariablesInit.getAir72XUXDefaultMainData();
+                const airMainData: string = getAir72XUXDefaultMainData();
                 fs.writeFileSync(mainLuaPath, airMainData);
                 break;
         }
@@ -433,12 +434,12 @@ export class CreateProject {
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
         let demoPath: any;
         const projectDemoDistPath: string = projectPath;
-        const air101DefaultDemoPath: string = pluginVariablesInit.getAir101DefaultDemoPath();
-        const air103DefaultDemoPath: string = pluginVariablesInit.getAir103DefaultDemoPath();
-        const air105DefaultDemoPath: string = pluginVariablesInit.getAir105DefaultDemoPath();
+        const air101DefaultDemoPath: string = getAir101DefaultDemoPath();
+        const air103DefaultDemoPath: string = getAir103DefaultDemoPath();
+        const air105DefaultDemoPath: string = getAir105DefaultDemoPath();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                const air72XUXDefaultVersionDemoPath: string = pluginVariablesInit.getAir72XUXDefaultLatestDemoPath();
+                const air72XUXDefaultVersionDemoPath: string = getAir72XUXDefaultLatestDemoPath();
                 demoPath = path.join(air72XUXDefaultVersionDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
@@ -485,7 +486,7 @@ export class CreateProject {
             }
         }
         const pluginJsonData: string = JSON.stringify(pluginnJsonObj, null, '\t');
-        const pluginJsonPath: string = pluginVariablesInit.getPluginConfigPath();
+        const pluginJsonPath: string = getPluginConfigPath();
         fs.writeFileSync(pluginJsonPath, pluginJsonData);
     }
 

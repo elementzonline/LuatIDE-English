@@ -1,10 +1,11 @@
 
-import {PluginVariablesInit} from './config';
+// import {PluginVariablesInit} from './config';
 import * as fs from 'fs';
 import * as path from 'path';
 import {activityMemoryProjectPathBuffer} from './extension';
 import * as vscode from 'vscode';
-let pluginVariablesInit = new PluginVariablesInit();
+import { getAir72XUXCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDemoPath, getAir72XUXLibPath, getHistoryCorePath, getHistoryDemoPath, getHistoryLibPath, getPluginConfigPath } from './variableInterface';
+// let pluginVariablesInit = new PluginVariablesInit();
 
 
 /**
@@ -23,7 +24,7 @@ let pluginVariablesInit = new PluginVariablesInit();
 
     // 获取用户插件配置文件内容对象
     getPluginConfigJson(){
-        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath();
+        const pluginConfigPath:any = getPluginConfigPath();
         const pluginConfigJson:any  = fs.readFileSync(pluginConfigPath,'utf-8');
         const pluginConfigJsonObj:any = JSON.parse(pluginConfigJson);
         return pluginConfigJsonObj;
@@ -81,7 +82,7 @@ let pluginVariablesInit = new PluginVariablesInit();
 
     // 刷新插件配置文件
     refreshPlugintJson(plugintJsonObj:any){
-        const pluginConfigPath:any = pluginVariablesInit.getPluginConfigPath(); 
+        const pluginConfigPath:any = getPluginConfigPath(); 
         const projectJson:string = JSON.stringify(plugintJsonObj,null,'\t');
         fs.writeFileSync(pluginConfigPath,projectJson);
     }
@@ -132,7 +133,7 @@ let pluginVariablesInit = new PluginVariablesInit();
      // 插件配置文件兼容
      pluginConfigCompatible() {
         // plugin版本2.0以下兼容
-        const pluginConfigPath: string = pluginVariablesInit.getPluginConfigPath();
+        const pluginConfigPath: string = getPluginConfigPath();
         const pluginJson: string = fs.readFileSync(pluginConfigPath, 'utf-8');
         const pluginJsonObj = JSON.parse(pluginJson);
         if (Number(pluginJsonObj.version) < 2.0) {
@@ -173,19 +174,19 @@ let pluginVariablesInit = new PluginVariablesInit();
     // 插件配置文件2.0版本配置文件兼容至2.1版本
     pluginConfigCompatibleVersionTwo(pluginConfigPath:string,pluginJsonObj:any){
         // Air72X_CORE路径内容复制到Air72XUX_CORE路径下
-        const coreDataPath:string = pluginVariablesInit.getHistoryCorePath();
+        const coreDataPath:string = getHistoryCorePath();
         const air72XOldCorePath:string = path.join(coreDataPath,'Air72X_CORE');
-        const air72XUXCorePath:string = pluginVariablesInit.getAir72XUXCorePath();
+        const air72XUXCorePath:string = getAir72XUXCorePath();
         this.copyDir(air72XOldCorePath,air72XUXCorePath);
         // Air72X_DEMO路径内容复制到Air72XUX_DEMO路径下
-        const demoDataPath:string = pluginVariablesInit.getHistoryDemoPath();
+        const demoDataPath:string = getHistoryDemoPath();
         const air72XOldDemoPath:string = path.join(demoDataPath,'Air72X_DEMO');
-        const air72XUXDemoPath:string = pluginVariablesInit.getAir72XUXDemoPath();
+        const air72XUXDemoPath:string = getAir72XUXDemoPath();
         this.copyDir(air72XOldDemoPath,air72XUXDemoPath);
         // Air72X_LIB路径内容复制到Air72XUX_LIB路径下
-        const libDataPath:string = pluginVariablesInit.getHistoryLibPath();
+        const libDataPath:string = getHistoryLibPath();
         const air72XOldLibPath:string = path.join(libDataPath,'Air72X_LIB');
-        const air72XUXLibPath:string = pluginVariablesInit.getAir72XUXLibPath();
+        const air72XUXLibPath:string = getAir72XUXLibPath();
         this.copyDir(air72XOldLibPath,air72XUXLibPath);
         // 删除Air72X_CORE所有内容
         this.deleteDirRecursive(air72XOldCorePath);
@@ -265,7 +266,7 @@ let pluginVariablesInit = new PluginVariablesInit();
         // 用户lib路径兼容
         let libPath: string = projectOldJsonObj['lib_path'];
         if (libPath === '' && projectOldJsonObj['module_model'] !== 'Air10X') {
-            libPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
+            libPath = getAir72XUXDefaultLatestLibPath();
         }
         luatideProjectNewJson.libPath = libPath;
         // 用户模块型号判断
