@@ -1,4 +1,4 @@
-import { PluginVariablesInit } from '../config';
+// import { PluginVariablesInit } from '../config';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
@@ -9,8 +9,9 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, projectActiveInterfact} from '../project/projectApi';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getPluginDefaultModuleList } from '../variableInterface';
 
-let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
@@ -139,8 +140,8 @@ export class HomeManage {
 
     // 获取webview的html内容
     getHomeWebviewContent() {
-        const homeHtmlJsPath = pluginVariablesInit.getHomeSourcePath();
-        const homeHtmlPath: string = pluginVariablesInit.getHomeHtmlPath();
+        const homeHtmlJsPath = getHomeSourcePath();
+        const homeHtmlPath: string = getHomeHtmlPath();
         let homeHtml: string = fs.readFileSync(homeHtmlPath, "utf-8");
         homeHtml = homeHtml.replace(
             /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
@@ -174,17 +175,17 @@ export class HomeManage {
     // 处理从webview传来的命令
     async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
-        const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
-        const pluginDefaultAir101Example:string[] = pluginVariablesInit.getAir101DefaultExampleList();
-        const pluginDefaultAir103Example:string[] = pluginVariablesInit.getAir103DefaultExampleList();
-        const pluginDefaultAir105Example:string[] = pluginVariablesInit.getAir105DefaultExampleList();
-        const pluginDefaultAir72XUXExample:string[] = pluginVariablesInit.getAir72XUXDefaultExampleList();
+        const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
+        const pluginDefaultAir101Example:string[] = getAir101DefaultExampleList();
+        const pluginDefaultAir103Example:string[] = getAir103DefaultExampleList();
+        const pluginDefaultAir105Example:string[] = getAir105DefaultExampleList();
+        const pluginDefaultAir72XUXExample:string[] = getAir72XUXDefaultExampleList();
         const pluginDefaultEsp32c3Example:string[] = [];
-        const air72XUXLibList:string[] = pluginVariablesInit.getAir72XUXDefaultLibList();
-        const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XUXDefaultCoreList();
-        const air101CoreList:string[] = pluginVariablesInit.getAir101DefaultCoreList();
-        const air103CoreList:string[] = pluginVariablesInit.getAir103DefaultCoreList();
-        const air105CoreList:string[] = pluginVariablesInit.getAir105DefaultCoreList();
+        const air72XUXLibList:string[] = getAir72XUXDefaultLibList();
+        const air72XUXCoreList:string[] = getAir72XUXDefaultCoreList();
+        const air101CoreList:string[] = getAir101DefaultCoreList();
+        const air103CoreList:string[] = getAir103DefaultCoreList();
+        const air105CoreList:string[] = getAir105DefaultCoreList();
         const air72XCXCoreList:string[] = [];
         const esp32c3CoreList:string[] = [];
         const air101LibList:string[] = []; 
@@ -570,7 +571,7 @@ export class HomeManage {
             // 如果非10x且lib为空，则为默认lib
             if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
             openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105' && openProjectMessage.openProjectModuleModel!=='esp32c3') {
-                openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
+                openProjectMessage.openProjectLibPath = getAir72XUXDefaultLatestLibPath();
             }
             projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
