@@ -760,6 +760,8 @@ export class PluginConfigInit {
     //生成用户唯一性标识uuid
     uuidGenerator() {
         if (!fs.existsSync(this.uuidPath)) {
+            // 改接口获取到的UUID每次都不一样，可以看作是一个随机数
+            // 我们需要在第一次使用的时候保存下来，后面都用这一个
             let userToken = uuidv4();
             fs.writeFileSync(this.uuidPath, userToken);
             console.log('userToken', userToken);
