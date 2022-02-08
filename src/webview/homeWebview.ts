@@ -402,22 +402,9 @@ export class HomeManage {
             case 'cancelProject':
                 homePanel.dispose();
                 break;
-            // case 'importProject':
-            //     switch(message.text){
-            //         case "pure":
-            //             break;
-            //         case "example":
-            //             break;
-            //         case "ndk":
-            //             break;
-            //         case "ui":
-            //             break;
-            //     }
-            //     break;
             case 'Alert':
                 vscode.window.showErrorMessage(message.text['msg'],{modal: true});
                 break;
-            
             // 用户新建pure工程命令接收
             case "pureProject":
                 createProject.createPureProject(message);
@@ -434,99 +421,99 @@ export class HomeManage {
             case "uiProject":
                 createProject.createUiProject(message);
                 break;
-        // 用户导入工程信息接收
-        case 'importProject':
-            // 处理导入工程传过来的路径数据
-            this.openProjectReceiveDataHandle(message);
-            break;
-        // 接收webview提交的打开资源管理器选择用户工程路径请求
-        case 'openSourceOpenProject':
-            console.log(message.text);
-            switch (message.text) {
-                case 'customProjectPathOpenProject':
-                    const customProjectOptions = {
-                        canSelectFiles: false,		//是否选择文件
-                        canSelectFolders: true,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择需要导入工程的文件夹'
-                    };
-                    const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
-                    let customProjectPath:string|undefined;
-                    if (customProjectPathResult!==undefined) {
-                        customProjectPath = customProjectPathResult[0].fsPath;
-                    }
-                    else {
-                        customProjectPath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customProjectPathOpenProject",
-                            text: customProjectPath,
-
+            // 用户导入工程信息接收
+            case 'importProject':
+                // 处理导入工程传过来的路径数据
+                this.openProjectReceiveDataHandle(message);
+                break;
+            // 接收webview提交的打开资源管理器选择用户工程路径请求
+            case 'openSourceOpenProject':
+                console.log(message.text);
+                switch (message.text) {
+                    case 'customProjectPathOpenProject':
+                        const customProjectOptions = {
+                            canSelectFiles: false,		//是否选择文件
+                            canSelectFolders: true,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择需要导入工程的文件夹'
+                        };
+                        const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        let customProjectPath:string|undefined;
+                        if (customProjectPathResult!==undefined) {
+                            customProjectPath = customProjectPathResult[0].fsPath;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
-                // 接收webview提交的打开资源管理器选择用户lib路径请求
-                case 'customLibPathOpenProject':
-                    const customLibOptions = {
-                        canSelectFiles: false,		//是否选择文件
-                        canSelectFolders: true,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择需要导入工程的文件夹'
-                    };
-                    const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
-                    let customLibPath:string|undefined;
-                    if (customLibPathResult!==undefined) {
-                        customLibPath = customLibPathResult[0].fsPath;
-                    }
-                    else {
-                        customLibPath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customLibPathOpenProject",
-                            text: customLibPath,
-
+                        else {
+                            customProjectPath = undefined;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customProjectPathOpenProject",
+                                text: customProjectPath,
 
-                // 接收webview提交的打开资源管理器选择用户core路径请求
-                case 'customCorePathOpenProject':
-                    const customCoreOptions = {
-                        canSelectFiles: true,		//是否选择文件
-                        canSelectFolders: false,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择底包',
-                        filters: {
-                            json: ['pac', "soc"], // 文件类型过滤
-                        },
-                    };
-                    const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
-                    let customCorePath:string|undefined;
-                    if (customCorePathResult!==undefined) {
-                        customCorePath = customCorePathResult[0].fsPath;
-                    }
-                    else {
-                        customCorePath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customCorePathOpenProject",
-                            text: customCorePath,
-
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+                    // 接收webview提交的打开资源管理器选择用户lib路径请求
+                    case 'customLibPathOpenProject':
+                        const customLibOptions = {
+                            canSelectFiles: false,		//是否选择文件
+                            canSelectFolders: true,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择需要导入工程的文件夹'
+                        };
+                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        let customLibPath:string|undefined;
+                        if (customLibPathResult!==undefined) {
+                            customLibPath = customLibPathResult[0].fsPath;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
-            }
-            break;
-        case 'getImportProjectInitData':
+                        else {
+                            customLibPath = undefined;
+                        }
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customLibPathOpenProject",
+                                text: customLibPath,
+
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+
+                    // 接收webview提交的打开资源管理器选择用户core路径请求
+                    case 'customCorePathOpenProject':
+                        const customCoreOptions = {
+                            canSelectFiles: true,		//是否选择文件
+                            canSelectFolders: false,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择底包',
+                            filters: {
+                                json: ['pac', "soc"], // 文件类型过滤
+                            },
+                        };
+                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        let customCorePath:string|undefined;
+                        if (customCorePathResult!==undefined) {
+                            customCorePath = customCorePathResult[0].fsPath;
+                        }
+                        else {
+                            customCorePath = undefined;
+                        }
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customCorePathOpenProject",
+                                text: customCorePath,
+
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+                }
+                break;
+            case 'getImportProjectInitData':
             // console.log('test');
             homePanel.webview.postMessage(
                 {

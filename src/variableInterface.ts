@@ -143,7 +143,7 @@ export function getProjectSourcePath() {
     return projectSourcePath;
 }
 
-// 获取打开工程project主页
+// 获取打开工程project资源文件路径
 export function getOpenProjectSourcePath() {
     const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'importProject');
     return projectSourcePath;
@@ -181,7 +181,7 @@ export function getLoginSuccessPath() {
 
 // 获取登录失败状态svg图标路径
 export function getLoginFailedPath() {
-    const loginFailedPath: string = path.join(extensionPath, 'webview', 'resource', 'loginSuccess.svg');
+    const loginFailedPath: string = path.join(extensionPath, 'webview', 'resource', 'loginFail.svg');
     return loginFailedPath;
 }
 
@@ -243,7 +243,10 @@ export function getPluginDefaultModuleList() {
 // 获取Air72XUX默认示例demo列表
 export function getAir72XUXDefaultExampleList() {
     const demoList: string[] = [];
-    const air72XUXDefaultLatestDemoPath: string = getAir72XUXDefaultLatestDemoPath();
+    const air72XUXDefaultLatestDemoPath: string|undefined = getAir72XUXDefaultLatestDemoPath();
+    if (air72XUXDefaultLatestDemoPath==='') {
+        return demoList;
+    }
     const files: string[] = fs.readdirSync(air72XUXDefaultLatestDemoPath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
@@ -515,6 +518,10 @@ export function getAir72XUXDefaultLatestCorePath() {
 export function getAir72XUXDefaultLatestLibPath() {
     const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
     const libList: string[] = fs.readdirSync(air72XUXLibPath);
+    let libLatestPath:string = '';
+    if (libList.length===0) {
+        return libLatestPath;
+    }
     const reg = /V([\d\.]+)/gi;
     let currentVersion: string | undefined = undefined;
     for (let index = 0; index < libList.length; index++) {
@@ -531,7 +538,7 @@ export function getAir72XUXDefaultLatestLibPath() {
             currentVersion = libNameVersionArray[1];
         }
     }
-    const libLatestPath: string = path.join(air72XUXLibPath, 'V' + currentVersion, 'lib');
+    libLatestPath = path.join(air72XUXLibPath, 'V' + currentVersion, 'lib');
     return libLatestPath;
 }
 
@@ -539,6 +546,10 @@ export function getAir72XUXDefaultLatestLibPath() {
 export function getAir72XUXDefaultLatestDemoPath() {
     const air72XUXDemoPath: string = getAir72XUXDefaultDemoPath();
     const demoList: string[] = fs.readdirSync(air72XUXDemoPath);
+    let demoLatestPath:string = "";
+    if (demoList.length===0) {
+        return demoLatestPath;
+    }
     const reg = /V([\d\.]+)/gi;
     let currentVersion: string | undefined = undefined;
     for (let index = 0; index < demoList.length; index++) {
@@ -555,7 +566,7 @@ export function getAir72XUXDefaultLatestDemoPath() {
             currentVersion = demoNameVersionArray[1];
         }
     }
-    const demoLatestPath: string = path.join(air72XUXDemoPath, 'V' + currentVersion);
+    demoLatestPath = path.join(air72XUXDemoPath, 'V' + currentVersion);
     return demoLatestPath;
 }
 
