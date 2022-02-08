@@ -21,6 +21,8 @@ import * as fs from 'fs';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 import {checkSourceUpdate} from './serverSourceUpdate';
+import * as dataReport from './feedback/dataReport';
+
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -157,6 +159,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://www.openluat.com/about/contact_us'));
 	}));
+
+	dataReport.activaReport();
 }
 
 /** 这个方法当插件结束时被调用 */
