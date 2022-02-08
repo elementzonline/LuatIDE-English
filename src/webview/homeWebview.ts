@@ -6,10 +6,10 @@ import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
-import {checkSameProjectExistStatusForPluginConfig, projectActiveInterfact} from '../project/projectApi';
+import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getPluginDefaultModuleList } from '../variableInterface';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getPluginDefaultModuleList } from '../variableInterface';
 
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
@@ -592,18 +592,15 @@ export class HomeManage {
             };
             pluginJsonParse.pushPluginConfigProject(projectObj);
             pluginJsonParse.setPluginConfigActivityProject(openProjectMessage.openProjectPath);
-            // const appFile:string = getFileForDir(openProjectMessage.openProjectPath);         //appfile采用用户自己的appfile
-            // projectJsonParse.setProjectConfigAppFile(appFile,openProjectMessage.openProjectPath);
             const projectConfigVersion:string = projectJsonParse.getprojectConfigInitVersion();
             projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
-            projectJsonParse.setProjectConfigCorePath(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectPath);
-            // 如果非10x且lib为空，则为默认lib
-            if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
-            openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105' && openProjectMessage.openProjectModuleModel!=='esp32c3') {
-                openProjectMessage.openProjectLibPath = getAir72XUXDefaultLatestLibPath();
-            }
-            projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
+            // 获取写入配置文件的实际core路径
+            const openProjectCorePath:string = getCreateProjectCorepathHandle(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectModuleModel);
+            projectJsonParse.setProjectConfigCorePath(openProjectCorePath,openProjectMessage.openProjectPath);
+            // 获取写入配置文件的实际lib路径
+            const openProjectLibPath:string = getCreateProjectLibpathHandle(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectModuleModel);
+            projectJsonParse.setProjectConfigLibPath(openProjectLibPath,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
             // vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
             // 执行激活工程到活动工程操作
