@@ -445,6 +445,11 @@ function iP_exampleProjectInitDataManagment(initData) {
     let exampleSelected = $(".iP-select_getExample_ExampleInfo");
     let coreSelected = $(".iP-select_getExample_CoreInfo");
     
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initModuleArr.length; i++) {
+        iP_autoProduceOption(moduleSelected, initModuleArr[i]);
+    }
+
     /* 添加模块型号显示选项 */
     moduleSelected.append('<option value="default" id="iP-example_customeModule" style="display: none;">点击选择</option>');
 
@@ -533,6 +538,11 @@ function iP_ndkProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getNDK_ModuleInfo");
     let exampleSelected = $(".iP-select_getNDK_ExampleInfo");
 
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initModuleArr.length; i++) {
+        iP_autoProduceOption(moduleSelected, initModuleArr[i]);
+    }
+
     /* 添加模块型号显示选项 */
     moduleSelected.append('<option value="default" id="iP-ndk_customeModule" style="display: none;">点击选择</option>');
 
@@ -604,6 +614,11 @@ function iP_uiProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getUi_ModuleInfo");
     let libSelected = $(".iP-select_getUi_LibInfo");
     let coreSelected = $(".iP-select_getUi_CoreInfo");
+
+    /* 添加初始化模块型号 */
+    for (let i = 0; i < initModuleArr.length; i++) {
+        iP_autoProduceOption(moduleSelected, initModuleArr[i]);
+    }
 
     /* 添加模块型号显示选项 */
     moduleSelected.append('<option value="default" id="iP-ui_customeModule" style="display: none;">点击选择</option>');
@@ -1217,6 +1232,8 @@ function iP_sendImportProjectData(tar) {
 
 /* 导入工程初始化数据获取 */
 function gl_importProjectInitData(type, data) {
+    console.log("[[[[init]]]]\n", type);
+    console.log("[[[[init]]]]\n", data);
     importProjectInitData = data;
     switch (type) {
         case "pure":
@@ -1252,6 +1269,8 @@ function gl_iP_customPathManagment(type, data) {
 
 /* 获取导入工程数据[用户] */
 function gl_importProjectData(type, data) {
+    console.log("[[[[importData]]]]\n", type);
+    console.log("[[[[importData]]]]\n", data);
     let targetProject = null;
     iP_isInImportProject = true;
     switch (type) {
