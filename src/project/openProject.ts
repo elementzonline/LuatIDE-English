@@ -6,7 +6,7 @@ import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
-import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
+// import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
 
@@ -35,25 +35,7 @@ export class OpenProject {
         pluginJsonParse.projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
-        const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
-        const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
-        // if (panel===undefined) {
-        //     homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson,importProjectInitJson);
-        // }
-        // else{
-        //     panel.webview.postMessage(
-        //         {
-        //             command: 'importProjectData',
-        //             text: openProjectJson
-        //         }
-        //     );
-        //     panel.webview.postMessage(
-        //         {
-        //             command: "importProjectInitData",
-        //             text: importProjectInitJson,
-        //         });
-        // }
+        homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson);
     }
 
     // 用户点击home界面内打开工程显示内容 
@@ -73,35 +55,8 @@ export class OpenProject {
         pluginJsonParse.projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
-        const projectJson = projectJsonParse.getProjectConfigJson(importProjectPath);
-        const importProjectInitJson = this.getImportProjectInitJson(projectJson);
-        return [openProjectJson,importProjectInitJson];
+        return openProjectJson;
     }
-
-    // 获取数据接口工程
-    getImportProjectInitJson(projectJson:any){
-        let importProjectInitJson = {
-            "projectType":"",
-            "data":{
-                "libList":[],
-                "coreList":[],
-                "exampleList":[]
-            }
-        };
-        const projectType:string = projectJson.projectType;
-        const moudleModel:string = projectJson.moduleModel;
-        const libList = getLibListBaseMoudeleMode(moudleModel);
-        const coreList = getCoreListBaseMoudeleMode(moudleModel);
-        const exampleList = getExampleListBaseMoudeleMode(moudleModel);
-        importProjectInitJson.projectType=projectType;
-        importProjectInitJson.data.libList=libList;
-        importProjectInitJson.data.coreList=coreList;
-        if (projectType==='example') {
-            importProjectInitJson.data.exampleList=exampleList;
-        }
-        return importProjectInitJson;
-    }   
-
 
     //打开工程工程配置文件数据处理 
     openProjectDataParse(importProjectPath:any){
@@ -155,10 +110,6 @@ export class OpenProject {
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}
-						// else if (optionsResult === '否') {
-						// 	vscode.window.showInformationMessage("不是有效的工程,请重新选择");
-                        //     return undefined;
-						// }
 				});
                 return selectProjectPath;
             }
