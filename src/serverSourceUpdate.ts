@@ -5,9 +5,10 @@ import * as fetch from 'node-fetch';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as compressing from 'compressing';
-import { PluginVariablesInit } from './config';
+// import { PluginVariablesInit } from './config';
 import * as path from 'path';
-let plugVariablesInit = new PluginVariablesInit();
+import { getAir101DefaultCorePath, getAir101DefaultDemoPath, getAir101DefaultLatestCorePath, getAir103DefaultCorePath, getAir103DefaultDemoPath, getAir103DefaultLatestCorePath, getAir105DefaultCorePath, getAir105DefaultLatestCorePath, getAir72XUXDefaultCorePath, getAir72XUXDefaultDemoPath, getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibPath, getLuatIDEDataPath } from './variableInterface';
+// let plugVariablesInit = new PluginVariablesInit();
 
 /*
 *请求接口api获取各资源的路径json对象
@@ -15,7 +16,12 @@ let plugVariablesInit = new PluginVariablesInit();
 *@returns jsonResult 返回接口请求的资源集合json对象
 */
 async function getSourceHubJsonObj(interfaceUrl:string) {
-    const response: any = await fetch(interfaceUrl);
+    const response: any = await fetch(interfaceUrl)
+    .catch(error => {console.log(error);
+            return undefined;});
+    if (response===undefined) {
+        return undefined;
+    }
     const jsonResult: any = await response.json();
     return jsonResult;
 }
@@ -26,13 +32,13 @@ async function getSourceHubJsonObj(interfaceUrl:string) {
 */
 async function checkAir72XUXScriptUpdate(){
     const localScriptReg = /V([\d\.]+)/ig;
-    const localScriptPath = plugVariablesInit.getAir72XUXDefaultLatestLibPath();
+    const localScriptPath = getAir72XUXDefaultLatestLibPath();
     const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localScriptPath);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
     const apiName:string = '8910_script';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir72XUXScriptUpdateState:boolean = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir72XUXScriptUpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
     return checkAir72XUXScriptUpdateState;
 }
 
@@ -42,13 +48,13 @@ async function checkAir72XUXScriptUpdate(){
 */
 async function checkAir72XUXCoreUpdate(){
     const localScriptReg = /V([\d]+)_/ig;
-    const localCorePath = plugVariablesInit.getAir72XUXDefaultLatestCorePath();
+    const localCorePath = getAir72XUXDefaultLatestCorePath();
     const localCoreVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localCorePath);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
     const apiName:string = '8910_lua_lod';
     const remoteCoreVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
     // console.log('====',localCoreVersion,remoteCoreVersion);
-    const checkAir72XUXCoreUpdateState:boolean = checkUpdateState(localCoreVersion,remoteCoreVersion);
+    const checkAir72XUXCoreUpdateState:boolean|undefined = checkUpdateState(localCoreVersion,remoteCoreVersion);
     return checkAir72XUXCoreUpdateState;
 }
 
@@ -58,13 +64,13 @@ async function checkAir72XUXCoreUpdate(){
 */
 async function checkAir101SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = plugVariablesInit.getAir101DefaultLatestCorePath();
+    const localSourcePath:string = getAir101DefaultLatestCorePath();
     const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '101_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir101UpdateState:boolean = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir101UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
     return checkAir101UpdateState;
 }
 
@@ -74,13 +80,13 @@ async function checkAir101SourceUpdate() {
 */
 async function checkAir103SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = plugVariablesInit.getAir103DefaultLatestCorePath();
+    const localSourcePath:string = getAir103DefaultLatestCorePath();
     const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '103_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir103UpdateState:boolean = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir103UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
     return checkAir103UpdateState;
 }
 
@@ -90,13 +96,13 @@ async function checkAir103SourceUpdate() {
 */
 async function checkAir105SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = plugVariablesInit.getAir105DefaultLatestCorePath();
+    const localSourcePath:string = getAir105DefaultLatestCorePath();
     const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '105_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir105UpdateState:boolean = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir105UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
     return checkAir105UpdateState;
 }
 
@@ -109,7 +115,7 @@ async function checkAir105SourceUpdate() {
 function checkUpdateState(localSourceVersion:string|undefined,remoteSourceVersion:string|undefined){
     if (remoteSourceVersion === undefined) {
         console.log('检查服务器更新失败');
-        return false;
+        return undefined;
     }
     else if (localSourceVersion === undefined) {
         return true;
@@ -129,6 +135,9 @@ function checkUpdateState(localSourceVersion:string|undefined,remoteSourceVersio
 async function getRemoteScriptVersion(reg:any,apiName:string) {
     const interfaceUrl:string = 'https://luatos.com/api/luatools/files';
     const jsonObj:any  = await getSourceHubJsonObj(interfaceUrl);
+    if (jsonObj===undefined) {
+        return undefined;
+    }
     const versionRegResultArray = reg.exec(jsonObj[apiName]);
     if (versionRegResultArray===null) {
         return undefined;
@@ -165,7 +174,7 @@ async function download(url: any, filePath: any) {
         headers: headers,
     }).then(res => res.buffer()).then(_ => {
         fs.writeFileSync(filePath, _, 'binary');
-    });
+    }).catch(error => console.log(error));;
   }
 
 /*
@@ -243,7 +252,7 @@ async function deleteFolderRecursive(url: any) {
 *提示用户更新信息，进行信息交互若用户选择更新则执行更新操作流程
 *@param downloadReadyHint 准备下载用户提示信息
 *@param downloadingHint 下载过程中用户提示信息
-*@param updateFunction 具体的下载函数
+*@param updateFunction 具体的下载函数名称
 */
 async function updateHintForUser(downloadReadyHint:string,downloadingHint:string,updateFunction:any) {
     await vscode.window.showInformationMessage(downloadReadyHint, { modal: true }, '是').then(async result => {
@@ -257,9 +266,15 @@ async function updateHintForUser(downloadReadyHint:string,downloadingHint:string
 *提示用户更新信息，进行信息交互若用户选择更新则执行更新操作流程
 *@param result 用户选择的信息
 *@param downloadReadyHint 用户提示信息
-*@param updateFunction 具体的下载函数
+*@param updateFunction 具体的下载函数名称
 */
 async function updateProgressView(result: string,downloadingHint:string,updateFunction:any) {
+    const interfaceUrl = 'https://luatos.com/api/luatools/files';
+    const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
+    const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
+    if (jsonObj===undefined) {
+        return undefined;
+    }
     if (result === '是') {
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
@@ -271,7 +286,7 @@ async function updateProgressView(result: string,downloadingHint:string,updateFu
             });
             progress.report({ increment: 0, message: '正在更新...' });
             progress.report({ increment: 10, message: '正在更新...' });
-            await updateFunction;
+            await updateFunction(jsonObj,sourceBasePath);
             setTimeout(() => {
                 progress.report({ increment: 50, message: '正在更新...' });
             }, 1000);
@@ -292,7 +307,7 @@ async function updateProgressView(result: string,downloadingHint:string,updateFu
 *@returns apiNameTempSavePath 拉取到本地的资源要存储的临时路径
 */
 function getTempSavePath(apiName:string) {
-    const luatideDataPath:string = plugVariablesInit.getLuatIDEDataPath();
+    const luatideDataPath:string = getLuatIDEDataPath();
     const tempSavePath:string = path.join(luatideDataPath,'temp');
     const apiNameTempSavePath:string = path.join(tempSavePath,apiName);
     if (!fs.existsSync(tempSavePath)) {
@@ -346,7 +361,7 @@ async function pullAir101Source(jsonObj:any,sourceBaseUrl:string) {
     const sourceDistPath:string = path.join(air101CoreSourceTempPath,jsonObj['101_lua_lod']);
     await download(sourceAbsloutePath,sourceDistPath);
     await unzip(sourceDistPath,air101CoreSourceTempPath);
-    const demoDistPath:string = plugVariablesInit.getAir101DefaultDemoPath();
+    const demoDistPath:string = getAir101DefaultDemoPath();
     air101DemoHandle(path.join(air101CoreSourceTempPath,'demo'),demoDistPath);
     air101CoreHandle(air101CoreSourceTempPath);
     await deleteFolderRecursive(air101CoreSourceTempPath);
@@ -363,7 +378,7 @@ async function pullAir103Source(jsonObj:any,sourceBaseUrl:string) {
     const sourceDistPath:string = path.join(air103CoreSourceTempPath,jsonObj['103_lua_lod']);
     await download(sourceAbsloutePath,sourceDistPath);
     await unzip(sourceDistPath,air103CoreSourceTempPath);
-    const demoDistPath:string = plugVariablesInit.getAir103DefaultDemoPath();
+    const demoDistPath:string = getAir103DefaultDemoPath();
     air103DemoHandle(path.join(air103CoreSourceTempPath,'demo'),demoDistPath);
     air103CoreHandle(air103CoreSourceTempPath);
     await deleteFolderRecursive(air103CoreSourceTempPath);
@@ -391,7 +406,7 @@ async function pullAir105Source(jsonObj:any,sourceBaseUrl:string) {
 *@param coreSourcePath air105固件资源临时存储路径
 */
 function air105CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = plugVariablesInit.getAir105DefaultCorePath();
+    const air101CoreDistPath:string = getAir105DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
@@ -439,7 +454,7 @@ function air103DemoHandle(sourceDir:string,distDir:string) {
 *@param coreSourcePath air103固件资源临时存储路径
 */
 function air103CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = plugVariablesInit.getAir103DefaultCorePath();
+    const air101CoreDistPath:string = getAir103DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
@@ -454,7 +469,7 @@ function air103CoreHandle(coreSourcePath:string) {
 *@param coreSourcePath air101固件资源临时存储路径
 */
 function air101CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = plugVariablesInit.getAir101DefaultCorePath();
+    const air101CoreDistPath:string = getAir101DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
@@ -486,7 +501,7 @@ function air101DemoHandle(sourceDir:string,distDir:string) {
 *@param coreSourcePath air72XUX固件资源临时存储路径
 */
 function air72XUXCoreHandle(coreSourcePath:string) {
-    const air72XUXCoreDistPath:string = plugVariablesInit.getAir72XUXDefaultCorePath();
+    const air72XUXCoreDistPath:string = getAir72XUXDefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     // console.log('=============3',files);
     files.forEach((fileName) => {
@@ -510,7 +525,7 @@ function air72XUXDemoHandle(demoSourcePath:string,demoName:string) {
         return;
     }
     const demoVersion:string = demoVersionArray[1];
-    const air72XUXDemoPath:string = plugVariablesInit.getAir72XUXDefaultDemoPath();
+    const air72XUXDemoPath:string = getAir72XUXDefaultDemoPath();
     const demoDistPath:string = path.join(air72XUXDemoPath,demoVersion);
     if (!fs.existsSync(demoDistPath)) {
         fs.mkdirSync(demoDistPath);
@@ -546,7 +561,7 @@ function air72XUXLibHandle(libSourcePath:string,libName:string) {
         return;
     }
     const libVersion:string = libVersionArray[1];
-    const air72XUXLibPath:string = plugVariablesInit.getAir72XUXDefaultLibPath();
+    const air72XUXLibPath:string = getAir72XUXDefaultLibPath();
     if (!fs.existsSync(path.join(air72XUXLibPath,libVersion))) {
         fs.mkdirSync(path.join(air72XUXLibPath,libVersion));
     }
@@ -563,30 +578,21 @@ export async function checkSourceUpdate() {
     if (air72XUXSourceUpdateState) {
         const downloadReadyHint:string = '检测到air72XUX/air82XUX的DEMO及Lib文件有更新,是否更新？';
         const downloadingHint:string = '正在为您拉取最新air72XUX/air82XUX的DEMO及Lib文件,请耐心等待';
-        const interfaceUrl = 'https://luatos.com/api/luatools/files';
-        const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-        const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXScript(jsonObj,sourceBasePath));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXScript);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     }
     const air72XUXCoreUpdateState = await checkAir72XUXCoreUpdate();
     console.log(air72XUXCoreUpdateState);
     if (air72XUXCoreUpdateState) {
         const downloadReadyHint:string = '检测到air72XUX/air82XUX固件有更新,是否更新？';
         const downloadingHint:string = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
-        const interfaceUrl = 'https://luatos.com/api/luatools/files';
-        const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-        const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXCore(jsonObj,sourceBasePath));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXCore);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     }
     const air101SourceState = await checkAir101SourceUpdate();
     console.log(air101SourceState);
     if (air101SourceState) {
         const downloadReadyHint:string = '检测到air101资源文件有更新,是否更新？';
         const downloadingHint:string = '正在为您拉取最新air101资源文件,请耐心等待';
-        const interfaceUrl = 'https://luatos.com/api/luatools/files';
-        const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-        const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir101Source(jsonObj,sourceBasePath));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        updateHintForUser(downloadReadyHint,downloadingHint,pullAir101Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
     }
     const air103SourceState = await checkAir103SourceUpdate();
@@ -594,10 +600,7 @@ export async function checkSourceUpdate() {
     if (air103SourceState) {
         const downloadReadyHint:string = '检测到air103的资源文件有更新,是否更新？';
         const downloadingHint:string = '正在为您拉取最新air103资源文件,请耐心等待';
-        const interfaceUrl = 'https://luatos.com/api/luatools/files';
-        const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-        const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir103Source(jsonObj,sourceBasePath));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        updateHintForUser(downloadReadyHint,downloadingHint,pullAir103Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
     }
     const air105SourceState = await checkAir105SourceUpdate();
@@ -605,10 +608,7 @@ export async function checkSourceUpdate() {
     if (air105SourceState) {
         const downloadReadyHint:string = '检测到air105的资源文件有更新,是否更新？';
         const downloadingHint:string = '正在为您拉取最新air105资源文件,请耐心等待';
-        const interfaceUrl = 'https://luatos.com/api/luatools/files';
-        const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-        const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir105Source(jsonObj,sourceBasePath));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        updateHintForUser(downloadReadyHint,downloadingHint,pullAir105Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     }
 }
 // checkSourceUpdate();

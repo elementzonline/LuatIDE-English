@@ -1,4 +1,4 @@
-import { PluginVariablesInit } from '../config';
+// import { PluginVariablesInit } from '../config';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
@@ -6,11 +6,12 @@ import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
-import {checkSameProjectExistStatusForPluginConfig, projectActiveInterfact} from '../project/projectApi';
+import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getPluginDefaultModuleList } from '../variableInterface';
 
-let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
@@ -22,11 +23,10 @@ export class HomeManage {
 
     }
     homePanel: vscode.WebviewPanel | undefined = undefined;
-    private importProjectInitJson:any;
+    // private importProjectInitJson:any;
     private openProjectJson:any;
     // 工程主页webview管理
-    homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={},importProjectInitJson:any={}) {
-        this.importProjectInitJson = importProjectInitJson;
+    homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
         this.openProjectJson =openProjectJson;
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
@@ -139,8 +139,8 @@ export class HomeManage {
 
     // 获取webview的html内容
     getHomeWebviewContent() {
-        const homeHtmlJsPath = pluginVariablesInit.getHomeSourcePath();
-        const homeHtmlPath: string = pluginVariablesInit.getHomeHtmlPath();
+        const homeHtmlJsPath = getHomeSourcePath();
+        const homeHtmlPath: string = getHomeHtmlPath();
         let homeHtml: string = fs.readFileSync(homeHtmlPath, "utf-8");
         homeHtml = homeHtml.replace(
             /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
@@ -174,17 +174,17 @@ export class HomeManage {
     // 处理从webview传来的命令
     async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
         let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
-        const pluginDefaultModuleList: string[] = pluginVariablesInit.getPluginDefaultModuleList();
-        const pluginDefaultAir101Example:string[] = pluginVariablesInit.getAir101DefaultExampleList();
-        const pluginDefaultAir103Example:string[] = pluginVariablesInit.getAir103DefaultExampleList();
-        const pluginDefaultAir105Example:string[] = pluginVariablesInit.getAir105DefaultExampleList();
-        const pluginDefaultAir72XUXExample:string[] = pluginVariablesInit.getAir72XUXDefaultExampleList();
+        const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
+        const pluginDefaultAir101Example:string[] = getAir101DefaultExampleList();
+        const pluginDefaultAir103Example:string[] = getAir103DefaultExampleList();
+        const pluginDefaultAir105Example:string[] = getAir105DefaultExampleList();
+        const pluginDefaultAir72XUXExample:string[] = getAir72XUXDefaultExampleList();
         const pluginDefaultEsp32c3Example:string[] = [];
-        const air72XUXLibList:string[] = pluginVariablesInit.getAir72XUXDefaultLibList();
-        const air72XUXCoreList:string[] = pluginVariablesInit.getAir72XUXDefaultCoreList();
-        const air101CoreList:string[] = pluginVariablesInit.getAir101DefaultCoreList();
-        const air103CoreList:string[] = pluginVariablesInit.getAir103DefaultCoreList();
-        const air105CoreList:string[] = pluginVariablesInit.getAir105DefaultCoreList();
+        const air72XUXLibList:string[] = getAir72XUXDefaultLibList();
+        const air72XUXCoreList:string[] = getAir72XUXDefaultCoreList();
+        const air101CoreList:string[] = getAir101DefaultCoreList();
+        const air103CoreList:string[] = getAir103DefaultCoreList();
+        const air105CoreList:string[] = getAir105DefaultCoreList();
         const air72XCXCoreList:string[] = [];
         const esp32c3CoreList:string[] = [];
         const air101LibList:string[] = []; 
@@ -195,10 +195,9 @@ export class HomeManage {
             case 'openNewProjectWebview':
                 break;
             case 'openProjectWebview':
-                const openProjectArrayList:string[]|undefined = await openProject.openProjectUserControl(context);
-                if (openProjectArrayList!==undefined) {
-                    this.openProjectJson = openProjectArrayList[0];
-                    this.importProjectInitJson = openProjectArrayList[1];
+                const openProjectUserControlJson:string[]|undefined = await openProject.openProjectUserControl(context);
+                if (openProjectUserControlJson!==undefined) {
+                    this.openProjectJson = openProjectUserControlJson;
                     homePanel.webview.postMessage(
                         {
                             command: 'importProjectData',
@@ -403,22 +402,9 @@ export class HomeManage {
             case 'cancelProject':
                 homePanel.dispose();
                 break;
-            // case 'importProject':
-            //     switch(message.text){
-            //         case "pure":
-            //             break;
-            //         case "example":
-            //             break;
-            //         case "ndk":
-            //             break;
-            //         case "ui":
-            //             break;
-            //     }
-            //     break;
             case 'Alert':
                 vscode.window.showErrorMessage(message.text['msg'],{modal: true});
                 break;
-            
             // 用户新建pure工程命令接收
             case "pureProject":
                 createProject.createPureProject(message);
@@ -435,104 +421,136 @@ export class HomeManage {
             case "uiProject":
                 createProject.createUiProject(message);
                 break;
-        // 用户导入工程信息接收
-        case 'importProject':
-            // 处理导入工程传过来的路径数据
-            this.openProjectReceiveDataHandle(message);
-            break;
-        // 接收webview提交的打开资源管理器选择用户工程路径请求
-        case 'openSourceOpenProject':
-            console.log(message.text);
-            switch (message.text) {
-                case 'customProjectPathOpenProject':
-                    const customProjectOptions = {
-                        canSelectFiles: false,		//是否选择文件
-                        canSelectFolders: true,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择需要导入工程的文件夹'
-                    };
-                    const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
-                    let customProjectPath:string|undefined;
-                    if (customProjectPathResult!==undefined) {
-                        customProjectPath = customProjectPathResult[0].fsPath;
-                    }
-                    else {
-                        customProjectPath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customProjectPathOpenProject",
-                            text: customProjectPath,
-
+            // 用户导入工程信息接收
+            case 'importProject':
+                // 处理导入工程传过来的路径数据
+                this.openProjectReceiveDataHandle(message);
+                break;
+            // 接收webview提交的打开资源管理器选择用户工程路径请求
+            case 'openSourceOpenProject':
+                console.log(message.text);
+                switch (message.text) {
+                    case 'customProjectPathOpenProject':
+                        const customProjectOptions = {
+                            canSelectFiles: false,		//是否选择文件
+                            canSelectFolders: true,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择需要导入工程的文件夹'
+                        };
+                        const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        let customProjectPath:string|undefined;
+                        if (customProjectPathResult!==undefined) {
+                            customProjectPath = customProjectPathResult[0].fsPath;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
-                // 接收webview提交的打开资源管理器选择用户lib路径请求
-                case 'customLibPathOpenProject':
-                    const customLibOptions = {
-                        canSelectFiles: false,		//是否选择文件
-                        canSelectFolders: true,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择需要导入工程的文件夹'
-                    };
-                    const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
-                    let customLibPath:string|undefined;
-                    if (customLibPathResult!==undefined) {
-                        customLibPath = customLibPathResult[0].fsPath;
-                    }
-                    else {
-                        customLibPath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customLibPathOpenProject",
-                            text: customLibPath,
-
+                        else {
+                            customProjectPath = undefined;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customProjectPathOpenProject",
+                                text: customProjectPath,
 
-                // 接收webview提交的打开资源管理器选择用户core路径请求
-                case 'customCorePathOpenProject':
-                    const customCoreOptions = {
-                        canSelectFiles: true,		//是否选择文件
-                        canSelectFolders: false,		//是否选择文件夹
-                        canSelectMany: false,		//是否选择多个文件
-                        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-                        openLabel: '选择底包',
-                        filters: {
-                            json: ['pac', "soc"], // 文件类型过滤
-                        },
-                    };
-                    const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
-                    let customCorePath:string|undefined;
-                    if (customCorePathResult!==undefined) {
-                        customCorePath = customCorePathResult[0].fsPath;
-                    }
-                    else {
-                        customCorePath = undefined;
-                    }
-                    homePanel.webview.postMessage(
-                        {
-                            command: "customCorePathOpenProject",
-                            text: customCorePath,
-
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+                    // 接收webview提交的打开资源管理器选择用户lib路径请求
+                    case 'customLibPathOpenProject':
+                        const customLibOptions = {
+                            canSelectFiles: false,		//是否选择文件
+                            canSelectFolders: true,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择需要导入工程的文件夹'
+                        };
+                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        let customLibPath:string|undefined;
+                        if (customLibPathResult!==undefined) {
+                            customLibPath = customLibPathResult[0].fsPath;
                         }
-                    );
-                    // console.log(selectPath);
-                    break;
-            }
-            break;
-        case 'getImportProjectInitData':
+                        else {
+                            customLibPath = undefined;
+                        }
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customLibPathOpenProject",
+                                text: customLibPath,
+
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+
+                    // 接收webview提交的打开资源管理器选择用户core路径请求
+                    case 'customCorePathOpenProject':
+                        const customCoreOptions = {
+                            canSelectFiles: true,		//是否选择文件
+                            canSelectFolders: false,		//是否选择文件夹
+                            canSelectMany: false,		//是否选择多个文件
+                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            openLabel: '选择底包',
+                            filters: {
+                                json: ['pac', "soc"], // 文件类型过滤
+                            },
+                        };
+                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        let customCorePath:string|undefined;
+                        if (customCorePathResult!==undefined) {
+                            customCorePath = customCorePathResult[0].fsPath;
+                        }
+                        else {
+                            customCorePath = undefined;
+                        }
+                        homePanel.webview.postMessage(
+                            {
+                                command: "customCorePathOpenProject",
+                                text: customCorePath,
+
+                            }
+                        );
+                        // console.log(selectPath);
+                        break;
+                }
+                break;
+            case 'getImportProjectInitData':
             // console.log('test');
             homePanel.webview.postMessage(
                 {
                     command: "importProjectInitData",
-                    text: this.importProjectInitJson,
+                    text: {
+                        'projectType':this.openProjectJson.type,
+                        "data":{
+                        "moduleList": pluginDefaultModuleList,
+                        "libList": {
+                            "air72XUX/air82XUX": air72XUXLibList,
+                            "air72XCX":air72XUXLibList,
+                            "air101": air101LibList,
+                            "air103": air103LibList,
+                            "air105": air105LibList,
+                            "simulator":air72XUXLibList,
+                            "esp32c3":esp32c3LibList,
+                        },
+                        "coreList": {
+                            "air72XUX/air82XUX": air72XUXCoreList,
+                            "air72XCX":air72XCXCoreList,
+                            "air101": air101CoreList,
+                            "air103": air103CoreList,
+                            "air105": air105CoreList,
+                            "simulator":air72XUXCoreList,
+                            "esp32c3":esp32c3CoreList,
+                        },
+                        "exampleList": {
+                            "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
+                            "air72XCX":pluginDefaultAir72XUXExample,
+                            "air101": pluginDefaultAir101Example,
+                            "air103": pluginDefaultAir103Example,
+                            "air105": pluginDefaultAir105Example,
+                            "simulator":pluginDefaultAir72XUXExample,
+                            "esp32c3":pluginDefaultEsp32c3Example,
+                        },
+                    },
+                    },
                 });
             break;
         }
@@ -561,18 +579,15 @@ export class HomeManage {
             };
             pluginJsonParse.pushPluginConfigProject(projectObj);
             pluginJsonParse.setPluginConfigActivityProject(openProjectMessage.openProjectPath);
-            // const appFile:string = getFileForDir(openProjectMessage.openProjectPath);         //appfile采用用户自己的appfile
-            // projectJsonParse.setProjectConfigAppFile(appFile,openProjectMessage.openProjectPath);
             const projectConfigVersion:string = projectJsonParse.getprojectConfigInitVersion();
             projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
-            projectJsonParse.setProjectConfigCorePath(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectPath);
-            // 如果非10x且lib为空，则为默认lib
-            if (openProjectMessage.openProjectLibPath==='' && openProjectMessage.openProjectModuleModel!=='air101'&& 
-            openProjectMessage.openProjectModuleModel!=='air103' && openProjectMessage.openProjectModuleModel!=='air105' && openProjectMessage.openProjectModuleModel!=='esp32c3') {
-                openProjectMessage.openProjectLibPath = pluginVariablesInit.getAir72XUXDefaultLatestLibPath();
-            }
-            projectJsonParse.setProjectConfigLibPath(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectPath);
+            // 获取写入配置文件的实际core路径
+            const openProjectCorePath:string = getCreateProjectCorepathHandle(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectModuleModel);
+            projectJsonParse.setProjectConfigCorePath(openProjectCorePath,openProjectMessage.openProjectPath);
+            // 获取写入配置文件的实际lib路径
+            const openProjectLibPath:string = getCreateProjectLibpathHandle(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectModuleModel);
+            projectJsonParse.setProjectConfigLibPath(openProjectLibPath,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
             // vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
             // 执行激活工程到活动工程操作

@@ -2,6 +2,7 @@ import { PluginJsonParse } from "../plugConfigParse";
 import * as fs  from "fs";
 import * as path  from "path";
 import * as vscode from 'vscode';
+import { getAir101DefaultCorePath, getAir101DefaultLatestCorePath, getAir103DefaultCorePath, getAir103DefaultLatestCorePath, getAir105DefaultCorePath, getAir105DefaultLatestCorePath, getAir72XUXDefaultCorePath, getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibPath, getEsp32c3DefaultCorePath } from "../variableInterface";
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 
@@ -117,4 +118,129 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
             }
         }
     ); 
+}
+
+ // 接收到的webview发送的lib处理
+ export function getCreateProjectLibpathHandle(libPath:string,moduleModel:string){
+    const air72XUXDefaultLibPath = getAir72XUXDefaultLibPath();
+    if (fs.existsSync(libPath)) {
+        libPath = libPath;
+    }
+    else if (libPath==='' && moduleModel!=='air101'  && moduleModel!=='air103'  && moduleModel!=='air105') {
+        libPath = getAir72XUXDefaultLatestLibPath();
+    }
+    else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105' || moduleModel === 'esp32c3') {
+        libPath = '';
+    }
+    else{
+        libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
+    }
+    return libPath;
+}
+
+ //接收到的webview发送的core路径处理
+ export function getCreateProjectCorepathHandle(corePath:string,moduleModel:string){
+    switch(moduleModel){
+        case 'air72XUX/air82XUX':
+            corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
+            break;
+        case 'air72XCX':
+            corePath = '';
+            break;
+        case 'air101':
+            corePath = getCreateProjectAir101CorepathHandle(corePath);
+            break;
+        case 'air103':
+            corePath = getCreateProjectAir103CorepathHandle(corePath);
+            break;
+        case 'air105':
+            corePath = getCreateProjectAir105CorepathHandle(corePath);
+            break;
+        case 'simulator':
+            corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
+            break;
+        case 'esp32c3':
+            corePath = getCreateProjectEsp32CorepathHandle(corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的esp32c3的core处理
+export function getCreateProjectEsp32CorepathHandle(corePath:string){
+    const esp32c3DefaultCorePath = getEsp32c3DefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        const coreLatestName:string = getAir101DefaultLatestCorePath();
+        corePath = path.join(esp32c3DefaultCorePath,coreLatestName);
+    }
+    else{
+        corePath = path.join(esp32c3DefaultCorePath,corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的air101的core处理
+export function getCreateProjectAir101CorepathHandle(corePath:string){
+    const air101DefaultCorePath = getAir101DefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        const coreLatestName:string = getAir101DefaultLatestCorePath();
+        corePath = path.join(air101DefaultCorePath,coreLatestName);
+    }
+    else{
+        corePath = path.join(air101DefaultCorePath,corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的air103的core处理
+export function getCreateProjectAir103CorepathHandle(corePath:string){
+    const air103DefaultCorePath = getAir103DefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        const coreLatestName:string = getAir103DefaultLatestCorePath();
+        corePath = path.join(air103DefaultCorePath,coreLatestName);
+    }
+    else{
+        corePath = path.join(air103DefaultCorePath,corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的air105的core处理
+export function getCreateProjectAir105CorepathHandle(corePath:string){
+    const air105DefaultCorePath = getAir105DefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        const coreLatestName:string = getAir105DefaultLatestCorePath();
+        corePath = path.join(air105DefaultCorePath,coreLatestName);
+    }
+    else{
+        corePath = path.join(air105DefaultCorePath,corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的air72XUX的core处理
+export function getCreateProjectAir72XUXCorepathHandle(corePath:string){
+    const air72XUXDefaultCorePath = getAir72XUXDefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        const coreLatestName:string = getAir72XUXDefaultLatestCorePath();
+        corePath = path.join(air72XUXDefaultCorePath,coreLatestName);
+    }
+    else{
+        corePath = path.join(air72XUXDefaultCorePath,corePath);
+    }
+    return corePath;
 }
