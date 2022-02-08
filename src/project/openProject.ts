@@ -72,7 +72,6 @@ export class OpenProject {
         // const projectConfigAppFile:string = projectJsonParse.getProjectConfigAppFile(importProjectPath);
         let openProjectJson:any = {};
         openProjectJson.type = projectConfigProjectType;
-        openProjectJson.importInitData = '';
         openProjectJson.correctData = {};
         openProjectJson.errorData = {};
         openProjectJson.correctData.projectName = projectConfigProjectName;
@@ -110,6 +109,9 @@ export class OpenProject {
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}
+                        else{
+                            return undefined;
+                        }
 				});
                 return selectProjectPath;
             }
