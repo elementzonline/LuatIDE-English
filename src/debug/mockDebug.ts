@@ -788,7 +788,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			showReuseMessage: true
 		};
 
-		// vscode.tasks.executeTask(task);
+		vscode.tasks.executeTask(task);
 		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject();
 
 		// 写入lua运行日志到用户工程下的log文件夹
