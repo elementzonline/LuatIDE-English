@@ -15,9 +15,10 @@
 	},
 	"license": "LGPL",
 	"keywords": [
+		"luatos",
 		"luat",
-		"LuatIDE",
 		"lua",
+		"LuatIDE",
 		"harmony",
 		"liteos",
 		"embedded"
