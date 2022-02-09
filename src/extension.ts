@@ -44,9 +44,8 @@ function runProject(resource: vscode.Uri): void {
 			noDebug: true
 		}
 		);
-	}
+	// }
 }
-
 function debugProject(resource: vscode.Uri): void {
 	let targetResource = resource;
 	if (!targetResource && vscode.window.activeTextEditor) {
@@ -61,7 +60,7 @@ function debugProject(resource: vscode.Uri): void {
 			stopOnEntry: true,
 			noDebug: false
 		});
-	}
+	// }
 }
 let pluginConfigInit = new PluginConfigInit();
 // let pluginVariablesInit = new PluginVariablesInit();
