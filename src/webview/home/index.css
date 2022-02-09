@@ -5,7 +5,6 @@
 
 a, a:link, a:visited, a:hover, a:active {
   text-decoration: none;
-  color: var(--default-fontColor);
 }
 
 i {
@@ -56,7 +55,7 @@ i {
 
   /* 新建工程 */
   --nP-default-bgColor: rgb(35, 35, 35);
-  --nP-default-fontColor: white;
+  --nP-default-fontColor: rgb(142, 142, 142);
   --nP-default-hoverColor: white;
   --nP-default-border: 1px solid white;
   --nP-default-active: rgb(0, 238, 0);
@@ -64,7 +63,7 @@ i {
 
   /* 导入工程 */
   --iP-default-bgColor: rgb(37, 37, 38);
-  --iP-default-fontColor: white;
+  --iP-default-fontColor: rgb(142, 142, 142);
   --iP-default-hoverColor: white;
   --iP-default-border: 1px solid white;
   --iP-default-active: rgb(0, 238, 0);
@@ -231,6 +230,7 @@ i {
   background-color: var(--default-bgColor);
   border-radius: 20px;
   border-color: var(--default-borderColor);
+  font-size: 16px;
   color: var(--default-fontColor);
   outline-width: 0;
 }
@@ -261,6 +261,13 @@ i {
 .btforgetPw {
   margin: 10px;
   float: right;
+  font-size: 16px;
+  color: var(--default-fontColor);
+}
+
+.btNoAcc:hover,
+.btforgetPw:hover{
+  color: var(--default-fontColor);
 }
 
 /* 忘记密码样式 */
@@ -393,6 +400,12 @@ i {
   color: var(--default-fontColor);
 }
 
+.footerBtn1,
+.footerBtn2,
+.footerBtn3{
+  font-size: 15px;
+}
+
 /* *******************************响应式******************************** */
 /* Small */
 @media only screen and (max-width:800px) {
@@ -442,7 +455,7 @@ i {
   
   .newItem {
     width: 100%;
-    height: 260px;
+    height: 280px;
   }
 }
 

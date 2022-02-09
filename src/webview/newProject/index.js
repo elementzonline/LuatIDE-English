@@ -973,7 +973,7 @@ function changeThemeColor(style) {
 
         // 新建工程
         document.documentElement.style.setProperty("--nP-default-bgColor", 'rgb(37, 37, 38)');
-        document.documentElement.style.setProperty("--nP-default-fontColor", 'white');
+        document.documentElement.style.setProperty("--nP-default-fontColor", 'rgb(142, 142, 142)');
         document.documentElement.style.setProperty("--nP-default-border", '1px solid white');
         document.documentElement.style.setProperty("--nP-default-hoverColor", 'white');
         document.documentElement.style.setProperty("--nP-default-active", 'rgb(0, 238, 0)');
@@ -981,7 +981,7 @@ function changeThemeColor(style) {
 
         //导入工程
         document.documentElement.style.setProperty("--iP-default-bgColor", 'rgb(37, 37, 38)');
-        document.documentElement.style.setProperty("--iP-default-fontColor", 'white');
+        document.documentElement.style.setProperty("--iP-default-fontColor", 'rgb(142, 142, 142)');
         document.documentElement.style.setProperty("--iP-default-border", '1px solid white');
         document.documentElement.style.setProperty("--iP-default-hoverColor", 'white');
         document.documentElement.style.setProperty("--iP-default-active", 'rgb(0, 238, 0)');
