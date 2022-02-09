@@ -37,11 +37,12 @@ function runProject(resource: vscode.Uri): void {
 	if (targetResource) {
 		vscode.debug.startDebugging(undefined, {
 			type: 'luat',
-			name: 'Run File',
+			name: 'LuatIDE Run',
 			request: 'launch',
-			program: targetResource.fsPath
-		},
-			{ noDebug: true }
+			program: "${command:activityProjectGet}",
+			stopOnEntry: false,
+			noDebug: true
+		}
 		);
 	}
 }
@@ -54,9 +55,11 @@ function debugProject(resource: vscode.Uri): void {
 	if (targetResource) {
 		vscode.debug.startDebugging(undefined, {
 			type: 'luat',
-			name: 'Debug File',
+			name: 'LuatIDE Debug',
 			request: 'launch',
-			program: targetResource.fsPath
+			program: "${command:activityProjectGet}",
+			stopOnEntry: true,
+			noDebug: false
 		});
 	}
 }
