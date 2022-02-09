@@ -326,9 +326,18 @@
 					{
 						"type": "luat",
 						"request": "launch",
-						"name": "Ask for file name",
-						"program": "${workspaceFolder}/${command:AskForProgramName}",
-						"stopOnEntry": true
+						"name": "LuatIDE Debug",
+						"program": "${command:activityProjectGet}",
+						"stopOnEntry": true,
+						"noDebug": false
+					},
+					{
+						"type": "luat",
+						"request": "launch",
+						"name": "LuatIDE Run",
+						"program": "${command:activityProjectGet}",
+						"stopOnEntry": false,
+						"noDebug": true
 					}
 				],
 				"configurationSnippets": [
