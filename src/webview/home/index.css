@@ -80,7 +80,7 @@ i {
   height: 100vh;
   grid-gap: 24px;
   grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 50px 11fr;
+  grid-template-rows: 25px 11fr;
   grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
     'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
 }
@@ -412,7 +412,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 5px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 50px 11fr;
+    grid-template-rows: 25px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -430,7 +430,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 50px 11fr;
+    grid-template-rows: 25px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -441,7 +441,7 @@ i {
   #root {
     grid-gap: 16px;
     grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 50px 11fr;
+    grid-template-rows: 25px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
   }
@@ -456,6 +456,33 @@ i {
   .newItem {
     width: 100%;
     height: 280px;
+  }
+}
+
+/* More Large */
+@media only screen and (min-width:1400px) {
+  #root {
+    grid-gap: 16px;
+    grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 25px 11fr;
+    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
+      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+  }
+  
+  .operatBox {
+    text-align: center;
+    vertical-align: top;
+    float: right;
+    margin-right: 22%;
+  }
+
+  .ideIcon {
+    margin-left: 20%;
+  }
+  
+  .newItem {
+    width: 100%;
+    height: 320px;
   }
 }
 

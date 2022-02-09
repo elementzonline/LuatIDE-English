@@ -7,7 +7,7 @@
     background: var(--iP-default-bgColor);
     color: rgba(223, 190, 106, 0.7);
     /* background: #8f8e85; */
-    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
 }
 
 .iP-father {
