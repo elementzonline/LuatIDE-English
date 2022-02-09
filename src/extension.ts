@@ -30,11 +30,11 @@ export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 }));
 
 function runProject(resource: vscode.Uri): void {
-	let targetResource = resource;
-	if (!targetResource && vscode.window.activeTextEditor) {
-		targetResource = vscode.window.activeTextEditor.document.uri;
-	}
-	if (targetResource) {
+	// let targetResource = resource;
+	// if (!targetResource && vscode.window.activeTextEditor) {
+	// 	targetResource = vscode.window.activeTextEditor.document.uri;
+	// }
+	// if (targetResource) {
 		vscode.debug.startDebugging(undefined, {
 			type: 'luat',
 			name: 'LuatIDE Run',
@@ -47,11 +47,11 @@ function runProject(resource: vscode.Uri): void {
 	// }
 }
 function debugProject(resource: vscode.Uri): void {
-	let targetResource = resource;
-	if (!targetResource && vscode.window.activeTextEditor) {
-		targetResource = vscode.window.activeTextEditor.document.uri;
-	}
-	if (targetResource) {
+	// let targetResource = resource;
+	// if (!targetResource && vscode.window.activeTextEditor) {
+	// 	targetResource = vscode.window.activeTextEditor.document.uri;
+	// }
+	// if (targetResource) {
 		vscode.debug.startDebugging(undefined, {
 			type: 'luat',
 			name: 'LuatIDE Debug',
