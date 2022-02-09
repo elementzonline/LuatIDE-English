@@ -69,13 +69,13 @@ class MockConfigurationProvider implements vscode.DebugConfigurationProvider {
 			const editor = vscode.window.activeTextEditor;
 			if (editor && editor.document.languageId === 'lua') {
 				config.type = 'luat';
-				config.name = 'Launch';
+				config.name = 'LuatIDE Debug';
 				config.request = 'launch';
-				config.program = '${file}';
+				config.program = '${command:activityProjectGet}';
 				config.stopOnEntry = true;
+				config.noDebug = false;
 			}
 		}
-
 		if (!config.program) {
 			return vscode.window.showInformationMessage("Cannot find a program to debug").then(_ => {
 				return undefined;	// abort launch

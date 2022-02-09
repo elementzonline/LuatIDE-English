@@ -165,7 +165,6 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 
-	public runmodel: boolean = false;
 	public current_messagearr: any;
 
 	private dataReceiveFlag: number = 1;
@@ -912,12 +911,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//dbg break clr
 	//dbg break add
 	protected async setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments) {
-		/*+\NEW\zhw\2021.06.1\运行模式标志位*/
-		console.log("运行模式是否开启：", this.runmodel);
-		if (this.runmodel === true) {
-			return;
-		}
-		/*-\NEW\zhw\2021.06.1\运行模式标志位*/
 		//资源文件路径不在用户当前选择路径下，则过滤这些断点
 		/*+\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 		var points: DebugProtocol.Breakpoint[] = [];
