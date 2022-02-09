@@ -49,6 +49,7 @@
 		"onCommand:luatide-activity-project.Project.refresh",
 		"onCommand:luatide-activity-project.sourceFile.delete",
 		"onCommand:luatide-activity-project.configOperation",
+		"onCommand:luatide-activity-project.activityProjectGet",
 		"onCommand:luatide-ui.design"
 	],
 	"main": "./out/extension.js",
@@ -308,7 +309,7 @@
 							"program": {
 								"type": "string",
 								"description": "Absolute path to a text file.",
-								"default": "${workspaceFolder}"
+								"default": "${command:activityProjectGet}"
 							},
 							"stopOnEntry": {
 								"type": "boolean",
@@ -368,7 +369,7 @@
 					}
 				],
 				"variables": {
-					"AskForProgramName": "extension.mock-debug.getProgramName"
+					"activityProjectGet": "luatide-activity-project.activityProjectGet"
 				}
 			}
 		],
