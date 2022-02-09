@@ -342,14 +342,27 @@
 				],
 				"configurationSnippets": [
 					{
-						"label": "Luat_IDE Debug: Launch",
-						"description": "A new configuration for 'debugging' a user selected lua file.",
+						"label": "LuatIDE: Debug Launch",
+						"description": "LuatIDE活动工程调试配置",
 						"body": {
 							"type": "luat",
 							"request": "launch",
-							"name": "Ask for file name",
-							"program": "^\"\\${workspaceFolder}/\\${command:AskForProgramName}\"",
-							"stopOnEntry": true
+							"name": "LuatIDE Debug",
+							"program": "^\"\\${command:activityProjectGet}\"",
+							"stopOnEntry": true,
+							"noDebug": false
+						}
+					},
+					{
+						"label": "LuatIDE: Run Launch",
+						"description": "LuatIDE活动工程运行配置",
+						"body": {
+							"type": "luat",
+							"request": "launch",
+							"name": "LuatIDE Run",
+							"program": "^\"\\${command:activityProjectGet}\"",
+							"stopOnEntry": false,
+							"noDebug": true
 						}
 					}
 				],
