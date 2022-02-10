@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { PluginJsonParse } from '../plugConfigParse';
 import {ProjectJsonParse} from './projectConfigParse';
-// import {checkSameProjectExistStatusForPluginConfig, getFileForDirRecursion} from './projectApi';
+
 import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
@@ -29,7 +29,7 @@ export class OpenProject {
 		};
         const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);
         if (importProjectPath === undefined) {
-            return;
+            return undefined;
         }
         // 打开工程导入前做兼容性处理
         pluginJsonParse.projectConfigCompatible(importProjectPath);
@@ -49,7 +49,7 @@ export class OpenProject {
 		};
         const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);
         if (importProjectPath === undefined) {
-            return;
+            return undefined;
         }
         // 打开工程导入前做兼容性处理
         pluginJsonParse.projectConfigCompatible(importProjectPath);
@@ -104,8 +104,11 @@ export class OpenProject {
 				if (!fs.existsSync(path.join(importProjectPath,'luatide_project.json'))) {
 					const selectProjectPath:any =  await vscode.window.showErrorMessage("该项目未配置工程，是否配置？", { modal: true }, "是").then(optionsResult =>  {
 						if (optionsResult === '是') {
+                            const appFile:string[]|undefined = getFileForDirRecursion(importProjectPath);
+                            if (appFile===undefined) {
+                                return undefined;
+                            }
                             projectJsonParse.generateProjectJson(importProjectPath);
-                            const appFile:string[] = getFileForDirRecursion(importProjectPath);
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}

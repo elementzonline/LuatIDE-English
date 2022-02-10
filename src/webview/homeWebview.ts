@@ -205,6 +205,9 @@ export class HomeManage {
                         }
                     );
                 }
+                else{
+                    return undefined;
+                }
                 break;
             case 'openExternalWeb':
                 switch (message.text) {

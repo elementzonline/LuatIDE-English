@@ -61,7 +61,7 @@ export function copyOperation(src:any, dist:any) {
 * @param filesList{stringList} 文件路径列表
 * @returns filesList 指定路径内所有文件夹的名称
 */  
-export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:string[] = []){
+export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:string[]|undefined = []){
     if (childrenDir==='') {
         childrenDir = dir;
     }
@@ -70,9 +70,22 @@ export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:s
         const filePath:string = path.join(childrenDir,files[index]);
         if (fs.statSync(filePath).isDirectory()) {
             filesList.push(path.relative(dir,filePath));
-            getFileForDirRecursion(dir,filePath,filesList);
+            const filesChildrenList = getFileForDirRecursion(dir,filePath,filesList);
+            if (filesChildrenList!==undefined) {
+                filesList = filesList?.concat(filesChildrenList);
+            }
+            else{
+                return undefined;
+            }
         }
         else{
+            for (let i = 0; i < filesList.length; i++) {
+                const element = filesList[i];
+                if (path.basename(element)===path.basename(filePath)) {
+                    vscode.window.showErrorMessage(`检测到工程内有同名文件${path.basename(filePath)},工程组织失败!!`);
+                    return undefined;
+                }
+            }
             filesList.push(path.relative(dir,filePath));
         }
     }
