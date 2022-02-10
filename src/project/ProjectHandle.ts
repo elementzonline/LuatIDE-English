@@ -314,7 +314,10 @@ export class ProjectConfigOperation {
                     return false;
                 }
                 // 获取添加文件夹内所有子文件夹内容并加上文件夹自身
-                const folderChildrenList:string[] = getFileForDirRecursion(activityProjectPath,filePath);
+                const folderChildrenList:string[]|undefined = getFileForDirRecursion(activityProjectPath,filePath);
+                if (folderChildrenList===undefined) {
+                    return;
+                }
                 folderChildrenList.push(relativeFilePath);
                 folderPathList = folderPathList.concat(folderChildrenList);
             }

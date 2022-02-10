@@ -43,7 +43,10 @@ export class CreateProject {
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        const appFile: string[] | undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        if (appFile===undefined) {
+            return;
+        }
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
@@ -88,7 +91,10 @@ export class CreateProject {
         this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
             createProjectMessage.createProjectPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath);      //初始化写入工程配置文件
-        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        if (appFile===undefined) {
+            return;
+        }
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
@@ -147,7 +153,10 @@ export class CreateProject {
                 createProjectMessage.createProjectPath);
         }
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        if (appFile===undefined) {
+            return;
+        }
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
@@ -195,7 +204,10 @@ export class CreateProject {
         this.createUiData(createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-ui.design');
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
-        const appFile: string[] = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
+        if (appFile===undefined) {
+            return;
+        }
         projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
         const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
         projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
