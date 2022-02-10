@@ -121,6 +121,13 @@ nP_cancelBtn.on("click", function () {
 });
 
 
+$(".nP-cancelNewProject").on("click", function () {
+    //关闭新建工程
+    gl_hideNewProject();
+    isDisNewProjectHtml = false;
+});
+
+
 //按钮完成逻辑
 nP_submitBtn.on("click", function () {
     if (nP_isInImportProject) {
