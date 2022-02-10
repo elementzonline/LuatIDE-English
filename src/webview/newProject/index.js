@@ -685,27 +685,46 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
     switch (moduleSelected.text()) {
         case nP_moduleOne:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleOne);
+            exampleSelected.prop("disabled", false);
+            exampleSelected.css({
+                "opacity": "1"
+            });
             break;
         case nP_moduleTwo:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleTwo);
             exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.3"
+            });
             break;
         case nP_moduleThree:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleThree);
             exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.3"
+            });
             break;
         case nP_moduleFour:
         case nP_moduleSeven:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFour);
             exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.3"
+            });
             break;
         case nP_moduleFive:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFive);
             exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.3"
+            });
             break;
         case nP_moduleSix:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSix);
             exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.3"
+            });
             break;
         default:
             break;
@@ -726,6 +745,10 @@ function ndkProjectInitDataManagment(initData) {
     switch (moduleSelected.text()) {
         case nP_moduleOne:
             // nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
+            exampleSelected.prop("disabled", false);
+            exampleSelected.css({
+                "opacity": "1"
+            });
             break;
         case nP_moduleTwo:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleTwo);
