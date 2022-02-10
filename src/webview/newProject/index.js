@@ -694,14 +694,14 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleTwo);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
-                "opacity": "0.3"
+                "opacity": "0.4"
             });
             break;
         case nP_moduleThree:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleThree);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
-                "opacity": "0.3"
+                "opacity": "0.4"
             });
             break;
         case nP_moduleFour:
@@ -709,21 +709,21 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFour);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
-                "opacity": "0.3"
+                "opacity": "0.4"
             });
             break;
         case nP_moduleFive:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFive);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
-                "opacity": "0.3"
+                "opacity": "0.4"
             });
             break;
         case nP_moduleSix:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSix);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
-                "opacity": "0.3"
+                "opacity": "0.4"
             });
             break;
         default:
