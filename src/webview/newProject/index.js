@@ -201,7 +201,13 @@ function newProjectHandleSubmit(tar) {
         //验证上传文件的文件名是否合法
         var reg = new RegExp('[\\\\/:*?\"<>|]');
         if (reg.test(projectName) || reg.length > 255) {
-            nP_Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!')
+            nP_Alert('工程名称不能包含【\/:*?"<>|】这些非法字符,且长度不超过255个字符,请修改后重新上传!');
+            return false;
+        }
+    }
+    if (tar === "ndk"){
+        if ($(".nP-select_getNDK_ModuleInfo option:selected").text() !== nP_moduleOne){
+            nP_Alert('NDK 工程无法创建在非 air72XUX/air82XUX 模块型号上！');
             return false;
         }
     }
@@ -671,23 +677,28 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleOne);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleOne);
             break;
         case nP_moduleTwo:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleTwo);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleTwo);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleThree:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleThree);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleThree);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleFour:
         case nP_moduleSeven:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFour);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFour);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleFive:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFive);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFive);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleSix:
-            nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSix);
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSix);
+            exampleSelected.prop("disabled", true);
             break;
         default:
             break;
@@ -707,23 +718,28 @@ function ndkProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
-            nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
+            // nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
             break;
         case nP_moduleTwo:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleTwo);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleThree:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleThree);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleFour:
         case nP_moduleSeven:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleFour);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleFive:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleFive);
+            exampleSelected.prop("disabled", true);
             break;
         case nP_moduleSix:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleSix);
+            exampleSelected.prop("disabled", true);
             break;
         default:
             break;
@@ -1006,6 +1022,7 @@ window.addEventListener('message', event => {
             break;
         case "ndkProjectInitData":
             nP_temNdkProjectData = message.text;
+            console.log(message.text);
             ndkProjectInitDataManagment(message.text);
             break;
         case "uiProjectInitData":

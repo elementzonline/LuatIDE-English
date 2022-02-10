@@ -6,7 +6,7 @@
 .nP-mainBody {
     background: var(--nP-default-bgColor);
     color: rgba(223, 190, 106, 0.7);
-    font-family: "Helvetica Neue", Helvetica, Arials, sans;
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
 }
 
 .nP-father {
