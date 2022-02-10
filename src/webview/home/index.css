@@ -448,10 +448,10 @@ i {
 }
 
 /* Large */
-@media only screen and (min-width:1000px) {
+@media only screen and (min-width:1100px) {
   #root {
     grid-gap: 16px;
-    grid-template-columns: 10px 90px 90px 90px 90px 90px 90px 90px 90px 90px 1fr 1fr;
+    grid-template-columns: 10px 100px 100px 100px 100px 100px 100px 100px 100px 100px 1fr 1fr;
     grid-template-rows: 25px 11fr;
     grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-rightRt g-rightRt'
       'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-rightRt g-rightRt';
