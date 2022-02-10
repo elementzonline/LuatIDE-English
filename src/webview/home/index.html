@@ -14,14 +14,14 @@
   <div id="root">
     <div class="header">
       <div class="header-exterDiv"></div>
-      <button class="header-publicBtn1">
+      <!-- <button class="header-publicBtn1">
         <img src="./resource/gitee.png" class="pubImg" width="53%" style="margin-bottom: 4px;">
-      </button>
+      </button> -->
       <button class="header-publicBtn2">
         <img src="./resource/QQ.png" class="pubImg">
       </button>
       <button class="header-publicBtn3">
-        <img src="./resource/luat.png" class="pubImg" width="53%" style="margin-bottom: 4px;">
+        <img src="./resource/luat.png" class="pubImg" width="53%" style="margin-bottom: 3px;">
       </button>
       <button class="userBtn">
         <div class="userBox">
@@ -34,7 +34,7 @@
     <div class="rightContent">
       <div class="homeHeader">
         <div class="welcomeTitle">
-          <h2>欢迎使用LuatIDE</h2>
+          <h2 class="welcomeIDE">欢迎使用LuatIDE</h2>
         </div>
         <div class="ideIcon">
           <img style="width: 260px; border-radius: 130px;"
@@ -86,6 +86,9 @@
           <li><button class="commentBtn"><label>问题反馈</label></button></li> -->
         </ul>
       </div>
+    </div>
+    <div class="rightRtContent">
+      
     </div>
   </div>
   <!-- 登录页面 -->
@@ -160,6 +163,9 @@
         <div class="nP-content">
           <div class="nP-contentChild">
             <!-- 空白工程-->
+            <div class="cancelNewProject">
+              <input class="nP-cancelNewProject" type="button" value="×" />
+            </div>
             <div>
               <h2 class="nP-projectTip">新建工程向导</h2>
             </div>

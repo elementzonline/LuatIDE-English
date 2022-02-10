@@ -81,8 +81,8 @@ i {
   grid-gap: 24px;
   grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 25px 11fr;
-  grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
-    'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+  grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-rightRt g-rightRt'
+    'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-rightRt g-rightRt';
 }
 
 .header {
@@ -98,6 +98,10 @@ i {
 .rightContent {
   grid-area: g-right;
   /* background-color: green; */
+}
+
+.rightRtContent{
+  grid-area: g-rightRt;
 }
 
 /* 登录按钮 */
@@ -303,6 +307,12 @@ i {
   color: var(--default-fontColor);
 }
 
+.welcomeIDE{
+  display: block;
+  font-size: 1.5em;
+  color: var(--default-fontColor);
+}
+
 /* 图标 */
 .ideIcon {
   margin-top: 2%;
@@ -404,6 +414,7 @@ i {
 .footerBtn2,
 .footerBtn3{
   font-size: 15px;
+  color: rgb(64, 128, 197);
 }
 
 /* *******************************响应式******************************** */
@@ -463,27 +474,27 @@ i {
 @media only screen and (min-width:1400px) {
   #root {
     grid-gap: 16px;
-    grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 10px 140px 140px 140px 140px 140px 140px 140px 140px 140px 1fr 1fr;
     grid-template-rows: 25px 11fr;
-    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header'
-      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right g-right';
+    grid-template-areas: 'g-header g-header g-header g-header g-header g-header g-header g-header g-header g-header g-rightRt g-rightRt'
+      'g-left g-right g-right g-right g-right g-right g-right g-right g-right g-right g-rightRt g-rightRt';
   }
   
   .operatBox {
     text-align: center;
     vertical-align: top;
     float: right;
-    margin-right: 22%;
+    margin-right: 15%;
   }
 
-  .ideIcon {
+  /* .ideIcon {
     margin-left: 20%;
-  }
+  } */
   
-  .newItem {
+  /* .newItem {
     width: 100%;
     height: 320px;
-  }
+  } */
 }
 
 .newProjectHtml,
