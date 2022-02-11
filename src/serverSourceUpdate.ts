@@ -7,7 +7,23 @@ import * as fs from 'fs';
 import * as compressing from 'compressing';
 // import { PluginVariablesInit } from './config';
 import * as path from 'path';
-import { getAir101DefaultCorePath, getAir101DefaultDemoPath, getAir101DefaultLatestCorePath, getAir103DefaultCorePath, getAir103DefaultDemoPath, getAir103DefaultLatestCorePath, getAir105DefaultCorePath, getAir105DefaultLatestCorePath, getAir72XUXDefaultCorePath, getAir72XUXDefaultDemoPath, getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibPath, getLuatIDEDataPath } from './variableInterface';
+import {
+    getAir101DefaultCorePath,
+    getAir101DefaultDemoPath,
+    getAir101DefaultLatestCorePath,
+    getAir103DefaultCorePath,
+    getAir103DefaultDemoPath,
+    getAir103DefaultLatestCorePath,
+    getAir105DefaultCorePath,
+    getAir105DefaultDemoPath,
+    getAir105DefaultLatestCorePath,
+    getAir72XUXDefaultCorePath,
+    getAir72XUXDefaultDemoPath,
+    getAir72XUXDefaultLatestCorePath,
+    getAir72XUXDefaultLatestLibPath,
+    getAir72XUXDefaultLibPath,
+    getLuatIDEDataPath
+} from './variableInterface';
 // let plugVariablesInit = new PluginVariablesInit();
 
 /*
@@ -395,8 +411,10 @@ async function pullAir105Source(jsonObj:any,sourceBaseUrl:string) {
     const sourceDistPath:string = path.join(air105CoreSourceTempPath,jsonObj['105_lua_lod']);
     await download(sourceAbsloutePath,sourceDistPath);
     await unzip(sourceDistPath,air105CoreSourceTempPath);
-    // const demoDistPath:string = plugVariablesInit.getAir105DefaultCorePath();
-    // air105DemoHandle(path.join(air105CoreSourceTempPath,'demo'),demoDistPath);
+    if (fs.existsSync(path.join(air105CoreSourceTempPath,'demo'))) {
+        const demoDistPath:string = getAir105DefaultDemoPath();
+        air105DemoHandle(path.join(air105CoreSourceTempPath,'demo'),demoDistPath);
+    }
     air105CoreHandle(air105CoreSourceTempPath);
     await deleteFolderRecursive(air105CoreSourceTempPath);
 }
@@ -420,17 +438,17 @@ function air105CoreHandle(coreSourcePath:string) {
 *处理拉取到临时文件夹的air105 demo
 *@param coreSourcePath air105固件资源临时存储路径
 */
-// function air105DemoHandle(sourceDir:string,distDir:string) {
-//     const demoNameArray = fs.readdirSync(sourceDir);
-//     demoNameArray.forEach((demoName) => {
-//         if (fs.existsSync(path.join(sourceDir,demoName,'Air105'))) {
-//             copyDir(path.join(sourceDir,demoName,'Air105'),path.join(distDir,demoName));
-//         }
-//         else if (fs.existsSync(path.join(sourceDir,demoName,'main.lua'))) {
-//             copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
-//         }
-//     });
-// }
+function air105DemoHandle(sourceDir:string,distDir:string) {
+    const demoNameArray = fs.readdirSync(sourceDir);
+    demoNameArray.forEach((demoName) => {
+        if (fs.existsSync(path.join(sourceDir,demoName,'Air105'))) {
+            copyDir(path.join(sourceDir,demoName,'Air105'),path.join(distDir,demoName));
+        }
+        else if (fs.existsSync(path.join(sourceDir,demoName,'main.lua'))) {
+            copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
+        }
+    });
+}
 
 /*
 *处理拉取到临时文件夹的air103 DEMO 
