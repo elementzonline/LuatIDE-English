@@ -197,8 +197,7 @@ export function getCreateProjectEsp32CorepathHandle(corePath:string){
         corePath = corePath;
     }
     else if (corePath==='') {
-        const coreLatestName:string = getAir101DefaultLatestCorePath();
-        corePath = path.join(esp32c3DefaultCorePath,coreLatestName);
+        corePath = getAir101DefaultLatestCorePath();
     }
     else{
         corePath = path.join(esp32c3DefaultCorePath,corePath);
@@ -213,8 +212,7 @@ export function getCreateProjectAir101CorepathHandle(corePath:string){
         corePath = corePath;
     }
     else if (corePath==='') {
-        const coreLatestName:string = getAir101DefaultLatestCorePath();
-        corePath = path.join(air101DefaultCorePath,coreLatestName);
+        corePath = getAir101DefaultLatestCorePath();
     }
     else{
         corePath = path.join(air101DefaultCorePath,corePath);
@@ -229,8 +227,7 @@ export function getCreateProjectAir103CorepathHandle(corePath:string){
         corePath = corePath;
     }
     else if (corePath==='') {
-        const coreLatestName:string = getAir103DefaultLatestCorePath();
-        corePath = path.join(air103DefaultCorePath,coreLatestName);
+        corePath = getAir103DefaultLatestCorePath();
     }
     else{
         corePath = path.join(air103DefaultCorePath,corePath);
@@ -245,8 +242,7 @@ export function getCreateProjectAir105CorepathHandle(corePath:string){
         corePath = corePath;
     }
     else if (corePath==='') {
-        const coreLatestName:string = getAir105DefaultLatestCorePath();
-        corePath = path.join(air105DefaultCorePath,coreLatestName);
+        corePath = getAir105DefaultLatestCorePath();
     }
     else{
         corePath = path.join(air105DefaultCorePath,corePath);

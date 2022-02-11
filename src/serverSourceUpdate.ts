@@ -10,13 +10,13 @@ import * as path from 'path';
 import {
     getAir101DefaultCorePath,
     getAir101DefaultDemoPath,
-    getAir101DefaultLatestCorePath,
+    getAir101DefaultLatestCoreName,
     getAir103DefaultCorePath,
     getAir103DefaultDemoPath,
-    getAir103DefaultLatestCorePath,
+    getAir103DefaultLatestCoreName,
     getAir105DefaultCorePath,
     getAir105DefaultDemoPath,
-    getAir105DefaultLatestCorePath,
+    getAir105DefaultLatestCoreName,
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
     getAir72XUXDefaultLatestCoreName,
@@ -80,8 +80,8 @@ async function checkAir72XUXCoreUpdate(){
 */
 async function checkAir101SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = getAir101DefaultLatestCorePath();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
+    const localSourceName:string = getAir101DefaultLatestCoreName();
+    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '101_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
@@ -96,8 +96,8 @@ async function checkAir101SourceUpdate() {
 */
 async function checkAir103SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = getAir103DefaultLatestCorePath();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
+    const localSourceName:string = getAir103DefaultLatestCoreName();
+    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '103_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
@@ -112,8 +112,8 @@ async function checkAir103SourceUpdate() {
 */
 async function checkAir105SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourcePath:string = getAir105DefaultLatestCorePath();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourcePath);
+    const localSourceName:string = getAir105DefaultLatestCoreName();
+    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName:string = '105_lua_lod';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
