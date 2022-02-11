@@ -2,7 +2,19 @@ import { PluginJsonParse } from "../plugConfigParse";
 import * as fs  from "fs";
 import * as path  from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultCorePath, getAir101DefaultLatestCorePath, getAir103DefaultCorePath, getAir103DefaultLatestCorePath, getAir105DefaultCorePath, getAir105DefaultLatestCorePath, getAir72XUXDefaultCorePath, getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultLibPath, getEsp32c3DefaultCorePath } from "../variableInterface";
+import {
+    getAir101DefaultCorePath,
+    getAir101DefaultLatestCorePath,
+    getAir103DefaultCorePath,
+    getAir103DefaultLatestCorePath,
+    getAir105DefaultCorePath,
+    getAir105DefaultLatestCorePath,
+    getAir72XUXDefaultCorePath,
+    getAir72XUXDefaultLatestCorePath,
+    getAir72XUXDefaultLatestLibPath,
+    getAir72XUXDefaultLibPath,
+    getEsp32c3DefaultCorePath
+} from "../variableInterface";
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 
@@ -249,8 +261,7 @@ export function getCreateProjectAir72XUXCorepathHandle(corePath:string){
         corePath = corePath;
     }
     else if (corePath==='') {
-        const coreLatestName:string = getAir72XUXDefaultLatestCorePath();
-        corePath = path.join(air72XUXDefaultCorePath,coreLatestName);
+        corePath = getAir72XUXDefaultLatestCorePath();
     }
     else{
         corePath = path.join(air72XUXDefaultCorePath,corePath);

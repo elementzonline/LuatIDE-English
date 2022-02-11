@@ -489,8 +489,8 @@ export function getAir105DefaultLatestCorePath() {
     return coreName;
 }
 
-// 获取air72XUX默认最新core路径
-export function getAir72XUXDefaultLatestCorePath() {
+// 获取air72XUX默认最新core名称
+export function getAir72XUXDefaultLatestCoreName() {
     const air72XUXCorePath: string = getAir72XUXDefaultCorePath();
     const coreList: string[] = fs.readdirSync(air72XUXCorePath);
     const reg = getAir72XUXReg();
@@ -512,6 +512,17 @@ export function getAir72XUXDefaultLatestCorePath() {
         }
     }
     return coreName;
+}
+
+// 获取air72XUX默认最新core完整路径
+export function getAir72XUXDefaultLatestCorePath() {
+    const air72XUXDefaultLatestCoreName:string = getAir72XUXDefaultLatestCoreName();
+    const air72XUXDefaultCorePath:string = getAir72XUXDefaultCorePath();
+    let air72XUXDefaultLatestCorePath:string = '';
+    if (air72XUXDefaultLatestCoreName!=='') {
+        air72XUXDefaultLatestCorePath = path.join(air72XUXDefaultCorePath,air72XUXDefaultLatestCoreName);
+    }
+    return air72XUXDefaultLatestCorePath;
 }
 
 // 获取air72XUX默认最新lib路径

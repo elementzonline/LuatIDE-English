@@ -19,7 +19,7 @@ import {
     getAir105DefaultLatestCorePath,
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
-    getAir72XUXDefaultLatestCorePath,
+    getAir72XUXDefaultLatestCoreName,
     getAir72XUXDefaultLatestLibPath,
     getAir72XUXDefaultLibPath,
     getLuatIDEDataPath
@@ -64,8 +64,8 @@ async function checkAir72XUXScriptUpdate(){
 */
 async function checkAir72XUXCoreUpdate(){
     const localScriptReg = /V([\d]+)_/ig;
-    const localCorePath = getAir72XUXDefaultLatestCorePath();
-    const localCoreVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localCorePath);
+    const localCoreName = getAir72XUXDefaultLatestCoreName();
+    const localCoreVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localCoreName);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
     const apiName:string = '8910_lua_lod';
     const remoteCoreVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
