@@ -20,7 +20,7 @@ import {
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
     getAir72XUXDefaultLatestCoreName,
-    getAir72XUXDefaultLatestLibPath,
+    getAir72XUXDefaultLatestLibName,
     getAir72XUXDefaultLibPath,
     getLuatIDEDataPath
 } from './variableInterface';
@@ -48,8 +48,8 @@ async function getSourceHubJsonObj(interfaceUrl:string) {
 */
 async function checkAir72XUXScriptUpdate(){
     const localScriptReg = /V([\d\.]+)/ig;
-    const localScriptPath = getAir72XUXDefaultLatestLibPath();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localScriptPath);
+    const localScriptName = getAir72XUXDefaultLatestLibName();
+    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localScriptName);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
     const apiName:string = '8910_script';
     const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);

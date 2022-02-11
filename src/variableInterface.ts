@@ -243,7 +243,7 @@ export function getPluginDefaultModuleList() {
 // 获取Air72XUX默认示例demo列表
 export function getAir72XUXDefaultExampleList() {
     const demoList: string[] = [];
-    const air72XUXDefaultLatestDemoPath: string|undefined = getAir72XUXDefaultLatestDemoPath();
+    const air72XUXDefaultLatestDemoPath: string = getAir72XUXDefaultLatestDemoPath();
     if (air72XUXDefaultLatestDemoPath==='') {
         return demoList;
     }
@@ -526,7 +526,7 @@ export function getAir72XUXDefaultLatestCorePath() {
 }
 
 // 获取air72XUX默认最新lib路径
-export function getAir72XUXDefaultLatestLibPath() {
+export function getAir72XUXDefaultLatestLibName() {
     const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
     const libList: string[] = fs.readdirSync(air72XUXLibPath);
     let libLatestPath:string = '';
@@ -534,7 +534,7 @@ export function getAir72XUXDefaultLatestLibPath() {
         return libLatestPath;
     }
     const reg = /V([\d\.]+)/gi;
-    let currentVersion: string | undefined = undefined;
+    let currentVersion: string = '';
     for (let index = 0; index < libList.length; index++) {
         const currentLibName: string = libList[index];
         const libNameVersionArray = reg.exec(currentLibName);
@@ -542,19 +542,29 @@ export function getAir72XUXDefaultLatestLibPath() {
         if (libNameVersionArray === null) {
             continue;
         }
-        else if (currentVersion === undefined) {
+        else if (currentVersion === '') {
             currentVersion = libNameVersionArray[1];
         }
         else if (libNameVersionArray[1] > currentVersion) {
             currentVersion = libNameVersionArray[1];
         }
     }
-    libLatestPath = path.join(air72XUXLibPath, 'V' + currentVersion, 'lib');
-    return libLatestPath;
+    return currentVersion;
 }
 
-// 获取airr72XUX默认最新demo路径
-export function getAir72XUXDefaultLatestDemoPath() {
+// 获取air72XUX默认最新Lib路径
+export function getAir72XUXDefaultLatestLibPath() {
+    const air72XUXDefaultLatestLibName:string = getAir72XUXDefaultLatestLibName();
+    const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
+    let air72XUXDefaultLatestLibPath:string = '';
+    if (air72XUXDefaultLatestLibName!=='') {
+        air72XUXDefaultLatestLibPath = path.join(air72XUXDefaultLibPath,'V'+air72XUXDefaultLatestLibName,'lib');
+    }
+    return air72XUXDefaultLatestLibPath;
+}
+
+// 获取air72XUX默认最新demo名称
+export function getAir72XUXDefaultLatestDemoName() {
     const air72XUXDemoPath: string = getAir72XUXDefaultDemoPath();
     const demoList: string[] = fs.readdirSync(air72XUXDemoPath);
     let demoLatestPath:string = "";
@@ -562,7 +572,7 @@ export function getAir72XUXDefaultLatestDemoPath() {
         return demoLatestPath;
     }
     const reg = /V([\d\.]+)/gi;
-    let currentVersion: string | undefined = undefined;
+    let currentVersion: string = '';
     for (let index = 0; index < demoList.length; index++) {
         const currentDemoName: string = demoList[index];
         const demoNameVersionArray = reg.exec(currentDemoName);
@@ -570,15 +580,25 @@ export function getAir72XUXDefaultLatestDemoPath() {
         if (demoNameVersionArray === null) {
             continue;
         }
-        else if (currentVersion === undefined) {
+        else if (currentVersion === '') {
             currentVersion = demoNameVersionArray[1];
         }
         else if (demoNameVersionArray[1] > currentVersion) {
             currentVersion = demoNameVersionArray[1];
         }
     }
-    demoLatestPath = path.join(air72XUXDemoPath, 'V' + currentVersion);
-    return demoLatestPath;
+    return currentVersion;
+}
+
+// 获取air72XUX默认最新demo路径
+export function getAir72XUXDefaultLatestDemoPath() {
+    const air72XUXDefaultLatestDemoName:string = getAir72XUXDefaultLatestDemoName();
+    const air72XUXDefaultDemoPath: string = getAir72XUXDefaultDemoPath();
+    let air72XUXDefaultLatestDemoPath:string = '';
+    if (air72XUXDefaultLatestDemoName!=='') {
+        air72XUXDefaultLatestDemoPath = path.join(air72XUXDefaultDemoPath,'V'+air72XUXDefaultLatestDemoName);
+    }
+    return air72XUXDefaultLatestDemoPath;
 }
 
 // 依据模块型号获取文件名后缀
