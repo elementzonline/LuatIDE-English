@@ -4,7 +4,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {activityMemoryProjectPathBuffer} from './extension';
 import * as vscode from 'vscode';
-import { getAir72XUXCorePath, getAir72XUXDefaultLatestLibPath, getAir72XUXDemoPath, getAir72XUXLibPath, getHistoryCorePath, getHistoryDemoPath, getHistoryLibPath, getPluginConfigPath } from './variableInterface';
+import {
+    getAir72XUXCorePath,
+    getAir72XUXDefaultLatestLibPath,
+    getAir72XUXDemoPath,
+    getAir72XUXLibPath,
+    getHistoryCorePath,
+    getHistoryDemoPath,
+    getHistoryLibPath,
+    getPluginConfigPath
+} from './variableInterface';
 // let pluginVariablesInit = new PluginVariablesInit();
 
 
