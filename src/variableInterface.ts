@@ -558,7 +558,7 @@ export function getAir72XUXDefaultLatestCorePath() {
     return air72XUXDefaultLatestCorePath;
 }
 
-// 获取air72XUX默认最新lib路径
+// 获取air72XUX默认最新lib版本名称
 export function getAir72XUXDefaultLatestLibName() {
     const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
     const libList: string[] = fs.readdirSync(air72XUXLibPath);
@@ -581,6 +581,9 @@ export function getAir72XUXDefaultLatestLibName() {
         else if (libNameVersionArray[1] > currentVersion) {
             currentVersion = libNameVersionArray[1];
         }
+    }
+    if (currentVersion!=='') {
+        currentVersion = 'V'+currentVersion;
     }
     return currentVersion;
 }
@@ -619,6 +622,9 @@ export function getAir72XUXDefaultLatestDemoName() {
         else if (demoNameVersionArray[1] > currentVersion) {
             currentVersion = demoNameVersionArray[1];
         }
+    }
+    if (currentVersion!=='') {
+        currentVersion = 'V'+currentVersion;
     }
     return currentVersion;
 }
