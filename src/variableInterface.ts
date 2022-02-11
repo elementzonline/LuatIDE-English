@@ -414,8 +414,8 @@ export function getAir105DefaultCoreList() {
     return coreList;
 }
 
-// 获取air101默认最新corePath路径
-export function getAir101DefaultLatestCorePath() {
+// 获取air101默认最新corePath名称
+export function getAir101DefaultLatestCoreName() {
     const air101CorePath: string = getAir101DefaultCorePath();
     const coreList: string[] = fs.readdirSync(air101CorePath);
     const reg = getAir101Reg();
@@ -439,8 +439,19 @@ export function getAir101DefaultLatestCorePath() {
     return coreName;
 }
 
+// 获取Air101默认最新core完整路径
+export function getAir101DefaultLatestCorePath() {
+    const air101DefaultLatestCoreName:string = getAir101DefaultLatestCoreName();
+    const air101DefaultCorePath:string = getAir101DefaultCorePath();
+    let air101DefaultLatestCorePath:string = '';
+    if (air101DefaultLatestCoreName!=='') {
+        air101DefaultLatestCorePath = path.join(air101DefaultCorePath,air101DefaultLatestCoreName);
+    }
+    return air101DefaultLatestCorePath;
+}
+
 // 获取air103默认最新corePath路径
-export function getAir103DefaultLatestCorePath() {
+export function getAir103DefaultLatestCoreName() {
     const air103CorePath: string = getAir103DefaultCorePath();
     const coreList: string[] = fs.readdirSync(air103CorePath);
     const reg = getAir103Reg();
@@ -464,8 +475,19 @@ export function getAir103DefaultLatestCorePath() {
     return coreName;
 }
 
+// 获取Air103默认最新core完整路径
+export function getAir103DefaultLatestCorePath() {
+    const air103DefaultLatestCoreName:string = getAir103DefaultLatestCoreName();
+    const air103DefaultCorePath:string = getAir103DefaultCorePath();
+    let air103DefaultLatestCorePath:string = '';
+    if (air103DefaultLatestCoreName!=='') {
+        air103DefaultLatestCorePath = path.join(air103DefaultCorePath,air103DefaultLatestCoreName);
+    }
+    return air103DefaultLatestCorePath;
+}
+
 // 获取air105默认最新corePath路径
-export function getAir105DefaultLatestCorePath() {
+export function getAir105DefaultLatestCoreName() {
     const air105CorePath: string = getAir105DefaultCorePath();
     const coreList: string[] = fs.readdirSync(air105CorePath);
     const reg = getAir105Reg();
@@ -487,6 +509,17 @@ export function getAir105DefaultLatestCorePath() {
         }
     }
     return coreName;
+}
+
+// 获取Air105默认最新core完整路径
+export function getAir105DefaultLatestCorePath() {
+    const air105DefaultLatestCoreName:string = getAir105DefaultLatestCoreName();
+    const air105DefaultCorePath:string = getAir105DefaultCorePath();
+    let air105DefaultLatestCorePath:string = '';
+    if (air105DefaultLatestCoreName!=='') {
+        air105DefaultLatestCorePath = path.join(air105DefaultCorePath,air105DefaultLatestCoreName);
+    }
+    return air105DefaultLatestCorePath;
 }
 
 // 获取air72XUX默认最新core名称
