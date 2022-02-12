@@ -104,6 +104,10 @@ div .iP-submit{
     margin-right: 50px;
 }
 
+.cancelOpenProject{
+    height: 20px;
+}
+
 /* 工程取消按钮样式 */
 .iP-cancelOpenProject{
     float: right;
@@ -113,12 +117,13 @@ div .iP-submit{
     border-radius: 20px;
     font-size: 30px;
     margin-right: 10px;
+    margin-top: 10px;
     background-color: var(--nP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
     color: var(--nP-default-fontColor);
 }
 
-.iP-cancelOpenProject{
+.iP-cancelOpenProject:hover{
     color: var(--default-hoverColor);
     border-color: var(--default-hoverColor);
 }
