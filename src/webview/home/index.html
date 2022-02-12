@@ -5,7 +5,8 @@
   <meta charset="utf-8" />
   <title>Home</title>
   <link rel="stylesheet" type="text/css" href="./index.css" />
-  <link rel="stylesheet" type="text/css" href="../fontawesome.min.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="../fontawesome.min.css" /> -->
+  <link rel="stylesheet" type="text/css" href="../font-awesome.min.css" />
   <link rel="stylesheet" type="text/css" href="../newProject/index.css" />
   <link rel="stylesheet" type="text/css" href="../importProject/index.css" />
 </head>
@@ -18,14 +19,14 @@
         <img src="./resource/gitee.png" class="pubImg" width="53%" style="margin-bottom: 4px;">
       </button> -->
       <button class="header-publicBtn2">
-        <img src="./resource/QQ.png" class="pubImg">
+        <i class="fa fa-globe userIcon"></i>
       </button>
       <button class="header-publicBtn3">
-        <img src="./resource/luat.png" class="pubImg" width="53%" style="margin-bottom: 3px;">
+        <i class="fa fa-qq userIcon"></i>
       </button>
       <button class="userBtn">
         <div class="userBox">
-          <img src="./resource/user.png" alt="User" class="userImg">
+          <i class="fa fa-user-circle userIcon2"></i>
         </div>
       </button>
     </div>
@@ -34,7 +35,7 @@
     <div class="rightContent">
       <div class="homeHeader">
         <div class="welcomeTitle">
-          <h2 class="welcomeIDE">欢迎使用LuatIDE</h2>
+          <h2 class="welcomeIDE">欢迎使用 LuatIDE</h2>
         </div>
         <div class="ideIcon">
           <img style="width: 260px; border-radius: 130px;"
@@ -94,20 +95,20 @@
   <!-- 登录页面 -->
   <div class="loginModal">
     <div class="login">
-      <button class="login-cancel" type="button">
-        <img class="cancelImg" src="./resource/cancel.png" alt="" style="width: 80%;">
-      </button>
+      <div class="cancelLoginDiv">
+        <input class="login-cancel" type="button" value="×" />
+      </div>
       <h2>登录</h2>
       <form class="login-Form">
-        <div class="form-box login-formBox">
-          <input type="text" id="username" required="" placeholder="" autocomplete="off">
-          <label>用户名</label>
+        <div class="form-box form-boxFirst">
+          <i class="fa fa-user"></i>
+          <input type="text" id="username" required="" placeholder="用户名" autocomplete="off">
         </div>
-        <div class="form-box login-formBox">
-          <input type="password" id="password" name="" required="" autocomplete="off">
-          <label>密码</label>
+        <div class="form-box">
+          <i class="fa fa-lock"></i>
+          <input type="password" id="password" name="" placeholder="密码" required="" autocomplete="off">
         </div>
-        <div class="form-box form-box1">
+        <div class="login-opeDiv">
           <button class="btLogin loginbtn" type="button">登 录</button>
         </div>
         <div class="exterBox">
@@ -120,29 +121,32 @@
   <!-- 忘记密码 -->
   <div class="forgetModal">
     <div class="forgetPw">
-      <button class="forgitPw-cancel" type="button">
+      <!-- <button class="forgitPw-cancel" type="button">
         <img class="backImg" src="./resource/back.png" alt="" style="width: 80%;">
-      </button>
+      </button> -->
       <h2>重置密码</h2>
       <form class="forgetPw-Form">
         <div class="form-box">
-          <input type="text" id="forgetPw-phone" required="" autocomplete="off">
-          <label>电话</label>
+          <i class="fa fa-mobile"></i>
+          <input type="text" id="forgetPw-phone" placeholder="手机号" required="" autocomplete="off">
         </div>
-        <div class="form-box">
-          <input type="password" id="forgetPw-code" required="" autocomplete="off">
-          <label>验证码</label>
+        <div class="form-boxS">
+          <div class="form-box form-boxExter">
+            <i class="fa fa-check"></i>
+            <input type="text" id="forgetPw-code" placeholder="验证码" required="" autocomplete="off">
+          </div>
           <button class="forgitPw-sentVerCode loginbtn" type="button">发送验证码</button>
         </div>
         <div class="form-box">
-          <input type="password" id="forgetPw-newPw" required="" autocomplete="off">
-          <label>新密码</label>
+          <i class="fa fa-lock"></i>
+          <input type="password" id="forgetPw-newPw" placeholder="新密码" required="" autocomplete="off">
         </div>
         <div class="form-box">
-          <input type="password" id="forgetPw-verPw" required="" autocomplete="off">
-          <label>确认密码</label>
+          <i class="fa fa-lock"></i>
+          <input type="password" id="forgetPw-verPw" placeholder="确认密码" required="" autocomplete="off">
         </div>
-        <div class="form-box form-box1">
+        <div class="forgetPw-operaDiv">
+          <button class="forgitPw-cancel loginbtn" type="button">取消</button>
           <button class="forgitPw-sure loginbtn" type="button">确认</button>
         </div>
       </form>
@@ -156,7 +160,7 @@
           <div class="nP-navbarChild">
             <button class="nP-menu" id="space">空白工程</button>
             <button class="nP-menu" id="example">示例工程</button>
-            <button class="nP-menu" id="ndk">NDK工程</button>
+            <!-- <button class="nP-menu" id="ndk">NDK工程</button> -->
             <button class="nP-menu" id="ui">UI工程</button>
           </div>
         </div>
@@ -323,6 +327,9 @@
       <!-- <iframe src="../importProject/index.html" height="80%" width="80%" style="border-radius: 20px;"></iframe> -->
       <div class="iP-father">
         <div class="iP-content">
+          <div class="cancelOpenProject">
+            <input class="iP-cancelOpenProject" type="button" value="×" />
+          </div>
           <div class="iP-contentChild">
             <!-- 空白工程-->
             <h2 class="iP-tips">请修改提示的错误选项</h2>

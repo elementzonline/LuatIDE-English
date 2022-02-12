@@ -21,11 +21,13 @@
     color: red;
     margin-bottom: 30px;
     display: none;
+    font-size: var(--default-titleFontSize);
 }
 
 .iP-content {
     text-align: center;
     height: 100%;
+    font-size: var(--default-contentFontSize);
 }
 
 .iP-contentChild{
@@ -61,11 +63,16 @@
     outline-style: none;
     height: 40px;
     width: 280px;
-    border-radius: 15px;
+    border-radius: 2px;
     background-color: var(--iP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
     color: var(--iP-default-fontColor);
     text-align: center;
+}
+
+div .iP-submit{
+    background: var(--default-absBtnBgColor);
+    color: var(--default-absFontColor);
 }
 
 .iP-exBtn {
@@ -78,7 +85,7 @@
     background-color: rgb(45, 45, 45);
     border: 1px solid rgb(81, 81, 81);
     color: rgba(223, 190, 106, 0.7);
-    font-size: 11px;
+    font-size: var(--default-contentFontSize);
 }
 
 .iP-exBtn:hover,
@@ -90,17 +97,36 @@
 .iP-form input[type="button"] {
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2px;
     margin: auto;
     margin-top: 50px;
     margin-left: 50px;
     margin-right: 50px;
 }
 
+/* 工程取消按钮样式 */
+.iP-cancelOpenProject{
+    float: right;
+    outline-style: none;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    font-size: 30px;
+    margin-right: 10px;
+    background-color: var(--nP-default-inputBgColor);
+    border: 1px solid rgb(81, 81, 81);
+    color: var(--nP-default-fontColor);
+}
+
+.iP-cancelOpenProject{
+    color: var(--default-hoverColor);
+    border-color: var(--default-hoverColor);
+}
+
 /**************************空白工程**************************/
 /*设置提示样式*/
 .iP-content_space .iP-tip_title {
-    font-size: 15px;
+    font-size: var(--default-titleFontSize);
     margin-bottom: 50px;
     color: var(--iP-default-fontColor);
 }
