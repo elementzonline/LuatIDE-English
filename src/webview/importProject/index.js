@@ -89,6 +89,26 @@ iP_cancelBtn.on("click", function () {
     isDisOpenProjectHtml = false;
 });
 
+$(".iP-cancelOpenProject").on("click", function () {
+    $(".openProjectHtml").hide();
+    switch (iP_curActiveContent) {
+        case "space":
+            iP_clearTempData(iP_sapceData, iP_spaceDynData)
+            break;
+        case "example":
+            iP_clearTempData(iP_exampleData, iP_exampleDynData)
+            break;
+        case "ndk":
+            iP_clearTempData(iP_ndkData, iP_ndkDynData)
+            break;
+        case "ui":
+            iP_clearTempData(iP_uiData, iP_uiDynData)
+            break;
+        default:
+            break;
+    }
+    isDisOpenProjectHtml = false;
+});
 
 //按钮完成逻辑
 iP_submitBtn.on("click", function () {

@@ -28,6 +28,7 @@ h2 {
 .nP-projectTip{
     color: var(--nP-default-fontColor);
     display: block;
+    font-weight: normal;
 }
 
 /*导航栏样式*/
@@ -43,10 +44,10 @@ h2 {
 .nP-navbarChild{
     /* margin: auto; */
     /* padding: 30px; */
-    border: var(--nP-default-border);
+    border: 1px solid rgb(142, 142, 142);
     border-style:none solid none none;
     width: 100%;
-    border-radius: 30px 0 0 0 ;
+    border-radius: 5px 0 0 0 ;
     overflow: hidden;
 }
 
@@ -67,8 +68,8 @@ div.nP-navbar:after {
     background: transparent;
     font-weight: normal;
     font-style: normal;
-    font-size: 0.85rem;
-    letter-spacing: 0.3em;
+    font-size: var(--default-titleFontSize);
+    /* letter-spacing: 0.3em; */
     color: var(--nP-default-fontColor);
     border-radius: 0;
     padding: 30px 20px 30px;
@@ -91,7 +92,8 @@ div.nP-navbar:after {
     color: var(--nP-default-active);
     background-position: 60% 50%;
     background-size: 300% 300%; */
-    background-color: rgb(64,128,208);
+    background-color: rgb(66, 129, 209);
+    color: rgb(255, 255, 255);
 }
 
 .nP-content {
@@ -102,6 +104,7 @@ div.nP-navbar:after {
     position: relative;
     text-align: center;
     align-items: center;
+    font-size: var(--default-contentFontSize);
 }
 
 .nP-contentChild{
@@ -130,11 +133,16 @@ div.nP-navbar:after {
     outline-style: none;
     height: 40px;
     width: 280px;
-    border-radius: 15px;
+    border-radius: 2px;
     background-color: var(--nP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
     color: var(--nP-default-fontColor);
     text-align: center;
+}
+
+div .nP-submit{
+    background: var(--default-absBtnBgColor);
+    color: var(--default-absFontColor);
 }
 
 .exBtn {
@@ -147,7 +155,7 @@ div.nP-navbar:after {
     background-color: rgb(45, 45, 45);
     border: 1px solid rgb(81, 81, 81);
     color: rgba(223, 190, 106, 0.7);
-    font-size: 11px;
+    font-size: var(--default-contentFontSize);
 }
 
 .exBtn:hover,
@@ -159,7 +167,7 @@ div.nP-navbar:after {
 .nP-form input[type="button"] {
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2px;
     margin: auto;
     margin-top: 50px;
     margin-left: 50px;
@@ -179,10 +187,15 @@ div.nP-navbar:after {
     color: var(--nP-default-fontColor);
 }
 
+.nP-cancelNewProject:hover{
+    color: var(--default-hoverColor);
+    border-color: var(--default-hoverColor);
+}
+
 /**************************空白工程**************************/
 /*设置提示样式*/
 .nP-content_space .tip_title {
-    font-size: 15px;
+    font-size: var(--default-titleFontSize);
     margin-bottom: 50px;
     color: var(--nP-default-fontColor);
 }

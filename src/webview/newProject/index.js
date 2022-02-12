@@ -984,7 +984,7 @@ function changeThemeColor(style) {
         document.documentElement.style.setProperty("--default-bgColor", 'white');
         document.documentElement.style.setProperty("--default-fontColor", 'black');
         document.documentElement.style.setProperty("--default-segLineColor", 'rgba(0, 0, 0, 0.6)');
-        document.documentElement.style.setProperty("--default-borderColor", '2px solid black');
+        document.documentElement.style.setProperty("--default-borderColor", '1px solid black');
         document.documentElement.style.setProperty("--default-hoverColor", 'rgb(8, 60, 201)');
         document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(255, 255, 255, 0.8)');
         document.documentElement.style.setProperty("--default-popBgColor", 'rgb(255, 255, 255, 0.7)');
@@ -1010,8 +1010,8 @@ function changeThemeColor(style) {
         document.documentElement.style.setProperty("--default-bgColor", 'rgb(37, 37, 38)');
         document.documentElement.style.setProperty("--default-fontColor", 'rgba(255, 255, 255, 0.851)');
         document.documentElement.style.setProperty("--default-segLineColor", 'rgba(255, 255, 255, 0.4)');
-        document.documentElement.style.setProperty("--default-borderColor", '2px solid rgba(255, 255, 255, 0.6)');
-        document.documentElement.style.setProperty("--default-hoverColor", 'rgb(15, 204, 109)');
+        document.documentElement.style.setProperty("--default-borderColor", '1px solid rgb(142, 142, 142)');
+        document.documentElement.style.setProperty("--default-hoverColor", 'rgb(64, 128, 208)');
         document.documentElement.style.setProperty("--default-modalBgColor", 'rgb(0, 0, 0, 0.5)');
         document.documentElement.style.setProperty("--default-popBgColor", 'rgba(46, 44, 44, 0.3)');
         document.documentElement.style.setProperty("--default-loginImgStyle", 'invert(100%) sepia(0%) saturate(7500%) hue-rotate(56deg) brightness(102%) contrast(101%)');
@@ -1020,16 +1020,16 @@ function changeThemeColor(style) {
         // 新建工程
         document.documentElement.style.setProperty("--nP-default-bgColor", 'rgb(37, 37, 38)');
         document.documentElement.style.setProperty("--nP-default-fontColor", 'rgb(142, 142, 142)');
-        document.documentElement.style.setProperty("--nP-default-border", '1px solid white');
-        document.documentElement.style.setProperty("--nP-default-hoverColor", 'white');
-        document.documentElement.style.setProperty("--nP-default-active", 'rgb(0, 238, 0)');
+        document.documentElement.style.setProperty("--nP-default-border", '1px solid rgb(64, 128, 208)');
+        document.documentElement.style.setProperty("--nP-default-hoverColor", 'rgb(64, 128, 208)');
+        document.documentElement.style.setProperty("--nP-default-active", 'rgb(0, 238, 0, 0.2)');
         document.documentElement.style.setProperty("--nP-default-inputBgColor", 'rgb(45, 45, 45)');
 
         //导入工程
         document.documentElement.style.setProperty("--iP-default-bgColor", 'rgb(37, 37, 38)');
         document.documentElement.style.setProperty("--iP-default-fontColor", 'rgb(142, 142, 142)');
-        document.documentElement.style.setProperty("--iP-default-border", '1px solid white');
-        document.documentElement.style.setProperty("--iP-default-hoverColor", 'white');
+        document.documentElement.style.setProperty("--iP-default-border", '1px solid rgb(64, 128, 208)');
+        document.documentElement.style.setProperty("--iP-default-hoverColor", 'rgb(64, 128, 208)');
         document.documentElement.style.setProperty("--iP-default-active", 'rgb(0, 238, 0)');
         document.documentElement.style.setProperty("--iP-default-inputBgColor", 'rgb(45, 45, 45)');
     }

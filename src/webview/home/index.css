@@ -16,7 +16,7 @@ i {
   --default-bgColor: white;
   --default-fontColor: black;
   --default-segLineColor: rgba(0, 0, 0, 0.6);
-  --default-borderColor: 2px solid black;
+  --default-borderColor: 1px solid black;
   --default-hoverColor: rgb(8, 60, 201);
   --default-modalBgColor: rgb(255, 255, 255, 0.8);
   --default-popBgColor: rgb(255, 255, 255, 0.7);
@@ -43,15 +43,19 @@ i {
   /* ************************************* */
 
   --default-bgColor: rgb(37, 37, 38);
-  --default-fontColor: rgba(255, 255, 255, 0.851);
-  --default-segLineColor: rgba(255, 255, 255, 0.4);
-  --default-borderColor: 2px solid rgba(255, 255, 255, 0.6);
-  --default-hoverColor: rgb(15, 204, 109);
+  --default-fontColor: rgb(142, 142, 142);
+  --default-segLineColor: rgb(142, 142, 142);
+  --default-borderColor: 1px solid rgb(142, 142, 142);
+  --default-hoverColor: rgb(64, 128, 208);
   --default-modalBgColor: rgb(0, 0, 0, 0.5);
   --default-popBgColor: rgba(46, 44, 44, 0.3);
   --default-loginPopImgStyle: none;
   --default-loginImgStyle: invert(100%) sepia(13%) saturate(7438%) hue-rotate(181deg) brightness(112%) contrast(105%);
   --default-pubImgStyle: invert(100%) sepia(13%) saturate(7438%) hue-rotate(181deg) brightness(60%) contrast(105%);
+  --default-titleFontSize: 1.5em;
+  --default-contentFontSize: 15px;
+  --default-absBtnBgColor: rgb(66, 129, 209);
+  --default-absFontColor: rgb(255, 255, 255);
 
   /* 新建工程 */
   --nP-default-bgColor: rgb(35, 35, 35);
@@ -132,14 +136,34 @@ i {
 .header-publicBtn2,
 .header-publicBtn3{
   background: none;
-  border: none;
+  border: var(--default-borderColor);
   outline: none;
-  width: 50px;
-  height: 50px;
+  width: 32px;
+  height: 32px;
 }
 
-.pubImg{
-  filter: var(--default-pubImgStyle);
+div .userIcon{
+  font-size: 17px;
+  margin: 0;
+  opacity: 1;
+}
+
+div .userIcon2{
+  font-size: 30px;
+  margin: 0;
+  opacity: 0.5;
+}
+
+.userIcon:hover,
+.userIcon2:hover{
+  color: var(--default-hoverColor);
+}
+
+.header-publicBtn1:hover,
+.header-publicBtn2:hover,
+.header-publicBtn3:hover{
+  color: var(--default-hoverColor);
+  border-color: var(--default-hoverColor);
 }
 
 /********************登录 ↓*********************/
@@ -162,13 +186,14 @@ i {
   top: 50%;
   left: 50%;
   width: 400px;
-  padding: 50px;
+  padding: 30px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 5px;
   transform: translate(-50%, -50%);
-  background: var(--default-popBgColor);
+  background: var(--default-bgColor);
   display: block;
   border: var(--default-borderColor);
+  text-align: center;
 }
 
 .login h2,
@@ -179,78 +204,98 @@ i {
   text-align: center;
 }
 
-.form-box {
-  position: relative;
-}
-
-/* 登录input */
-.login-formBox{
-  margin-bottom: 35px;
-}
-
 /* 登录按钮的居中 */
-.form-box1 {
+.login-Form{
   text-align: center;
 }
 
-.form-box input {
-  width: 100%;
-  padding: 15px 0;
-  font-size: 16px;
-  color: var(--default-fontColor);
-  margin-bottom: 30px;
+/* 登录和忘记密码样式 ↓ */
+/* 矢量图标样式 */
+i {
+  opacity: 0.4;
+  margin-left: 5px;
+  color: var(--nP-default-fontColor);
+}
+
+.form-box{
+  width: 80%;
+  margin-bottom: 50px;
+  border: 1px solid rgb(81, 81, 81);
+  margin-left: 40px;
+}
+
+.form-boxS{
+  width: 80%;
+  margin-bottom: 50px;
+  margin-left: 40px;
+}
+
+.form-boxExter{
+  width: 60%;
+  margin: 0px;
+  margin-right: 41px;
+  display: inline-block;
+}
+
+.form-box:hover{
+  border-color: var(--default-hoverColor);
+}
+
+.form-boxFirst{
+  margin-top: 30px;
+}
+
+/* 登录和忘记密码输入框 */
+.form-box input{
+  outline-style: none;
+  height: 30px;
+  width: 290px;
+  border-radius: 2px;
+  background-color: var(--default-bgColor);
   border: none;
-  border-bottom: 1.5px solid rgb(228, 227, 227, 0.5);
-  outline: none;
-  background: transparent;
+  color: var(--nP-default-fontColor);
+  margin-left: 7px;
 }
 
-.form-box label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  color: var(--default-fontColor);
-  pointer-events: none;
-  transition: .5s;
-}
-
-.form-box input:focus~label,
-.form-box input:valid~label {
-  top: -20px;
-  left: 0;
-  color: var(--default-hoverColor);
-  font-size: 12px;
-}
-
-.form-box input:focus {
-  border-color: var(--default-borderColor);
-}
+/* 登录和忘记密码样式 ↑ */
 
 .loginbtn {
-  width: 200px;
-  height: 40px;
-  background-color: var(--default-bgColor);
-  border-radius: 20px;
-  border-color: var(--default-borderColor);
-  font-size: 16px;
+  width: 150px;
+  height: 30px;
+  border-radius: 2px;
+  margin: auto;
+  outline-style: none;
+  background-color: var(--nP-default-inputBgColor);
+  border: var(--default-borderColor);
   color: var(--default-fontColor);
-  outline-width: 0;
+  text-align: center;
 }
 
 .loginbtn:hover {
-  border-color: var(--default-borderColor);
   color: var(--default-hoverColor);
+  border-color: var(--default-hoverColor);
 }
 
-.login-cancel {
-  margin: 0;
-  background: none;
-  outline: none;
-  border: none;
-  color: var(--default-fontColor);
-  margin-left: 90%;
+.cancelLoginDiv,
+.forgetPw-operaDiv{
+  height: 40px;
+}
+
+.login-cancel{
+  float: right;
+  outline-style: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  font-size: 30px;
+  background-color: var(--nP-default-inputBgColor);
+  border: 1px solid rgb(81, 81, 81);
+  color: var(--nP-default-fontColor);
+}
+
+.login-cancel:hover{
+  color: var(--default-hoverColor);
+  border-color: var(--default-hoverColor);
 }
 
 /* 忘记密码和注册盒子 */
@@ -265,39 +310,44 @@ i {
 .btforgetPw {
   margin: 10px;
   float: right;
-  font-size: 16px;
-  color: var(--default-fontColor);
+  font-size: var(--default-contentFontSize);
+  color: var(--default-hoverColor);
 }
 
 .btNoAcc:hover,
 .btforgetPw:hover{
-  color: var(--default-fontColor);
+  color: var(--default-hoverColor);
 }
 
 /* 忘记密码样式 */
-
-.forgitPw-cancel {
-  margin: 0;
-  background: none;
-  outline: none;
-  border: none;
-  color: var(--default-fontColor);
+.forgitPw-cancel,
+.forgitPw-sure {
+  margin: 0 20px;
 }
 
 .form-box #forgetPw-code {
-  width: 200px;
+  width: 80%;
+  right: 0;
 }
 
 .forgitPw-sentVerCode {
-  width: 100px;
-  margin-left: 12%;
+  width: 80px;
   margin-top: 0;
+  display: inline-block;
 }
 
-.cancelImg,
-.backImg{
-  filter: var(--default-loginPopImgStyle)
+.btLogin,
+.forgitPw-sure{
+  background: var(--default-absBtnBgColor);
+  color: var(--default-absFontColor);
 }
+
+.btLogin:hover,
+.forgitPw-sure:hover{
+  color: var(--default-absFontColor);
+  border-color: var(--default-hoverColor);
+}
+
 
 /********************登录 ↑*********************/
 
@@ -309,8 +359,9 @@ i {
 
 .welcomeIDE{
   display: block;
-  font-size: 1.5em;
+  font-size: var(--default-titleFontSize);
   color: var(--default-fontColor);
+  font-weight: normal;
 }
 
 /* 图标 */
@@ -339,13 +390,18 @@ i {
   height: 70px;
   background: none;
   outline: none;
-  border-radius: 5px;
+  border-radius: 2px;
   border: var(--default-borderColor);
   color: var(--default-fontColor);
 }
 
 .select label{
-  font-size: 1.5em;
+  font-size: var(--default-titleFontSize);
+}
+
+.select:hover{
+  color: var(--default-hoverColor);
+  border-color: var(--default-hoverColor);
 }
 
 /* 工程按钮 ↑ */
@@ -372,7 +428,7 @@ i {
 .hr-solid-content {
   color: var(--default-segLineColor);
   border: 0;
-  font-size: 15px;
+  font-size: var(--default-contentFontSize);
   padding: 1em 0;
   position: relative;
 }
@@ -413,7 +469,7 @@ i {
 .footerBtn1,
 .footerBtn2,
 .footerBtn3{
-  font-size: 15px;
+  font-size: var(--default-contentFontSize);
   color: rgb(64, 128, 197);
 }
 
@@ -493,7 +549,7 @@ i {
   margin-top: 10%;
   text-align: center;
   border: var(--default-borderColor);
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .newProjectHtmlChild{
