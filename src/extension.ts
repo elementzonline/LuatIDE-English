@@ -22,7 +22,7 @@ import * as fs from 'fs';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 import {checkSourceUpdate} from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
-
+import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -78,6 +78,10 @@ let testDependenciesProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 // let uiDesign = new UiDesign();
 // let operationExplorer = new OperationExplorer();
+const selectors: { language: string; scheme: string }[] = [
+    { language: 'lua', scheme: 'file' },
+    { language: 'lua', scheme: 'untitled' },
+];
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
  * Please note: the test suite only supports 'external' mode.
@@ -86,6 +90,8 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
+	vscode.languages.registerDocumentFormattingEditProvider(selectors, new LuaFormatProvider(context));
+	vscode.languages.registerDocumentRangeFormattingEditProvider(selectors, new LuaRangeFormatProvider(context));
 	// 插件配置实例化
 	pluginConfigInit.configInit();
 	// 插件配置文件兼容执行
