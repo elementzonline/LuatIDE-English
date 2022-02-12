@@ -594,7 +594,7 @@ export function getAir72XUXDefaultLatestLibPath() {
     const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
     let air72XUXDefaultLatestLibPath:string = '';
     if (air72XUXDefaultLatestLibName!=='') {
-        air72XUXDefaultLatestLibPath = path.join(air72XUXDefaultLibPath,'V'+air72XUXDefaultLatestLibName,'lib');
+        air72XUXDefaultLatestLibPath = path.join(air72XUXDefaultLibPath,air72XUXDefaultLatestLibName,'lib');
     }
     return air72XUXDefaultLatestLibPath;
 }
@@ -635,7 +635,7 @@ export function getAir72XUXDefaultLatestDemoPath() {
     const air72XUXDefaultDemoPath: string = getAir72XUXDefaultDemoPath();
     let air72XUXDefaultLatestDemoPath:string = '';
     if (air72XUXDefaultLatestDemoName!=='') {
-        air72XUXDefaultLatestDemoPath = path.join(air72XUXDefaultDemoPath,'V'+air72XUXDefaultLatestDemoName);
+        air72XUXDefaultLatestDemoPath = path.join(air72XUXDefaultDemoPath,air72XUXDefaultLatestDemoName);
     }
     return air72XUXDefaultLatestDemoPath;
 }
