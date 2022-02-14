@@ -315,7 +315,7 @@ export function getAir105DefaultExampleList() {
 
 // 获取air72XUX默认lib库列表
 export function getAir72XUXDefaultLibList() {
-    const libList: string[] = [""];
+    const libList: string[] = [];
     const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
     const files: string[] = fs.readdirSync(air72XUXDefaultLibPath);
     for (let index = 0; index < files.length; index++) {
@@ -360,7 +360,7 @@ export function getAir105DefaultCorePath() {
 
 // 获取air72XUX默认core文件列表
 export function getAir72XUXDefaultCoreList() {
-    const coreList: string[] = [""];
+    const coreList: string[] = [];
     const air72XUXDefaultCorePath: string = getAir72XUXDefaultCorePath();
     const files: string[] = fs.readdirSync(air72XUXDefaultCorePath);
     for (let index = 0; index < files.length; index++) {
@@ -374,7 +374,7 @@ export function getAir72XUXDefaultCoreList() {
 
 // 获取air101默认core文件列表
 export function getAir101DefaultCoreList() {
-    const coreList: string[] = [""];
+    const coreList: string[] = [];
     const getAir101DefaultCoreList: string = getAir101DefaultCorePath();
     const files: string[] = fs.readdirSync(getAir101DefaultCoreList);
     for (let index = 0; index < files.length; index++) {
@@ -388,7 +388,7 @@ export function getAir101DefaultCoreList() {
 
 // 获取air103默认core文件列表
 export function getAir103DefaultCoreList() {
-    const coreList: string[] = [""];
+    const coreList: string[] = [];
     const air103DefaultCorePath: string = getAir103DefaultCorePath();
     const files: string[] = fs.readdirSync(air103DefaultCorePath);
     for (let index = 0; index < files.length; index++) {
@@ -402,7 +402,7 @@ export function getAir103DefaultCoreList() {
 
 // 获取air105默认core文件列表
 export function getAir105DefaultCoreList() {
-    const coreList: string[] = [""];
+    const coreList: string[] = [];
     const air105DefaultCorePath: string = getAir105DefaultCorePath();
     const files: string[] = fs.readdirSync(air105DefaultCorePath);
     for (let index = 0; index < files.length; index++) {
