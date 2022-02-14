@@ -220,6 +220,9 @@ export class HomeManage {
                     case '联系我们':
                         vscode.commands.executeCommand('luatide.contactUs');
                         break; 
+                    case '注册':
+                        vscode.commands.executeCommand('luatide.register');
+                        break;
                 }
                 break;
             // 用户新建工程信息接收
