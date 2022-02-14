@@ -199,7 +199,7 @@ async function download(url: any, filePath: any) {
 *@param distPath 解压到的指定目的路径 
 */
 async function unzip(srcPath: any, distPath: any) {
-    await compressing.zip.uncompress(srcPath, distPath,{zipFileNameEncoding:'GBK'})
+    await compressing.zip.uncompress(srcPath, distPath,{zipFileNameEncoding:'utf-8'})
         .then(() => {
             console.log('unzip', 'success');
         })
