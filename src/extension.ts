@@ -173,7 +173,10 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://www.openluat.com'));
 	}));
-
+	// 注册用户erp注册命令，点击后打开erp注册页面
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.register',async ()=>{
+		vscode.env.openExternal(vscode.Uri.parse('https://erp.openluat.com/login'));
+	}));
 	dataReport.activaReport();
 }
 
