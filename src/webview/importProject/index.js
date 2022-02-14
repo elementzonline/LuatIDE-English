@@ -306,7 +306,7 @@ function iP_isCorrectModule(tar) {
 $(".iP-select_getSpace_LibInfo").on("change", function () {
     if ($('.iP-select_getSpace_LibInfo option:selected').attr("class") === 'iP_space_customeLibOption') {
         $('.iP-select_getSpace_LibInfo option:first').prop("selected", "selected");
-        iP_handelBackstageExtra('openSource', 'customLibPath');
+        iP_handelBackstageExtra('openSourceOpenProject', 'customLibPathOpenProject');
     } else {
         $("#iP-space_customeLib").prop("display", "none");
     }
@@ -315,7 +315,7 @@ $(".iP-select_getSpace_LibInfo").on("change", function () {
 $(".iP-select_getSpace_CoreInfo").on("change", function () {
     if ($('.iP-select_getSpace_CoreInfo option:selected').attr("class") === 'iP_space_customeCoreOption') {
         $('.iP-select_getSpace_CoreInfo option:first').prop("selected", "selected");
-        iP_handelBackstageExtra('openSource', 'customCorePath');
+        iP_handelBackstageExtra('openSourceOpenProject', 'customCorePathOpenProject');
     } else {
         $("#iP-space_customeCore").prop("display", "none");
     }
@@ -452,7 +452,7 @@ $(".iP-select_getSpace_ModuleInfo").on("change", function () {
 $(".iP-select_getExample_CoreInfo").on("change", function () {
     if ($('.iP-select_getExample_CoreInfo option:selected').attr("class") === 'iP_example_customeCoreOption') {
         $('.iP-select_getExample_CoreInfo option:first').prop("selected", "selected");
-        iP_handelBackstageExtra('openSource', 'customCorePath');
+        iP_handelBackstageExtra('openSourceOpenProject', 'customCorePathOpenProject');
     } else {
         $("#iP-example_customeCore").prop("display", "none");
     }
@@ -613,7 +613,7 @@ $(".iP-select_getNDK_ModuleInfo").on("change", function () {
 $(".iP-select_getUi_LibInfo").on("change", function () {
     if ($('.iP-select_getUi_LibInfo option:selected').attr("class") === 'iP_ui_customeLibOption') {
         $('.iP-select_getUi_LibInfo option:first').prop("selected", "selected");
-        iP_handelBackstageExtra('openSource', 'customLibPath');
+        iP_handelBackstageExtra('openSourceOpenProject', 'customLibPathOpenProject');
     } else {
         $("#iP-ui_customeLib").prop("display", "none");
     }
@@ -622,7 +622,7 @@ $(".iP-select_getUi_LibInfo").on("change", function () {
 $(".iP-select_getUi_CoreInfo").on("change", function () {
     if ($('.iP-select_getUi_CoreInfo option:selected').attr("class") === 'iP_ui_customeCoreOption') {
         $('.iP-select_getUi_CoreInfo option:first').prop("selected", "selected");
-        iP_handelBackstageExtra('openSource', 'customCorePath');
+        iP_handelBackstageExtra('openSourceOpenProject', 'customCorePathOpenProject');
     } else {
         $("#iP-ui_customeCore").prop("display", "none");
     }
