@@ -171,7 +171,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 	// 注册联系我们命令，点击后打开官网
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs',async ()=> {
-		vscode.env.openExternal(vscode.Uri.parse('https://www.openluat.com/about/contact_us'));
+		vscode.env.openExternal(vscode.Uri.parse('https://www.openluat.com'));
 	}));
 
 	dataReport.activaReport();
