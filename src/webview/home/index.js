@@ -91,7 +91,10 @@ $(".btLogin").on("click", function () {
 //没有账号按钮
 let noAccBtn = $(".btNoAcc");
 noAccBtn.on("click", function () {
-  // TODO打开网页链接
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "注册"
+  });
 });
 
 //忘记密码按钮
