@@ -1,12 +1,10 @@
 import * as path from 'path';
 import * as vscode  from 'vscode';
-import { PluginJsonParse } from '../plugConfigParse';
 import * as fs from 'fs';
 import uiConvert = require('./UI-Converter/uiConvert');
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { activityMemoryProjectPathBuffer } from '../extension';
 
-let pluginJsonParse = new PluginJsonParse();
 let projectJsonParse = new ProjectJsonParse();
 
 // ui设计器操作
@@ -16,7 +14,8 @@ export class UiDesign{
 
 	//UI设计器管理
 	async uiDesign(context:vscode.ExtensionContext){
-		const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+		// const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
 		const projectLuatIDEPath:string = path.join(activityProjectPath,'.luatide');
 		let uiDesignName:string|undefined = this.getUiDesignName(projectLuatIDEPath);
 		if (uiDesignName===undefined) {
@@ -70,7 +69,8 @@ export class UiDesign{
 
 	// 设计器处理
 	uiDesignHandler(context:vscode.ExtensionContext,uiDesignName:string) {
-		const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+		// const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
 		let uiDesignPath:any = path.join(activityProjectPath,'.luatide',uiDesignName+'.ui');
         if (!fs.existsSync(uiDesignPath)) {
             uiDesignPath = undefined;
