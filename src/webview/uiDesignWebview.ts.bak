@@ -4,6 +4,7 @@ import { PluginJsonParse } from '../plugConfigParse';
 import * as fs from 'fs';
 import uiConvert = require('./UI-Converter/uiConvert');
 import { ProjectJsonParse } from '../project/projectConfigParse';
+import { activityMemoryProjectPathBuffer } from '../extension';
 
 let pluginJsonParse = new PluginJsonParse();
 let projectJsonParse = new ProjectJsonParse();
@@ -79,7 +80,7 @@ export class UiDesign{
 		if (uiDesignPath!==undefined) {
 			let currentJson = fs.readFileSync(uiDesignPath, 'utf8');
 			try {
-				console.log("解析 JSON 内容，并格式化");
+				console.log("解析 JSON 内容,并格式化");
 				currentLvgl = JSON.parse(currentJson);
 				//
 				// TODO 这里可以对 lvgl 的对象根据文档，做一些预处理
@@ -99,7 +100,8 @@ export class UiDesign{
         public static readonly viewType = 'lvglDesigner';
         private readonly uiPanel: vscode.WebviewPanel;
         private disposables: vscode.Disposable[] = [];
-        private activeProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        // private activeProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        private activeProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
         private constructor(uiPanel: vscode.WebviewPanel, context: vscode.ExtensionContext,uiDesignName:string,currentLvgl:any) {
             this.uiPanel = uiPanel;
             this.update(context,uiDesignName);
@@ -138,8 +140,31 @@ export class UiDesign{
                                 );
                             }
                             return;
-                        // case "lvgl_huichuan":
-                        // 	vscode.window.showInformationMessage(message.text);
+                        case "lvglReadBase64":
+                            // 获取图片基于工程的相对路径
+                            let pictureBase64Path:string = message.text;
+                            // 获取图片的绝对路径
+                            const picturePath:string = path.join(this.activeProjectPath,pictureBase64Path);
+                            // 读取文件内容，并转换为 base64
+                            console.log("读取本地文件", picturePath);
+                            let bitmap = fs.readFileSync(picturePath);
+                            let base64 = Buffer.from(bitmap).toString('base64');
+                            console.log("转换为base64", base64.substring(0, 100), "...");
+                            // 获取houz
+                            let suffix = path.extname(pictureBase64Path);
+                            let prefix = `data:image/${suffix};base64`;
+
+                            // 将内容发送给 webview
+                            this.uiPanel.webview.postMessage(
+                                {
+                                    'command':'lvglPictureBase64',
+                                    'text': {
+                                        readBase64: true,
+                                        pictureBase64Path,
+                                        base64: `${prefix},${base64}`
+                                    }
+                                });
+                            break;
                     }
                 },
                 null,
