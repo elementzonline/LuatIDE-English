@@ -86,7 +86,7 @@ function clearLoginData() {
 $(".btLogin").on("click", function () {
   /* 发送登录信息 */
   // handleSubmit();
-})
+});
 
 //没有账号按钮
 let noAccBtn = $(".btNoAcc");
