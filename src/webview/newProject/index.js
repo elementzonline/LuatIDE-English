@@ -251,6 +251,8 @@ function newProjectHandleSubmit(tar) {
                     "projectPath": (projectPath + "\\" + projectName),
                     "moduleModel": $(".nP-select_getNDK_ModuleInfo option:selected").text(),
                     "corePath": $(".nP-select_getNDK_ExampleInfo option:selected").text(),
+                    "libPath": $(".nP-select_getNDK_LibInfo option:selected").text() === "点击选择" ? "" : $(".nP-select_getNDK_LibInfo option:selected").text(),
+                    "example": $(".nP-select_getNDK_ExampleInfo option:selected").text(),
                 }
             });
             break;
@@ -316,6 +318,16 @@ function customPathManagment(whichProject, whichCustom, pathData) {
             switch (whichCustom) {
                 case "customProjectPath":
                     $("#nP-ndk_customepath").val(pathData);
+                    break;
+                case "customLibPath":
+                    $("#ndk_customeLib").text(pathData);
+                    $("#ndk_customeLib").prop("selected", true);
+                    $("#ndk_customeLib").prop("display", "block");
+                    break;
+                case "customCorePath":
+                    $("#ndk_customeCore").text(pathData);
+                    $("#ndk_customeCore").prop("selected", true);
+                    $("#ndk_customeCore").prop("display", "block");
                     break;
                 default:
                     break;
@@ -675,16 +687,44 @@ function exampleProjectInitDataManagment(initData) {
 }
 
 
+/* 对组件选择做特殊处理[NDK工程] */
+$(".nP-select_getNDK_LibInfo").on("change", function () {
+    if ($('.nP-select_getNDK_LibInfo option:selected').attr("class") === 'ndk_customeLibOption') {
+        $('.nP-select_getNDK_LibInfo option:first').prop("selected", "selected");
+        nP_handelBackstageExtra('openSource', 'customLibPath');
+    } else {
+        $("#ndk_customeLib").prop("display", "none");
+    }
+});
+/* 对Core选择做特殊处理[NDK工程] */
+$(".nP-select_getNDK_CoreInfo").on("change", function () {
+    if ($('.nP-select_getNDK_CoreInfo option:selected').attr("class") === 'ndk_customeCoreOption') {
+        $('.nP-select_getNDK_CoreInfo option:first').prop("selected", "selected");
+        nP_handelBackstageExtra('openSource', 'customCorePath');
+    } else {
+        $("#ndk_customeCore").prop("display", "none");
+    }
+});
+
+
 /* 新建工程 模块型号select添加刷新数据[NDK工程] */
 $(".nP-select_getNDK_ModuleInfo").on("change", function () {
     let moduleSelected = $(".nP-select_getNDK_ModuleInfo option:selected");
+    let libSelected = $(".nP-select_getNDK_LibInfo");
+    let coreSelected = $(".nP-select_getNDK_CoreInfo");
     let exampleSelected = $(".nP-select_getNDK_ExampleInfo");
 
+    libSelected.empty();
+    coreSelected.empty();
     exampleSelected.empty();
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
+            // TODO ↓
+            // nP_addOptionToSelect(libSelected, nP_temNdkProjectData.libList, nP_moduleOne);
+            // nP_addOptionToSelect(coreSelected, nP_temNdkProjectData.coreList, nP_moduleOne);
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleOne);
+            // TODO ↑
             exampleSelected.prop("disabled", false);
             exampleSelected.css({
                 "opacity": "1"
@@ -735,16 +775,26 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
 /* 新建工程初始化数据管理[NDK工程] */
 function ndkProjectInitDataManagment(initData) {
     /* 添加初始化模块型号 */
-    for (let i = 0; i < initData.moduleList.length; i++) {
-        nP_autoProduceOption($(".nP-select_getNDK_ModuleInfo"), initData.moduleList[i]);
-    }
+    // for (let i = 0; i < initData.moduleList.length; i++) {
+    //     nP_autoProduceOption($(".nP-select_getNDK_ModuleInfo"), initData.moduleList[i]);
+    // }
+    $(".nP-select_getNDK_ModuleInfo").append('<option>' + nP_moduleOne + '</option>');
 
     let moduleSelected = $(".nP-select_getNDK_ModuleInfo option:selected");
+    let libSelected = $(".nP-select_getNDK_LibInfo");
+    let coreSelected = $(".nP-select_getNDK_CoreInfo");
     let exampleSelected = $(".nP-select_getNDK_ExampleInfo");
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
+            // TODO ↓
+            // nP_addOptionToSelect(libSelected, initData.libList, nP_moduleOne);
+            // nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleOne);
             // nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
+            // TODO ↑
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ndk_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ndk_customeCoreOption">自定义</option>');
             exampleSelected.prop("disabled", false);
             exampleSelected.css({
                 "opacity": "1"
@@ -774,6 +824,10 @@ function ndkProjectInitDataManagment(initData) {
         default:
             break;
     }
+
+    /* 添加初始化option用来承载自定义选项 */
+    libSelected.append('<option value="default" id="ndk_customeLib" style="display: none;">点击选择</option>');
+    coreSelected.append('<option value="default" id="ndk_customeCore" style="display: none;">点击选择</option>');
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
