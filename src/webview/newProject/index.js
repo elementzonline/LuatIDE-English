@@ -27,7 +27,7 @@ let nP_ndkData = [
     "nP-ndk_project_path", "nP-ndk_project_name"
 ];
 let nP_ndkDynData = [
-    "nP-select_getNDK_ModuleInfo", "nP-select_getNDK_ExampleInfo"
+    "nP-select_getNDK_ModuleInfo", "nP-select_getNDK_ExampleInfo", "nP-select_getNDK_LibInfo", "nP-select_getNDK_CoreInfo"
 ];
 //UI工程数据
 let nP_uiData = [
@@ -787,11 +787,9 @@ function ndkProjectInitDataManagment(initData) {
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
-            // TODO ↓
-            // nP_addOptionToSelect(libSelected, initData.libList, nP_moduleOne);
-            // nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleOne);
-            // nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
-            // TODO ↑
+            nP_addOptionToSelect(libSelected, initData.libList, nP_moduleOne);
+            nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleOne);
+            nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleOne);
             /* 添加自定义选项 */
             libSelected.append('<option class="ndk_customeLibOption">自定义</option>');
             coreSelected.append('<option class="ndk_customeCoreOption">自定义</option>');
