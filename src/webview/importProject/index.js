@@ -26,7 +26,7 @@ let iP_ndkData = [
     "iP-ndk_project_path", "iP-ndk_project_name"
 ];
 let iP_ndkDynData = [
-    "iP-select_getNDK_ModuleInfo", "iP-select_getNDK_ExampleInfo"
+    "iP-select_getNDK_ModuleInfo", "iP-select_getNDK_ExampleInfo", "iP-select_getNDK_LibInfo", "iP-select_getNDK_CoreInfo"
 ];
 //UI工程数据
 let iP_uiData = [
