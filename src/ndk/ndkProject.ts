@@ -9,10 +9,11 @@
 
 import * as vscode from "vscode";
 import * as path from 'path'; // 导入fs库和path库
-import * as ndkConfig from './ndkConfig';
+// import * as ndkConfig from './ndkConfig';
 import * as fs from 'fs';
 const { Subject } = require('await-notify');
 import { ProjectJsonParse } from "../project/projectConfigParse";
+import { getNdkDefaultPath } from "../variableInterface";
 
 
 export function getExampleList() {
@@ -39,9 +40,10 @@ function deleteFolder(filePath) {
 }
 
 export async function build(activeWorkspace: string) {
+    const ndkPath:string = getNdkDefaultPath();
     console.log("Start compiling the NDK, please wait");
     console.log("ndk project path:", activeWorkspace);
-    console.log("ndk Compilation tool chain path:", ndkConfig.ndkPath);
+    console.log("ndk Compilation tool chain path:", ndkPath);
 
     let ndkBuildLibPath: string = path.join(activeWorkspace, "ndk", "build", "user.lib");
     let projectJsonParseHandle = new ProjectJsonParse();
@@ -58,7 +60,8 @@ export async function build(activeWorkspace: string) {
     const pathExeNew = path.join(activeWorkspace, "ndk", "build.bat");
     console.log(pathExeNew);
     const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE", 'NDK build');
-    task.execution = new vscode.ShellExecution(pathExeNew, [ndkConfig.ndkPath]);
+
+    task.execution = new vscode.ShellExecution(pathExeNew, [ndkPath]);
     task.isBackground = false; //true 隐藏日志
     task.presentationOptions = {
         echo: false,
