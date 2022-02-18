@@ -656,6 +656,13 @@ export function getAir72XUXDefaultLatestDemoPath() {
     return air72XUXDefaultLatestDemoPath;
 }
 
+// 获取NDK默认路径
+export function getNdkDefaultPath(){
+    const luatideDataPath:string = getLuatIDEDataPath();
+    const ndkDefaultPath:string = path.join(luatideDataPath,'LuatideNdk');
+    return ndkDefaultPath;
+}
+
 // 获取NDK默认最新demo路径
 export function getNdkDefaultDemoPath(){
     const luatideDataPath:string = getLuatIDEDataPath();
