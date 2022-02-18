@@ -640,6 +640,13 @@ export function getAir72XUXDefaultLatestDemoPath() {
     return air72XUXDefaultLatestDemoPath;
 }
 
+// 获取NDK默认最新demo路径
+export function getNdkDefaultDemoPath(){
+    const luatideDataPath:string = getLuatIDEDataPath();
+    const ndkDefaultDemoPath:string = path.join(luatideDataPath,'LuatideNdk','example');
+    return ndkDefaultDemoPath;
+}
+
 // 依据模块型号获取文件名后缀
 export function getExtnameBaseModel(moduleModel: any) {
     let extname: any;
