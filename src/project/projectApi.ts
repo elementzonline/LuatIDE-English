@@ -15,6 +15,7 @@ import {
     getAir72XUXDefaultLibPath,
     getEsp32c3DefaultCorePath
 } from "../variableInterface";
+import { activityMemoryProjectPathBuffer } from "../extension";
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 
@@ -73,16 +74,17 @@ export function copyOperation(src:any, dist:any) {
 * @param filesList{stringList} 文件路径列表
 * @returns filesList 指定路径内所有文件夹的名称
 */  
-export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:string[]|undefined = []){
+export function getFileForDirRecursion(dir:any,childrenDir:string=''){
     if (childrenDir==='') {
         childrenDir = dir;
     }
+    let filesList:string[] = [];
     const files:any = fs.readdirSync(childrenDir);
     for (let index = 0; index < files.length; index++) {
         const filePath:string = path.join(childrenDir,files[index]);
         if (fs.statSync(filePath).isDirectory()) {
             filesList.push(path.relative(dir,filePath));
-            const filesChildrenList = getFileForDirRecursion(dir,filePath,filesList);
+            const filesChildrenList = getFileForDirRecursion(dir,filePath);
             if (filesChildrenList!==undefined) {
                 filesList = filesList?.concat(filesChildrenList);
             }
