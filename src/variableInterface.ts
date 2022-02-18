@@ -732,3 +732,45 @@ export function getExampleListBaseMoudeleMode(moduleModel: any) {
     }
     return exampleList;
 }
+
+// 依据模块型号获取活动工程可选配置项列表
+export function getActivityProjectConfigOptionsList(moduleModel:string) {
+    const configOptionsListDefault: string[] = [
+        "添加文件",
+        "添加文件夹",
+        "配置core文件",
+        "配置lib库文件",
+        "配置模块型号/模拟器",
+        "显示配置文件"
+    ];
+    const configOptionsListSimulator: string[] = [
+        "添加文件",
+        "添加文件夹",
+        "配置lib库文件",
+        "配置模块型号/模拟器",
+        "显示配置文件"
+    ];
+    const configOptionsListAir10X: string[] = [
+        "添加文件",
+        "添加文件夹",
+        "配置core文件",
+        "配置模块型号/模拟器",
+        "显示配置文件"
+    ];
+    switch (moduleModel) {
+        case 'air72XUX/air82XUX':
+            return configOptionsListDefault;
+        case 'air101':
+            return configOptionsListAir10X;
+        case 'air103':
+            return configOptionsListAir10X;
+        case 'air105':
+            return configOptionsListAir10X;
+        case 'esp32c3':
+            return configOptionsListAir10X;
+        case "simulator":
+            return configOptionsListSimulator;
+        default:
+            return configOptionsListDefault;
+    }
+}
