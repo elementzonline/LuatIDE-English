@@ -21,6 +21,10 @@ import * as path from 'path'; // 导入fs库和path库
 import { PluginJsonParse } from '../plugConfigParse';
 import { ProjectJsonParse } from "../project/projectConfigParse";
 
+
+import * as ndkProject from "../ndk/ndkProject";
+
+
 // 获取当前时间戳，并解析后格式化输出
 function formatConsoleDate(date: any) {
 	var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
@@ -751,6 +755,30 @@ export class MockDebugSession extends LoggingDebugSession {
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 
+
+		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject();
+		
+		// 如果是NDK工程，就需要先去编译
+		if(this.projectJsonParse.getProjectConfigType(this.activeWorkspace)==="ndk")
+		{
+			console.log("this is ndk project!!!");
+			let result = await ndkProject.build(this.activeWorkspace);
+			if(result===false)
+			{
+				// 编译失败
+				console.log("NDK compilation failed");
+				// 强行终止调试器
+				vscode.debug.stopDebugging();
+				return;
+			}
+			else
+			{
+				// 编译成功，继续执行
+				console.log("The NDK was compiled successfully");
+			}
+
+		}
+
 		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
 		while(this._socket !== null)
 		{
@@ -788,7 +816,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		};
 
 		vscode.tasks.executeTask(task);
-		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject();
+		
 
 		// 写入lua运行日志到用户工程下的log文件夹
 		if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
