@@ -24,6 +24,13 @@ import * as path from "path";
         const projectConfigJsonObj:any = JSON.parse(projectConfigJson);
         return projectConfigJsonObj;
     }
+    getProjectConfigType(projectPath:any){
+        const projectConfigJsonObj:any =  this.getProjectConfigJson(projectPath);
+        const projectConfigType:string[] = projectConfigJsonObj.projectType;
+        return projectConfigType;
+    }
+
+    
 
     // 获取工程下载至模块的脚本文件及资源文件列表
     getProjectConfigAppFile(projectPath:any){
