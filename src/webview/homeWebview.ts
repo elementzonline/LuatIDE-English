@@ -547,44 +547,80 @@ export class HomeManage {
                 }
                 break;
             case 'getImportProjectInitData':
-            // console.log('test');
-            homePanel.webview.postMessage(
-                {
-                    command: "importProjectInitData",
-                    text: {
-                        'projectType':this.openProjectJson.type,
-                        "data":{
-                        "moduleList": pluginDefaultModuleList,
-                        "libList": {
-                            "air72XUX/air82XUX": air72XUXLibList,
-                            "air72XCX":air72XUXLibList,
-                            "air101": air101LibList,
-                            "air103": air103LibList,
-                            "air105": air105LibList,
-                            "simulator":air72XUXLibList,
-                            "esp32c3":esp32c3LibList,
-                        },
-                        "coreList": {
-                            "air72XUX/air82XUX": air72XUXCoreList,
-                            "air72XCX":air72XCXCoreList,
-                            "air101": air101CoreList,
-                            "air103": air103CoreList,
-                            "air105": air105CoreList,
-                            "simulator":air72XUXCoreList,
-                            "esp32c3":esp32c3CoreList,
-                        },
-                        "exampleList": {
-                            "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
-                            "air72XCX":pluginDefaultAir72XUXExample,
-                            "air101": pluginDefaultAir101Example,
-                            "air103": pluginDefaultAir103Example,
-                            "air105": pluginDefaultAir105Example,
-                            "simulator":pluginDefaultAir72XUXExample,
-                            "esp32c3":pluginDefaultEsp32c3Example,
-                        },
-                    },
-                    },
-                });
+                // console.log('test');
+                switch (this.openProjectJson.type) {
+                    case 'ndk':
+                        homePanel.webview.postMessage(
+                            {
+                                command: "importProjectInitData",
+                                text: {
+                                    'projectType':this.openProjectJson.type,
+                                    "data":{
+                                        "moduleList": ['air72XUX/air82XUX'],
+                                        "libList": {
+                                            "air72XUX/air82XUX": air72XUXLibList,
+                                            "air72XCX":[],
+                                            "air101": [],
+                                            "air103": [],
+                                            "air105": [],
+                                            "simulator":[],
+                                            "esp32c3":[],
+                                        },
+                                        "coreList": {
+                                            "air72XUX/air82XUX": air72XUXCoreList,
+                                            "air72XCX":[],
+                                            "air101": [],
+                                            "air103": [],
+                                            "air105": [],
+                                            "simulator":[],
+                                            "esp32c3":[],
+                                        },
+                                        "exampleList": pluginDefaultNdkExample,
+                                },
+                                },
+                            });
+                        break;
+                    default:
+                        homePanel.webview.postMessage(
+                            {
+                                command: "importProjectInitData",
+                                text: {
+                                    'projectType':this.openProjectJson.type,
+                                    "data":{
+                                    "moduleList": pluginDefaultModuleList,
+                                    "libList": {
+                                        "air72XUX/air82XUX": air72XUXLibList,
+                                        "air72XCX":air72XUXLibList,
+                                        "air101": air101LibList,
+                                        "air103": air103LibList,
+                                        "air105": air105LibList,
+                                        "simulator":air72XUXLibList,
+                                        "esp32c3":esp32c3LibList,
+                                    },
+                                    "coreList": {
+                                        "air72XUX/air82XUX": air72XUXCoreList,
+                                        "air72XCX":air72XCXCoreList,
+                                        "air101": air101CoreList,
+                                        "air103": air103CoreList,
+                                        "air105": air105CoreList,
+                                        "simulator":air72XUXCoreList,
+                                        "esp32c3":esp32c3CoreList,
+                                    },
+                                    "exampleList": {
+                                        "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
+                                        "air72XCX":pluginDefaultAir72XUXExample,
+                                        "air101": pluginDefaultAir101Example,
+                                        "air103": pluginDefaultAir103Example,
+                                        "air105": pluginDefaultAir105Example,
+                                        "simulator":pluginDefaultAir72XUXExample,
+                                        "esp32c3":pluginDefaultEsp32c3Example,
+                                    },
+                                },
+                                },
+                            });
+                        break;
+                }
+                
             break;
         }
     }
@@ -646,5 +682,4 @@ export class HomeManage {
             }
             return true;
         }
-
 }
