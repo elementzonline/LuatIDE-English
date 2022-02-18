@@ -250,7 +250,7 @@ function newProjectHandleSubmit(tar) {
                     "projectName": projectName,
                     "projectPath": (projectPath + "\\" + projectName),
                     "moduleModel": $(".nP-select_getNDK_ModuleInfo option:selected").text(),
-                    "corePath": $(".nP-select_getNDK_ExampleInfo option:selected").text(),
+                    "corePath": $(".nP-select_getNDK_CoreInfo option:selected").text(),
                     "libPath": $(".nP-select_getNDK_LibInfo option:selected").text() === "点击选择" ? "" : $(".nP-select_getNDK_LibInfo option:selected").text(),
                     "example": $(".nP-select_getNDK_ExampleInfo option:selected").text(),
                 }
