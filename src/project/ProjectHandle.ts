@@ -5,6 +5,7 @@ import * as path from "path";
 import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
 import { activityMemoryProjectPathBuffer } from "../extension";
+import { getActivityProjectConfigOptionsList } from "../variableInterface";
 // import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
@@ -164,23 +165,17 @@ export class ProjectConfigOperation {
     projectConfigOperation() {
         const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
         if (activityProjectPath === '') {
-            vscode.window.showErrorMessage("当前未检测到活动工程，请先激活工程后再配置");
+            vscode.window.showErrorMessage("当前未检测到活动工程,请先激活工程后再配置");
             return false;
         }
-        this.projectConfigOperationUserInteractionInit();
+        const moduleModel:string = projectJsonParse.getProjectConfigModuleModel(activityProjectPath);
+        this.projectConfigOperationUserInteractionInit(moduleModel);
     }
 
     // 活动工程配置操作用户交互提示
-    projectConfigOperationUserInteractionInit() {
+    projectConfigOperationUserInteractionInit(moduleModel:string) {
         vscode.window.showQuickPick(
-            [
-                "添加文件",
-                "添加文件夹",
-                "配置core文件",
-                "配置lib库文件",
-                "配置模块型号/模拟器",
-                "显示配置文件"
-            ],
+            getActivityProjectConfigOptionsList(moduleModel),
             {
                 canPickMany: false,
                 ignoreFocusOut: false,
@@ -349,20 +344,20 @@ export class ProjectConfigOperation {
         return true;
     }
 
-        // lib库及core文件设置必要条件校验
-        libCoreCheck(filePath:string){
-            const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
-            // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
-            if (filePath===activityPath){
-                vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
-                return false;
-            }
-            if (filePath===path.join(activityPath,'luatide_project.json')) {
-                vscode.window.showErrorMessage("不支持设置LuatIDE工程配置文件",{modal: true});
-                return false;
-            }
-            return true;
+    // lib库及core文件设置必要条件校验
+    libCoreCheck(filePath:string){
+        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        if (filePath===activityPath){
+            vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
+            return false;
         }
+        if (filePath===path.join(activityPath,'luatide_project.json')) {
+            vscode.window.showErrorMessage("不支持设置LuatIDE工程配置文件",{modal: true});
+            return false;
+        }
+        return true;
+    }
 
     // 打开文件资源管理器接口
     async showOpenDialog(options: any) {
