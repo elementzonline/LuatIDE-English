@@ -62,6 +62,8 @@ class MockConfigurationProvider implements vscode.DebugConfigurationProvider {
 	 * Massage a debug configuration just before a debug session is being launched,
 	 * e.g. add all missing attributes to the debug configuration.
 	 */
+	// 这个函数是点击调试选项卡中的调试选项会直接进来
+	// 点击我们的调试按钮第一步不是这，最终也会进来
 	resolveDebugConfiguration(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): ProviderResult<DebugConfiguration> {
 
 		// if launch.json is missing or empty
