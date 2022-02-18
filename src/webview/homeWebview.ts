@@ -10,7 +10,7 @@ import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHand
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
 import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList } from '../variableInterface';
-
+import {getNdkProject} from  "../ndk/ndkCodeDownload";
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 let pluginJsonParse = new PluginJsonParse();
@@ -180,7 +180,7 @@ export class HomeManage {
         const pluginDefaultAir105Example:string[] = getAir105DefaultExampleList();
         const pluginDefaultAir72XUXExample:string[] = getAir72XUXDefaultExampleList();
         const pluginDefaultEsp32c3Example:string[] = [];
-        const pluginDefaultNdkExample:string[] = getNdkDefaultExampleList();
+        let pluginDefaultNdkExample:string[];
         const air72XUXLibList:string[] = getAir72XUXDefaultLibList();
         const air72XUXCoreList:string[] = getAir72XUXDefaultCoreList();
         const air101CoreList:string[] = getAir101DefaultCoreList();
@@ -289,6 +289,8 @@ export class HomeManage {
                         );
                         break;
                     case 'ndk':
+                        await getNdkProject();
+                        pluginDefaultNdkExample = getNdkDefaultExampleList();
                         // 传送ndk工程所需数据
                         homePanel.webview.postMessage({
                             command: 'ndkProjectInitData',
@@ -548,6 +550,7 @@ export class HomeManage {
                 break;
             case 'getImportProjectInitData':
                 // console.log('test');
+                pluginDefaultNdkExample = getNdkDefaultExampleList();
                 switch (this.openProjectJson.type) {
                     case 'ndk':
                         homePanel.webview.postMessage(
