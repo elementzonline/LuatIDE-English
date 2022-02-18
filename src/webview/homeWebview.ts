@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getPluginDefaultModuleList } from '../variableInterface';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList } from '../variableInterface';
 
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
@@ -180,6 +180,7 @@ export class HomeManage {
         const pluginDefaultAir105Example:string[] = getAir105DefaultExampleList();
         const pluginDefaultAir72XUXExample:string[] = getAir72XUXDefaultExampleList();
         const pluginDefaultEsp32c3Example:string[] = [];
+        const pluginDefaultNdkExample:string[] = getNdkDefaultExampleList();
         const air72XUXLibList:string[] = getAir72XUXDefaultLibList();
         const air72XUXCoreList:string[] = getAir72XUXDefaultCoreList();
         const air101CoreList:string[] = getAir101DefaultCoreList();
@@ -292,8 +293,34 @@ export class HomeManage {
                         homePanel.webview.postMessage({
                             command: 'ndkProjectInitData',
                             text: {
-                                "moduleList": pluginDefaultModuleList,
-                                "exampleList": [],
+                                "moduleList": ['air72XUX/air82XUX'],
+                                "libList": {
+                                    "air72XUX/air82XUX": air72XUXLibList,
+                                    "air72XCX":[],
+                                    "air101": [],
+                                    "air103": [],
+                                    "air105": [],
+                                    "simulator":[],
+                                    "esp32c3":[],
+                                },
+                                "coreList": {
+                                    "air72XUX/air82XUX": air72XUXCoreList,
+                                    "air72XCX":[],
+                                    "air101": [],
+                                    "air103": [],
+                                    "air105": [],
+                                    "simulator":[],
+                                    "esp32c3":[],
+                                },
+                                "exampleList": {
+                                    "air72XUX/air82XUX": pluginDefaultNdkExample,
+                                    "air72XCX":[],
+                                    "air101": [],
+                                    "air103": [],
+                                    "air105": [],
+                                    "simulator":[],
+                                    "esp32c3":[],
+                                }
                             },
                         }
                         );
