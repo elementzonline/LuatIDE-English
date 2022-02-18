@@ -239,6 +239,22 @@ export function getPluginDefaultModuleList() {
     return moduleList;
 }
 
+// 获取NDK默认示例demo列表
+export function getNdkDefaultExampleList() {
+    const demoList: string[] = [];
+    const ndkDefaultLatestDemoPath: string = getNdkDefaultDemoPath();
+    if (ndkDefaultLatestDemoPath==='') {
+        return demoList;
+    }
+    const files: string[] = fs.readdirSync(ndkDefaultLatestDemoPath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (fs.statSync(path.join(ndkDefaultLatestDemoPath, element)).isDirectory()) {
+            demoList.push(element);
+        }
+    }
+    return demoList;
+}
 
 // 获取Air72XUX默认示例demo列表
 export function getAir72XUXDefaultExampleList() {
