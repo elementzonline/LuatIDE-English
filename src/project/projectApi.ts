@@ -93,7 +93,7 @@ export function getFileForDirRecursion(dir:any,childrenDir:string='',filesList:s
         else{
             for (let i = 0; i < filesList.length; i++) {
                 const element = filesList[i];
-                if (path.basename(element)===path.basename(filePath)) {
+                if (path.basename(element)===path.basename(filePath) && filePath.indexOf('ndk')===-1) {
                     vscode.window.showErrorMessage(`检测到工程内有同名文件${path.basename(filePath)},工程组织失败!!`);
                     return undefined;
                 }
