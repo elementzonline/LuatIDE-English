@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getPluginConfigPath } from "../variableInterface";
+import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
 import { PluginJsonParse } from "../plugConfigParse";
-import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
+import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
 
 // let pluginVariablesInit = new PluginVariablesInit();
@@ -127,7 +127,7 @@ export class CreateProject {
             createProjectModuleModel: message.text['moduleModel'],
             createProjectLibPath: message.text['libPath'],
             createProjectCorePath: message.text['corePath'],
-            createProjectExample: message.text['project_example'],
+            createProjectExample: message.text['example'],
         };
         const createProjectCheckState: boolean = this.createProjectCheck(message);
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
@@ -143,14 +143,21 @@ export class CreateProject {
         pluginJsonParse.pushPluginConfigProject(projectObj);
         pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
-        const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
+        // const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         // 依据示例demo是否选择确定新建工程类型
-        if (createProjectMessage.createProjectExample === "") {
-            this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
+        // if (createProjectMessage.createProjectExample === "") {
+        //     this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
+        // }
+        // else {
+        //     this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
+        //         createProjectMessage.createProjectPath);
+        // }
+        if (createProjectMessage.createProjectExample === undefined) {
+            vscode.window.showErrorMessage('未检测到ndk工程所需demo文件,NDK工程创建失败');
+            return;
         }
-        else {
-            this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
-                createProjectMessage.createProjectPath);
+        else{
+            this.ndkHandler(createProjectMessage.createProjectPath,createProjectMessage.createProjectExample);
         }
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
@@ -165,7 +172,7 @@ export class CreateProject {
          projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath); 
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigLibPath(createProjectLibPath);
+        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
@@ -380,5 +387,16 @@ export class CreateProject {
         const pluginJsonData: string = JSON.stringify(pluginnJsonObj, null, '\t');
         const pluginJsonPath: string = getPluginConfigPath();
         fs.writeFileSync(pluginJsonPath, pluginJsonData);
+    }
+
+    // 对接收到的ndk数据进行工程环境初始化处理
+    ndkHandler(projectPath:string,exampleName:string){
+        const ndkDefaultDemoPath:string = getNdkDefaultDemoPath();
+        const ndkDefaultDemoAbsolutePath:string = path.join(ndkDefaultDemoPath,exampleName);
+        const ndkProjectDemoDistPath: string = projectPath;
+        copyDir(ndkDefaultDemoAbsolutePath,ndkProjectDemoDistPath);
+        copyDir(path.join(ndkProjectDemoDistPath,'lua'),ndkProjectDemoDistPath);
+        deleteDirRecursive(path.join(ndkProjectDemoDistPath,'lua'));
+        fs.renameSync(path.join(ndkProjectDemoDistPath,'c'),path.join(ndkProjectDemoDistPath,'ndk'));
     }
 }
