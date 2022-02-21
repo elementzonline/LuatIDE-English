@@ -209,7 +209,7 @@ export class CreateProject {
         // const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         // this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         this.createUiData(createProjectMessage.createProjectPath);
-        vscode.commands.executeCommand('luatide-ui.design');
+        // vscode.commands.executeCommand('luatide-ui.design');
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
