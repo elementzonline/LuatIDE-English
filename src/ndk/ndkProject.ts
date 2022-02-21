@@ -40,14 +40,14 @@ function deleteFolder(filePath) {
 }
 
 export async function build(activeWorkspace: string) {
-    const ndkPath:string = getNdkDefaultPath();
+    const ndkPath: string = getNdkDefaultPath();
     console.log("Start compiling the NDK, please wait");
     console.log("ndk project path:", activeWorkspace);
     console.log("ndk Compilation tool chain path:", ndkPath);
 
     let ndkBuildLibPath: string = path.join(activeWorkspace, "ndk", "build", "user.lib");
     let projectJsonParseHandle = new ProjectJsonParse();
-    projectJsonParseHandle.popProjectConfigAppFile(ndkBuildLibPath,activeWorkspace);
+    projectJsonParseHandle.popProjectConfigAppFile(ndkBuildLibPath, activeWorkspace);
 
     // 如果NDK工程中build目录存在，先删除掉，后面通过build目录中的user.lib判断是否编译成功
     let ndkBuildPath: string = path.join(activeWorkspace, "ndk", "build");
@@ -78,7 +78,7 @@ export async function build(activeWorkspace: string) {
         console.log(event);
         taskRunStatus = true;
     });
-    
+
 
     let timesleep = new Subject();
     while (1) {
@@ -93,13 +93,12 @@ export async function build(activeWorkspace: string) {
         }
     }
 
-    
+
     // 找一下build目录下有没有user.lib.有的话就是编译成功了,直接返回true
-    if(fs.existsSync(ndkBuildLibPath)===false)
-    {
+    if (fs.existsSync(ndkBuildLibPath) === false) {
         return false;
     }
     // user.lib存在的话就添加到appfile中
-    projectJsonParseHandle.pushProjectConfigAppFile([path.relative(activeWorkspace,ndkBuildLibPath)],activeWorkspace);
+    projectJsonParseHandle.pushProjectConfigAppFile([path.relative(activeWorkspace, ndkBuildLibPath)], activeWorkspace);
     return true;
 }
