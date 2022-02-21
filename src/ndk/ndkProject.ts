@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-17 16:11:48
- * @LastEditTime: 2022-02-18 19:40:15
+ * @LastEditTime: 2022-02-21 14:07:56
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\ndk\ndkbuild.ts
@@ -11,6 +11,7 @@ import * as vscode from "vscode";
 import * as path from 'path'; // 导入fs库和path库
 // import * as ndkConfig from './ndkConfig';
 import * as fs from 'fs';
+import * as childProcess from 'child_process';
 const { Subject } = require('await-notify');
 import { ProjectJsonParse } from "../project/projectConfigParse";
 import { getNdkDefaultPath } from "../variableInterface";
@@ -38,6 +39,21 @@ function deleteFolder(filePath) {
         fs.rmdirSync(filePath);
     }
 }
+
+// 拷贝头文件到工程目录
+// ndk工程结构就绪之后，json生成之前调用该函数。拷贝头文件到工程目录
+export async function resourceCopyProject(activeWorkspace: string) {
+    const ndkPath: string = getNdkDefaultPath();
+    const cmdPath = path.join(ndkPath, "platform", "Air72x", "core", "copy_to_project.bat " + activeWorkspace, "ndk");
+
+    let stdout: any;
+    stdout = await childProcess.exec(cmdPath, async function (error, stdout, stdin) {
+        return stdout;
+    });
+    console.log(stdout);
+    return true;
+}
+
 
 export async function build(activeWorkspace: string) {
     const ndkPath: string = getNdkDefaultPath();
