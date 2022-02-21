@@ -6,6 +6,7 @@ import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDem
 import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
+import { resourceCopyProject } from "../ndk/ndkProject";
 
 // let pluginVariablesInit = new PluginVariablesInit();
 let pluginJsonParse: any = new PluginJsonParse();
@@ -159,6 +160,7 @@ export class CreateProject {
         else{
             this.ndkHandler(createProjectMessage.createProjectPath,createProjectMessage.createProjectExample);
         }
+        resourceCopyProject(createProjectMessage.createProjectPath);
         projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
