@@ -15,7 +15,6 @@ import {
     getAir72XUXDefaultLibPath,
     getEsp32c3DefaultCorePath
 } from "../variableInterface";
-import { activityMemoryProjectPathBuffer } from "../extension";
 
 let pluginJsonParse:any = new PluginJsonParse(); 
 

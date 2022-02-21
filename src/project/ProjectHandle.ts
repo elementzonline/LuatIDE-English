@@ -38,7 +38,7 @@ export class ProjectActiveHandle {
                 }
                 else if(result === '新窗口打开'){
                     pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
-                    activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
+                    // activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
                     vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
                 }
