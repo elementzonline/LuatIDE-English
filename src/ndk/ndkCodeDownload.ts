@@ -52,13 +52,15 @@ async function getNdkCode() {
 
 }
 
+// git下载提示
 async function downGit() {
-	const answer = await vscode.window.showInformationMessage('请安装Git客户端以获取NDK编译环境', '跳转下载');
+	const answer = await vscode.window.showInformationMessage('请安装Git客户端以获取NDK编译环境,安装完毕请重启VsCode', '跳转下载');
 	if (answer === '跳转下载') {
 		vscode.env.openExternal(vscode.Uri.parse('https://git-scm.com/downloads'));
 	}
 };
 
+// ndk工程下载检测处理
 export async function getNdkProject() {
 	let result: string | undefined = '是';
 	if (!fs.existsSync(getNdkDefaultPath())) {
@@ -67,16 +69,15 @@ export async function getNdkProject() {
 		});
 	}
 	if (result === "是") {
-		let stdout:any;
-		stdout = await childProcess.exec('git --version', async function (error, stdout, stdin) {
-			return stdout;
-		});
-		if (stdout === '') {
+		try {
+			const version = childProcess.execSync('git --version').toString();
+			console.log('version',version);
+			if (version) {
+				await getNdkCode();
+			}
+		} catch (error) {
 			console.log('\x1b[0;93m[请安装Git客户端以获取NDK编译环境] \x1b[0;99mhttps://git-scm.com/downloads');
-			downGit();
-		}
-		else {
-			await getNdkCode();
+			await downGit();
 		}
 	}
 }
