@@ -550,9 +550,9 @@ export class HomeManage {
                 break;
             case 'getImportProjectInitData':
                 // console.log('test');
-                pluginDefaultNdkExample = getNdkDefaultExampleList();
                 switch (this.openProjectJson.type) {
                     case 'ndk':
+                        pluginDefaultNdkExample = getNdkDefaultExampleList();
                         homePanel.webview.postMessage(
                             {
                                 command: "importProjectInitData",
