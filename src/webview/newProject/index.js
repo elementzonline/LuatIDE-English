@@ -438,9 +438,9 @@ $(".nP-select_getSpace_ModuleInfo").on("change", function () {
             break;
         case nP_moduleThree:
             nP_isInAir101 = false;
-            nP_isInAirCx72 = false;
+            nP_isInAirCx72 = true;
             libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
+            coreSelected.prop("disabled", true);
             nP_addOptionToSelect(libSelected, nP_temPureProjectData.libList, nP_moduleThree);
             nP_addOptionToSelect(coreSelected, nP_temPureProjectData.coreList, nP_moduleThree);
             /* 添加自定义选项 */
@@ -598,8 +598,8 @@ $(".nP-select_getExample_ModuleInfo").on("change", function () {
             $(".tip_exampleCore").show();
             break;
         case nP_moduleThree:
-            nP_isInAirCx72 = false;
-            coreSelected.prop("disabled", false);
+            nP_isInAirCx72 = true;
+            coreSelected.prop("disabled", true);
             nP_addOptionToSelect(exampleSelected, nP_temExampleProjectData.exampleList, nP_moduleThree);
             nP_addOptionToSelect(coreSelected, nP_temExampleProjectData.coreList, nP_moduleThree);
             coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
@@ -896,10 +896,10 @@ $(".nP-select_getUi_ModuleInfo").on("change", function () {
             // $(".tip_uiCore").show();
             break;
         case nP_moduleThree:
-            nP_isInAirCx72 = false;
+            nP_isInAirCx72 = true;
             nP_isInAir101 = false;
             libSelected.prop("disabled", false);
-            coreSelected.prop("disabled", false);
+            coreSelected.prop("disabled", true);
             nP_addOptionToSelect(libSelected, nP_temUiProjectData.libList, nP_moduleThree);
             nP_addOptionToSelect(coreSelected, nP_temUiProjectData.coreList, nP_moduleThree);
             /* 添加自定义选项 */
