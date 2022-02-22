@@ -79,6 +79,10 @@ nP_tarActive.on("click", function () {
     nP_tarActive.removeClass("active");
     $(this).addClass("active");
     $(nP_allHideStr).hide();
+    if (nP_curActiveContent === $(this).attr("id")){
+        $(".nP-content_" + nP_curActiveContent).show();
+        return;
+    }
     switch ($(this).attr("id")) {
         case "space":
             nP_clearTempData(nP_sapceData, nP_spaceDynData);
