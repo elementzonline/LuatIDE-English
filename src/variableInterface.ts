@@ -169,7 +169,7 @@ export function getOpenProjectHtmlPath() {
 
 // 获取主页LuatIDE logo图标路径
 export function getLogoPath() {
-    const logoPath: string = path.join(extensionPath, 'resource', 'image', 'luatideLog.png');
+    const logoPath: string = path.join(extensionPath, 'resource', 'images', 'Luat_IDE.png');
     return logoPath;
 }
 
