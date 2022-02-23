@@ -173,6 +173,12 @@ export function getLogoPath() {
     return logoPath;
 }
 
+// 获取luatide qqqun二维码图标路径
+export function getGroupChatQrCodePath() {
+    const quCodePath:string = path.join(extensionPath, 'resource', 'images', 'luatide.png');
+    return quCodePath;
+}
+
 // 获取登录成功状态svg图标路径
 export function getLoginSuccessPath() {
     const loginSuccessPath: string = path.join(extensionPath, 'webview', 'resource', 'loginSuccess.svg');
