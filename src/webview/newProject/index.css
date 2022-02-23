@@ -126,6 +126,14 @@ div.nP-navbar:after {
     display: flex;
     justify-content: space-between;
     width: 440px;
+    text-align: justify; 
+    text-align-last: justify; 
+}
+
+.nP-item label{
+    width: 60px;
+    text-align: justify;
+    text-align-last: justify;
 }
 
 .nP-form input,
