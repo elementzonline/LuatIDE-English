@@ -21,7 +21,7 @@
     color: red;
     margin-bottom: 30px;
     display: none;
-    font-size: var(--default-titleFontSize);
+    font-size: var(--default-contentFontSize);
 }
 
 .iP-content {
@@ -56,6 +56,11 @@
     display: flex;
     justify-content: space-between;
     width: 440px;
+}
+
+.iP-item label{
+    width: 60px;
+    text-align: justify;
 }
 
 .iP-form input,

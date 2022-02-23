@@ -175,7 +175,7 @@
             </div>
             <h2 class="nP-tips">请修改提示的错误选项</h2>
             <div class="nP-content_space">
-              <!-- <div class="tip_title">空白工程(空文件夹)默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div> -->
+              <div class="nP-tip_title">默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
               <form class="nP-form" name="nP-project_space">
                 <div class="nP-project_path nP-item">
                   <label>工程路径</label>
@@ -192,7 +192,7 @@
                   </select>
                 </div>
                 <div class="nP-lib_path nP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="nP-select_getSpace_LibInfo">
                     <!-- <option value="default" id="space_customeLib" style="display: none;">点击选择</option> -->
                   </select>
@@ -200,7 +200,7 @@
                 </div>
                 <!-- <h5 class="tip_spaceLib specialTips">该模块型号不支持 lib 文件</h5> -->
                 <div class="nP-core nP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="nP-select_getSpace_CoreInfo">
                     <!-- <option value="default" id="space_customeCore" style="display: none;">点击选择</option> -->
                   </select>
@@ -215,6 +215,7 @@
             </div>
             <!-- 示例工程-->
             <div class="nP-content_example">
+              <div class="nP-tip_title">LuatOS系统 demo应用</div>
               <form class="nP-form" name="nP-project_example">
                 <div class="nP-project_path nP-item">
                   <label>工程路径</label>
@@ -236,7 +237,7 @@
                   </select>
                 </div>
                 <div class="nP-core nP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="nP-select_getExample_CoreInfo">
                     <!-- <option value="default" id="example_customeCore" style="display: none;">点击选择</option> -->
                   </select>
@@ -251,6 +252,7 @@
             </div>
             <!-- NDK-->
             <div class="nP-content_ndk">
+              <div class="nP-tip_title">在LuatOS系统上，使用 C 和 C++ 语言实现应用，Lua语言直接调用</div>
               <form class="nP-form" name="nP-project_ndk">
                 <div class="nP-project_path nP-item">
                   <label>工程路径</label>
@@ -266,19 +268,19 @@
                   <select class="nP-select_getNDK_ModuleInfo">
                   </select>
                 </div>
+                <div class="nP-example nP-item">
+                  <label>示例选择</label>
+                  <select class="nP-select_getNDK_ExampleInfo">
+                  </select>
+                </div>
                 <div class="nP-lib_path nP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="nP-select_getNDK_LibInfo">
                   </select>
                 </div>
                 <div class="nP-core nP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="nP-select_getNDK_CoreInfo">
-                  </select>
-                </div>
-                <div class="nP-example nP-item">
-                  <label>示例选择</label>
-                  <select class="nP-select_getNDK_ExampleInfo">
                   </select>
                 </div>
                 <div class="nP-btn">
@@ -289,6 +291,7 @@
             </div>
             <!-- UI-->
             <div class="nP-content_ui">
+              <div class="nP-tip_title">生成在LuatOS系统上运行的界面应用</div>
               <form class="nP-form" name="nP-project_ui">
                 <div class="nP-project_path nP-item">
                   <label>工程路径</label>
@@ -305,7 +308,7 @@
                   </select>
                 </div>
                 <div class="nP-lib_path nP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="nP-select_getUi_LibInfo">
                     <!-- <option value="default" id="ui_customeLib" style="display: none;">点击选择</option> -->
                   </select>
@@ -313,7 +316,7 @@
                 </div>
                 <!-- <h6 class="tip_uiLib specialTips">该模块型号不支持 lib 文件</h6> -->
                 <div class="nP-core nP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="nP-select_getUi_CoreInfo">
                     <!-- <option value="default" id="ui_customeCore" style="display: none;">点击选择</option> -->
                   </select>
@@ -342,9 +345,9 @@
           </div>
           <div class="iP-contentChild">
             <!-- 空白工程-->
-            <h2 class="iP-tips">请修改提示的错误选项</h2>
+            <h2 class="iP-tips">请修改错误选项</h2>
             <div class="iP-content_space">
-              <div class="iP-tip_title">空白工程(空文件夹)默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
+              <div class="iP-tip_title">默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
               <form class="iP-form" name="iP-project_space">
                 <div class="iP-project_path iP-item">
                   <label>工程路径</label>
@@ -361,7 +364,7 @@
                   </select>
                 </div>
                 <div class="iP-lib_path iP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="iP-select_getSpace_LibInfo">
                     <!-- <option value="default" id="space_customeLib" style="display: none;">点击选择</option> -->
                   </select>
@@ -369,7 +372,7 @@
                 </div>
                 <!-- <h6 style="margin-left: 200px;" class="tip_spaceLib">该模块型号不支持 lib 文件</h6> -->
                 <div class="iP-core iP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="iP-select_getSpace_CoreInfo">
                     <!-- <option value="default" id="space_customeCore" style="display: none;">点击选择</option> -->
                   </select>
@@ -384,6 +387,7 @@
             </div>
             <!-- 示例工程-->
             <div class="iP-content_example">
+              <div class="iP-tip_title">LuatOS系统 demo应用</div>
               <form class="iP-form" name="iP-project_example">
                 <div class="iP-project_path iP-item">
                   <label>工程路径</label>
@@ -405,7 +409,7 @@
                   </select>
                 </div>
                 <div class="iP-core iP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="iP-select_getExample_CoreInfo">
                     <!-- <option value="default" id="example_customeCore" style="display: none;">点击选择</option> -->
                   </select>
@@ -420,6 +424,7 @@
             </div>
             <!-- NDK-->
             <div class="iP-content_ndk">
+              <div class="iP-tip_title">在LuatOS系统上，使用 C 和 C++ 语言实现应用，Lua语言直接调用</div>
               <form class="iP-form" name="iP-project_ndk">
                 <div class="iP-project_path iP-item">
                   <label>工程路径</label>
@@ -435,19 +440,19 @@
                   <select class="iP-select_getNDK_ModuleInfo">
                   </select>
                 </div>
+                <div class="iP-example iP-item">
+                  <label>示例选择</label>
+                  <select class="iP-select_getNDK_ExampleInfo">
+                  </select>
+                </div>
                 <div class="iP-lib_path iP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="iP-select_getNDK_LibInfo">
                   </select>
                 </div>
                 <div class="iP-core iP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="iP-select_getNDK_CoreInfo">
-                  </select>
-                </div>
-                <div class="iP-example iP-item">
-                  <label>示例选择</label>
-                  <select class="iP-select_getNDK_ExampleInfo">
                   </select>
                 </div>
                 <div class="iP-btn">
@@ -458,6 +463,7 @@
             </div>
             <!-- UI-->
             <div class="iP-content_ui">
+              <div class="iP-tip_title">生成在LuatOS系统上运行的界面应用</div>
               <form class="iP-form" name="iP-project_ui">
                 <div class="iP-project_path iP-item">
                   <label>工程路径</label>
@@ -474,7 +480,7 @@
                   </select>
                 </div>
                 <div class="iP-lib_path iP-item">
-                  <label>lib库</label>
+                  <label>LIB</label>
                   <select class="iP-select_getUi_LibInfo">
                     <!-- <option value="default" id="ui_customeLib" style="display: none;">点击选择</option> -->
                   </select>
@@ -482,7 +488,7 @@
                 </div>
                 <!-- <h6 style="margin-left: 200px;" class="tip_uiLib">该模块型号不支持 lib 文件</h6> -->
                 <div class="iP-core iP-item">
-                  <label>core文件</label>
+                  <label>CORE</label>
                   <select class="iP-select_getUi_CoreInfo">
                     <!-- <option value="default" id="ui_customeCore" style="display: none;">点击选择</option> -->
                   </select>
