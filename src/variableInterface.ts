@@ -343,7 +343,7 @@ export function getAir72XUXDefaultLibList() {
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (fs.statSync(path.join(air72XUXDefaultLibPath, element)).isDirectory()) {
-            libList.push(element);
+            libList.unshift(element);
         }
     }
     return libList;
@@ -388,7 +388,7 @@ export function getAir72XUXDefaultCoreList() {
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (path.extname(path.join(air72XUXDefaultCorePath, element)) === '.pac') {
-            coreList.push(element);
+            coreList.unshift(element);
         }
     }
     return coreList;
@@ -402,7 +402,7 @@ export function getAir101DefaultCoreList() {
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (path.extname(path.join(getAir101DefaultCoreList, element)) === '.soc') {
-            coreList.push(element);
+            coreList.unshift(element);
         }
     }
     return coreList;
@@ -416,7 +416,7 @@ export function getAir103DefaultCoreList() {
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (path.extname(path.join(air103DefaultCorePath, element)) === '.soc') {
-            coreList.push(element);
+            coreList.unshift(element);
         }
     }
     return coreList;
@@ -430,7 +430,7 @@ export function getAir105DefaultCoreList() {
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (path.extname(path.join(air105DefaultCorePath, element)) === '.soc') {
-            coreList.push(element);
+            coreList.unshift(element);
         }
     }
     return coreList;
