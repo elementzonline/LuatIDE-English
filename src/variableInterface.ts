@@ -672,7 +672,10 @@ export function getNdkDefaultPath(){
 // 获取NDK默认最新demo路径
 export function getNdkDefaultDemoPath(){
     const luatideDataPath:string = getLuatIDEDataPath();
-    const ndkDefaultDemoPath:string = path.join(luatideDataPath,'LuatideNdk','example');
+    let ndkDefaultDemoPath:string = path.join(luatideDataPath,'LuatideNdk','example');
+    if (!fs.existsSync(ndkDefaultDemoPath)) {
+        ndkDefaultDemoPath = '';
+    }
     return ndkDefaultDemoPath;
 }
 
