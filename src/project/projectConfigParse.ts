@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 // import { PluginJsonParse } from '../plugConfigParse';
 import * as path from "path";
+import { getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath } from '../variableInterface';
 // let pluginJsonParse = new PluginJsonParse();
 
 /**
@@ -195,6 +196,24 @@ import * as path from "path";
             appFile:[],
             modulePort:'',
         };
+        this.refreshProjectJson(projectJson,projectConfigPath);
+    }
+    // 导入空文件夹生成默认配置文件
+    generateImportProjectInitJson(projectPath:any){
+        const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
+        const corePath:string = getAir72XUXDefaultLatestCorePath();
+        const libPath:string = getAir72XUXDefaultLatestLibPath();
+        const projectJson:any = {
+            version:'',
+            projectType:'pure',
+            corePath:'',
+            libPath:'',
+            moduleModel:'',
+            appFile:[],
+            modulePort:'',
+        };
+        projectJson.corePath = corePath;
+        projectJson.libPath = libPath;
         this.refreshProjectJson(projectJson,projectConfigPath);
     }
 }

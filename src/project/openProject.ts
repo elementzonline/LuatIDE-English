@@ -108,7 +108,7 @@ export class OpenProject {
                             if (appFile===undefined) {
                                 return undefined;
                             }
-                            projectJsonParse.generateProjectJson(importProjectPath);
+                            projectJsonParse.generateImportProjectInitJson(importProjectPath);
                             projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}
