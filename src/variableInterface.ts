@@ -175,7 +175,7 @@ export function getLogoPath() {
 
 // 获取luatide qqqun二维码图标路径
 export function getGroupChatQrCodePath() {
-    const quCodePath:string = path.join(extensionPath, 'resource', 'images', 'luatide.png');
+    const quCodePath:string = path.join(extensionPath, 'resource', 'images', 'qrcode.png');
     return quCodePath;
 }
 

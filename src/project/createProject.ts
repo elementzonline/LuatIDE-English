@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getLogoPath, getLuatIDEDataPath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
+import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
 import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
@@ -340,7 +340,7 @@ export class CreateProject {
                         "defaultStatus": {
                             "mainPart": {}
                         },
-                        "src": "luatide.png"
+                        "src": "qrcode.png"
                     }
                 },
                 "LvglButton2": {
@@ -651,7 +651,7 @@ export class CreateProject {
     
         --This is the base code of ScreenA.LvglImg1
         ScreenA.LvglImg1.self = lvgl.img_create(lvgl.scr_act(), nil)
-        lvgl.img_set_src(ScreenA.LvglImg1.self, "/lua/luatide.png")
+        lvgl.img_set_src(ScreenA.LvglImg1.self, "/lua/qrcode.png")
         lvgl.obj_align(ScreenA.LvglImg1.self, nil, lvgl.ALIGN_IN_TOP_LEFT, 65, 184)
         lvgl.obj_add_style(ScreenA.LvglImg1.self, lvgl.IMG_PART_MAIN, Style_LvglImg1_1)
     
@@ -686,7 +686,7 @@ export class CreateProject {
         fs.writeFileSync(lcdLuaPath,lcdLuaData);
         // copy二维码图片资源文件到目录
         const luatidePngPath:string = getGroupChatQrCodePath();
-        const idePngProjectPath:string = path.join(projectPath,'luatide.png');
+        const idePngProjectPath:string = path.join(projectPath,'qrcode.png');
         fs.copyFileSync(luatidePngPath,idePngProjectPath);
         // 写入生成代码文件到工程
         const uiDesignLuaPath:string = path.join(projectPath,'UiDesign.lua');
