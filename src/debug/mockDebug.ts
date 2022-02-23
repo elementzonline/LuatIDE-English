@@ -206,7 +206,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		vscode.debug.activeDebugConsole.append(exts);
 		_outputChannel.append(exts);
 		// 增加lua运行日志文件下载到本地活动工程目录
-		fs.appendFile(this.activeWorkspace + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
+		fs.appendFile(this.activeWorkspace + "\\.luatide"  + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
 	}
 	/*-\NEW\czm\2021.05.8\调试控制台输出日志*/
 
@@ -819,8 +819,14 @@ export class MockDebugSession extends LoggingDebugSession {
 		
 
 		// 写入lua运行日志到用户工程下的log文件夹
-		if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
-			fs.mkdirSync(this.activeWorkspace + "\\LuatIDE_log");
+		// if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
+		// 	fs.mkdirSync(this.activeWorkspace + "\\LuatIDE_log");
+		// }
+		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide'))) {
+			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide'));
+		}
+		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'))) {
+			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'));
 		}
 		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
 		// execFile(path_exe_new);
