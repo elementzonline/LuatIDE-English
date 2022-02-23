@@ -788,6 +788,10 @@ function ndkProjectInitDataManagment(initData) {
     let libSelected = $(".nP-select_getNDK_LibInfo");
     let coreSelected = $(".nP-select_getNDK_CoreInfo");
     let exampleSelected = $(".nP-select_getNDK_ExampleInfo");
+    
+    libSelected.empty();
+    coreSelected.empty();
+    exampleSelected.empty();
 
     switch (moduleSelected.text()) {
         case nP_moduleOne:
