@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-17 16:11:48
- * @LastEditTime: 2022-02-21 14:07:56
+ * @LastEditTime: 2022-02-23 13:31:46
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\ndk\ndkbuild.ts
@@ -46,11 +46,7 @@ export async function resourceCopyProject(activeWorkspace: string) {
     const ndkPath: string = getNdkDefaultPath();
     const cmdPath = path.join(ndkPath, "platform", "Air72x", "core", "copy_to_project.bat " + activeWorkspace, "ndk");
 
-    let stdout: any;
-    stdout = await childProcess.exec(cmdPath, async function (error, stdout, stdin) {
-        return stdout;
-    });
-    console.log(stdout);
+    childProcess.execSync(cmdPath).toString();
     return true;
 }
 
