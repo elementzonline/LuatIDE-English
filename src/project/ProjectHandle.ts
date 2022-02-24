@@ -3,15 +3,16 @@ import * as vscode from 'vscode';
 import * as fs from "fs";
 import * as path from "path";
 import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
-import { ProjectJsonParse } from "./projectConfigParse";
+// import { ProjectJsonParse } from "./projectConfigParse";
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getActivityProjectConfigOptionsList } from "../variableInterface";
 import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getProjectConfigAppFile, getProjectConfigModuleModel, popProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
 // import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
 // let pluginJsonParse: any = new PluginJsonParse();
-let projectJsonParse: any = new ProjectJsonParse();
+// let projectJsonParse: any = new ProjectJsonParse();
 
 // 激活工程处理
 export class ProjectActiveHandle {
@@ -169,7 +170,7 @@ export class ProjectConfigOperation {
             vscode.window.showErrorMessage("当前未检测到活动工程,请先激活工程后再配置");
             return false;
         }
-        const moduleModel:string = projectJsonParse.getProjectConfigModuleModel(activityProjectPath);
+        const moduleModel:string = getProjectConfigModuleModel(activityProjectPath);
         this.projectConfigOperationUserInteractionInit(moduleModel);
     }
 
@@ -232,7 +233,7 @@ export class ProjectConfigOperation {
                 if (!libCoreCheckState) {
                     return false;
                 }
-                projectJsonParse.setProjectConfigCorePath(filePath, activityProjectPath);
+                setProjectConfigCorePath(filePath, activityProjectPath);
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
         }
@@ -256,7 +257,7 @@ export class ProjectConfigOperation {
                 if (!libCoreCheckState) {
                     return false;
                 }
-                projectJsonParse.setProjectConfigLibPath(filePath, activityProjectPath);
+                setProjectConfigLibPath(filePath, activityProjectPath);
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
         }
@@ -284,7 +285,7 @@ export class ProjectConfigOperation {
                 const relativeFilePath:string = path.relative(activityProjectPath,filePath);
                 filePathList.push(relativeFilePath);
             }
-            projectJsonParse.pushProjectConfigAppFile(filePathList, activityProjectPath);
+            pushProjectConfigAppFile(filePathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
     }
@@ -317,7 +318,7 @@ export class ProjectConfigOperation {
                 folderChildrenList.push(relativeFilePath);
                 folderPathList = folderPathList.concat(folderChildrenList);
             }
-            projectJsonParse.pushProjectConfigAppFile(folderPathList, activityProjectPath);
+            pushProjectConfigAppFile(folderPathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
     }
@@ -325,7 +326,7 @@ export class ProjectConfigOperation {
     // 添加至活动工程的文件、文件夹必要条件校验
     projectAddCheck(filePath:string){
         const activityPath:string = getPluginConfigActivityProject();
-        const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        const appFile:any = getProjectConfigAppFile(activityPath);
         if (filePath.indexOf(activityPath)===-1) {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
             return false;
@@ -399,7 +400,7 @@ export class ProjectConfigOperation {
                     return msg;
             });
             if (result!==undefined) {
-                projectJsonParse.setProjectConfigModuleModel(result,activityPath);
+                setProjectConfigModuleModel(result,activityPath);
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
 		}
@@ -436,7 +437,7 @@ export class ProjectSoruceFileDelete{
             return;
         }
         const activityPath:string = getPluginConfigActivityProject();
-        const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
+        const projectAppFile:any = getProjectConfigAppFile(activityPath);
         const relativeSelectFilePath:string = path.relative(activityPath,selectPath);
         if (selectPath===activityPath) {
             this.deleteActivityProject();
@@ -451,7 +452,7 @@ export class ProjectSoruceFileDelete{
         const activityProjectPath = getPluginConfigActivityProject();
         vscode.window.showWarningMessage("【从工程中删除选中文件（不删除本地文件）】", { modal: true }, "确定").then(result => {
             if (result === '确定') {
-                projectJsonParse.popProjectConfigAppFile(dirPath,activityProjectPath);
+                popProjectConfigAppFile(dirPath,activityProjectPath);
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
         });

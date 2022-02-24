@@ -5,13 +5,14 @@ import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDem
 // import { PluginVariablesInit } from "../config";
 // import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
-import { ProjectJsonParse } from './projectConfigParse';
+// import { ProjectJsonParse } from './projectConfigParse';
 import * as ndkProject from "../ndk/ndkProject";
 import { getPluginConfigJson, pushPluginConfigProject, setPluginConfigActivityProject } from "../plugConfigParse";
+import { generateProjectJson, getprojectConfigInitVersion, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from "./projectConfigParse";
 
 // let pluginVariablesInit = new PluginVariablesInit();
 // let pluginJsonParse: any = new PluginJsonParse();
-let projectJsonParse: any = new ProjectJsonParse();
+// let projectJsonParse: any = new ProjectJsonParse();
 export class CreateProject {
     constructor() {
 
@@ -44,22 +45,22 @@ export class CreateProject {
         createFolder(createProjectMessage.createProjectPath);
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
-        projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
+        generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[] | undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
             return;
         }
-        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
-        const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
+        const projectConfigVersion: string = getprojectConfigInitVersion();
+        setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际core路径
         const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
+        setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
+        setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -92,17 +93,17 @@ export class CreateProject {
         createFolder(createProjectMessage.createProjectPath);
         this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
             createProjectMessage.createProjectPath);
-        projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath);      //初始化写入工程配置文件
+        generateProjectJson(createProjectMessage.createProjectPath);      //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
             return;
         }
-        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
-        const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
+        const projectConfigVersion: string = getprojectConfigInitVersion();
+        setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际core路径
         const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
+        setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
         let createProjectLibPath:string;
         // lib库路径初始化写入
         if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105' && createProjectMessage.createProjectModuleModel!=='esp32c3') {
@@ -111,9 +112,9 @@ export class CreateProject {
         else{
             createProjectLibPath = '';
         }
-        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
+        setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -153,22 +154,22 @@ export class CreateProject {
             this.ndkHandler(createProjectMessage.createProjectPath,createProjectMessage.createProjectExample);
         }
         ndkProject.resourceCopyProject(createProjectMessage.createProjectPath);
-        projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
+        generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
             return;
         }
-        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
-        const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
+        const projectConfigVersion: string = getprojectConfigInitVersion();
+        setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
          // 获取写入配置文件的实际core路径
          const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
-         projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath); 
+        setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath); 
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath,createProjectMessage.createProjectPath);
+        setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
+        setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -204,22 +205,22 @@ export class CreateProject {
         // this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
         this.createUiData(createProjectMessage.createProjectPath);
         // vscode.commands.executeCommand('luatide-ui.design');
-        projectJsonParse.generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
+        generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
         if (appFile===undefined) {
             return;
         }
-        projectJsonParse.pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
-        const projectConfigVersion: string = projectJsonParse.getprojectConfigInitVersion();
-        projectJsonParse.setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
+        pushProjectConfigAppFile(appFile,createProjectMessage.createProjectPath);
+        const projectConfigVersion: string = getprojectConfigInitVersion();
+        setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际core路径
         const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
+        setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
-        projectJsonParse.setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
-        projectJsonParse.setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
+        setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
+        setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');

@@ -7,16 +7,17 @@ import { ProjectConfigOperation } from '../project/ProjectHandle';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
-import { ProjectJsonParse } from '../project/projectConfigParse';
+// import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
 import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
-let projectJsonParse = new ProjectJsonParse();
+// let projectJsonParse = new ProjectJsonParse();
 let openProject = new OpenProject();
 
 export class HomeManage {
@@ -652,16 +653,16 @@ export class HomeManage {
             };
             pushPluginConfigProject(projectObj);
             setPluginConfigActivityProject(openProjectMessage.openProjectPath);
-            const projectConfigVersion:string = projectJsonParse.getprojectConfigInitVersion();
-            projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
-            projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
+            const projectConfigVersion:string = getprojectConfigInitVersion();
+            setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
+            setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
             // 获取写入配置文件的实际core路径
             const openProjectCorePath:string = getCreateProjectCorepathHandle(openProjectMessage.openProjectCorePath,openProjectMessage.openProjectModuleModel);
-            projectJsonParse.setProjectConfigCorePath(openProjectCorePath,openProjectMessage.openProjectPath);
+            setProjectConfigCorePath(openProjectCorePath,openProjectMessage.openProjectPath);
             // 获取写入配置文件的实际lib路径
             const openProjectLibPath:string = getCreateProjectLibpathHandle(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectModuleModel);
-            projectJsonParse.setProjectConfigLibPath(openProjectLibPath,openProjectMessage.openProjectPath);
-            projectJsonParse.setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
+            setProjectConfigLibPath(openProjectLibPath,openProjectMessage.openProjectPath);
+            setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
             // vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
             // 执行激活工程到活动工程操作
             projectActiveInterfact(openProjectMessage.openProjectName,openProjectMessage.openProjectPath);
