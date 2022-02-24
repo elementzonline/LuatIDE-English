@@ -1,4 +1,4 @@
-import { PluginJsonParse } from "../plugConfigParse";
+// import { PluginJsonParse } from "../plugConfigParse";
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import * as path from "path";
@@ -6,10 +6,11 @@ import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 import { ProjectJsonParse } from "./projectConfigParse";
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getActivityProjectConfigOptionsList } from "../variableInterface";
+import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 // import { HistoryProjectDataProvider } from "./projectTreeView";
 
 
-let pluginJsonParse: any = new PluginJsonParse();
+// let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
 
 // 激活工程处理
@@ -26,18 +27,18 @@ export class ProjectActiveHandle {
             return false;
         }
         // 激活工程前做兼容性处理
-        pluginJsonParse.projectConfigCompatible(projectActivePath);
+        projectConfigCompatible(projectActivePath);
         // 执行激活到资源管理器命令
         vscode.window.showInformationMessage('请选择激活工程的打开方式',{modal:true},"当前窗口打开","新窗口打开").then(
             result =>{
                 if (result==='当前窗口打开') {
-                    pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    setPluginConfigActivityProject(projectActivePath);
                     activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
                     vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
                 }
                 else if(result === '新窗口打开'){
-                    pluginJsonParse.setPluginConfigActivityProject(projectActivePath);
+                    setPluginConfigActivityProject(projectActivePath);
                     // activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
                     vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
@@ -48,7 +49,7 @@ export class ProjectActiveHandle {
 
     // 激活工程必要条件检查
     projectActiveCheck(dir: any) {
-        const projectList: any = pluginJsonParse.getPluginConfigUserProjectAbsolutePathList();
+        const projectList: any = getPluginConfigUserProjectAbsolutePathList();
         if (projectList.indexOf(dir) === -1) {
             vscode.window.showErrorMessage("选择激活工程未在用户工程列表中发现,请重新激活", { modal: true });
             return false;
@@ -97,27 +98,27 @@ export class ProjectDeleteHandle {
         const projectName: string = filePath.label;
         const projectParentPath:string = filePath.path;
         const projectPath:string = path.join(projectParentPath,projectName);
-        let activeProject: string = pluginJsonParse.getPluginConfigActivityProject();
+        let activeProject: string = getPluginConfigActivityProject();
         switch (result) {
             case '移除工程':
-                pluginJsonParse.popPluginConfigProject(projectName);
+                popPluginConfigProject(projectName);
                 if (activeProject!=='' && projectPath.toLowerCase().indexOf(activeProject.toLowerCase())!==-1) {
                     // 活动工程置空
                     activeProject = '';
                     activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
-                    pluginJsonParse.setPluginConfigActivityProject(activeProject);
+                    setPluginConfigActivityProject(activeProject);
                 }
                 vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 break;
             case '删除本地文件':
                 vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(result => {
-                    pluginJsonParse.popPluginConfigProject(projectName);
+                    popPluginConfigProject(projectName);
                     if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
                         // 活动工程置空
                         activeProject = '';
                         activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
-                        pluginJsonParse.setPluginConfigActivityProject(activeProject);
+                        setPluginConfigActivityProject(activeProject);
                     }
                     deleteDirRecursive(projectPath);
                     vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -130,17 +131,17 @@ export class ProjectDeleteHandle {
     // 工程删除必要条件检查
     deletProjectCheck(filePath: any) {
         if (!fs.existsSync(path.join(filePath.path,filePath.label))) {
-            pluginJsonParse.popPluginConfigProject(filePath.label);
-            const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+            popPluginConfigProject(filePath.label);
+            const activityProjectPath:string = getPluginConfigActivityProject();
             if (path.join(filePath.path,filePath.label)===activityProjectPath) {
-                pluginJsonParse.setPluginConfigActivityProject = '';
+                setPluginConfigActivityProject('');
             }
             vscode.window.showInformationMessage(`选定的${filePath.label}工程路径状态已改变，已从配置文件列表中删除该工程`);
             vscode.commands.executeCommand('luatide-history-project.Project.refresh');
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return false;
         }
-        const pluginConfigAppFile: any = pluginJsonParse.getPluginConfigUserProjectList();
+        const pluginConfigAppFile: any = getPluginConfigUserProjectList();
         if (pluginConfigAppFile.indexOf(filePath.label) === -1) {
             vscode.window.showInformationMessage(`用户工程列表中未检测到${filePath.label}工程,已为您刷新用户工程`);
             vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -163,7 +164,7 @@ export class ProjectConfigOperation {
 
     // 工程配置项处理
     projectConfigOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         if (activityProjectPath === '') {
             vscode.window.showErrorMessage("当前未检测到活动工程,请先激活工程后再配置");
             return false;
@@ -212,7 +213,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择core文件
     async selectProjectCorePathOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         const options = {
             canSelectFiles: true,		//是否选择文件
             canSelectFolders: false,		//是否选择文件夹
@@ -239,7 +240,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择lib文件
     async selectProjectLibPathOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
             canSelectFolders: true,		//是否选择文件夹
@@ -263,7 +264,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件
     async selectProjectFileAddOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         const options = {
 			canSelectFiles: true,		//是否选择文件
 			canSelectFolders: false,		//是否选择文件夹
@@ -290,7 +291,7 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件夹
     async selectProjectFolderAddOperation() {
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
             canSelectFolders: true,		//是否选择文件夹
@@ -323,7 +324,7 @@ export class ProjectConfigOperation {
 
     // 添加至活动工程的文件、文件夹必要条件校验
     projectAddCheck(filePath:string){
-        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityPath:string = getPluginConfigActivityProject();
         const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
         if (filePath.indexOf(activityPath)===-1) {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
@@ -346,7 +347,7 @@ export class ProjectConfigOperation {
 
     // lib库及core文件设置必要条件校验
     libCoreCheck(filePath:string){
-        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityPath:string = getPluginConfigActivityProject();
         // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
         if (filePath===activityPath){
             vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
@@ -378,7 +379,7 @@ export class ProjectConfigOperation {
       
     // 选择配置模块型号,模拟器
     async selectProjectModuleModel(){
-        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityPath:string = getPluginConfigActivityProject();
         const result:any = await vscode.window.showQuickPick(
 			[
 				"air72XUX/Air82XUX",
@@ -405,7 +406,7 @@ export class ProjectConfigOperation {
     
     //显示配置文件
     openShowProjectConfig(){
-        const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath:string = getPluginConfigActivityProject();
         const activityProjectConfigPath:string = path.join(activityProjectPath,'luatide_project.json');
         vscode.window.showTextDocument(vscode.Uri.file(activityProjectConfigPath));
     }
@@ -422,7 +423,7 @@ export class ProjectSoruceFileDelete{
         if (activityMemoryProjectPathBuffer==='') {
             return;
         }
-        pluginJsonParse.setPluginConfigActivityProject('');
+        setPluginConfigActivityProject('');
         activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
         vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }  
@@ -434,7 +435,7 @@ export class ProjectSoruceFileDelete{
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return;
         }
-        const activityPath:string = pluginJsonParse.getPluginConfigActivityProject();
+        const activityPath:string = getPluginConfigActivityProject();
         const projectAppFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
         const relativeSelectFilePath:string = path.relative(activityPath,selectPath);
         if (selectPath===activityPath) {
@@ -447,7 +448,7 @@ export class ProjectSoruceFileDelete{
     
     // 删除工程内文件提示
     projectSourceFileDeleteHint(dirPath:string){
-        const activityProjectPath = pluginJsonParse.getPluginConfigActivityProject();
+        const activityProjectPath = getPluginConfigActivityProject();
         vscode.window.showWarningMessage("【从工程中删除选中文件（不删除本地文件）】", { modal: true }, "确定").then(result => {
             if (result === '确定') {
                 projectJsonParse.popProjectConfigAppFile(dirPath,activityProjectPath);

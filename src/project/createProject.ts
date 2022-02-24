@@ -3,13 +3,14 @@ import * as path from "path";
 import * as vscode from 'vscode';
 import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
-import { PluginJsonParse } from "../plugConfigParse";
+// import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
 import { ProjectJsonParse } from './projectConfigParse';
 import * as ndkProject from "../ndk/ndkProject";
+import { getPluginConfigJson, pushPluginConfigProject, setPluginConfigActivityProject } from "../plugConfigParse";
 
 // let pluginVariablesInit = new PluginVariablesInit();
-let pluginJsonParse: any = new PluginJsonParse();
+// let pluginJsonParse: any = new PluginJsonParse();
 let projectJsonParse: any = new ProjectJsonParse();
 export class CreateProject {
     constructor() {
@@ -38,8 +39,8 @@ export class CreateProject {
             projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
-        pluginJsonParse.pushPluginConfigProject(projectObj);
-        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
+        pushPluginConfigProject(projectObj);
+        setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
@@ -86,8 +87,8 @@ export class CreateProject {
             projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
-        pluginJsonParse.pushPluginConfigProject(projectObj);
-        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
+        pushPluginConfigProject(projectObj);
+        setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         this.copyDemoToProject(createProjectMessage.createProjectModuleModel, createProjectMessage.createProjectExample,
             createProjectMessage.createProjectPath);
@@ -141,8 +142,8 @@ export class CreateProject {
             projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
-        pluginJsonParse.pushPluginConfigProject(projectObj);
-        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
+        pushPluginConfigProject(projectObj);
+        setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         if (createProjectMessage.createProjectExample === undefined) {
             vscode.window.showErrorMessage('未检测到ndk工程所需demo文件,NDK工程创建失败');
@@ -196,8 +197,8 @@ export class CreateProject {
             projectPath: createProjectParentPath,
             projectName: createProjectMessage.createProjectName,
         };
-        pluginJsonParse.pushPluginConfigProject(projectObj);
-        pluginJsonParse.setPluginConfigActivityProject(createProjectMessage.createProjectPath);
+        pushPluginConfigProject(projectObj);
+        setPluginConfigActivityProject(createProjectMessage.createProjectPath);
         createFolder(createProjectMessage.createProjectPath);
         // const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         // this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
@@ -720,7 +721,7 @@ export class CreateProject {
         let userProject: any = {};
         userProject['project_path'] = projectPath;
         userProject['project_name'] = projectName;
-        let pluginJson: any = pluginJsonParse.getPluginConfigJson();
+        let pluginJson: any = getPluginConfigJson();
         let pluginnJsonObj: any = JSON.parse(pluginJson);
         for (let i = 0; i < pluginJson.length; i++) {
             const element = pluginJson[i];

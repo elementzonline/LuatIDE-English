@@ -1,16 +1,17 @@
 import * as vscode from 'vscode';
-import { PluginJsonParse } from '../plugConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
 import {ProjectJsonParse} from './projectConfigParse';
 
 import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
+import { projectConfigCompatible } from '../plugConfigParse';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
 
-let pluginJsonParse:any = new PluginJsonParse(); 
+// let pluginJsonParse:any = new PluginJsonParse(); 
 let projectJsonParse:any = new ProjectJsonParse(); 
 // let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation:any = new ProjectConfigOperation();
@@ -32,7 +33,7 @@ export class OpenProject {
             return undefined;
         }
         // 打开工程导入前做兼容性处理
-        pluginJsonParse.projectConfigCompatible(importProjectPath);
+        projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson);
@@ -52,7 +53,7 @@ export class OpenProject {
             return undefined;
         }
         // 打开工程导入前做兼容性处理
-        pluginJsonParse.projectConfigCompatible(importProjectPath);
+        projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         return openProjectJson;

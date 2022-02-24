@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
 import { ProjectConfigOperation } from '../project/ProjectHandle';
-import { PluginJsonParse } from '../plugConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
@@ -11,9 +11,10 @@ import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
 import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
+import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
-let pluginJsonParse = new PluginJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
 let projectJsonParse = new ProjectJsonParse();
 let openProject = new OpenProject();
@@ -173,7 +174,7 @@ export class HomeManage {
 
     // 处理从webview传来的命令
     async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
-        let activityProjectPath: string = pluginJsonParse.getPluginConfigActivityProject();
+        let activityProjectPath: string = getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
         const pluginDefaultAir101Example:string[] = getAir101DefaultExampleList();
         const pluginDefaultAir103Example:string[] = getAir103DefaultExampleList();
@@ -649,8 +650,8 @@ export class HomeManage {
                 projectPath:projectParentPath,
                 projectName:openProjectMessage.openProjectName,
             };
-            pluginJsonParse.pushPluginConfigProject(projectObj);
-            pluginJsonParse.setPluginConfigActivityProject(openProjectMessage.openProjectPath);
+            pushPluginConfigProject(projectObj);
+            setPluginConfigActivityProject(openProjectMessage.openProjectPath);
             const projectConfigVersion:string = projectJsonParse.getprojectConfigInitVersion();
             projectJsonParse.setProjectConfigProjectType(openProjectMessage.openProjectProjectType,openProjectMessage.openProjectPath);
             projectJsonParse.setProjectConfigVersion(projectConfigVersion,openProjectMessage.openProjectPath);
