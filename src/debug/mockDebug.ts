@@ -19,11 +19,12 @@ import * as path from 'path'; // 导入fs库和path库
 
 
 // import { PluginJsonParse } from '../plugConfigParse';
-import { ProjectJsonParse } from "../project/projectConfigParse";
+// import { ProjectJsonParse } from "../project/projectConfigParse";
 
 
 import * as ndkProject from "../ndk/ndkProject";
 import { getPluginConfigActivityProject } from '../plugConfigParse';
+import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
 
 
 // 获取当前时间戳，并解析后格式化输出
@@ -177,7 +178,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	// private configDataPath: any = process.env['APPDATA'];
 
 	// private pluginJsonParse: any = new PluginJsonParse();
-	private projectJsonParse: any = new ProjectJsonParse();
+	// private projectJsonParse: any = new ProjectJsonParse();
 	// dbg_dispatcher元素隐式具有 "any" 类型，因为类型为 "any" 的表达式不能用于索引类型 "MockDebugSession"。
 	[key: string]: any;
 	// 分发器
@@ -285,7 +286,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private generateProjectFilePath() {
 		let configSourceFileList: string[] = [];
 		let configSourceFilepathList: string[] = [];
-		let projectFileslist = this.projectJsonParse.getProjectConfigAppFile(this.activeWorkspace);
+		let projectFileslist = getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < projectFileslist.length; index++) {
 			const projectAbsoluteFile = path.join(this.activeWorkspace, projectFileslist[index]) ;
 			const projectFile = path.basename(projectAbsoluteFile);
@@ -483,7 +484,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-	public module_model_flag = undefined;
 	public bindSocket(socket: Net.Socket) {
 
 		socket.on('close', () => {
@@ -517,20 +517,18 @@ export class MockDebugSession extends LoggingDebugSession {
 						console.log(msg, "数据接收成功:", msg);
 
 						if (!queue.isEmpty()) {
-							if (this.module_model_flag !== undefined) {
-								if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
-									this.dataReceiveFlag = 1;
-									console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
-									// // at交互数据发送到console终端
-									// if(msg.indexOf(queue.front()[0])!==-1){
-									// 	vscode.debug.activeDebugConsole.appendLine(msg);
-									// }
-									queue.dequeue();
-									// await this.dataReceive.notify();
-								}
+							if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
+								this.dataReceiveFlag = 1;
+								console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
+								// // at交互数据发送到console终端
+								// if(msg.indexOf(queue.front()[0])!==-1){
+								// 	vscode.debug.activeDebugConsole.appendLine(msg);
+								// }
+								queue.dequeue();
+								// await this.dataReceive.notify();
 							}
 							// 补丁：3103版本固件回传的有问题
-							else if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
+							if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
 								this.dataReceiveFlag = 1;
 								queue.dequeue();
 							}
@@ -587,11 +585,10 @@ export class MockDebugSession extends LoggingDebugSession {
 			await this.sleep(100);
 
 
-			const module_model = this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace);
-			this.module_model_flag = module_model;
+			const module_model = getProjectConfigModuleModel(this.activeWorkspace);
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
 			if (module_model === undefined) {
-				this.projectJsonParse.setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
+				setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
 			}
 			this.dbg_write_cmd("LuatIDE_Down/LoAd");
 			return true;
@@ -760,7 +757,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.activeWorkspace = getPluginConfigActivityProject();
 		
 		// 如果是NDK工程，就需要先去编译
-		if(this.projectJsonParse.getProjectConfigType(this.activeWorkspace)==="ndk")
+		if(getProjectConfigType(this.activeWorkspace)==="ndk")
 		{
 			console.log("this is ndk project!!!");
 			let result = await ndkProject.build(this.activeWorkspace);
