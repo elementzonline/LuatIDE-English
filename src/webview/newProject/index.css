@@ -17,7 +17,9 @@
     height: 100%;
 }
 
+
 /* 错误提示 */
+
 h2 {
     margin-top: 16px;
     color: red;
@@ -25,13 +27,15 @@ h2 {
     display: none;
 }
 
-.nP-projectTip{
+.nP-projectTip {
     color: var(--nP-default-fontColor);
     display: block;
     font-weight: normal;
 }
 
+
 /*导航栏样式*/
+
 .nP-navbar {
     text-align: center;
     display: flex;
@@ -41,13 +45,13 @@ h2 {
     width: 25%;
 }
 
-.nP-navbarChild{
+.nP-navbarChild {
     /* margin: auto; */
     /* padding: 30px; */
     border: 1px solid rgb(142, 142, 142);
-    border-style:none solid none none;
+    border-style: none solid none none;
     width: 100%;
-    border-radius: 5px 0 0 0 ;
+    border-radius: 5px 0 0 0;
     overflow: hidden;
 }
 
@@ -61,7 +65,9 @@ div.nP-navbar:after {
     clear: both;
 }
 
+
 /*导航栏中选项样式*/
+
 .nP-menu {
     display: block;
     width: 100%;
@@ -86,7 +92,9 @@ div.nP-navbar:after {
     background-position: 50% 50%; */
 }
 
+
 /*被选中激活样式*/
+
 .active {
     /* border: var(--nP-default-border);
     color: var(--nP-default-active);
@@ -107,12 +115,14 @@ div.nP-navbar:after {
     font-size: var(--default-contentFontSize);
 }
 
-.nP-contentChild{
+.nP-contentChild {
     text-align: center;
     color: var(--nP-default-fontColor);
 }
 
+
 /*初始化页面内容样式*/
+
 .nP-form {
     margin: 30px auto;
     position: relative;
@@ -126,14 +136,12 @@ div.nP-navbar:after {
     display: flex;
     justify-content: space-between;
     width: 440px;
-    text-align: justify; 
-    text-align-last: justify; 
-}
-
-.nP-item label{
-    width: 60px;
     text-align: justify;
     text-align-last: justify;
+}
+
+.nP-item label {
+    width: 60px;
 }
 
 .nP-form input,
@@ -148,7 +156,7 @@ div.nP-navbar:after {
     text-align: center;
 }
 
-div .nP-submit{
+div .nP-submit {
     background: var(--default-absBtnBgColor);
     color: var(--default-absFontColor);
 }
@@ -182,8 +190,10 @@ div .nP-submit{
     margin-right: 50px;
 }
 
+
 /* 工程取消按钮样式 */
-.nP-cancelNewProject{
+
+.nP-cancelNewProject {
     float: right;
     outline-style: none;
     height: 40px;
@@ -195,20 +205,24 @@ div .nP-submit{
     color: var(--nP-default-fontColor);
 }
 
-.nP-cancelNewProject:hover{
+.nP-cancelNewProject:hover {
     color: var(--default-hoverColor);
     border-color: var(--default-hoverColor);
 }
 
+
 /**************************空白工程**************************/
+
+
 /*设置提示样式*/
+
 .nP-content_space .tip_title {
     font-size: var(--default-titleFontSize);
     margin-bottom: 50px;
     color: var(--nP-default-fontColor);
 }
 
-.specialTips{
+.specialTips {
     /* display:flex; */
     /* float: left; */
 }
