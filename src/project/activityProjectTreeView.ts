@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { PluginJsonParse } from '../plugConfigParse';
 import { ProjectJsonParse } from './projectConfigParse';
+import { getPluginConfigActivityProject, setPluginConfigActivityProject } from '../plugConfigParse';
 
-let pluginJsonParse = new PluginJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 let projectJsonParse = new ProjectJsonParse();
 export class ActivityTreeDataProvider implements vscode.TreeDataProvider<ActivityTreeItem> {
   constructor() { }
@@ -23,12 +23,12 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
   getChildren(element?: ActivityTreeItem): Thenable<ActivityTreeItem[]> {
     var treeDir: ActivityTreeItem[] = [];
     if (element === undefined) {
-      const activityPath: string = pluginJsonParse.getPluginConfigActivityProject();
+      const activityPath: string = getPluginConfigActivityProject();
       if (activityPath === '') {
         return Promise.resolve([]);
       }
       else if (!fs.existsSync(activityPath)) {
-        pluginJsonParse.setPluginConfigActivityProject('');
+        setPluginConfigActivityProject('');
         return Promise.resolve([]);
       }
       const nameIndex: number = activityPath.lastIndexOf("\\");
@@ -42,7 +42,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       const filename: string = element['label'];
       const filePath: string = path.join(fileParentPath, filename);
       const files = fs.readdirSync(filePath);
-      const activityPath: string = pluginJsonParse.getPluginConfigActivityProject();
+      const activityPath: string = getPluginConfigActivityProject();
       const appFile = projectJsonParse.getProjectConfigAppFile(activityPath);
       if (appFile !== undefined) {
         for (let i = 0; i < files.length; i++) {

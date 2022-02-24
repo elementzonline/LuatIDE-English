@@ -1,7 +1,8 @@
-import { PluginJsonParse } from "../plugConfigParse";
+// import { PluginJsonParse } from "../plugConfigParse";
 import * as fs  from "fs";
 import * as path  from "path";
 import * as vscode from 'vscode';
+import { getPluginConfigUserProjectList } from "../plugConfigParse";
 import {
     getAir101DefaultCorePath,
     getAir101DefaultLatestCorePath,
@@ -16,11 +17,11 @@ import {
     getEsp32c3DefaultCorePath
 } from "../variableInterface";
 
-let pluginJsonParse:any = new PluginJsonParse(); 
+// let pluginJsonParse:any = new PluginJsonParse(); 
 
 // 检查当前工程是否存在用户历史工程中
 export function checkSameProjectExistStatusForPluginConfig(projectName:any){
-    let userProjectList:any = pluginJsonParse.getPluginConfigUserProjectList();
+    let userProjectList:any = getPluginConfigUserProjectList();
     if (userProjectList.indexOf(projectName)!==-1) {
         return true;
     }

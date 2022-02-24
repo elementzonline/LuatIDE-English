@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { PluginJsonParse } from '../plugConfigParse';
+import { getPluginConfigUserProjectAbsolutePathList, popPluginConfigProject } from '../plugConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
 // import { PluginConfigInit, PluginVariablesInit } from '../config';
 // import { ProjectJsonParse } from './projectConfigParse';
 
 
-let pluginJsonParse = new PluginJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 // let pluginVariablesInit = new PluginVariablesInit();
 // let projectJsonParse = new ProjectJsonParse();
 export class HistoryProjectDataProvider implements vscode.TreeDataProvider<HistoryProjectTreeItem> {
@@ -20,7 +21,7 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 
 	getChildren(element?: HistoryProjectTreeItem): Thenable<HistoryProjectTreeItem[]> {
 		this.rootloadUrlArray = [];
-		let userProjectAbsulutePathList: any = pluginJsonParse.getPluginConfigUserProjectAbsolutePathList();
+		let userProjectAbsulutePathList: any = getPluginConfigUserProjectAbsolutePathList();
 		this.generateTreeItem(userProjectAbsulutePathList);
 		return Promise.resolve(this.rootloadUrlArray);
 	}
@@ -37,7 +38,7 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 			}
 			else {
 				vscode.window.showInformationMessage(`工程${projectName}路径已发生改变,已从您的用户工程列表中移除`);
-				pluginJsonParse.popPluginConfigProject(projectName);
+				popPluginConfigProject(projectName);
 			}
 		}
 	}

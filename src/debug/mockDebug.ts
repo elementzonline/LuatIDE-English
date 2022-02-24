@@ -18,11 +18,12 @@ import * as fs from 'fs';
 import * as path from 'path'; // 导入fs库和path库
 
 
-import { PluginJsonParse } from '../plugConfigParse';
+// import { PluginJsonParse } from '../plugConfigParse';
 import { ProjectJsonParse } from "../project/projectConfigParse";
 
 
 import * as ndkProject from "../ndk/ndkProject";
+import { getPluginConfigActivityProject } from '../plugConfigParse';
 
 
 // 获取当前时间戳，并解析后格式化输出
@@ -175,7 +176,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	private current_logfilename: string = "";
 	// private configDataPath: any = process.env['APPDATA'];
 
-	private pluginJsonParse: any = new PluginJsonParse();
+	// private pluginJsonParse: any = new PluginJsonParse();
 	private projectJsonParse: any = new ProjectJsonParse();
 	// dbg_dispatcher元素隐式具有 "any" 类型，因为类型为 "any" 的表达式不能用于索引类型 "MockDebugSession"。
 	[key: string]: any;
@@ -756,7 +757,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 
 
-		this.activeWorkspace = this.pluginJsonParse.getPluginConfigActivityProject();
+		this.activeWorkspace = getPluginConfigActivityProject();
 		
 		// 如果是NDK工程，就需要先去编译
 		if(this.projectJsonParse.getProjectConfigType(this.activeWorkspace)==="ndk")

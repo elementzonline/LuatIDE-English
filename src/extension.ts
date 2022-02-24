@@ -15,7 +15,7 @@ import * as path from 'path';
 import { HomeManage } from './webview/homeWebview';
 import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityProjectTreeView';
 import { OpenProject } from './project/openProject';
-import { PluginJsonParse } from './plugConfigParse';
+// import { PluginJsonParse } from './plugConfigParse';
 import * as fs from 'fs';
 // import { UiDesign } from './webview/uiDesignWebview';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
@@ -23,6 +23,7 @@ import * as fs from 'fs';
 import {checkSourceUpdate} from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
+import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -73,7 +74,7 @@ let projectConfigOperation = new ProjectConfigOperation();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let historyProvider = new HistoryProjectDataProvider();
-let pluginJsonParse = new PluginJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 let testDependenciesProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 // let uiDesign = new UiDesign();
@@ -95,14 +96,14 @@ export function activate(context: vscode.ExtensionContext) {
 	// 插件配置实例化
 	pluginConfigInit.configInit();
 	// 插件配置文件兼容执行
-	pluginJsonParse.pluginConfigCompatible();
+	pluginConfigCompatible();
 	// 插件core文件自动更新处理
 	// pluginCoreUpate.updateCoreHandle();
 	checkSourceUpdate();
 	// demo和lib兼容性临时处理
 	// pluginJsonParse.demoAndCompatible();
 	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
-	const activityProject: string = pluginJsonParse.getCurrentPluginConfigActivityProject();
+	const activityProject: string = getCurrentPluginConfigActivityProject();
 	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => homeManage.homeManage(context,'loadNewProjectModelBox')));
