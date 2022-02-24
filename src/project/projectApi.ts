@@ -41,12 +41,9 @@ export function createFolder(dir:any){
 */  
 export function copyDir(src:any,dist:any){
     var b = fs.existsSync(dist);
-    console.log("dist = " + dist);
     if(!b){
-        console.log("mk dist = ",dist);
         fs.mkdirSync(dist);//创建目录
     }
-    console.log("_copy start");
     copyOperation(src,dist);
     }
 
