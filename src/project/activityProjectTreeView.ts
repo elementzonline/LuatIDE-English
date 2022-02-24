@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ProjectJsonParse } from './projectConfigParse';
+// import { ProjectJsonParse } from './projectConfigParse';
 import { getPluginConfigActivityProject, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getProjectConfigAppFile } from './projectConfigParse';
 
 // let pluginJsonParse = new PluginJsonParse();
-let projectJsonParse = new ProjectJsonParse();
+// let projectJsonParse = new ProjectJsonParse();
 export class ActivityTreeDataProvider implements vscode.TreeDataProvider<ActivityTreeItem> {
   constructor() { }
 
@@ -43,7 +44,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       const filePath: string = path.join(fileParentPath, filename);
       const files = fs.readdirSync(filePath);
       const activityPath: string = getPluginConfigActivityProject();
-      const appFile = projectJsonParse.getProjectConfigAppFile(activityPath);
+      const appFile = getProjectConfigAppFile(activityPath);
       if (appFile !== undefined) {
         for (let i = 0; i < files.length; i++) {
           const childrenFileName: string = files[i];

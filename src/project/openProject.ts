@@ -1,18 +1,19 @@
 import * as vscode from 'vscode';
 // import { PluginJsonParse } from '../plugConfigParse';
-import {ProjectJsonParse} from './projectConfigParse';
+// import {ProjectJsonParse} from './projectConfigParse';
 
 import {getFileForDirRecursion} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
+import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile } from './projectConfigParse';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
 
 // let pluginJsonParse:any = new PluginJsonParse(); 
-let projectJsonParse:any = new ProjectJsonParse(); 
+// let projectJsonParse:any = new ProjectJsonParse(); 
 // let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation:any = new ProjectConfigOperation();
 export class OpenProject {
@@ -64,11 +65,11 @@ export class OpenProject {
         const nameIndex:number = importProjectPath.lastIndexOf("\\");
         const projectConfigProjectPath:string = importProjectPath.substring(0,nameIndex);
         const projectConfigProjectName:string = importProjectPath.substring(nameIndex+1);
-        const projectConfigProjectType:string =  projectJsonParse.getProjectConfigProjectType(importProjectPath);
+        const projectConfigProjectType:string =  getProjectConfigProjectType(importProjectPath);
         // const porjectConfigVersion:string = projectJsonParse.getProjectConfigVersion(importProjectPath);
-        let porjectConfigModuleModel:string = projectJsonParse.getProjectConfigModuleModel(importProjectPath);
-        const projectConfigCorePath:string = projectJsonParse.getProjectConfigCorePath(importProjectPath);
-        const projectConfigLibPath:string = projectJsonParse.getProjectConfigLibPath(importProjectPath);
+        let porjectConfigModuleModel:string = getProjectConfigModuleModel(importProjectPath);
+        const projectConfigCorePath:string = getProjectConfigCorePath(importProjectPath);
+        const projectConfigLibPath:string = getProjectConfigLibPath(importProjectPath);
         // const projectConfigModulePort:string = projectJsonParse.getProjectConfigMoudlePort(importProjectPath);
         // const projectConfigAppFile:string = projectJsonParse.getProjectConfigAppFile(importProjectPath);
         let openProjectJson:any = {};
@@ -109,8 +110,8 @@ export class OpenProject {
                             if (appFile===undefined) {
                                 return undefined;
                             }
-                            projectJsonParse.generateImportProjectInitJson(importProjectPath);
-                            projectJsonParse.pushProjectConfigAppFile(appFile,importProjectPath);
+                            generateImportProjectInitJson(importProjectPath);
+                            pushProjectConfigAppFile(appFile,importProjectPath);
                             return importProjectPath;
 						}
                         else{
