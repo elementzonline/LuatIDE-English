@@ -345,39 +345,50 @@
           </div>
           <div class="iP-contentChild">
             <!-- 空白工程-->
-            <h2 class="iP-tips">请修改错误选项</h2>
             <div class="iP-content_space">
               <div class="iP-tip_title">默认会在工程路径下创建main.lua文件，用来作为lua脚本运行入口。</div>
               <form class="iP-form" name="iP-project_space">
-                <div class="iP-project_path iP-item">
-                  <label>工程路径</label>
-                  <input name="iP-space_project_path" id="iP-space_customepath" type="text"
-                    onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                <div class="iP-itemBody">
+                  <div class="iP-project_path iP-item">
+                    <label>工程路径</label>
+                    <input name="iP-space_project_path" id="iP-space_customepath" type="text"
+                      onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                  </div>
                 </div>
-                <div class="iP-project_name iP-item">
-                  <label>工程名称</label>
-                  <input name="iP-space_project_name" type="text">
+                <div class="iP-itemBody">
+                  <div class="iP-project_name iP-item">
+                    <label>工程名称</label>
+                    <input name="iP-space_project_name" type="text">
+                  </div>
                 </div>
-                <div class="iP-module_type iP-item">
-                  <label>模块型号</label>
-                  <select class="iP-select_getSpace_ModuleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-module_type iP-item">
+                    <label>模块型号</label>
+                    <select class="iP-select_getSpace_ModuleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-lib_path iP-item">
-                  <label>LIB</label>
-                  <select class="iP-select_getSpace_LibInfo">
-                    <!-- <option value="default" id="space_customeLib" style="display: none;">点击选择</option> -->
-                  </select>
-                  <!-- <button type="button" class="space_lib_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                <div class="iP-itemBody">
+                  <div class="iP-lib_path iP-item">
+                    <label>LIB</label>
+                    <select class="iP-select_getSpace_LibInfo">
+                      <!-- <option value="default" id="space_customeLib" style="display: none;">点击选择</option> -->
+                    </select>
+                    <!-- <button type="button" class="space_lib_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                  </div>
+                  <h2 class="iP-tips"> LIB存在问题，请修改</h2>
+                </div>
+                <div class="iP-itemBody">
+                  <div class="iP-core iP-item">
+                    <label>CORE</label>
+                    <select class="iP-select_getSpace_CoreInfo">
+                      <!-- <option value="default" id="space_customeCore" style="display: none;">点击选择</option> -->
+                    </select>
+                    <!-- <button type="button" class="space_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                  </div>
+                  <h2 class="iP-tips"> &nbsp;&nbsp;&nbsp;&nbsp;CORE存在问题，请修改</h2>
                 </div>
                 <!-- <h6 style="margin-left: 200px;" class="tip_spaceLib">该模块型号不支持 lib 文件</h6> -->
-                <div class="iP-core iP-item">
-                  <label>CORE</label>
-                  <select class="iP-select_getSpace_CoreInfo">
-                    <!-- <option value="default" id="space_customeCore" style="display: none;">点击选择</option> -->
-                  </select>
-                  <!-- <button type="button" class="space_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
-                </div>
                 <!-- <h6 style="margin-left: 200px;" class="tip_spaceCore">该模块型号不支持 core 文件</h6> -->
                 <div class="iP-btn">
                   <input class="iP-cancel" type="button" value="取消" />
@@ -389,31 +400,42 @@
             <div class="iP-content_example">
               <div class="iP-tip_title">LuatOS系统 demo应用</div>
               <form class="iP-form" name="iP-project_example">
-                <div class="iP-project_path iP-item">
-                  <label>工程路径</label>
-                  <input name="iP-example_project_path" id="iP-example_customepath" type="text"
-                    onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                <div class="iP-itemBody">
+                  <div class="iP-project_path iP-item">
+                    <label>工程路径</label>
+                    <input name="iP-example_project_path" id="iP-example_customepath" type="text"
+                      onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                  </div>
                 </div>
-                <div class="iP-project_name iP-item">
-                  <label>工程名称</label>
-                  <input name="iP-example_project_name" type="text">
+                <div class="iP-itemBody">
+                  <div class="iP-project_name iP-item">
+                    <label>工程名称</label>
+                    <input name="iP-example_project_name" type="text">
+                  </div>
                 </div>
-                <div class="iP-module_type iP-item">
-                  <label>模块型号</label>
-                  <select class="iP-select_getExample_ModuleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-module_type iP-item">
+                    <label>模块型号</label>
+                    <select class="iP-select_getExample_ModuleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-example iP-item">
-                  <label>示例选择</label>
-                  <select class="iP-select_getExample_ExampleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-example iP-item">
+                    <label>示例选择</label>
+                    <select class="iP-select_getExample_ExampleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-core iP-item">
-                  <label>CORE</label>
-                  <select class="iP-select_getExample_CoreInfo">
-                    <!-- <option value="default" id="example_customeCore" style="display: none;">点击选择</option> -->
-                  </select>
-                  <!-- <button type="button" class="example_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                <div class="iP-itemBody">
+                  <div class="iP-core iP-item">
+                    <label>CORE</label>
+                    <select class="iP-select_getExample_CoreInfo">
+                      <!-- <option value="default" id="example_customeCore" style="display: none;">点击选择</option> -->
+                    </select>
+                    <!-- <button type="button" class="example_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                  </div>
+                  <h2 class="iP-tips"> &nbsp;&nbsp;&nbsp;&nbsp;CORE存在问题，请修改</h2>
                 </div>
                 <!-- <h6 style="margin-left: 200px;" class="tip_exampleCore">该模块型号不支持 core 文件</h6> -->
                 <div class="iP-btn">
@@ -426,34 +448,48 @@
             <div class="iP-content_ndk">
               <div class="iP-tip_title">在LuatOS系统上，使用 C 和 C++ 语言实现应用，Lua语言直接调用</div>
               <form class="iP-form" name="iP-project_ndk">
-                <div class="iP-project_path iP-item">
-                  <label>工程路径</label>
-                  <input name="iP-ndk_project_path" id="iP-ndk_customepath" type="text"
-                    onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                <div class="iP-itemBody">
+                  <div class="iP-project_path iP-item">
+                    <label>工程路径</label>
+                    <input name="iP-ndk_project_path" id="iP-ndk_customepath" type="text"
+                      onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                  </div>
                 </div>
-                <div class="iP-project_name iP-item">
-                  <label>工程名称</label>
-                  <input name="iP-ndk_project_name" type="text">
+                <div class="iP-itemBody">
+                  <div class="iP-project_name iP-item">
+                    <label>工程名称</label>
+                    <input name="iP-ndk_project_name" type="text">
+                  </div>
                 </div>
-                <div class="iP-module_type iP-item">
-                  <label>模块型号</label>
-                  <select class="iP-select_getNDK_ModuleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-module_type iP-item">
+                    <label>模块型号</label>
+                    <select class="iP-select_getNDK_ModuleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-example iP-item">
-                  <label>示例选择</label>
-                  <select class="iP-select_getNDK_ExampleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-example iP-item">
+                    <label>示例选择</label>
+                    <select class="iP-select_getNDK_ExampleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-lib_path iP-item">
-                  <label>LIB</label>
-                  <select class="iP-select_getNDK_LibInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-lib_path iP-item">
+                    <label>LIB</label>
+                    <select class="iP-select_getNDK_LibInfo">
+                    </select>
+                  </div>
+                  <h2 class="iP-tips"> LIB存在问题，请修改</h2>
                 </div>
-                <div class="iP-core iP-item">
-                  <label>CORE</label>
-                  <select class="iP-select_getNDK_CoreInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-core iP-item">
+                    <label>CORE</label>
+                    <select class="iP-select_getNDK_CoreInfo">
+                    </select>
+                  </div>
+                  <h2 class="iP-tips"> &nbsp;&nbsp;&nbsp;&nbsp;CORE存在问题，请修改</h2>
                 </div>
                 <div class="iP-btn">
                   <input class="iP-cancel" type="button" value="取消" />
@@ -465,36 +501,46 @@
             <div class="iP-content_ui">
               <div class="iP-tip_title">生成在LuatOS系统上运行的界面应用</div>
               <form class="iP-form" name="iP-project_ui">
-                <div class="iP-project_path iP-item">
-                  <label>工程路径</label>
-                  <input name="iP-ui_project_path" id="iP-ui_customepath" type="text"
-                    onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                <div class="iP-itemBody">
+                  <div class="iP-project_path iP-item">
+                    <label>工程路径</label>
+                    <input name="iP-ui_project_path" id="iP-ui_customepath" type="text"
+                      onclick="iP_handelBackstage('openSourceOpenProject', 'customProjectPathOpenProject')" readonly>
+                  </div>
                 </div>
-                <div class="iP-project_name iP-item">
-                  <label>工程名称</label>
-                  <input name="iP-ui_project_name" type="text">
+                <div class="iP-itemBody">
+                  <div class="iP-project_name iP-item">
+                    <label>工程名称</label>
+                    <input name="iP-ui_project_name" type="text">
+                  </div>
                 </div>
-                <div class="iP-module_type iP-item">
-                  <label>模块型号</label>
-                  <select class="iP-select_getUi_ModuleInfo">
-                  </select>
+                <div class="iP-itemBody">
+                  <div class="iP-module_type iP-item">
+                    <label>模块型号</label>
+                    <select class="iP-select_getUi_ModuleInfo">
+                    </select>
+                  </div>
                 </div>
-                <div class="iP-lib_path iP-item">
-                  <label>LIB</label>
-                  <select class="iP-select_getUi_LibInfo">
-                    <!-- <option value="default" id="ui_customeLib" style="display: none;">点击选择</option> -->
-                  </select>
-                  <!-- <button type="button" class="ui_lib_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                <div class="iP-itemBody">
+                  <div class="iP-lib_path iP-item">
+                    <label>LIB</label>
+                    <select class="iP-select_getUi_LibInfo">
+                      <!-- <option value="default" id="ui_customeLib" style="display: none;">点击选择</option> -->
+                    </select>
+                    <!-- <button type="button" class="ui_lib_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customLibPath')">自定义</button> -->
+                  </div>
+                  <h2 class="iP-tips"> LIB存在问题，请修改</h2>
                 </div>
-                <!-- <h6 style="margin-left: 200px;" class="tip_uiLib">该模块型号不支持 lib 文件</h6> -->
-                <div class="iP-core iP-item">
-                  <label>CORE</label>
-                  <select class="iP-select_getUi_CoreInfo">
-                    <!-- <option value="default" id="ui_customeCore" style="display: none;">点击选择</option> -->
-                  </select>
-                  <!-- <button type="button" class="ui_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                <div class="iP-itemBody">
+                  <div class="iP-core iP-item">
+                    <label>CORE</label>
+                    <select class="iP-select_getUi_CoreInfo">
+                      <!-- <option value="default" id="ui_customeCore" style="display: none;">点击选择</option> -->
+                    </select>
+                    <!-- <button type="button" class="ui_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
+                  </div>
+                  <h2 class="iP-tips"> &nbsp;&nbsp;&nbsp;&nbsp;CORE存在问题，请修改</h2>
                 </div>
-                <!-- <h6 style="margin-left: 200px;" class="tip_uiCore">该模块型号不支持 core 文件</h6> -->
                 <div class="iP-btn">
                   <input class="iP-cancel" type="button" value="取消" />
                   <input class="iP-submit" type="button" value="完成" />
