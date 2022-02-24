@@ -19,11 +19,10 @@
 /* 错误提示 */
 
 .iP-tips {
-    margin-top: 16px;
     color: red;
-    margin-bottom: 30px;
-    display: none;
     font-size: var(--default-contentFontSize);
+    margin: 0;
+    margin-left: 20px;
 }
 
 .iP-content {
@@ -35,7 +34,6 @@
 .iP-contentChild {
     top: 5%;
     text-align: center;
-    align-iP-content: center;
     margin-left: auto;
     padding-left: 0;
     padding-right: 0;
@@ -52,11 +50,13 @@
     padding-bottom: 70px;
 }
 
+.iP-itemBody {
+    height: 60px;
+}
+
 .iP-form .iP-item {
-    margin: auto;
-    height: 30px;
-    margin-top: 20px;
-    margin-bottom: 0px;
+    margin: 0 auto;
+    height: 40px;
     display: flex;
     justify-content: space-between;
     width: 440px;
@@ -103,7 +103,7 @@ div .iP-submit {
     height: 30px;
     border-radius: 2px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 50px;
     margin-right: 50px;
 }
