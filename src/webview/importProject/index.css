@@ -15,7 +15,9 @@
     /* min-width: 680px; */
 }
 
+
 /* 错误提示 */
+
 .iP-tips {
     margin-top: 16px;
     color: red;
@@ -30,7 +32,7 @@
     font-size: var(--default-contentFontSize);
 }
 
-.iP-contentChild{
+.iP-contentChild {
     top: 5%;
     text-align: center;
     align-iP-content: center;
@@ -41,7 +43,9 @@
     position: relative;
 }
 
+
 /*初始化页面内容样式*/
+
 .iP-form {
     margin: 30px auto;
     position: relative;
@@ -58,9 +62,8 @@
     width: 440px;
 }
 
-.iP-item label{
+.iP-item label {
     width: 60px;
-    text-align: justify;
 }
 
 .iP-form input,
@@ -75,7 +78,7 @@
     text-align: center;
 }
 
-div .iP-submit{
+div .iP-submit {
     background: var(--default-absBtnBgColor);
     color: var(--default-absFontColor);
 }
@@ -109,12 +112,14 @@ div .iP-submit{
     margin-right: 50px;
 }
 
-.cancelOpenProject{
+.cancelOpenProject {
     height: 20px;
 }
 
+
 /* 工程取消按钮样式 */
-.iP-cancelOpenProject{
+
+.iP-cancelOpenProject {
     float: right;
     outline-style: none;
     height: 40px;
@@ -128,13 +133,17 @@ div .iP-submit{
     color: var(--nP-default-fontColor);
 }
 
-.iP-cancelOpenProject:hover{
+.iP-cancelOpenProject:hover {
     color: var(--default-hoverColor);
     border-color: var(--default-hoverColor);
 }
 
+
 /**************************空白工程**************************/
+
+
 /*设置提示样式*/
+
 .iP-content_space .iP-tip_title {
     font-size: var(--default-titleFontSize);
     margin-bottom: 50px;
