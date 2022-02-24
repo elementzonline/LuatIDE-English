@@ -24,6 +24,7 @@ import {
     getAir72XUXDefaultLibPath,
     getLuatIDEDataPath
 } from './variableInterface';
+import { copyDir } from './project/projectApi';
 // let plugVariablesInit = new PluginVariablesInit();
 
 /*
@@ -207,41 +208,6 @@ async function unzip(srcPath: any, distPath: any) {
             console.error('unzip', err);
         });
 }
-
-/*
-* 复制目录、子目录，及其中的文件
-* @param src {String} 要复制的目录
-* @param dist {String} 复制到目标目录
-*/  
-export function copyDir(src:any,dist:any){
-    var b = fs.existsSync(dist);
-    // console.log("dist = " + dist);
-    if(!b){
-        // console.log("mk dist = ",dist);
-        fs.mkdirSync(dist);//创建目录
-    }
-    // console.log("_copy start");
-    copyOperation(src,dist);
-    }
-
-/*
-* 复制目录子操作
-* @param src {String} 要复制的目录
-* @param dist {String} 复制到目标目录
-*/  
-export function copyOperation(src:any, dist:any) {
-    var paths = fs.readdirSync(src);
-    paths.forEach((p) => {
-        var _src = src + '/' +p;
-        var _dist = dist + '/' +p;
-        var stat = fs.statSync(_src);
-        if(stat.isFile()) {// 判断是文件还是目录
-            fs.writeFileSync(_dist, fs.readFileSync(_src));
-        } else if(stat.isDirectory()) {
-            copyDir(_src, _dist);// 当是目录是，递归复制
-        }
-    });
-    }
 
 /*
 *递归删除文件夹内所有内容

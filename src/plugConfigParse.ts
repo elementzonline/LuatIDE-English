@@ -3,7 +3,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {activityMemoryProjectPathBuffer} from './extension';
-import * as vscode from 'vscode';
+
 import {
     getAir72XUXCorePath,
     getAir72XUXDefaultLatestLibPath,
@@ -14,6 +14,7 @@ import {
     getHistoryLibPath,
     getPluginConfigPath
 } from './variableInterface';
+import { copyDir, deleteDirRecursive } from './project/projectApi';
 // let pluginVariablesInit = new PluginVariablesInit();
 
 
@@ -55,12 +56,6 @@ export function getPluginConfigUserProjectAbsolutePathList(){
 
         // 获取当前活动工程名称
 export function getPluginConfigActivityProject(){
-    // const context:any = await vscode.commands.executeCommand("getContext") as vscode.ExtensionContext;
-    // const activityProject = context.globalState.get('activityMemoryProjectPath');
-    // return activityProject;
-    // const pluginConfigJsonObj:any =  this.getPluginConfigJson();
-    // const pluginConfigActivityProject:string = pluginConfigJsonObj.activeProject;
-    // return pluginConfigActivityProject;
     const activityMemoryProjectPath = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
     return activityMemoryProjectPath;
 }
@@ -365,55 +360,3 @@ export function projectConfigCompatibleVersionLessThanTwo(projectPath:string,pro
         const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson,null,"\t");
         fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
     }
-
-    /*
-    * 复制目录、子目录，及其中的文件
-    * @param src {String} 要复制的目录
-    * @param dist {String} 复制到目标目录
-    */  
-export function copyDir(src: any, dist: any) {
-    var b = fs.existsSync(dist);
-    console.log("dist = " + dist);
-    if (!b) {
-        console.log("mk dist = ", dist);
-        fs.mkdirSync(dist);//创建目录
-    }
-    console.log("_copy start");
-    copyOperation(src, dist);
-    }
-
-/*
-* 复制目录子操作
-*/
-export function copyOperation(src: any, dist: any) {
-    var paths = fs.readdirSync(src);
-    paths.forEach((p) => {
-        var _src = src + '/' + p;
-        var _dist = dist + '/' + p;
-        var stat = fs.statSync(_src);
-        if (stat.isFile()) {// 判断是文件还是目录
-            fs.writeFileSync(_dist, fs.readFileSync(_src));
-        } else if (stat.isDirectory()) {
-            copyDir(_src, _dist);// 当是目录是，递归复制
-        }
-    });
-}
-// 递归删除文件夹内容
-export function deleteDirRecursive(dir:any){
-    if (fs.existsSync(dir)) {
-        const files = fs.readdirSync(dir);
-        files.forEach( (file) => {
-            var curPath = path.join(dir,file);
-            // fs.statSync同步读取文件夹文件，如果是文件夹，在重复触发函数
-            if (fs.statSync(curPath).isDirectory()) { // recurse
-                deleteDirRecursive(curPath);
-            } else {
-                fs.unlinkSync(curPath);
-            }
-        });
-        fs.rmdirSync(dir);
-    }
-    else{
-        vscode.window.showErrorMessage(`${dir}路径已改变，请重新确认`);
-    }
-}
