@@ -214,6 +214,7 @@
       {
         "command": "luatide-activity-project.runProject",
         "title": "LuatIDE:Run Project",
+        "enablement": "!inDebugMode",
         "icon": {
           "dark": "./resource/themeSvg/dark/runProject.svg",
           "light": "./resource/themeSvg/light/runProject.svg"
@@ -222,6 +223,7 @@
       {
         "command": "luatide-activity-project.debugProject",
         "title": "LuatIDE:Debug Project",
+        "enablement": "!inDebugMode",
         "icon": {
           "dark": "./resource/themeSvg/dark/debugProject.svg",
           "light": "./resource/themeSvg/light/debugProject.svg"
