@@ -49,6 +49,31 @@ export function getAir72XUXCorePath() {
     return getAir72XUXCorepath;
 }
 
+// 获取esp32c3默认core文件存储路径
+export function getEsp32c3DefaultCorePath() {
+    // esp32c3 demo暂无接口,先使用air101的
+    const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
+    return air101DefaultCorePath;
+}
+
+// 获取101默认core文件存储路径
+export function getAir101DefaultCorePath() {
+    const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
+    return air101DefaultCorePath;
+}
+
+// 获取103默认core文件存储路径
+export function getAir103DefaultCorePath() {
+    const air103DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air103_CORE");
+    return air103DefaultCorePath;
+}
+
+// 获取105默认core文件存储路径
+export function getAir105DefaultCorePath() {
+    const air105DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
+    return air105DefaultCorePath;
+}
+
 // 获取Air72XUX lib存储路径
 export function getAir72XUXLibPath() {
     let getAir72XUXLibPath: any = path.join(appDataPath, 'LuatIDE', 'LuatideLib', 'Air72XUX_LIB');
@@ -59,6 +84,24 @@ export function getAir72XUXLibPath() {
 export function getAir72XUXDemoPath() {
     let getAir72XUXDemoPath: any = path.join(appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72XUX_DEMO');
     return getAir72XUXDemoPath;
+}
+
+// 获取air101默认demo
+export function getAir101DefaultDemoPath() {
+    const air101DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
+    return air101DefaultDemoPath;
+}
+
+// 获取air103默认demo
+export function getAir103DefaultDemoPath() {
+    const air103DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air103_Demo");
+    return air103DefaultDemoPath;
+}
+
+// 获取air105默认demo
+export function getAir105DefaultDemoPath() {
+    const air105DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
+    return air105DefaultDemoPath;
 }
 
 // 依据模块型号获取core路径
@@ -221,24 +264,6 @@ export function getAir72XUXDefaultDemoPath() {
     return air72XUXDefaultDemoPath;
 }
 
-// 获取air101默认demo
-export function getAir101DefaultDemoPath() {
-    const air101DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
-    return air101DefaultDemoPath;
-}
-
-// 获取air103默认demo
-export function getAir103DefaultDemoPath() {
-    const air103DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air103_Demo");
-    return air103DefaultDemoPath;
-}
-
-// 获取air105默认demo
-export function getAir105DefaultDemoPath() {
-    const air105DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
-    return air105DefaultDemoPath;
-}
-
 // 获取插件支持的模块列表
 export function getPluginDefaultModuleList() {
     const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator", "esp32c3"];
@@ -353,31 +378,6 @@ export function getAir72XUXDefaultLibList() {
 export function getAir72XUXDefaultCorePath() {
     const air72XUXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XUX_CORE");
     return air72XUXDefaultCorePath;
-}
-
-// 获取esp32c3默认core文件存储路径
-export function getEsp32c3DefaultCorePath() {
-    // esp32c3 demo暂无接口,先使用air101的
-    const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
-    return air101DefaultCorePath;
-}
-
-// 获取101默认core文件存储路径
-export function getAir101DefaultCorePath() {
-    const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
-    return air101DefaultCorePath;
-}
-
-// 获取103默认core文件存储路径
-export function getAir103DefaultCorePath() {
-    const air103DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air103_CORE");
-    return air103DefaultCorePath;
-}
-
-// 获取105默认core文件存储路径
-export function getAir105DefaultCorePath() {
-    const air105DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
-    return air105DefaultCorePath;
 }
 
 // 获取air72XUX默认core文件列表
@@ -812,4 +812,10 @@ export function getActivityProjectConfigOptionsList(moduleModel:string) {
         default:
             return configOptionsListDefault;
     }
+}
+
+// 获取用户uuid数据存储路径
+export function getUserUUIDPath() {
+    const uuidPath:string = path.join(appDataPath, 'LuatIDE', 'uuid.txt');
+    return uuidPath;
 }
