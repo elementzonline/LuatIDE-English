@@ -95,6 +95,6 @@ export function activaReport() {
     reportData["processor"] = process.env["PROCESSOR_IDENTIFIER"];
     let postData = JSON.stringify(reportData, null, "\t");
     doPost('https://luatos.com/api/ide/report', postData, function (data) {
-        console.log("postdata success");
+        console.log("postdata success result",data);
     });
 }
