@@ -33,7 +33,10 @@ async function getNdkCode() {
     // 所以在用完通知之后需要使用dispose取消订阅
     let onDidEndTaskHand = vscode.tasks.onDidEndTask(function (event: any) {
         console.log(event);
-        taskRunStatus = true;
+        if(event.execution._task._name==="LuatIDE" && event.execution._task._source==="NDK download")
+        {
+            taskRunStatus = true;
+        }
     });
     
 
