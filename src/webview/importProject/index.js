@@ -846,17 +846,19 @@ function importSpaceProject(importData, moduleWhichSelected) {
                 break;
             case "moduleModel":
                 curSaveModule = importData.errorData[key2];
-                iP_addTips($(".iP-select_getSpace_ModuleInfo"));
+                // iP_addTips($(".iP-select_getSpace_ModuleInfo"));
                 $("#iP-space_customeModule").text(importData.errorData[key2]);
                 $("#iP-space_customeModule").prop("selected", true);
                 break;
             case "libPath":
                 iP_addTips($(".iP-select_getSpace_LibInfo"));
                 $("#iP-space_customeLib").text(importData.errorData[key2]);
+                $(".iP-tips-lib").show();
                 break;
             case "corePath":
                 iP_addTips($(".iP-select_getSpace_CoreInfo"));
                 $("#iP-space_customeCore").text(importData.errorData[key2]);
+                $(".iP-tips-core").show();
                 break;
             default:
                 break;
@@ -931,13 +933,14 @@ function importExampleProject(importData, moduleWhichSelected) {
                 $("#iP-example_customeModule").prop("selected", true);
                 break;
             case "example":
-                iP_addTips($(".iP-select_getExample_ExampleInfo"));
+                // iP_addTips($(".iP-select_getExample_ExampleInfo"));
                 $("#iP-example_customeExample").text(importData.errorData[key2]);
                 $("#iP-example_customeExample").prop("selected", true);
                 break;
             case "corePath":
                 iP_addTips($(".iP-select_getExample_CoreInfo"));
                 $("#iP-example_customeCore").text(importData.errorData[key2]);
+                $(".iP-tips-core").show();
                 break;
             default:
                 break;
@@ -1016,15 +1019,19 @@ function importNdkProject(importData, moduleWhichSelected) {
                 $("#iP-ndk_customeModule").prop("selected", true);
                 break;
             case "libPath":
+                iP_addTips($(".iP-select_getNDK_LibInfo"));
                 $("#iP-ndk_customeLib").text(importData.errorData[key2]);
                 $("#iP-ndk_customeLib").prop("selected", true);
+                $(".iP-tips-lib").show();
                 break;
             case "corePath":
+                iP_addTips($(".iP-select_getNDK_CoreInfo"));
                 $("#iP-ndk_customeCore").text(importData.errorData[key2]);
                 $("#iP-ndk_customeCore").prop("selected", true);
+                $(".iP-tips-core").show();
                 break;
             case "example":
-                iP_addTips($(".iP-select_getNDK_ExampleInfo"));
+                // iP_addTips($(".iP-select_getNDK_ExampleInfo"));
                 $("#iP-ndk_customeExample").text(importData.errorData[key2]);
                 $("#iP-ndk_customeExample").prop("selected", true);
                 break;
@@ -1104,10 +1111,12 @@ function importUiProject(importData, moduleWhichSelected) {
             case "libPath":
                 iP_addTips($(".iP-select_getUi_LibInfo"));
                 $("#iP-ui_customeLib").text(importData.errorData[key2]);
+                $(".iP-tips-lib").show();
                 break;
             case "corePath":
                 iP_addTips($(".iP-select_getUi_CoreInfo"));
                 $("#iP-ui_customeCore").text(importData.errorData[key2]);
+                $(".iP-tips-core").show();
                 break;
             default:
                 break;
@@ -1141,10 +1150,8 @@ function importUiProject(importData, moduleWhichSelected) {
 function importProjectDisplay(whichDsp, projectType, importData) {
     /* 隐藏选择框 */
     $(".iP-tip_title").hide();
-    $(".iP-tips").hide();
-    if ((Object.keys(importData.errorData)).length !== 0) {
-        $(".iP-tips").show();
-    }
+    $(".iP-tips-lib").hide();
+    $(".iP-tips-core").hide();
     $(iP_allHideStr).hide();
     whichDsp.show();
     iP_temImportData = importData;

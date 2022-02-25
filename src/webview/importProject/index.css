@@ -18,7 +18,8 @@
 
 /* 错误提示 */
 
-.iP-tips {
+.iP-tips-core,
+.iP-tips-lib {
     color: red;
     font-size: var(--default-contentFontSize);
     margin: 0;
