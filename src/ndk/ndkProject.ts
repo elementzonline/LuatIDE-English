@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-17 16:11:48
- * @LastEditTime: 2022-02-23 13:31:46
+ * @LastEditTime: 2022-02-25 16:12:10
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\ndk\ndkbuild.ts
@@ -90,7 +90,10 @@ export async function build(activeWorkspace: string) {
     // 所以在用完通知之后需要使用dispose取消订阅
     let onDidEndTaskHand = vscode.tasks.onDidEndTask(function (event: any) {
         console.log(event);
-        taskRunStatus = true;
+        if(event.execution._task._name==="LuatIDE" && event.execution._task._source==="NDK build")
+        {
+            taskRunStatus = true;
+        }
     });
 
 
