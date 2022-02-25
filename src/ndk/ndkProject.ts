@@ -13,7 +13,9 @@ import * as path from 'path'; // 导入fs库和path库
 import * as fs from 'fs';
 import * as childProcess from 'child_process';
 const { Subject } = require('await-notify');
-import { ProjectJsonParse } from "../project/projectConfigParse";
+
+import { popProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
+
 import { getNdkDefaultPath } from "../variableInterface";
 
 
@@ -58,8 +60,8 @@ export async function build(activeWorkspace: string) {
     console.log("ndk Compilation tool chain path:", ndkPath);
 
     let ndkBuildLibPath: string = path.join(activeWorkspace, "ndk", "build", "user.lib");
-    let projectJsonParseHandle = new ProjectJsonParse();
-    projectJsonParseHandle.popProjectConfigAppFile(ndkBuildLibPath, activeWorkspace);
+
+    popProjectConfigAppFile(ndkBuildLibPath, activeWorkspace);
 
     // 如果NDK工程中build目录存在，先删除掉，后面通过build目录中的user.lib判断是否编译成功
     let ndkBuildPath: string = path.join(activeWorkspace, "ndk", "build");
@@ -110,7 +112,8 @@ export async function build(activeWorkspace: string) {
     if (fs.existsSync(ndkBuildLibPath) === false) {
         return false;
     }
+
     // user.lib存在的话就添加到appfile中
-    projectJsonParseHandle.pushProjectConfigAppFile([path.relative(activeWorkspace, ndkBuildLibPath)], activeWorkspace);
+    pushProjectConfigAppFile([path.relative(activeWorkspace, ndkBuildLibPath)], activeWorkspace);
     return true;
 }
