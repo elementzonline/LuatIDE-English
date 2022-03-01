@@ -1,3 +1,8 @@
+## 2.1.4.1
+发布日期：2022.2.26
+
+* UI设计器更新
+
 ## 2.1.4
 发布日期：2022.2.23
 
@@ -62,4 +67,4 @@
 
 * 5、解析Air10X系列Demo，并更新到最新版本
 
-## [Read More]https://gitee.com/openLuat/luatide/blob/master/UPDATELOG.md
+#### [更多历史版本信息]https://gitee.com/openLuat/luatide/blob/master/UPDATELOG.md
