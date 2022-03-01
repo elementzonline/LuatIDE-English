@@ -23,7 +23,12 @@
     "LuatIDE",
     "harmony",
     "liteos",
-    "embedded"
+    "embedded",
+    "esp32",
+    "d1",
+    "air101",
+    "air103",
+    "air105"
   ],
   "repository": {
     "type": "git",
