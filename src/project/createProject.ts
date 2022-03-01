@@ -409,7 +409,7 @@ export class CreateProject {
         end
         
         function demo_WindowInit()
-          ScreenA.create()
+            lvglUiInitial()
         end
         
         
