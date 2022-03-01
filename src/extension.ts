@@ -137,15 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click', (label, filePath) => {
 		const selectPath = path.join(filePath, label);
 		if (fs.statSync(selectPath).isFile()) {
-			vscode.workspace.openTextDocument(selectPath).then(doc => {
-				// 在VSCode编辑窗口展示读取到的文本
-				vscode.window.showTextDocument(doc);
-			}, err => {
-				vscode.window.showErrorMessage('打开失败' + err);
-			}).then(undefined, err => {
-				console.log(err);
-				// vscode.window.showInformationMessage(`Open ${filePath} error, ${err}.`);
-			});
+			vscode.commands.executeCommand('vscode.open',vscode.Uri.file(selectPath));
 		}
 	}));
 	// 注册用户历史工程TreeView
