@@ -1,43 +1,43 @@
 {
     "buttonRectXYXY": [
         [
-            90,
-            979,
-            168,
-            1051
+            974,
+            225,
+            1052,
+            339
         ],
         [
-            237,
-            979,
-            328,
-            1051
+            974,
+            380,
+            1052,
+            498
         ],
         [
-            395,
-            979,
-            486,
-            1051
+            974,
+            82,
+            1052,
+            171
         ]
     ],
     "buttonSize": 3,
     "moveRectXYXY": [
         0,
         0,
-        554,
-        100
+        108,
+        554
     ],
-    "picMaskName": "data/phonemask.bmp",
-    "picName": "data/phone.bmp",
-    "showDirection": 0,
+    "picMaskName": "data/phonemaskR.bmp",
+    "picName": "data/phoneR.bmp",
+    "showDirection": 1,
     "showRectXYWH": [
-        35,
         112,
+        35,
         485,
         851
     ],
     "touchRectXYWH": [
-        35,
         112,
+        35,
         485,
         851
     ],

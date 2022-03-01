@@ -1,0 +1,46 @@
+{
+    "buttonRectXYXY": [
+        [
+            395,
+            35,
+            486,
+            90
+        ],
+        [
+            237,
+            35,
+            328,
+            90
+        ],
+        [
+            90,
+            35,
+            168,
+            90
+        ]
+        
+    ],
+    "buttonSize": 3,
+    "moveRectXYXY": [
+        0,
+        971,
+        554,
+        1072
+    ],
+    "picMaskName": "data/phonemaskD.bmp",
+    "picName": "data/phoneD.bmp",
+    "showDirection": 2,
+    "showRectXYWH": [
+        35,
+        112,
+        485,
+        851
+    ],
+    "touchRectXYWH": [
+        35,
+        112,
+        485,
+        851
+    ],
+    "version": "1.0.0"
+}
