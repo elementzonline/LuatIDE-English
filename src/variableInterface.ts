@@ -819,3 +819,9 @@ export function getUserUUIDPath() {
     const uuidPath:string = path.join(appDataPath, 'LuatIDE', 'uuid.txt');
     return uuidPath;
 }
+
+// 获取airSimulator皮肤配置文件存储路径
+export function getAirSimulatorSkinConfigPath() {
+    const airSimulatorSkinConfigPath:string = path.join(extensionPath,'tools','AirSimulator','workspace','elua_simulator','Debug','data');
+    return airSimulatorSkinConfigPath;
+}
