@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList } from '../variableInterface';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -86,6 +86,16 @@ export class HomeManage {
                 text: colorTheme
             }
         );
+        // 获取ide当前版本号并发送至前端
+        const pluginInstallVersion:any = getPluginInstallVersion();
+        if (pluginInstallVersion) {
+            this.homePanel.webview.postMessage(
+                {
+                    command: 'ideVersion',
+                    text: "version: "+pluginInstallVersion
+                }
+            );
+        }
 
         let temPanel = this.homePanel;
 
