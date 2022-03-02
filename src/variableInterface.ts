@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
-
+import * as vscode from 'vscode';
 // 获取数据存储路径
 let appDataPath: any = process.env['APPDATA'];
 // 获取用户扩展路径
@@ -12,6 +12,12 @@ export function getAppDataPath() {
     const appDataPath: any = process.env['APPDATA'];
     return appDataPath;
 }
+
+// 获取用户当前插件安装版本号名称
+export function getPluginInstallVersion(){
+    const pluginInstallVersion = vscode.extensions.getExtension('luater.luatide')!.packageJSON.version;
+    return pluginInstallVersion;
+};
 
 //获取用户LuatIDE数据存储路径
 export function getLuatIDEDataPath() {
