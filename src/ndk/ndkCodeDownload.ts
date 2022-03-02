@@ -39,7 +39,10 @@ async function getNdkCode() {
         }
     });
     
-
+	if(ndkCommand==="git pull"){
+		//git pull在后台运行
+		taskRunStatus = true;
+	}
     let timesleep = new Subject();
     while (1) {
         if (taskRunStatus === false) {
@@ -52,6 +55,8 @@ async function getNdkCode() {
             break;
         }
     }
+	// kill活动终端
+	// vscode.commands.executeCommand("workbench.action.terminal.kill");
 
 }
 
