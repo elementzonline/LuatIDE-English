@@ -13,6 +13,7 @@ import {
     getAir72XUXDemoPath,
     getAir72XUXLibPath,
     getAppDataPath,
+    getDefaultWorkspacePath,
     getHistoryCorePath,
     getHistoryDemoPath,
     getHistoryLibPath,
@@ -27,6 +28,7 @@ import {
 export class PluginConfigInit {
     private appDataPath: any = getAppDataPath();
     private plugDataPath: any = getLuatIDEDataPath();
+    private pluginDefaultWorkspacePath:any = getDefaultWorkspacePath();
     private historyLibpath: any = getHistoryLibPath();
     private historyDemopath: any = getHistoryDemoPath();
     private air72XUXDemopath: any = getAir72XUXDemoPath();
@@ -47,10 +49,11 @@ export class PluginConfigInit {
     constructor() {
 
     }
-
+                                                                                                                                                                                                                       
     // config实例化
     configInit(){
         this.folderInit(this.plugDataPath);
+        this.folderInit(this.pluginDefaultWorkspacePath);
         this.folderInit(this.historyLibpath);
         this.folderInit(this.historyDemopath);
         this.folderInit(this.air72XUXDemopath);
