@@ -21,14 +21,18 @@
     "luat",
     "lua",
     "LuatIDE",
-    "harmony",
-    "liteos",
-    "embedded",
     "esp32",
+    "esp32c3",
     "d1",
+    "air720",
+    "air724",
+    "air820",
     "air101",
     "air103",
-    "air105"
+    "air105",
+    "harmony",
+    "liteos",
+    "embedded"
   ],
   "repository": {
     "type": "git",
