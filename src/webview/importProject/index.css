@@ -72,7 +72,7 @@
     background-color: var(--iP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
     color: var(--iP-default-fontColor);
-    text-align: center;
+    text-align: left;
 }
 
 div .iP-submit {
@@ -107,6 +107,7 @@ div .iP-submit {
     margin-top: 20px;
     margin-left: 50px;
     margin-right: 50px;
+    text-align: center;
 }
 
 .cancelOpenProject {
