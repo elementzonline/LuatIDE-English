@@ -122,6 +122,7 @@ export class HomeManage {
                             text: this.openProjectJson
                         }
                     );
+                    break;
             }
         }
 
@@ -226,6 +227,9 @@ export class HomeManage {
                         break; 
                     case '注册':
                         vscode.commands.executeCommand('luatide.register');
+                        break;
+                    case "LuatOSWiki":
+                        vscode.commands.executeCommand('luatide.luatosWiki');
                         break;
                 }
                 break;
