@@ -551,6 +551,9 @@ function pureProjectInitDataManagment(initData) {
     $(".tip_spaceLib").hide();
     $(".tip_spaceCore").hide();
 
+    //添加默认的工程路径
+    $("#nP-space_customepath").val(initData.defaultProjectPath);
+
     /* 导入工程操作 */
     if (nP_isInImportProject) {
         importSpaceProject(nP_temImportData);
@@ -683,6 +686,9 @@ function exampleProjectInitDataManagment(initData) {
 
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
+
+    //添加默认的工程路径
+    $("#nP-example_customepath").val(initData.defaultProjectPath);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -834,6 +840,9 @@ function ndkProjectInitDataManagment(initData) {
     /* 添加初始化option用来承载自定义选项 */
     libSelected.append('<option value="default" id="ndk_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="ndk_customeCore" style="display: none;">点击选择</option>');
+    
+    //添加默认的工程路径
+    $("#nP-ndk_customepath").val(initData.defaultProjectPath);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -1010,6 +1019,9 @@ function uiProjectInitDataManagment(initData) {
     /* 隐藏提示信息 */
     $(".tip_uiLib").hide();
     // $(".tip_uiCore").hide();
+    
+    //添加默认的工程路径
+    $("#nP-ui_customepath").val(initData.defaultProjectPath);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -1170,7 +1182,12 @@ window.addEventListener('message', event => {
             $(".openProjectHtml").show();
             gl_importProjectData(message.text.type, message.text);
             break;
-        /* 导入工程命令 上*/
+        /* 导入工程命令 ↑*/
+        /* 主界面命令 ↓*/
+        case "ideVersion":
+            gl_getIdeVersion(message.text);
+            break;
+        /* 主界面命令 ↑*/
         default:
             break;
     }
