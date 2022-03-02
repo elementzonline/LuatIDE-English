@@ -92,7 +92,7 @@ export class HomeManage {
             this.homePanel.webview.postMessage(
                 {
                     command: 'ideVersion',
-                    text: "version: "+pluginInstallVersion
+                    text: "Version: "+pluginInstallVersion
                 }
             );
         }
@@ -599,7 +599,15 @@ export class HomeManage {
                                             "simulator":[],
                                             "esp32c3":[],
                                         },
-                                        "exampleList": pluginDefaultNdkExample,
+                                        "exampleList": {
+                                            "air72XUX/air82XUX": pluginDefaultNdkExample,
+                                            "air72XCX":[],
+                                            "air101": [],
+                                            "air103": [],
+                                            "air105": [],
+                                            "simulator":[],
+                                            "esp32c3":[],
+                                        },
                                 },
                                 },
                             });
