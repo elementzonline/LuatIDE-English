@@ -6,6 +6,8 @@ let nP_cancelBtn = $(".nP-cancel");
 let nP_submitBtn = $(".nP-submit");
 let nP_curActiveContent = "space";
 let nP_temImportData = null;
+// 默认的工程名称
+let nP_defProjectName = "myProject1";
 //工程初始化form
 let nP_formArr = $(".nP-form");
 //空白工程数据
@@ -551,8 +553,9 @@ function pureProjectInitDataManagment(initData) {
     $(".tip_spaceLib").hide();
     $(".tip_spaceCore").hide();
 
-    //添加默认的工程路径
+    //添加默认的工程路径, 工程名称
     $("#nP-space_customepath").val(initData.defaultProjectPath);
+    $("input[name=nP-space_project_name]").val(nP_defProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -687,8 +690,9 @@ function exampleProjectInitDataManagment(initData) {
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
 
-    //添加默认的工程路径
+    //添加默认的工程路径, 工程名称
     $("#nP-example_customepath").val(initData.defaultProjectPath);
+    $("input[name=nP-example_project_name]").val(nP_defProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -841,8 +845,9 @@ function ndkProjectInitDataManagment(initData) {
     libSelected.append('<option value="default" id="ndk_customeLib" style="display: none;">点击选择</option>');
     coreSelected.append('<option value="default" id="ndk_customeCore" style="display: none;">点击选择</option>');
     
-    //添加默认的工程路径
+    //添加默认的工程路径, 工程名称
     $("#nP-ndk_customepath").val(initData.defaultProjectPath);
+    $("input[name=nP-ndk_project_name]").val(nP_defProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -1020,8 +1025,9 @@ function uiProjectInitDataManagment(initData) {
     $(".tip_uiLib").hide();
     // $(".tip_uiCore").hide();
     
-    //添加默认的工程路径
+    //添加默认的工程路径, 工程名称
     $("#nP-ui_customepath").val(initData.defaultProjectPath);
+    $("input[name=nP-ui_project_name]").val(nP_defProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
