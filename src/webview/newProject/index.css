@@ -147,7 +147,7 @@ div.nP-navbar:after {
     background-color: var(--nP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
     color: var(--nP-default-fontColor);
-    text-align: center;
+    text-align: left;
 }
 
 div .nP-submit {

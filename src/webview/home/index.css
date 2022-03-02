@@ -383,6 +383,7 @@ i {
   font-size: var(--default-contentFontSize);
   color: var(--default-fontColor);
   margin: 0;
+  margin-top: 2px;
 }
 
 /* 工程按钮 ↓ */

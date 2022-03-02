@@ -344,5 +344,5 @@ function sentComment() {
 
 /* 获取 IDE 的版本号 */
 function gl_getIdeVersion(version){
-  $(".ideVersion").val(version);
+  $(".ideVersion").text(version);
 }
