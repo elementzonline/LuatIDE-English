@@ -19,6 +19,12 @@ export function getLuatIDEDataPath() {
     return plugDataPath;
 }
 
+// 获取用户默认工程工作空间存储路径
+export function getDefaultWorkspacePath() {
+    const defaultProjectWorkspacePath:string = path.join(appDataPath,'LuatIDE','LuatideWorkspace');
+    return defaultProjectWorkspacePath;
+}
+
 //获取用户插件配置文件路径
 export function getPluginConfigPath() {
     const pluginConfigPath: string = path.join(appDataPath, 'LuatIDE', 'luatide_workspace.json');
