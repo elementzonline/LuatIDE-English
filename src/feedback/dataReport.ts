@@ -7,6 +7,7 @@ import * as path from 'path';
 import * as  fs from "fs";
 // import * as  queryString from 'querystring';
 import * as  os from "os";
+import { getPluginInstallVersion } from '../variableInterface';
 
 function doPost(url, data, fn) {
     data = data || {};
@@ -42,18 +43,6 @@ function getuuid() {
     return uuid;
 }
 
-function getExtensionVersion() {
-    let extensionPath = path.join(__dirname, "../..", "package.json");
-    let packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
-    if (packageFile) {
-        // console.log(packageFile.version);
-        return packageFile.version;
-    }
-    else {
-        return undefined;
-    }
-}
-
 function getIPv4() {
     let interfaces = os.networkInterfaces();
     for (let devName in interfaces) {
@@ -85,7 +74,7 @@ export function activaReport() {
     let reportData = new Map();
     reportData["launch_id"] = uuid;
     reportData["client_id"] = uuid;
-    reportData["client_ver"] = getExtensionVersion();
+    reportData["client_ver"] = getPluginInstallVersion();
     reportData["rver"] = 1;
     reportData["host_name"] = os.hostname();
     reportData["client_ip"] = getIPv4();
