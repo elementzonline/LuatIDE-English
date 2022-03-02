@@ -134,7 +134,8 @@ i {
 
 .header-publicBtn1,
 .header-publicBtn2,
-.header-publicBtn3{
+.header-publicBtn3,
+.header-publicBtnWiki{
   background: none;
   border: var(--default-borderColor);
   outline: none;
@@ -374,6 +375,14 @@ i {
   margin-left: 12%;
   vertical-align: top;
   display: inline-block;
+  text-align: center;
+}
+
+.ideVersion{
+  display: block;
+  font-size: var(--default-contentFontSize);
+  color: var(--default-fontColor);
+  margin: 0;
 }
 
 /* 工程按钮 ↓ */

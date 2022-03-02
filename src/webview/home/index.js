@@ -63,6 +63,12 @@ $(".footerBtn3").on("click", function () {
     text: "联系我们"
   });
 });
+$(".header-publicBtnWiki").on("click", function () {
+  vscode.postMessage({
+    command: "openExternalWeb",
+    text: "LuatOSWiki"
+  });
+});
 
 /*****************************登录 ↓******************************/
 /* 登录头像 */
@@ -336,15 +342,7 @@ function sentComment() {
   };
 }
 
-
-/* 获取vscode端发送的数据 */
-// window.addEventListener('message', event => {
-//   const message = event.data;
-//   switch (message.command) {
-//     case "switchTheme":
-//       changeThemeColor(message.text);
-//       break;
-//     default:
-//       break;
-//   }
-// });
+/* 获取 IDE 的版本号 */
+function gl_getIdeVersion(version){
+  $(".ideVersion").val(version);
+}
