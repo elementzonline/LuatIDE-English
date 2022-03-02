@@ -25,6 +25,7 @@ import * as path from 'path'; // 导入fs库和path库
 import * as ndkProject from "../ndk/ndkProject";
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
+import { getAirSimulatorSkinConfigPath } from '../variableInterface';
 
 
 // 获取当前时间戳，并解析后格式化输出
@@ -1029,7 +1030,11 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		let child_process = require('child_process');
 		// child_process.exec('taskkill -f -im ide_service.exe');
-		if (this.projectJsonParse.getProjectConfigModuleModel(this.activeWorkspace) === "simulator") {
+		if (getProjectConfigModuleModel(this.activeWorkspace) === "simulator") {
+			const airSimulatorSkinConfigPath:string = getAirSimulatorSkinConfigPath();
+			const normalVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolU.json');
+			const currentScrrenSkinPath:string = path.join(airSimulatorSkinConfigPath,'data.json');
+			fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
 		}

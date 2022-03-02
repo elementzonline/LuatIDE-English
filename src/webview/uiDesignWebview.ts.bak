@@ -2,11 +2,14 @@ import * as path from 'path';
 import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import uiConvert = require('./UI-Converter/uiConvert');
-import { ProjectJsonParse } from '../project/projectConfigParse';
-import { activityMemoryProjectPathBuffer } from '../extension';
+// import { ProjectJsonParse } from '../project/projectConfigParse';
+import { getPluginConfigActivityProject } from '../plugConfigParse';
+import { getProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
+import { getAirSimulatorSkinConfigPath } from '../variableInterface';
+// import {PluginJsonParse} from '../plugConfigParse';
 
-let projectJsonParse = new ProjectJsonParse();
-
+// let projectJsonParse = new ProjectJsonParse();
+// let pluginJsonParse = new PluginJsonParse();
 // ui设计器操作
 export class UiDesign{
 	constructor() {
@@ -14,8 +17,7 @@ export class UiDesign{
 
 	//UI设计器管理
 	async uiDesign(context:vscode.ExtensionContext){
-		// const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
-        const activityProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
+		const activityProjectPath:string = getPluginConfigActivityProject();
         if (activityProjectPath==='') {
             vscode.window.showWarningMessage('启动UI设计器前请先激活工程',{modal:true});
             return;
@@ -73,8 +75,7 @@ export class UiDesign{
 
 	// 设计器处理
 	uiDesignHandler(context:vscode.ExtensionContext,uiDesignName:string) {
-		// const activityProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
-        const activityProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
+		const activityProjectPath:string = getPluginConfigActivityProject();
 		let uiDesignPath:any = path.join(activityProjectPath,'.luatide',uiDesignName+'.ui');
         if (!fs.existsSync(uiDesignPath)) {
             uiDesignPath = undefined;
@@ -104,8 +105,7 @@ export class UiDesign{
         public static readonly viewType = 'lvglDesigner';
         private readonly uiPanel: vscode.WebviewPanel;
         private disposables: vscode.Disposable[] = [];
-        // private activeProjectPath:string = pluginJsonParse.getPluginConfigActivityProject();
-        private activeProjectPath:string = activityMemoryProjectPathBuffer['activityMemoryProjectPath'];
+        private activeProjectPath:string = getPluginConfigActivityProject();
         private constructor(uiPanel: vscode.WebviewPanel, context: vscode.ExtensionContext,uiDesignName:string,currentLvgl:any) {
             this.uiPanel = uiPanel;
             this.update(context,uiDesignName);
@@ -133,6 +133,7 @@ export class UiDesign{
                         case 'lvgl_json_receive':
                             this.updateUiCodeToProjectPath(uiDesignName,message);
                             this.updateUiCodeToProjectConfig(this.activeProjectPath+"\\"+uiDesignName+'.lua');
+                            this.initAirSimulatorScreenOrientation(message);
                             return;
                         case 'lvglPageReady':
                             if (message.text) {
@@ -140,7 +141,7 @@ export class UiDesign{
                                     {
                                     command:'lvgl',
                                     text:currentLvgl
-                                }
+                                    }
                                 );
                             }
                             return;
@@ -154,7 +155,7 @@ export class UiDesign{
                             let bitmap = fs.readFileSync(picturePath);
                             let base64 = Buffer.from(bitmap).toString('base64');
                             console.log("转换为base64", base64.substring(0, 100), "...");
-                            // 获取houz
+                            // 获取后缀名
                             let suffix = path.extname(pictureBase64Path);
                             let prefix = `data:image/${suffix};base64`;
 
@@ -200,22 +201,23 @@ export class UiDesign{
 
         // 更新uidesign生成的代码到活动工程
         public updateUiCodeToProjectPath(uiDesignName:any, message:any) {
+            fs.writeFileSync(this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui', JSON.stringify(message.text, null, "\t"));
             let uiDesignJson = uiConvert.styleManage(message.text);
-            let uiCode: any = uiConvert.lvglJsonToCode(uiDesignJson);
+            let uiCode: any = uiConvert.lvglJsonToCode(uiDesignJson[0],uiDesignJson[1]);
             if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
                 fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
             }
-            fs.writeFileSync(this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui', JSON.stringify(message.text, null, "\t"));
             fs.writeFileSync(this.activeProjectPath + "\\" + uiDesignName + '.lua', uiCode);
         }
 
         // 更新uidesign生成的代码到活动工程
         public updateUiCodeToProjectConfig(filePath:string) {
             try {
-                const appFile:string[] = projectJsonParse.getProjectConfigAppFile(this.activeProjectPath);
+                
+                const appFile:string[] = getProjectConfigAppFile(this.activeProjectPath);
                 const relativePath:string = path.relative(this.activeProjectPath,filePath);
                 if (appFile.indexOf(relativePath)===-1) {
-                    projectJsonParse.pushProjectConfigAppFile([relativePath],this.activeProjectPath);
+                    pushProjectConfigAppFile([relativePath],this.activeProjectPath);
                 }
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             }
@@ -263,4 +265,38 @@ export class UiDesign{
             });
             return html;
     }
+
+        // 依据ui设计器所设屏幕方向初始化模拟器屏幕方向
+        private initAirSimulatorScreenOrientation(message:any) {
+            const airSimulatorSkinConfigPath:string = getAirSimulatorSkinConfigPath();
+            const leftHorizontalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolL.json');
+            const rightHorizontalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolR.json');
+            const normalVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolU.json');
+            const invertedVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolD.json');
+            const currentScrrenSkinPath:string = path.join(airSimulatorSkinConfigPath,'data.json');
+            if (message.text.device.rotation) {
+                const reg:any = /DISP_ROT_([\d\w]+)/ig;
+                const screeenOrientationAngle:any = reg.exec(message.text.device.rotation)[1];
+                switch(screeenOrientationAngle){
+                    case 'NONE':
+                        fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
+                        break;
+                    case '90':
+                        fs.copyFileSync(leftHorizontalScreenPath,currentScrrenSkinPath);
+                        break;
+                    case '180':
+                        fs.copyFileSync(invertedVerticalScreenPath,currentScrrenSkinPath);
+                        break;
+                    case '270':
+                        fs.copyFileSync(rightHorizontalScreenPath,currentScrrenSkinPath);
+                        break;
+                    default:
+                        fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
+                        break;
+                }
+            }
+            else{
+                fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+        }
     }
