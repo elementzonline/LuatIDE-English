@@ -73,12 +73,10 @@ let projectConfigOperation = new ProjectConfigOperation();
 // let projectManage = new ProjectManage();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
-let historyProvider = new HistoryProjectDataProvider();
-// let pluginJsonParse = new PluginJsonParse();
-let testDependenciesProvider = new ActivityTreeDataProvider();
+let historyProjectTreeDataProvider = new HistoryProjectDataProvider();
+let activityProjectTreeDataProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 // let uiDesign = new UiDesign();
-// let operationExplorer = new OperationExplorer();
 const selectors: { language: string; scheme: string }[] = [
     { language: 'lua', scheme: 'file' },
     { language: 'lua', scheme: 'untitled' },
@@ -141,13 +139,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 	// 注册用户历史工程TreeView
-	vscode.window.registerTreeDataProvider('luatide-history-project', historyProvider);
+	vscode.window.registerTreeDataProvider('luatide-history-project', historyProjectTreeDataProvider);
 	// 注册用户活动工程TreeView
-	vscode.window.registerTreeDataProvider('luatide-activity-project', testDependenciesProvider);
+	vscode.window.registerTreeDataProvider('luatide-activity-project', activityProjectTreeDataProvider);
 	// 注册用户工程刷新命令，当执行该命令自动刷新用户工程
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh', async (filePath: HistoryProjectTreeItem) => historyProvider.refresh()));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh', async (filePath: HistoryProjectTreeItem) => historyProjectTreeDataProvider.refresh()));
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => testDependenciesProvider.refresh()));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => activityProjectTreeDataProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
 	// context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
 	// 注册快速上手命令，点击后打开doc使用说明文档
