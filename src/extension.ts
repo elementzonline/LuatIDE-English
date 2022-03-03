@@ -17,7 +17,7 @@ import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityPr
 import { OpenProject } from './project/openProject';
 // import { PluginJsonParse } from './plugConfigParse';
 import * as fs from 'fs';
-// import { UiDesign } from './webview/uiDesignWebview';
+import { UiDesign } from './webview/uiDesignWebview';
 // import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
 // import {OperationDataProvider, OperationExplorer} from './project/toolshub';
 import {checkSourceUpdate} from './serverSourceUpdate';
@@ -64,19 +64,15 @@ function debugProject(resource: vscode.Uri): void {
 	// }
 }
 let pluginConfigInit = new PluginConfigInit();
-// let pluginVariablesInit = new PluginVariablesInit();
-// let pluginCoreUpate = new PluginCoreUpate();
-
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let projectConfigOperation = new ProjectConfigOperation();
-// let projectManage = new ProjectManage();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let historyProjectTreeDataProvider = new HistoryProjectDataProvider();
 let activityProjectTreeDataProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
-// let uiDesign = new UiDesign();
+let uiDesign = new UiDesign();
 const selectors: { language: string; scheme: string }[] = [
     { language: 'lua', scheme: 'file' },
     { language: 'lua', scheme: 'untitled' },
@@ -95,12 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
 	pluginConfigInit.configInit();
 	// 插件配置文件兼容执行
 	pluginConfigCompatible();
-	// 插件core文件自动更新处理
-	// pluginCoreUpate.updateCoreHandle();
 	checkSourceUpdate();
-	// demo和lib兼容性临时处理
-	// pluginJsonParse.demoAndCompatible();
-	// vscode.workspace.getConfiguration().update('workbench.view.alwaysShowHeaderActions', true);
 	const activityProject: string = getCurrentPluginConfigActivityProject();
 	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
@@ -147,7 +138,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => activityProjectTreeDataProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
-	// context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
 	// 注册快速上手命令，点击后打开doc使用说明文档
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
