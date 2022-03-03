@@ -837,3 +837,9 @@ export function getAirSimulatorSkinConfigPath() {
     const airSimulatorSkinConfigPath:string = path.join(extensionPath,'tools','AirSimulator','workspace','elua_simulator','Debug','data');
     return airSimulatorSkinConfigPath;
 }
+
+// 获取ui转码器仓库路径
+export function getUiConvertPath() {
+    const uiConvertPath:string = path.join(extensionPath,'src','webview','UI-Converter');
+    return uiConvertPath;
+}
