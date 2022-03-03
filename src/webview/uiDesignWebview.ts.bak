@@ -1,11 +1,11 @@
 import * as path from 'path';
 import * as vscode  from 'vscode';
 import * as fs from 'fs';
-import uiConvert = require('./UI-Converter/uiConvert');
+
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
-import { getAirSimulatorSkinConfigPath } from '../variableInterface';
+import { getAirSimulatorSkinConfigPath, getUiConvertPath } from '../variableInterface';
 // import {PluginJsonParse} from '../plugConfigParse';
 
 // let projectJsonParse = new ProjectJsonParse();
@@ -201,13 +201,20 @@ export class UiDesign{
 
         // 更新uidesign生成的代码到活动工程
         public updateUiCodeToProjectPath(uiDesignName:any, message:any) {
-            fs.writeFileSync(this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui', JSON.stringify(message.text, null, "\t"));
-            let uiDesignJson = uiConvert.styleManage(message.text);
-            let uiCode: any = uiConvert.lvglJsonToCode(uiDesignJson[0],uiDesignJson[1]);
-            if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
-                fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
+            const uiConvertPath:string = getUiConvertPath();
+            if (fs.existsSync(path.join(uiConvertPath,'scripts','LvglDecoder.ts'))) {
+                const uiConvert = require('./UI-Converter/scripts/LvglDecoder');
+                const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
+                const uiLuaPath:string = this.activeProjectPath + "\\" + uiDesignName + '.lua';
+                if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
+                    fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
+                }
+                fs.writeFileSync(uiJsonPath, JSON.stringify(message.text, null, "\t"));
+                uiConvert.glJsonToCodeInit(uiJsonPath,uiLuaPath);
             }
-            fs.writeFileSync(this.activeProjectPath + "\\" + uiDesignName + '.lua', uiCode);
+            else{
+                console.log('未检测到UI转码器文件,转码失败');
+            }
         }
 
         // 更新uidesign生成的代码到活动工程
