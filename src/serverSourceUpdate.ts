@@ -5,7 +5,6 @@ import * as fetch from 'node-fetch';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as compressing from 'compressing';
-// import { PluginVariablesInit } from './config';
 import * as path from 'path';
 import {
     getAir101DefaultCorePath,
@@ -25,7 +24,6 @@ import {
     getLuatIDEDataPath
 } from './variableInterface';
 import { copyDir } from './project/projectApi';
-// let plugVariablesInit = new PluginVariablesInit();
 
 /*
 *请求接口api获取各资源的路径json对象
