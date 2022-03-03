@@ -555,7 +555,7 @@ function pureProjectInitDataManagment(initData) {
 
     //添加默认的工程路径, 工程名称
     $("#nP-space_customepath").val(initData.defaultProjectPath);
-    $("input[name=nP-space_project_name]").val(nP_defProjectName);
+    $("input[name=nP-space_project_name]").val(initData.defaultProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -692,7 +692,7 @@ function exampleProjectInitDataManagment(initData) {
 
     //添加默认的工程路径, 工程名称
     $("#nP-example_customepath").val(initData.defaultProjectPath);
-    $("input[name=nP-example_project_name]").val(nP_defProjectName);
+    $("input[name=nP-example_project_name]").val(initData.defaultProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -847,7 +847,7 @@ function ndkProjectInitDataManagment(initData) {
     
     //添加默认的工程路径, 工程名称
     $("#nP-ndk_customepath").val(initData.defaultProjectPath);
-    $("input[name=nP-ndk_project_name]").val(nP_defProjectName);
+    $("input[name=nP-ndk_project_name]").val(initData.defaultProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
@@ -1027,7 +1027,7 @@ function uiProjectInitDataManagment(initData) {
     
     //添加默认的工程路径, 工程名称
     $("#nP-ui_customepath").val(initData.defaultProjectPath);
-    $("input[name=nP-ui_project_name]").val(nP_defProjectName);
+    $("input[name=nP-ui_project_name]").val(initData.defaultProjectName);
 
     /* 导入工程操作 */
     if (nP_isInImportProject) {
