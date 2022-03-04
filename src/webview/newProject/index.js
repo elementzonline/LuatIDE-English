@@ -1193,6 +1193,9 @@ window.addEventListener('message', event => {
         case "ideVersion":
             gl_getIdeVersion(message.text);
             break;
+        case "homeAdvertisementInfo":
+            gl_getAdvertisementInfo(message.text);
+            break;
         /* 主界面命令 ↑*/
         default:
             break;

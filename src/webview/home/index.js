@@ -1,14 +1,20 @@
 var isDisNewProjectHtml = false;
 var isDisOpenProjectHtml = false;
+// 宣传图片类表
+const advImgList = [
+  ["newImg1", "newUrl1"],
+  ["newImg2", "newUrl2"],
+  ["newImg3", "newUrl3"],
+]
 
 /* 隐藏新建工程[全局函数多文件调用] */
-function gl_hideNewProject(){
+function gl_hideNewProject() {
   $(".newProjectHtml").hide();
 }
 
 
 /* 隐藏导入工程[全局函数多文件调用] */
-function gl_hideOpenProject(){
+function gl_hideOpenProject() {
   $(".openProjectHtml").hide();
 }
 
@@ -69,6 +75,15 @@ $(".header-publicBtnWiki").on("click", function () {
     text: "LuatOSWiki"
   });
 });
+// 发送图片链接网站给vscode
+$(function () {
+  $('body').on('click', '.newUrl', function (item) {
+    vscode.postMessage({
+      command: "openExternalWeb",
+      text: $(this).arrt("href")
+    });
+  });
+})
 
 /*****************************登录 ↓******************************/
 /* 登录头像 */
@@ -343,6 +358,21 @@ function sentComment() {
 }
 
 /* 获取 IDE 的版本号 */
-function gl_getIdeVersion(version){
+function gl_getIdeVersion(version) {
   $(".ideVersion").text(version);
+}
+
+/* 获取最新的新闻广告信息 */
+function gl_getAdvertisementInfo(newsInfo) {
+  let index = 0;
+  for (let key in newsInfo) {
+    if (advImgList[index][0]) {
+      // 获取图片和图片链接对象
+      let temImg = $("." + advImgList[index][0]);
+      let temImgUrl = $("." + advImgList[index][1]);
+      temImg.attr("src", newsInfo[key][0]);
+      temImgUrl.attr("href", newsInfo[key][1]);
+      index += 1;
+    }
+  }
 }
