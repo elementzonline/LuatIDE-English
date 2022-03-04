@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -28,7 +28,7 @@ export class HomeManage {
     // private importProjectInitJson:any;
     private openProjectJson:any;
     // 工程主页webview管理
-    homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
+    async homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
         this.openProjectJson =openProjectJson;
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
@@ -86,16 +86,20 @@ export class HomeManage {
                 text: colorTheme
             }
         );
+
         // 获取ide当前版本号并发送至前端
-        const pluginInstallVersion:any = getPluginInstallVersion();
+        const pluginInstallVersion:any =  getPluginInstallVersion();
         if (pluginInstallVersion) {
             this.homePanel.webview.postMessage(
                 {
                     command: 'ideVersion',
-                    text: "Version: "+pluginInstallVersion
+                    text: "Version: " + pluginInstallVersion
                 }
             );
         }
+
+        // 发送图片广告信息
+        this.newsJsonGenerate(this.homePanel);
 
         let temPanel = this.homePanel;
 
@@ -119,7 +123,6 @@ export class HomeManage {
                         }
                     );
                     break;
-            
                 case 'loadOpenProjectModelBox':
                     temPanel.webview.postMessage(
                         {
@@ -718,5 +721,49 @@ export class HomeManage {
                 return false;
             }
             return true;
+        }
+
+        // 解析图片资源json并生成相应指令
+        async getNewsJson(){
+            const newsUrl:string = getNewsApi();
+            const response: any = await fetch(newsUrl)
+            .catch(error => {console.log(error);
+                    return undefined;});
+            if (response===undefined) {
+                return undefined;
+            }
+            const jsonResult: any =  response.json();
+            return jsonResult;
+        }
+
+        async newsJsonGenerate(panel:any){
+            let newsImageInfoObj:any = {
+                'newsImage1':[],
+                'newsImage2':[],
+                'newsImage3':[]
+            };
+            const jsonData:any = await this.getNewsJson();
+            if (jsonData!==undefined) {
+            //     return newsImageInfoObj;
+            // }
+            // else{
+                const image1Url:string = jsonData.data[0].image.url;
+                const image1DescriptionUrl:string = jsonData.data[0].url;
+                newsImageInfoObj.newsImage1.push(image1Url,image1DescriptionUrl);
+                const image2Url:string = jsonData.data[1].image.url;
+                const image2DescriptionUrl:string = jsonData.data[1].url;
+                newsImageInfoObj.newsImage2.push(image2Url,image2DescriptionUrl);
+                const image3Url:string = jsonData.data[2].image.url;
+                const image3DescriptionUrl:string = jsonData.data[2].url;
+                newsImageInfoObj.newsImage3.push(image3Url,image3DescriptionUrl);
+                // return newsImageInfoObj;
+            // }
+            panel.webview.postMessage(
+                {
+                    command: 'homeAdvertisementInfo',
+                    text:newsImageInfoObj
+                }
+            );
+            }
         }
 }
