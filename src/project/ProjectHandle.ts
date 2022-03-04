@@ -458,3 +458,36 @@ export class ProjectSoruceFileDelete{
         });
     }
 }
+
+// 获取用户工程默认工作空间当前最新工程默认序号列表
+export function getDefaultWorkspaceProjectSerialNumberArray() {
+    const pluginDefaultWorkspacePath:string = getDefaultWorkspacePath();
+    // 获取当前文件夹下的所有工程名称
+    const projectArray:string[] = fs.readdirSync(pluginDefaultWorkspacePath);
+    let projectSerialNumberArray:number[] = [];
+    for (let i = 0; i < projectArray.length; i++) {
+        const projectName = projectArray[i];
+        // 对工程名称进行正则解析提取出序号
+        const reg:any = /myProject([\d]+)/ig;
+        const projectSerialNumberRegArray:any = reg.exec(projectName);
+        if (projectSerialNumberRegArray) {
+            const projectNumber:number = Number(projectSerialNumberRegArray[1]);
+            projectSerialNumberArray.push(projectNumber);
+        }
+    }
+   
+    return projectSerialNumberArray;
+    // return 序号列表 
+} 
+
+// 默认工程名称递归增加
+export function getDefaultProjectName() {
+    const projectSerialNumberArray:number[] = getDefaultWorkspaceProjectSerialNumberArray();
+    for (let defaultProjectSerialNumber:number = 1; defaultProjectSerialNumber <= 1000; defaultProjectSerialNumber++) {
+        if (projectSerialNumberArray.indexOf(defaultProjectSerialNumber)===-1) {
+            return 'myProject'+defaultProjectSerialNumber;
+        }
+    }
+    console.log('默认工作空间工程数量达到最大限制值1000');
+    return 'myProject';
+}

@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
-import { ProjectConfigOperation } from '../project/ProjectHandle';
+import { getDefaultProjectName, ProjectConfigOperation } from '../project/ProjectHandle';
 // import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
@@ -206,6 +206,7 @@ export class HomeManage {
         const air105LibList:string[] = []; 
         const esp32c3LibList:string[] = [];
         const pluginDefaultWorkspacePath:string = getDefaultWorkspacePath();
+        const pluginDefaultProjectName:string = getDefaultProjectName();
         switch (message.command) {
             case 'openNewProjectWebview':
                 break;
@@ -273,6 +274,7 @@ export class HomeManage {
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
+                                    "defaultProjectName":pluginDefaultProjectName,
                                 }
                             }
                         );
@@ -303,6 +305,7 @@ export class HomeManage {
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
+                                    "defaultProjectName":pluginDefaultProjectName,
                                 },
                             }
                         );
@@ -343,6 +346,7 @@ export class HomeManage {
                                     "esp32c3":[],
                                 },
                                 "defaultProjectPath":pluginDefaultWorkspacePath,
+                                "defaultProjectName":pluginDefaultProjectName,
                             },
                         }
                         );
@@ -373,6 +377,7 @@ export class HomeManage {
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
+                                    "defaultProjectName":pluginDefaultProjectName,
                                 },
                             }
                         );
