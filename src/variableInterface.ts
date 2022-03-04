@@ -181,7 +181,7 @@ export function getRegBaseModel(moduleModel: any) {
 }
 
 // 获取新闻api接口链接
-export async function getNewsApi() {
+export function getNewsApi() {
     const newsUrl = 'http://121.40.170.41:30050/api/site/hezhou_news';
     return newsUrl;
 }
