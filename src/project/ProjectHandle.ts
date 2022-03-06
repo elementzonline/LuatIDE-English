@@ -5,7 +5,7 @@ import * as path from "path";
 import { deleteDirRecursive, getFileForDirRecursion } from './projectApi';
 // import { ProjectJsonParse } from "./projectConfigParse";
 import { activityMemoryProjectPathBuffer } from "../extension";
-import { getActivityProjectConfigOptionsList } from "../variableInterface";
+import { getActivityProjectConfigOptionsList, getDefaultWorkspacePath } from "../variableInterface";
 import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigModuleModel, popProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
 // import { HistoryProjectDataProvider } from "./projectTreeView";
