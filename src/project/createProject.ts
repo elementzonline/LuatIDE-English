@@ -651,6 +651,12 @@ export class CreateProject {
         lvgl.obj_align(ScreenA.LvglButton2.self, nil, lvgl.ALIGN_IN_TOP_LEFT, 65, 107)
         lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
     end
+----------------------------------------------------------------------------
+-----------------------This is the Initial of lvglGUI-----------------------
+----------------------------------------------------------------------------
+function lvglUiInitial()
+    ScreenA.create()
+end
         `;
         if (!fs.existsSync(path.join(projectPath, ".luatide"))) {
             fs.mkdirSync(path.join(projectPath, ".luatide"));
