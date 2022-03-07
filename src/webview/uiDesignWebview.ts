@@ -3,7 +3,7 @@ import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
-import { getAirSimulatorSkinConfigPath, getUiConvertPath, getUiDesignPath } from '../variableInterface';
+import { getAirSimulatorSkinConfigPath, getUiDesignPath } from '../variableInterface';
 
 // ui设计器操作
 export class UiDesign{
@@ -203,8 +203,7 @@ export class UiDesignPanel {
 
     // 更新uidesign生成的代码到活动工程
     public updateUiCodeToProjectPath(uiDesignName:any, message:any) {
-        const uiConvertPath:string = getUiConvertPath();
-        if (fs.existsSync(path.join(uiConvertPath,'scripts','LvglDecoder.ts'))) {
+        try {
             const uiConvert = require('./UI-Converter/scripts/LvglDecoder');
             const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
             const uiLuaPath:string = this.activeProjectPath + "\\" + uiDesignName + '.lua';
@@ -213,8 +212,7 @@ export class UiDesignPanel {
             }
             fs.writeFileSync(uiJsonPath, JSON.stringify(message.text, null, "\t"));
             uiConvert.glJsonToCodeInit(uiJsonPath,uiLuaPath);
-        }
-        else{
+        } catch (error) {
             console.log('未检测到UI转码器文件,转码失败');
         }
     }
