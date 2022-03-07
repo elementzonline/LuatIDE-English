@@ -391,15 +391,12 @@ export class CreateProject {
             function keycb()
               menu, home, back = lvgl.indev_get_emu_key()
               if menu > 0 then
-                iCool_touchKeyInit(1, 1)
                 return
               end
               if home > 0 then
-                iCool_touchKeyInit(4, 1)
                 return
               end
               if back > 0 then
-                iCool_touchKeyInit(2, 1)
                 return
               end
             end
