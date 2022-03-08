@@ -115,7 +115,7 @@ export class ProjectDeleteHandle {
             case '删除本地文件':
                 await vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(async result => {
                     await popPluginConfigProject(projectName);
-                    if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
+                    if (activeProject!=='' && projectPath.toLocaleLowerCase().indexOf(activeProject.toLocaleLowerCase())!==-1) {
                         // 活动工程置空
                         activeProject = '';
                         activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
@@ -135,7 +135,7 @@ export class ProjectDeleteHandle {
         if (!fs.existsSync(path.join(filePath.path,filePath.label))) {
             popPluginConfigProject(filePath.label);
             const activityProjectPath:string = getPluginConfigActivityProject();
-            if (path.join(filePath.path,filePath.label)===activityProjectPath) {
+            if (path.join(filePath.path,filePath.label).toLocaleLowerCase()===activityProjectPath.toLocaleLowerCase()) {
                 setPluginConfigActivityProject('');
             }
             vscode.window.showInformationMessage(`选定的${filePath.label}工程路径状态已改变，已从配置文件列表中删除该工程`);
@@ -328,7 +328,7 @@ export class ProjectConfigOperation {
     projectAddCheck(filePath:string){
         const activityPath:string = getPluginConfigActivityProject();
         const appFile:any = getProjectConfigAppFile(activityPath);
-        if (filePath.indexOf(activityPath)===-1) {
+        if (filePath.toLocaleLowerCase().indexOf(activityPath.toLocaleLowerCase())===-1) {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
             return false;
         }
@@ -336,11 +336,11 @@ export class ProjectConfigOperation {
             vscode.window.showErrorMessage("该文件已存在于工程，不能重复添加",{modal: true});
             return false;
         }
-        if (filePath===activityPath){
+        if (filePath.toLocaleLowerCase()===activityPath.toLocaleLowerCase()){
             vscode.window.showErrorMessage("不支持导入工程自身",{modal: true});
             return false;
         }
-        if (filePath===path.join(activityPath,'luatide_project.json')) {
+        if (filePath.toLocaleLowerCase()===path.join(activityPath,'luatide_project.json').toLocaleLowerCase()) {
             vscode.window.showErrorMessage("不支持导入LuatIDE工程配置文件",{modal: true});
             return false;
         }
@@ -351,11 +351,11 @@ export class ProjectConfigOperation {
     libCoreCheck(filePath:string){
         const activityPath:string = getPluginConfigActivityProject();
         // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
-        if (filePath===activityPath){
+        if (filePath.toLocaleLowerCase()===activityPath.toLocaleLowerCase()){
             vscode.window.showErrorMessage("不支持设置工程自身",{modal: true});
             return false;
         }
-        if (filePath===path.join(activityPath,'luatide_project.json')) {
+        if (filePath.toLocaleLowerCase()===path.join(activityPath,'luatide_project.json').toLocaleLowerCase()) {
             vscode.window.showErrorMessage("不支持设置LuatIDE工程配置文件",{modal: true});
             return false;
         }
