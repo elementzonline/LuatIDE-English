@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as path from 'path';
 import { getPluginConfigUserProjectAbsolutePathList, popPluginConfigProject } from '../plugConfigParse';
 // import { PluginJsonParse } from '../plugConfigParse';
 // import { PluginConfigInit, PluginVariablesInit } from '../config';
@@ -27,13 +28,12 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 	}
 
 	generateTreeItem(userProjectAbsulutePathList: any) {
-
 		for (let index = 0; index < userProjectAbsulutePathList.length; index++) {
 			const projectAbsolutePath = userProjectAbsulutePathList[index];
 			const nameIndex = projectAbsolutePath.lastIndexOf('\\');
 			const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
 			const projectPath = projectAbsolutePath.substring(0, nameIndex);
-			if (fs.existsSync(projectAbsolutePath)) {
+			if (fs.existsSync(path.join(projectAbsolutePath,'luatide_project.json'))) {
 				this.rootloadUrlArray.push(new HistoryProjectTreeItem(projectName, projectPath, vscode.TreeItemCollapsibleState.None));
 			}
 			else {

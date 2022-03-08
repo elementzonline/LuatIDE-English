@@ -89,13 +89,13 @@ export class ProjectDeleteHandle {
         if (!deletProjectCheckState) {   //工程删除必要条件检查未通过
             return false;
         }
-        await vscode.window.showWarningMessage('是否删除该工程', { modal: true }, '移除工程', '删除本地文件').then(result => {
-            this.deleteProjectUserInteractionHint(result, filePath);
+        await vscode.window.showWarningMessage('是否删除该工程', { modal: true }, '移除工程', '删除本地文件').then(async result => {
+            await this.deleteProjectUserInteractionHint(result, filePath);
         });
     }
 
     // 工程删除用户交互提示
-    deleteProjectUserInteractionHint(result: any, filePath: any) {
+    async deleteProjectUserInteractionHint(result: any, filePath: any) {
         const projectName: string = filePath.label;
         const projectParentPath:string = filePath.path;
         const projectPath:string = path.join(projectParentPath,projectName);
@@ -113,17 +113,18 @@ export class ProjectDeleteHandle {
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 break;
             case '删除本地文件':
-                vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(result => {
-                    popPluginConfigProject(projectName);
+                await vscode.window.showWarningMessage("该操作会彻底删除本地工程文件夹，是否确定？", { modal: true }, "确定").then(async result => {
+                    await popPluginConfigProject(projectName);
                     if (activeProject!=='' && projectPath.indexOf(activeProject)!==-1) {
                         // 活动工程置空
                         activeProject = '';
                         activityMemoryProjectPathBuffer.activityMemoryProjectPath = '';
-                        setPluginConfigActivityProject(activeProject);
+                        await setPluginConfigActivityProject(activeProject);
                     }
-                    deleteDirRecursive(projectPath);
-                    vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+                    vscode.workspace.updateWorkspaceFolders(0,vscode.workspace.workspaceFolders?.length);
+                    await deleteDirRecursive(projectPath);
+                    await vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                    await vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 });
                 break;
         }
