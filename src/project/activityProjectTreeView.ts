@@ -28,7 +28,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       if (activityPath === '') {
         return Promise.resolve([]);
       }
-      else if (!fs.existsSync(activityPath)) {
+      else if (!fs.existsSync(path.join(activityPath,'luatide_project.json'))) {
         setPluginConfigActivityProject('');
         return Promise.resolve([]);
       }
