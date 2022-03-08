@@ -3,7 +3,7 @@ import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
-import { getAirSimulatorSkinConfigPath, getUiDesignPath } from '../variableInterface';
+import { getUiDesignPath } from '../variableInterface';
 
 // ui设计器操作
 export class UiDesign{
@@ -135,7 +135,6 @@ export class UiDesignPanel {
                     case 'lvgl_json_receive':
                         this.updateUiCodeToProjectPath(uiDesignName,message);
                         this.updateUiCodeToProjectConfig(this.activeProjectPath+"\\"+uiDesignName+'.lua');
-                        this.initAirSimulatorScreenOrientation(message);
                         return;
                     case 'lvglPageReady':
                         if (message.text) {
@@ -273,37 +272,4 @@ export class UiDesignPanel {
         return html;
 }
 
-    // 依据ui设计器所设屏幕方向初始化模拟器屏幕方向
-    private initAirSimulatorScreenOrientation(message:any) {
-        const airSimulatorSkinConfigPath:string = getAirSimulatorSkinConfigPath();
-        const leftHorizontalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolL.json');
-        const rightHorizontalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolR.json');
-        const normalVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolU.json');
-        const invertedVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolD.json');
-        const currentScrrenSkinPath:string = path.join(airSimulatorSkinConfigPath,'data.json');
-        if (message.text.device.rotation) {
-            const reg:any = /DISP_ROT_([\d\w]+)/ig;
-            const screeenOrientationAngle:any = reg.exec(message.text.device.rotation)[1];
-            switch(screeenOrientationAngle){
-                case 'NONE':
-                    fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
-                    break;
-                case '90':
-                    fs.copyFileSync(leftHorizontalScreenPath,currentScrrenSkinPath);
-                    break;
-                case '180':
-                    fs.copyFileSync(invertedVerticalScreenPath,currentScrrenSkinPath);
-                    break;
-                case '270':
-                    fs.copyFileSync(rightHorizontalScreenPath,currentScrrenSkinPath);
-                    break;
-                default:
-                    fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
-                    break;
-            }
-        }
-        else{
-            fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-    }
 }

@@ -1031,10 +1031,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		let child_process = require('child_process');
 		// child_process.exec('taskkill -f -im ide_service.exe');
 		if (getProjectConfigModuleModel(this.activeWorkspace) === "simulator") {
-			const airSimulatorSkinConfigPath:string = getAirSimulatorSkinConfigPath();
-			const normalVerticalScreenPath:string = path.join(airSimulatorSkinConfigPath,'icoolU.json');
-			const currentScrrenSkinPath:string = path.join(airSimulatorSkinConfigPath,'data.json');
-			fs.copyFileSync(normalVerticalScreenPath,currentScrrenSkinPath);
 			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			child_process.exec('taskkill -f -im lcd_plugin.exe');
 		}
