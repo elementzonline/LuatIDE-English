@@ -267,7 +267,8 @@ export class CreateProject {
                 break;
             case 'esp32c3':
                 // esp32c3 默认demo与air101系列相同
-                fs.writeFileSync(mainLuaPath,air10xMainData);  
+                fs.writeFileSync(mainLuaPath,air10xMainData); 
+                break; 
             default:
                 const airMainData: string = getAir72XUXDefaultMainData();
                 fs.writeFileSync(mainLuaPath, airMainData);
