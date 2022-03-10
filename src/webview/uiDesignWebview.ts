@@ -205,7 +205,7 @@ export class UiDesignPanel {
         try {
             const uiConvert = require('./UI-Converter/scripts/LvglDecoder');
             const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
-            const uiLuaPath:string = this.activeProjectPath + "\\" + uiDesignName + '.lua';
+            const uiLuaPath:string = this.activeProjectPath;
             if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
                 fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
             }
