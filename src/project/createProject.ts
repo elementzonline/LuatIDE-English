@@ -185,7 +185,7 @@ export class CreateProject {
             createProjectModuleModel: message.text['moduleModel'],
             createProjectLibPath: message.text['libPath'],
             createProjectCorePath: message.text['corePath'],
-            // createProjectExample: message.text['project_example'],
+            createProjectDeviceResolution: message.text['deviceResolution']
         };
         const createProjectCheckState: boolean = this.createProjectCheck(message);
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
@@ -203,7 +203,7 @@ export class CreateProject {
         createFolder(createProjectMessage.createProjectPath);
         // const mainLuaPath: string = path.join(createProjectMessage.createProjectPath, "main.lua");
         // this.createMainLuaData(createProjectMessage.createProjectModuleModel, mainLuaPath);
-        this.createUiData(createProjectMessage.createProjectPath);
+        this.createUiData(createProjectMessage.createProjectPath,createProjectMessage.createProjectDeviceResolution);
         // vscode.commands.executeCommand('luatide-ui.design');
         generateProjectJson(createProjectMessage.createProjectPath); //初始化写入工程配置文件
         const appFile: string[]|undefined = getFileForDirRecursion(createProjectMessage.createProjectPath);
@@ -277,11 +277,11 @@ export class CreateProject {
     }
 
     // 向工程中写入初始化的ui工程
-    createUiData(projectPath:string){
+    createUiData(projectPath:string,deviceResolution:any){
         const uiData: string = `{
             "device": {
-                "width": 480,
-                "height": 854
+                "width": ${deviceResolution.width},
+                "height": ${deviceResolution.height}
             },
             "screens": [
                 {
@@ -443,8 +443,8 @@ export class CreateProject {
         local function init()
             local para =
             {
-                width = 480, --分辨率宽度，
-                height = 854, --分辨率高度
+                width = ${deviceResolution.width}, --分辨率宽度，
+                height = ${deviceResolution.height}, --分辨率高度
                 bpp = 16, --MIPI LCD直接写16，暂不支持其他配置
                 bus = disp.BUS_MIPI, --LCD专用SPI引脚接口，不可修改
                 xoffset = 0, --X轴偏移
