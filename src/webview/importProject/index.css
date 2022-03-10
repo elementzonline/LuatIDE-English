@@ -75,6 +75,18 @@
     text-align: left;
 }
 
+/* 屏幕分辨率 */
+.iP-screenCfgChild input {
+    outline-style: none;
+    height: 40px;
+    width: 135px;
+    border-radius: 2px;
+    background-color: var(--iP-default-inputBgColor);
+    border: 1px solid rgb(81, 81, 81);
+    color: var(--iP-default-fontColor);
+    text-align: left;
+}
+
 div .iP-submit {
     background: var(--default-absBtnBgColor);
     color: var(--default-absFontColor);

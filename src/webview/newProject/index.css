@@ -6,7 +6,8 @@
 .nP-mainBody {
     background: var(--nP-default-bgColor);
     color: rgba(223, 190, 106, 0.7);
-    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
+        "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
 }
 
 .nP-father {
@@ -16,7 +17,6 @@
     width: 100%;
     height: 100%;
 }
-
 
 /* 错误提示 */
 
@@ -32,7 +32,6 @@ h2 {
     display: block;
     font-weight: normal;
 }
-
 
 /*导航栏样式*/
 
@@ -65,7 +64,6 @@ div.nP-navbar:after {
     clear: both;
 }
 
-
 /*导航栏中选项样式*/
 
 .nP-menu {
@@ -91,7 +89,6 @@ div.nP-navbar:after {
     /* border: var(--nP-default-border);
     background-position: 50% 50%; */
 }
-
 
 /*被选中激活样式*/
 
@@ -120,7 +117,6 @@ div.nP-navbar:after {
     color: var(--nP-default-fontColor);
 }
 
-
 /*初始化页面内容样式*/
 
 .nP-form {
@@ -143,6 +139,17 @@ div.nP-navbar:after {
     outline-style: none;
     height: 40px;
     width: 280px;
+    border-radius: 2px;
+    background-color: var(--nP-default-inputBgColor);
+    border: 1px solid rgb(81, 81, 81);
+    color: var(--nP-default-fontColor);
+    text-align: left;
+}
+
+.nP-screenCfgChild input {
+    outline-style: none;
+    height: 40px;
+    width: 135px;
     border-radius: 2px;
     background-color: var(--nP-default-inputBgColor);
     border: 1px solid rgb(81, 81, 81);
@@ -185,7 +192,6 @@ div .nP-submit {
     text-align: center;
 }
 
-
 /* 工程取消按钮样式 */
 
 .nP-cancelNewProject {
@@ -205,9 +211,7 @@ div .nP-submit {
     border-color: var(--default-hoverColor);
 }
 
-
 /**************************空白工程**************************/
-
 
 /*设置提示样式*/
 

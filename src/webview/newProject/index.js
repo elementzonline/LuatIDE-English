@@ -207,7 +207,7 @@ function nP_Alert(msg) {
 function newProjectHandleSubmit(tar) {
     let projectPath = $("input[name=nP-" + tar + "_project_path]").val();
     let projectName = $("input[name=nP-" + tar + "_project_name]").val();
-    if (!projectName.trim() || !projectPath) {
+    if (!projectName || !projectPath) {
         nP_Alert('名称或路径不能为空！');
         return false;
     } else {
@@ -221,6 +221,14 @@ function newProjectHandleSubmit(tar) {
     if (tar === "ndk"){
         if ($(".nP-select_getNDK_ModuleInfo option:selected").text() !== nP_moduleOne){
             nP_Alert('NDK 工程无法创建在非 air72XUX/air82XUX 模块型号上！');
+            return false;
+        }
+    }
+    if (tar === "ui"){
+        let scrCfgW = $("input[name=nP-ui_project_scrCfgWidth]").val();
+        let scrCfgH = $("input[name=nP-ui_project_scrCfgHeight]").val();
+        if (!scrCfgW || !scrCfgH){
+            nP_Alert('屏幕宽高不能为空！');
             return false;
         }
     }
@@ -271,6 +279,10 @@ function newProjectHandleSubmit(tar) {
                     "libPath": $(".nP-select_getUi_LibInfo option:selected").text() === "点击选择" ? "" : $(".nP-select_getUi_LibInfo option:selected").text(),
                     "moduleModel": $(".nP-select_getUi_ModuleInfo option:selected").text(),
                     "corePath": $(".nP-select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".nP-select_getUi_CoreInfo option:selected").text(),
+                    "deviceResolution": {
+                        "width": $("input[name=nP-ui_project_scrCfgWidth]").val(),
+                        "height": $("input[name=nP-ui_project_scrCfgHeight]").val()
+                    }
                 }
             });
             break;
