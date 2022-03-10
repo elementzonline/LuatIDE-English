@@ -12,13 +12,18 @@ export class UiDesign{
 
 	//UI设计器管理
 	async uiDesign(context:vscode.ExtensionContext){
+        const activityProjectPath:string = getPluginConfigActivityProject();
+        if (activityProjectPath==='') {
+            vscode.window.showWarningMessage('启动UI设计器前请先激活工程',{modal:true});
+            return;
+        }
+        const activityProjectType:string = getProjectConfigType(activityProjectPath);
+        if (activityProjectType!=='ui') {
+            vscode.window.showErrorMessage('非UI工程不支持UI设计器相关功能,请新建UI工程后重试',{modal:true});
+            return;
+        }
         const uiDesignPath:string = getUiDesignPath();
         if (fs.existsSync(path.join(uiDesignPath,'vscode-ext','lvgl-editor','vscode-polyfill.js'))) {
-            const activityProjectPath:string = getPluginConfigActivityProject();
-            if (activityProjectPath==='') {
-                vscode.window.showWarningMessage('启动UI设计器前请先激活工程',{modal:true});
-                return;
-            }
             const projectLuatIDEPath:string = path.join(activityProjectPath,'.luatide');
             let uiDesignName:string|undefined = this.getUiDesignName(projectLuatIDEPath);
             if (uiDesignName===undefined) {
