@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
+import { getProjectConfigAppFile, getProjectConfigType, pushProjectConfigAppFile } from '../project/projectConfigParse';
 import { getUiDesignPath } from '../variableInterface';
 
 // ui设计器操作
@@ -207,18 +207,35 @@ export class UiDesignPanel {
 
     // 更新uidesign生成的代码到活动工程
     public updateUiCodeToProjectPath(uiDesignName:any, message:any) {
+        let uiConvert:any;
         try {
-            const uiConvert = require('./UI-Converter/scripts/LvglDecoder');
-            const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
-            const uiLuaPath:string = this.activeProjectPath;
-            if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
-                fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
-            }
-            fs.writeFileSync(uiJsonPath, JSON.stringify(message.text, null, "\t"));
-            uiConvert.glJsonToCodeInit(uiJsonPath,uiLuaPath);
+            uiConvert = require('./UI-Converter/scripts/LvglDecoder');
         } catch (error) {
             console.log('未检测到UI转码器文件,转码失败');
         }
+        const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
+        const uiLuaPath:string = path.join(this.activeProjectPath,'uiDesign.lua');
+        const uiHandlePath:string = path.join(this.activeProjectPath,'uiHandle.lua');
+        if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
+            fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
+        }
+        if (!fs.existsSync(uiHandlePath)) {
+            fs.writeFileSync(uiHandlePath,'');
+        }
+        const uiHandleData:Buffer = fs.readFileSync(uiHandlePath);
+        fs.writeFileSync(uiJsonPath, JSON.stringify(message.text, null, "\t"));
+        // uiConvert.glJsonToCodeInit(uiJsonPath,this.activeProjectPath);
+        const uiDesignObj:any = uiConvert.glJsonToCodeInit(uiJsonPath,uiHandleData);
+        const projectAppFile:string[] = getProjectConfigAppFile(this.activeProjectPath);
+        fs.writeFileSync(uiLuaPath,uiDesignObj.uiDesignLua);
+        if (projectAppFile.indexOf(path.basename(uiLuaPath))===-1) {
+            pushProjectConfigAppFile([path.basename(uiLuaPath)],this.activeProjectPath);
+        }
+        fs.writeFileSync(uiHandlePath,uiDesignObj.uiHandleLua);
+        if (projectAppFile.indexOf(path.basename(uiHandlePath))===-1) {
+            pushProjectConfigAppFile([path.basename(uiHandlePath)],this.activeProjectPath);
+        }
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
     }
 
     // 更新uidesign生成的代码到活动工程
