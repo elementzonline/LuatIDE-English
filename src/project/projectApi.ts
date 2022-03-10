@@ -263,3 +263,10 @@ export function getCreateProjectAir72XUXCorepathHandle(corePath:string){
     }
     return corePath;
 }
+
+// 获取指定路径文件对象
+export function getJsonObj(path:string) {
+    const fileContent:string = fs.readFileSync(path).toString();
+    const fileObj:any = JSON.parse(fileContent);
+    return fileObj;
+}

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 // import { PluginJsonParse } from '../plugConfigParse';
 // import {ProjectJsonParse} from './projectConfigParse';
 
-import {getFileForDirRecursion} from './projectApi';
+import {getFileForDirRecursion, getJsonObj} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -93,6 +93,21 @@ export class OpenProject {
         }
         else{
             openProjectJson.correctData.libPath = projectConfigLibPath;
+        }
+        // 暂时加上导入ui工程分辨率数据特殊处理
+        if (projectConfigProjectType==='ui') {
+            let uiJsonObj:any;
+            try {
+                 uiJsonObj = getJsonObj(path.join(importProjectPath,'.luatide','uiDesign.ui'));
+            } catch (error) {
+                console.log('ui设计器JSON解码出错,找不到分辨率');
+                return openProjectJson;
+            }
+            const deviceResolutionWidth = uiJsonObj.device.width;
+            const deviceResolutionHeight = uiJsonObj.device.height;
+            openProjectJson.correctData.deviceResolution = {};
+            openProjectJson.correctData.deviceResolution.width = deviceResolutionWidth;
+            openProjectJson.correctData.deviceResolution.height = deviceResolutionHeight;
         }
         return openProjectJson;
     }
