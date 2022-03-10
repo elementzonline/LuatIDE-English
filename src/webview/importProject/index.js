@@ -1,4 +1,4 @@
-//被点击的新建工程选项
+//被点击的导入工程选项
 let iP_allContent = $(".iP-content");
 let iP_allHideStr = ".iP-content_space, .iP-content_example, .iP-content_ndk, .iP-content_ui";
 let iP_cancelBtn = $(".iP-cancel");
@@ -332,7 +332,7 @@ $(".iP-select_getSpace_CoreInfo").on("change", function () {
 });
 
 
-/* 新建工程初始化数据管理[空白工程] */
+/* 导入工程初始化数据管理[空白工程] */
 function iP_pureProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getSpace_ModuleInfo");
     let libSelected = $(".iP-select_getSpace_LibInfo");
@@ -469,7 +469,7 @@ $(".iP-select_getExample_CoreInfo").on("change", function () {
 });
 
 
-/* 新建工程初始化数据管理[示例工程] */
+/* 导入工程初始化数据管理[示例工程] */
 function iP_exampleProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getExample_ModuleInfo");
     let exampleSelected = $(".iP-select_getExample_ExampleInfo");
@@ -498,7 +498,7 @@ function iP_exampleProjectInitDataManagment(initData) {
 }
 
 
-/* 新建工程 模块型号select添加刷新数据[示例工程] */
+/* 导入工程 模块型号select添加刷新数据[示例工程] */
 $(".iP-select_getExample_ModuleInfo").on("change", function () {
     let moduleSelected = $(".iP-select_getExample_ModuleInfo option:selected");
     let exampleSelected = $(".iP-select_getExample_ExampleInfo");
@@ -584,7 +584,7 @@ $(".iP-select_getNDK_CoreInfo").on("change", function () {
 });
 
 
-/* 新建工程初始化数据管理[NDK工程] */
+/* 导入工程初始化数据管理[NDK工程] */
 function iP_ndkProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getNDK_ModuleInfo");
     let libSelected = $(".iP-select_getNDK_LibInfo");
@@ -614,7 +614,7 @@ function iP_ndkProjectInitDataManagment(initData) {
 }
 
 
-/* 新建工程 模块型号select添加刷新数据[NDK工程] */
+/* 导入工程 模块型号select添加刷新数据[NDK工程] */
 $(".iP-select_getNDK_ModuleInfo").on("change", function () {
     let moduleSelected = $(".iP-select_getNDK_ModuleInfo option:selected");
     let libSelected = $(".iP-select_getNDK_LibInfo");
@@ -676,7 +676,7 @@ $(".iP-select_getUi_CoreInfo").on("change", function () {
 });
 
 
-/* 新建工程初始化数据管理[UI工程] */
+/* 导入工程初始化数据管理[UI工程] */
 function iP_uiProjectInitDataManagment(initData) {
     let moduleSelected = $(".iP-select_getUi_ModuleInfo");
     let libSelected = $(".iP-select_getUi_LibInfo");
@@ -702,7 +702,7 @@ function iP_uiProjectInitDataManagment(initData) {
 }
 
 
-/* 新建工程 模块型号select添加刷新数据[UI工程] */
+/* 导入工程 模块型号select添加刷新数据[UI工程] */
 $(".iP-select_getUi_ModuleInfo").on("change", function () {
     let moduleSelected = $(".iP-select_getUi_ModuleInfo option:selected");
     let libSelected = $(".iP-select_getUi_LibInfo");
@@ -1087,6 +1087,10 @@ function importUiProject(importData, moduleWhichSelected) {
             case "corePath":
                 $("#iP-ui_customeCore").text(importData.correctData[key1]);
                 break;
+            case "deviceResolution": 
+                $("input[name=iP-ui_project_scrCfgWidth]").val(importData.correctData[key1]["width"]);
+                $("input[name=iP-ui_project_scrCfgHeight]").val(importData.correctData[key1]["height"]);
+                break;
             default:
                 break;
         }
@@ -1126,9 +1130,11 @@ function importUiProject(importData, moduleWhichSelected) {
     $('.iP-select_getUi_LibInfo').find("option[id=iP-ui_customeLib]").prop("selected", "selected");
     $('.iP-select_getUi_CoreInfo').find("option[id=iP-ui_customeCore]").prop("selected", "selected");
 
-    /* 禁用工程路径, 工程名称的修改 */
+    /* 禁用工程路径, 工程名称以及屏幕分辨率的修改 */
     $("input[name=iP-ui_project_path]").prop("disabled", true);
     $("input[name=iP-ui_project_name]").prop("disabled", true);
+    $("input[name=iP-ui_project_scrCfgWidth]").prop("disabled", true);
+    $("input[name=iP-ui_project_scrCfgHeight]").prop("disabled", true);
     
     /* 添加工程初始化数据 */
     for (let key in moduleWhichSelected) {
@@ -1180,7 +1186,7 @@ function importProjectDisplay(whichDsp, projectType, importData) {
 function iP_sendImportProjectData(tar) {
     let projectPath = $("input[name=iP-" + tar + "_project_path]").val();
     let projectName = $("input[name=iP-" + tar + "_project_name]").val();
-    if (!projectName.trim() || !projectPath) {
+    if (!projectName || !projectPath) {
         iP_Alert('名称或路径不能为空！');
         return false;
     } else {
@@ -1253,6 +1259,10 @@ function iP_sendImportProjectData(tar) {
                         "corePath": $(".iP-select_getUi_CoreInfo option:selected").text() === "点击选择" ? "" : $(".iP-select_getUi_CoreInfo option:selected").text(),
                         "libPath": "",
                         "example": "",
+                        "deviceResolution": {
+                            "width" : $("input[name=iP-ui_project_scrCfgWidth]").val(),
+                            "height": $("input[name=iP-ui_project_scrCfgHeight]").val()
+                        }
                     }
                 }
             });

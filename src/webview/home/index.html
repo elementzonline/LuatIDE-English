@@ -332,6 +332,13 @@
                   </select>
                   <!-- <button type="button" class="ui_core_btn exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
                 </div>
+                <div class="nP-screenCfg nP-item">
+                  <label>屏幕分辨率</label>
+                  <div class="nP-screenCfgChild">
+                    <input name="nP-ui_project_scrCfgWidth" type="text" placeholder="屏幕宽度" oninput = "value=value.replace(/[^\d]/g,'')">
+                    <input name="nP-ui_project_scrCfgHeight" type="text" placeholder="屏幕高度" oninput = "value=value.replace(/[^\d]/g,'')">
+                  </div>
+                </div>
                 <!-- <h6 class="tip_uiCore specialTips">该模块型号不支持 core 文件</h6> -->
                 <div class="nP-btn">
                   <input class="nP-cancel" type="button" value="取消" />
@@ -550,6 +557,15 @@
                     <!-- <button type="button" class="ui_core_btn iP-exBtn" onclick="handelBackstageExtra('openSource', 'customCorePath')">自定义</button> -->
                   </div>
                   <h2 class="iP-tips-core"> &nbsp;&nbsp;&nbsp;&nbsp;CORE存在问题，请修改</h2>
+                </div>
+                <div class="iP-itemBody">
+                  <div class="iP-screenCfg iP-item">
+                    <label>屏幕分辨率</label>
+                    <div class="iP-screenCfgChild">
+                      <input name="iP-ui_project_scrCfgWidth" type="text" placeholder="屏幕宽度" >
+                      <input name="iP-ui_project_scrCfgHeight" type="text" placeholder="屏幕高度" >
+                    </div>
+                  </div>
                 </div>
                 <div class="iP-btn">
                   <input class="iP-cancel" type="button" value="取消" />
