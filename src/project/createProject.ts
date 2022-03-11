@@ -578,83 +578,144 @@ export class CreateProject {
         init()        
         `;
         const uiLuaData:string = `
-        local function objectHide()
-        local o = {}
-        local tSelf = {}
-        setmetatable(o, tSelf)
-        tSelf.__index = tSelf
-        tSelf.__tostring = function(j)
-            return j.self
-        end
-        tSelf.__tocall = function(j)
-            return j.cb
-        end
-        tSelf.self = nil
-        tSelf.cb = function(e) end
-        return o
-    end
-    
-    ScreenA = 
-    {
-        create = nil, 
-        LvglButton1 = objectHide(),
-        LvglImg1 = objectHide(),
-        LvglButton2 = objectHide(),
-    }
-    
-    ----------------------------------------------------------------------------
-    --The following is the content of screen: ScreenA
-    ---------------------------------------------------------------------------
-    ScreenA.create = function()
-    
-        --This is the BTN_PART_MAIN's style of ScreenA.LvglButton1
-        Style_LvglButton1_1=lvgl.style_t()
-        lvgl.style_init(Style_LvglButton1_1)
-        lvgl.style_set_radius(Style_LvglButton1_1, lvgl.STATE_DEFAULT, 4)
-        lvgl.style_set_bg_color(Style_LvglButton1_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x0088FF))
-        lvgl.style_set_value_str(Style_LvglButton1_1, lvgl.STATE_DEFAULT, "点击加入")
-        lvgl.style_set_value_color(Style_LvglButton1_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
-        lvgl.style_set_value_letter_space(Style_LvglButton1_1, lvgl.STATE_DEFAULT, 4)
-    
-        --This is the base code of ScreenA.LvglButton1
-        ScreenA.LvglButton1.self = lvgl.btn_create(lvgl.scr_act(), nil)
-        lvgl.obj_set_size(ScreenA.LvglButton1.self, 362, 79)
-        lvgl.obj_align(ScreenA.LvglButton1.self, nil, lvgl.ALIGN_IN_TOP_LEFT, 65, 608)
-        lvgl.obj_add_style(ScreenA.LvglButton1.self, lvgl.BTN_PART_MAIN, Style_LvglButton1_1)
-    
-    
-        --This is the IMG_PART_MAIN's style of ScreenA.LvglImg1
-        Style_LvglImg1_1=lvgl.style_t()
-        lvgl.style_init(Style_LvglImg1_1)
-    
-        --This is the base code of ScreenA.LvglImg1
-        ScreenA.LvglImg1.self = lvgl.img_create(lvgl.scr_act(), nil)
-        lvgl.img_set_src(ScreenA.LvglImg1.self, "/lua/qrcode.png")
-        lvgl.obj_align(ScreenA.LvglImg1.self, nil, lvgl.ALIGN_IN_TOP_LEFT, 65, 184)
-        lvgl.obj_add_style(ScreenA.LvglImg1.self, lvgl.IMG_PART_MAIN, Style_LvglImg1_1)
-    
-    
-        --This is the BTN_PART_MAIN's style of ScreenA.LvglButton2
-        Style_LvglButton2_1=lvgl.style_t()
-        lvgl.style_init(Style_LvglButton2_1)
-        lvgl.style_set_radius(Style_LvglButton2_1, lvgl.STATE_DEFAULT, 4)
-        lvgl.style_set_bg_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x0088FF))
-        lvgl.style_set_value_str(Style_LvglButton2_1, lvgl.STATE_DEFAULT, "Hello LuatOS UI")
-        lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
-        lvgl.style_set_value_letter_space(Style_LvglButton2_1, lvgl.STATE_DEFAULT, 2)
-    
-        --This is the base code of ScreenA.LvglButton2
-        ScreenA.LvglButton2.self = lvgl.btn_create(lvgl.scr_act(), nil)
-        lvgl.obj_set_size(ScreenA.LvglButton2.self, 362, 79)
-        lvgl.obj_align(ScreenA.LvglButton2.self, nil, lvgl.ALIGN_IN_TOP_LEFT, 65, 107)
-        lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
-    end
+        ----------------------------------------------------------------------------
+-- 1. This file automatically generates code for the LuatOS's UI designer
+-- 2. In case of accident, modification is strictly prohibited
+----------------------------------------------------------------------------
+
+--Import event file
+require "UiHandle"
+
+local function objectHide()
+	local o = {}
+	local tSelf = {}
+	setmetatable(o, tSelf)
+	tSelf.__index = tSelf
+	tSelf.__tostring = function(j)
+		return j.self
+	end
+	tSelf.__tocall = function(j)
+		return j.cb
+	end
+	tSelf.self = nil
+	tSelf.cb = function(e) end
+	return o
+end
+
+ScreenA = 
+{
+	create = nil, 
+	contFather_ScreenA = nil,
+	LvglButton1 = objectHide(),
+	LvglImg1 = objectHide(),
+	LvglButton2 = objectHide(),
+}
+----------------------------------------------------------------------------
+--The following is the content of screen: ScreenA
+---------------------------------------------------------------------------
+ScreenA.create = function()
+	ScreenA.contFather_ScreenA = lvgl.cont_create(lvgl.scr_act(), nil)
+	lvgl.obj_set_size(ScreenA.contFather_ScreenA, 480, 854)
+	lvgl.obj_align(ScreenA.contFather_ScreenA, nil, lvgl.ALIGN_IN_TOP_LEFT, 0, 0)
+
+	--This is the BTN_PART_MAIN's style of ScreenA.LvglButton1
+	Style_LvglButton1_1=lvgl.style_t()
+	lvgl.style_init(Style_LvglButton1_1)
+	lvgl.style_set_radius(Style_LvglButton1_1, lvgl.STATE_DEFAULT, 4)
+	lvgl.style_set_bg_color(Style_LvglButton1_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x0088FF))
+	lvgl.style_set_value_str(Style_LvglButton1_1, lvgl.STATE_DEFAULT, "点击加入")
+	lvgl.style_set_value_color(Style_LvglButton1_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
+	lvgl.style_set_value_letter_space(Style_LvglButton1_1, lvgl.STATE_DEFAULT, 4)
+
+	--This is the base code of ScreenA.LvglButton1
+	ScreenA.LvglButton1.self = lvgl.btn_create(lvgl.scr_act(), nil)
+	lvgl.obj_set_size(ScreenA.LvglButton1.self, 362, 79)
+	lvgl.obj_align(ScreenA.LvglButton1.self, ScreenA.contFather_ScreenA, lvgl.ALIGN_IN_TOP_LEFT, 65, 608)
+	lvgl.obj_add_style(ScreenA.LvglButton1.self, lvgl.BTN_PART_MAIN, Style_LvglButton1_1)
+	--This is to add callback function for ScreenA.LvglButton1
+	--This is callBack function of ScreenA.LvglButton1
+	local handleLvglButton1 = function(obj, e)
+		ScreenA.LvglButton1.cb(e)
+		ScreenA.LvglButton1.cb = function(e)
+			if (e == lvgl.EVENT_CLICKED)then
+				joinUs()
+			end
+		end
+	end
+	lvgl.obj_set_event_cb(ScreenA.LvglButton1.self, handleLvglButton1)
+
+
+	--This is the IMG_PART_MAIN's style of ScreenA.LvglImg1
+	Style_LvglImg1_1=lvgl.style_t()
+	lvgl.style_init(Style_LvglImg1_1)
+
+	--This is the base code of ScreenA.LvglImg1
+	ScreenA.LvglImg1.self = lvgl.img_create(lvgl.scr_act(), nil)
+	lvgl.img_set_src(ScreenA.LvglImg1.self, "/lua/qrcode.png")
+	lvgl.obj_set_click(ScreenA.LvglImg1.self, true)
+	lvgl.img_set_zoom(ScreenA.LvglImg1.self, 256)
+	lvgl.img_set_pivot(ScreenA.LvglImg1.self, 0, 0)
+	lvgl.obj_align(ScreenA.LvglImg1.self, ScreenA.contFather_ScreenA, lvgl.ALIGN_IN_TOP_LEFT, 65, 184)
+	lvgl.obj_add_style(ScreenA.LvglImg1.self, lvgl.IMG_PART_MAIN, Style_LvglImg1_1)
+
+
+	--This is the BTN_PART_MAIN's style of ScreenA.LvglButton2
+	Style_LvglButton2_1=lvgl.style_t()
+	lvgl.style_init(Style_LvglButton2_1)
+	lvgl.style_set_radius(Style_LvglButton2_1, lvgl.STATE_DEFAULT, 4)
+	lvgl.style_set_bg_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x0088FF))
+	lvgl.style_set_value_str(Style_LvglButton2_1, lvgl.STATE_DEFAULT, "Hello LuatOS UI")
+	lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
+	lvgl.style_set_value_letter_space(Style_LvglButton2_1, lvgl.STATE_DEFAULT, 2)
+
+	--This is the base code of ScreenA.LvglButton2
+	ScreenA.LvglButton2.self = lvgl.btn_create(lvgl.scr_act(), nil)
+	lvgl.obj_set_size(ScreenA.LvglButton2.self, 362, 79)
+	lvgl.obj_align(ScreenA.LvglButton2.self, ScreenA.contFather_ScreenA, lvgl.ALIGN_IN_TOP_LEFT, 65, 107)
+	lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
+	--This is to add callback function for ScreenA.LvglButton2
+	--This is callBack function of ScreenA.LvglButton2
+	local handleLvglButton2 = function(obj, e)
+		ScreenA.LvglButton2.cb(e)
+		ScreenA.LvglButton2.cb = function(e)
+			if (e == lvgl.EVENT_CLICKED)then
+				reset()
+			end
+		end
+	end
+	lvgl.obj_set_event_cb(ScreenA.LvglButton2.self, handleLvglButton2)
+end
 ----------------------------------------------------------------------------
 -----------------------This is the Initial of lvglGUI-----------------------
 ----------------------------------------------------------------------------
 function lvglUiInitial()
-    ScreenA.create()
+	ScreenA.create()
 end
+
+        `;
+        const uiHandleData:string = `
+--This function name and notes cannot be modified
+--@@funCfg: <joinUs, exist>
+function joinUs()
+------------USER CODE DATA--------------
+lvgl.style_set_bg_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFF0000))
+lvgl.style_set_value_str(Style_LvglButton2_1, lvgl.STATE_DEFAULT, "逗你的，还是手机扫码加群一起玩耍吧")
+lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x1A1A1A))
+lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
+------------USER CODE DATA--------------
+end
+
+
+--This function name and notes cannot be modified
+--@@funCfg: <reset, exist>
+function reset()
+------------USER CODE DATA--------------
+lvgl.style_set_bg_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0x0088FF))
+lvgl.style_set_value_str(Style_LvglButton2_1, lvgl.STATE_DEFAULT, "Hello LuatOS UI")
+lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
+lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
+------------USER CODE DATA--------------
+end         
         `;
         if (!fs.existsSync(path.join(projectPath, ".luatide"))) {
             fs.mkdirSync(path.join(projectPath, ".luatide"));
@@ -675,6 +736,8 @@ end
         // 写入生成代码文件到工程
         const uiDesignLuaPath:string = path.join(projectPath,'UiDesign.lua');
         fs.writeFileSync(uiDesignLuaPath,uiLuaData);
+        const uiHandleLuaPath:string = path.join(projectPath,'UiHandle.lua');
+        fs.writeFileSync(uiHandleLuaPath,uiHandleData);
     }
     // 向工程中copy用户所选择的demo
     copyDemoToProject(moduleModel: any, projectDemo: any, projectPath: any) {
