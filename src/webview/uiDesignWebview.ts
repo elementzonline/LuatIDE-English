@@ -214,8 +214,8 @@ export class UiDesignPanel {
             console.log('未检测到UI转码器文件,转码失败');
         }
         const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
-        const uiLuaPath:string = path.join(this.activeProjectPath,'uiDesign.lua');
-        const uiHandlePath:string = path.join(this.activeProjectPath,'uiHandle.lua');
+        const uiLuaPath:string = path.join(this.activeProjectPath,'UiDesign.lua');
+        const uiHandlePath:string = path.join(this.activeProjectPath,'UiHandle.lua');
         if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
             fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
         }
