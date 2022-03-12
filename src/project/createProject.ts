@@ -334,6 +334,12 @@ export class CreateProject {
                                     "letterSpace": 4
                                 }
                             }
+                        },
+                        "events": {
+                            "CLICKED": {
+                                "type": "invoke",
+                                "name": "joinUs"
+                            }
                         }
                     }
                 },
@@ -361,6 +367,12 @@ export class CreateProject {
                                     "color": "#FFFFFF",
                                     "letterSpace": 2
                                 }
+                            }
+                        },
+                        "events": {
+                            "CLICKED": {
+                                "type": "invoke",
+                                "name": "reset"
                             }
                         }
                     }
