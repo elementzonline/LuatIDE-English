@@ -1126,6 +1126,14 @@ function changeThemeColor(style) {
 }
 
 
+/* 发起请求通知 VsCode 进行数据通信 */
+function htmlInit(){
+    vscode.postMessage({
+        command: "homePageReady",
+    });
+}
+htmlInit();
+
 
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
