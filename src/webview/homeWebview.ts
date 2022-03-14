@@ -19,6 +19,9 @@ let projectConfigOperation = new ProjectConfigOperation();
 let createProject = new CreateProject();
 // let projectJsonParse = new ProjectJsonParse();
 let openProject = new OpenProject();
+export const sleep = (ms)=> {
+    return new Promise(resolve=>setTimeout(resolve, ms));
+  };
 
 export class HomeManage {
     constructor() {
@@ -28,7 +31,7 @@ export class HomeManage {
     // private importProjectInitJson:any;
     private openProjectJson:any;
     // 工程主页webview管理
-    async homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
+    homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
         this.openProjectJson =openProjectJson;
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
@@ -78,28 +81,30 @@ export class HomeManage {
         // 获取webview界面
         this.homePanel.webview.html = this.getHomeWebviewContent();
 
-        // 获取vscode初始主题
-        const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
-        this.homePanel.webview.postMessage(
-            {
-                command: 'switchTheme',
-                text: colorTheme
-            }
-        );
-
-        // 获取ide当前版本号并发送至前端
-        const pluginInstallVersion:any =  getPluginInstallVersion();
-        if (pluginInstallVersion) {
-            this.homePanel.webview.postMessage(
-                {
-                    command: 'ideVersion',
-                    text: "Version: " + pluginInstallVersion
-                }
-            );
-        }
-
-        // 发送图片广告信息
-        this.newsJsonGenerate(this.homePanel);
+        // // 获取vscode初始主题
+        // const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
+        // this.homePanel.webview.postMessage(
+        //     {
+        //         command: 'switchTheme',
+        //         text: colorTheme
+        //     }
+        // );
+        // console.log('=====================主题信息发送成功');
+        // sleep(100);
+        // // 获取ide当前版本号并发送至前端
+        // const pluginInstallVersion:any =  getPluginInstallVersion();
+        // if (pluginInstallVersion) {
+        //     this.homePanel.webview.postMessage(
+        //         {
+        //             command: 'ideVersion',
+        //             text: "Version: " + pluginInstallVersion
+        //         }
+        //     );
+        //     console.log('ide版本号信息发送成功',);
+        // }
+        // sleep(100);
+        // // 发送图片广告信息
+        // this.newsJsonGenerate(this.homePanel);
 
         let temPanel = this.homePanel;
 
@@ -211,6 +216,30 @@ export class HomeManage {
         const pluginDefaultWorkspacePath:string = getDefaultWorkspacePath();
         const pluginDefaultProjectName:string = getDefaultProjectName();
         switch (message.command) {
+            case 'homePageReady':
+                // 获取vscode初始主题
+                const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
+                homePanel.webview.postMessage(
+                    {
+                        command: 'switchTheme',
+                        text: colorTheme
+                    }
+                );
+                sleep(100);
+                // 获取ide当前版本号并发送至前端
+                const pluginInstallVersion:any =  getPluginInstallVersion();
+                if (pluginInstallVersion) {
+                    homePanel.webview.postMessage(
+                        {
+                            command: 'ideVersion',
+                            text: "Version: " + pluginInstallVersion
+                        }
+                    );
+                }
+                sleep(100);
+                // 发送图片广告信息
+                this.newsJsonGenerate(homePanel);
+                break;
             case 'openNewProjectWebview':
                 break;
             case 'openProjectWebview':
@@ -758,12 +787,12 @@ export class HomeManage {
                 newsImageInfoObj.newsImage3.push(image3Url,image3DescriptionUrl);
                 // return newsImageInfoObj;
             // }
-            panel.webview.postMessage(
-                {
-                    command: 'homeAdvertisementInfo',
-                    text:newsImageInfoObj
-                }
-            );
+                panel.webview.postMessage(
+                    {
+                        command: 'homeAdvertisementInfo',
+                        text:newsImageInfoObj
+                    }
+                );
             }
         }
 }
