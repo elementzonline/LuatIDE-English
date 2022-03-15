@@ -92,6 +92,7 @@
 		"child_process": "^1.0.2",
 		"compressing": "^1.5.1",
 		"image-size": "^1.0.1",
+		"isomorphic-git": "^1.13.1",
 		"node-fetch": "^2.6.6",
 		"uuid": "^8.3.2",
 		"vscode-debugadapter": "^1.51.0"
