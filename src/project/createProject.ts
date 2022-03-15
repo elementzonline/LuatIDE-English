@@ -414,6 +414,7 @@ export class CreateProject {
               end
             end
             keycb()
+            keycode,state=lvgl.indev_get_emu_keycode()
             return lvgl.indev_get_emu_touch()
           end
         end
