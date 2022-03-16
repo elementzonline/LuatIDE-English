@@ -492,3 +492,9 @@ export function getDefaultProjectName() {
     console.log('默认工作空间工程数量达到最大限制值1000');
     return 'myProject';
 }
+
+// 导出量产文件
+export function exportProducFile() {
+    console.log("hahahahahaah1111111");
+
+}
