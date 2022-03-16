@@ -61,7 +61,9 @@
 		"onCommand:luatide-activity-project.sourceFile.delete",
 		"onCommand:luatide-activity-project.configOperation",
 		"onCommand:luatide-activity-project.activityProjectGet",
-		"onCommand:luatide-ui.design"
+		"onCommand:luatide-ui.design",
+		"onCommand:luatide-activity-project.exportProducFile"
+
 	],
 	"main": "./out/extension.js",
 	"scripts": {
@@ -165,6 +167,11 @@
 					"command": "luatide-ui.design",
 					"when": "view == luatide-activity-project",
 					"group": "navigation@2"
+				},
+				{
+					"command": "luatide-activity-project.exportProducFile",
+					"when": "view == luatide-activity-project",
+					"group": "navigation@3"
 				}
 			],
 			"view/item/context": [
@@ -298,6 +305,14 @@
 				"icon": {
 					"dark": "./resource/themeSvg/dark/uiDesign.svg",
 					"light": "./resource/themeSvg/light/uiDesign.svg"
+				}
+			},
+			{
+				"command": "luatide-activity-project.exportProducFile",
+				"title": "导出量产文件",
+				"icon": {
+					"dark": "./resource/themeSvg/dark/export.svg",
+					"light": "./resource/themeSvg/light/export.svg"
 				}
 			}
 		],
