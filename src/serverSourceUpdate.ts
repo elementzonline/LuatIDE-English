@@ -30,11 +30,13 @@ import { copyDir } from './project/projectApi';
 *@param interfaceUrl 接口url的路径
 *@returns jsonResult 返回接口请求的资源集合json对象
 */
-async function getSourceHubJsonObj(interfaceUrl:string) {
+async function getSourceHubJsonObj(interfaceUrl: string) {
     const response: any = await fetch(interfaceUrl)
-    .catch(error => {console.log(error);
-            return undefined;});
-    if (response===undefined) {
+        .catch(error => {
+            console.log(error);
+            return undefined;
+        });
+    if (response === undefined) {
         return undefined;
     }
     const jsonResult: any = await response.json();
@@ -45,15 +47,15 @@ async function getSourceHubJsonObj(interfaceUrl:string) {
 *检查air72XUX资源文件是否有更新
 *@returns checkAir72XUXScriptUpdateState air72XUX脚本资源更新状态 true:固件有更新,false:固件没有更新
 */
-async function checkAir72XUXScriptUpdate(){
+async function checkAir72XUXScriptUpdate() {
     const localScriptReg = /V([\d\.]+)/ig;
     const localScriptName = getAir72XUXDefaultLatestLibName();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localScriptName);
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localScriptName);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
-    const apiName:string = '8910_script';
-    const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
+    const apiName: string = '8910_script';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir72XUXScriptUpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir72XUXScriptUpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
     return checkAir72XUXScriptUpdateState;
 }
 
@@ -61,15 +63,15 @@ async function checkAir72XUXScriptUpdate(){
 *检查air72XUX固件是否有更新
 *@returns checkAir72XUXScriptUpdateState air72XUX固件资源更新状态 true:固件有更新,false:固件没有更新
 */
-async function checkAir72XUXCoreUpdate(){
+async function checkAir72XUXCoreUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
     const localCoreName = getAir72XUXDefaultLatestCoreName();
-    const localCoreVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localCoreName);
+    const localCoreVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localCoreName);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
-    const apiName:string = '8910_lua_lod';
-    const remoteCoreVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
+    const apiName: string = '8910_lua_lod';
+    const remoteCoreVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
     // console.log('====',localCoreVersion,remoteCoreVersion);
-    const checkAir72XUXCoreUpdateState:boolean|undefined = checkUpdateState(localCoreVersion,remoteCoreVersion);
+    const checkAir72XUXCoreUpdateState: boolean | undefined = checkUpdateState(localCoreVersion, remoteCoreVersion);
     return checkAir72XUXCoreUpdateState;
 }
 
@@ -79,13 +81,13 @@ async function checkAir72XUXCoreUpdate(){
 */
 async function checkAir101SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName:string = getAir101DefaultLatestCoreName();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
+    const localSourceName: string = getAir101DefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
-    const apiName:string = '101_lua_lod';
-    const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
+    const apiName: string = '101_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir101UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir101UpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
     return checkAir101UpdateState;
 }
 
@@ -95,13 +97,13 @@ async function checkAir101SourceUpdate() {
 */
 async function checkAir103SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName:string = getAir103DefaultLatestCoreName();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
+    const localSourceName: string = getAir103DefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
-    const apiName:string = '103_lua_lod';
-    const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
+    const apiName: string = '103_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir103UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir103UpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
     return checkAir103UpdateState;
 }
 
@@ -111,13 +113,13 @@ async function checkAir103SourceUpdate() {
 */
 async function checkAir105SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName:string = getAir105DefaultLatestCoreName();
-    const localScriptVersion:string|undefined = getLocalLatestSourceVersion(localScriptReg,localSourceName);
+    const localSourceName: string = getAir105DefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
-    const apiName:string = '105_lua_lod';
-    const remoteScriptVersion:string|undefined = await  getRemoteScriptVersion(remoteScriptReg,apiName);
+    const apiName: string = '105_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
     // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir105UpdateState:boolean|undefined = checkUpdateState(localScriptVersion,remoteScriptVersion);
+    const checkAir105UpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
     return checkAir105UpdateState;
 }
 
@@ -127,7 +129,7 @@ async function checkAir105SourceUpdate() {
 *@param remoteSourceVersion 远端资源版本号
 *@returns true:固件有更新,false:固件没有更新
 */
-function checkUpdateState(localSourceVersion:string|undefined,remoteSourceVersion:string|undefined){
+function checkUpdateState(localSourceVersion: string | undefined, remoteSourceVersion: string | undefined) {
     if (remoteSourceVersion === undefined) {
         console.log('检查服务器更新失败');
         return undefined;
@@ -135,7 +137,7 @@ function checkUpdateState(localSourceVersion:string|undefined,remoteSourceVersio
     else if (localSourceVersion === undefined) {
         return true;
     }
-    else if (remoteSourceVersion>localSourceVersion) {
+    else if (remoteSourceVersion > localSourceVersion) {
         return true;
     }
     return false;
@@ -147,17 +149,17 @@ function checkUpdateState(localSourceVersion:string|undefined,remoteSourceVersio
 *@param apiName 从api接口的json对象中将要获取的名称
 *@returns remoteScriptVersion 解析后的远端最新版本名称
 */
-async function getRemoteScriptVersion(reg:any,apiName:string) {
-    const interfaceUrl:string = 'https://luatos.com/api/luatools/files';
-    const jsonObj:any  = await getSourceHubJsonObj(interfaceUrl);
-    if (jsonObj===undefined) {
+async function getRemoteScriptVersion(reg: any, apiName: string) {
+    const interfaceUrl: string = 'https://luatos.com/api/luatools/files';
+    const jsonObj: any = await getSourceHubJsonObj(interfaceUrl);
+    if (jsonObj === undefined) {
         return undefined;
     }
     const versionRegResultArray = reg.exec(jsonObj[apiName]);
-    if (versionRegResultArray===null) {
+    if (versionRegResultArray === null) {
         return undefined;
     }
-    const remoteSourceVersion:string = versionRegResultArray[1];
+    const remoteSourceVersion: string = versionRegResultArray[1];
     return remoteSourceVersion;
 }
 
@@ -167,12 +169,12 @@ async function getRemoteScriptVersion(reg:any,apiName:string) {
 *@param apiName 从api接口的json对象中将要获取的名称
 *@returns remoteScriptVersion 解析后的远端最新版本名称
 */
-function getLocalLatestSourceVersion(reg:any,localSourcePath:string) {
+function getLocalLatestSourceVersion(reg: any, localSourcePath: string) {
     const versionRegResultArray = reg.exec(localSourcePath);
-    if (versionRegResultArray===null) {
+    if (versionRegResultArray === null) {
         return undefined;
     }
-    const localSourceVersion:string = versionRegResultArray[1];
+    const localSourceVersion: string = versionRegResultArray[1];
     return localSourceVersion;
 }
 
@@ -182,7 +184,7 @@ function getLocalLatestSourceVersion(reg:any,localSourcePath:string) {
 *@param filePath 存储到本地的目录位置
 */
 async function download(url: any, filePath: any) {
-    let headers:any = {};
+    let headers: any = {};
     headers['Content-Type'] = 'application/x-zip-compressed';
     await fetch(url, {
         method: 'GET',
@@ -190,7 +192,7 @@ async function download(url: any, filePath: any) {
     }).then(res => res.buffer()).then(_ => {
         fs.writeFileSync(filePath, _, 'binary');
     }).catch(error => console.log(error));;
-  }
+}
 
 /*
 *解压缩指定路径的zip文件到目的路径
@@ -198,7 +200,7 @@ async function download(url: any, filePath: any) {
 *@param distPath 解压到的指定目的路径 
 */
 async function unzip(srcPath: any, distPath: any) {
-    await compressing.zip.uncompress(srcPath, distPath,{zipFileNameEncoding:'utf-8'})
+    await compressing.zip.uncompress(srcPath, distPath, { zipFileNameEncoding: 'utf-8' })
         .then(() => {
             console.log('unzip', 'success');
         })
@@ -234,10 +236,10 @@ async function deleteFolderRecursive(url: any) {
 *@param downloadingHint 下载过程中用户提示信息
 *@param updateFunction 具体的下载函数名称
 */
-async function updateHintForUser(downloadReadyHint:string,downloadingHint:string,updateFunction:any) {
+async function updateHintForUser(downloadReadyHint: string, downloadingHint: string, updateFunction: any) {
     await vscode.window.showInformationMessage(downloadReadyHint, { modal: true }, '是').then(async result => {
         if (result !== undefined) {
-            await updateProgressView(result,downloadingHint,updateFunction);
+            await updateProgressView(result, downloadingHint, updateFunction);
         }
     });
 }
@@ -248,11 +250,11 @@ async function updateHintForUser(downloadReadyHint:string,downloadingHint:string
 *@param downloadReadyHint 用户提示信息
 *@param updateFunction 具体的下载函数名称
 */
-async function updateProgressView(result: string,downloadingHint:string,updateFunction:any) {
+async function updateProgressView(result: string, downloadingHint: string, updateFunction: any) {
     const interfaceUrl = 'https://luatos.com/api/luatools/files';
-    const sourceBasePath:string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/'; 
-    const jsonObj:any = await getSourceHubJsonObj(interfaceUrl);
-    if (jsonObj===undefined) {
+    const sourceBasePath: string = 'http://cdndownload.openluat.com/Luat_tool_src/v2tools/';
+    const jsonObj: any = await getSourceHubJsonObj(interfaceUrl);
+    if (jsonObj === undefined) {
         return undefined;
     }
     if (result === '是') {
@@ -266,7 +268,7 @@ async function updateProgressView(result: string,downloadingHint:string,updateFu
             });
             progress.report({ increment: 0, message: '正在更新...' });
             progress.report({ increment: 10, message: '正在更新...' });
-            await updateFunction(jsonObj,sourceBasePath);
+            await updateFunction(jsonObj, sourceBasePath);
             setTimeout(() => {
                 progress.report({ increment: 50, message: '正在更新...' });
             }, 1000);
@@ -286,15 +288,15 @@ async function updateProgressView(result: string,downloadingHint:string,updateFu
 *@param apiName 从api接口的json对象中将要获取的名称,区分服务器资源的类型
 *@returns apiNameTempSavePath 拉取到本地的资源要存储的临时路径
 */
-function getTempSavePath(apiName:string) {
-    const luatideDataPath:string = getLuatIDEDataPath();
-    const tempSavePath:string = path.join(luatideDataPath,'temp');
-    const apiNameTempSavePath:string = path.join(tempSavePath,apiName);
+function getTempSavePath(apiName: string) {
+    const luatideDataPath: string = getLuatIDEDataPath();
+    const tempSavePath: string = path.join(luatideDataPath, 'temp');
+    const apiNameTempSavePath: string = path.join(tempSavePath, apiName);
     if (!fs.existsSync(tempSavePath)) {
         fs.mkdirSync(tempSavePath);
     }
-    if (!fs.existsSync(path.join(luatideDataPath,'temp',apiName))) {
-        fs.mkdirSync(path.join(luatideDataPath,'temp',apiName));
+    if (!fs.existsSync(path.join(luatideDataPath, 'temp', apiName))) {
+        fs.mkdirSync(path.join(luatideDataPath, 'temp', apiName));
     }
     return apiNameTempSavePath;
 }
@@ -304,14 +306,14 @@ function getTempSavePath(apiName:string) {
 *@param jsonObj 从远端服务器获取到的资源名称json数据对象
 *@param sourceBaseUrl 远端资源基础url
 */
-async function pullAir72XUXScript(jsonObj:any,sourceBaseUrl:string){
-    let sourceAbsloutePath:string = path.join(sourceBaseUrl,'8910_script',jsonObj['8910_script']);
-    const air72XUXScriptSourceTempPath:string = getTempSavePath('8910_script');
-    const sourceDistPath:string = path.join(air72XUXScriptSourceTempPath,jsonObj['8910_script']);
-    await download(sourceAbsloutePath,sourceDistPath);
-    await unzip(sourceDistPath,air72XUXScriptSourceTempPath);
-    await air72XUXLibHandle(path.join(air72XUXScriptSourceTempPath,'lib'),jsonObj['8910_script']);
-    await air72XUXDemoHandle(path.join(air72XUXScriptSourceTempPath,'demo'),jsonObj['8910_script']);
+async function pullAir72XUXScript(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '8910_script', jsonObj['8910_script']);
+    const air72XUXScriptSourceTempPath: string = getTempSavePath('8910_script');
+    const sourceDistPath: string = path.join(air72XUXScriptSourceTempPath, jsonObj['8910_script']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air72XUXScriptSourceTempPath);
+    await air72XUXLibHandle(path.join(air72XUXScriptSourceTempPath, 'lib'), jsonObj['8910_script']);
+    await air72XUXDemoHandle(path.join(air72XUXScriptSourceTempPath, 'demo'), jsonObj['8910_script']);
     await deleteFolderRecursive(air72XUXScriptSourceTempPath);
 }
 
@@ -320,12 +322,12 @@ async function pullAir72XUXScript(jsonObj:any,sourceBaseUrl:string){
 *@param jsonObj 从远端服务器获取到的资源名称json数据对象
 *@param sourceBaseUrl 远端资源基础url
 */
-async function pullAir72XUXCore(jsonObj:any,sourceBaseUrl:string) {
-    let sourceAbsloutePath:string = path.join(sourceBaseUrl,'8910_lua_lod',jsonObj['8910_lua_lod']);
-    const air72XUXCoreSourceTempPath:string = getTempSavePath('8910_lua_lod');
-    const sourceDistPath:string = path.join(air72XUXCoreSourceTempPath,jsonObj['8910_lua_lod']);
-    await download(sourceAbsloutePath,sourceDistPath);
-    await unzip(sourceDistPath,air72XUXCoreSourceTempPath);
+async function pullAir72XUXCore(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '8910_lua_lod', jsonObj['8910_lua_lod']);
+    const air72XUXCoreSourceTempPath: string = getTempSavePath('8910_lua_lod');
+    const sourceDistPath: string = path.join(air72XUXCoreSourceTempPath, jsonObj['8910_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air72XUXCoreSourceTempPath);
     air72XUXCoreHandle(air72XUXCoreSourceTempPath);
     await deleteFolderRecursive(air72XUXCoreSourceTempPath);
 }
@@ -335,14 +337,14 @@ async function pullAir72XUXCore(jsonObj:any,sourceBaseUrl:string) {
 *@param jsonObj 从远端服务器获取到的资源名称json数据对象
 *@param sourceBaseUrl 远端资源基础url
 */
-async function pullAir101Source(jsonObj:any,sourceBaseUrl:string) {
-    let sourceAbsloutePath:string = path.join(sourceBaseUrl,'101_lua_lod',jsonObj['101_lua_lod']);
-    const air101CoreSourceTempPath:string =  getTempSavePath('101_lua_lod');
-    const sourceDistPath:string = path.join(air101CoreSourceTempPath,jsonObj['101_lua_lod']);
-    await download(sourceAbsloutePath,sourceDistPath);
-    await unzip(sourceDistPath,air101CoreSourceTempPath);
-    const demoDistPath:string = getAir101DefaultDemoPath();
-    air101DemoHandle(path.join(air101CoreSourceTempPath,'demo'),demoDistPath);
+async function pullAir101Source(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '101_lua_lod', jsonObj['101_lua_lod']);
+    const air101CoreSourceTempPath: string = getTempSavePath('101_lua_lod');
+    const sourceDistPath: string = path.join(air101CoreSourceTempPath, jsonObj['101_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air101CoreSourceTempPath);
+    const demoDistPath: string = getAir101DefaultDemoPath();
+    air101DemoHandle(path.join(air101CoreSourceTempPath, 'demo'), demoDistPath);
     air101CoreHandle(air101CoreSourceTempPath);
     await deleteFolderRecursive(air101CoreSourceTempPath);
 }
@@ -352,14 +354,14 @@ async function pullAir101Source(jsonObj:any,sourceBaseUrl:string) {
 *@param jsonObj 从远端服务器获取到的资源名称json数据对象
 *@param sourceBaseUrl 远端资源基础url
 */
-async function pullAir103Source(jsonObj:any,sourceBaseUrl:string) {
-    let sourceAbsloutePath:string = path.join(sourceBaseUrl,'103_lua_lod',jsonObj['103_lua_lod']);
-    const air103CoreSourceTempPath:string = getTempSavePath('103_lua_lod');
-    const sourceDistPath:string = path.join(air103CoreSourceTempPath,jsonObj['103_lua_lod']);
-    await download(sourceAbsloutePath,sourceDistPath);
-    await unzip(sourceDistPath,air103CoreSourceTempPath);
-    const demoDistPath:string = getAir103DefaultDemoPath();
-    air103DemoHandle(path.join(air103CoreSourceTempPath,'demo'),demoDistPath);
+async function pullAir103Source(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '103_lua_lod', jsonObj['103_lua_lod']);
+    const air103CoreSourceTempPath: string = getTempSavePath('103_lua_lod');
+    const sourceDistPath: string = path.join(air103CoreSourceTempPath, jsonObj['103_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air103CoreSourceTempPath);
+    const demoDistPath: string = getAir103DefaultDemoPath();
+    air103DemoHandle(path.join(air103CoreSourceTempPath, 'demo'), demoDistPath);
     air103CoreHandle(air103CoreSourceTempPath);
     await deleteFolderRecursive(air103CoreSourceTempPath);
 }
@@ -369,15 +371,15 @@ async function pullAir103Source(jsonObj:any,sourceBaseUrl:string) {
 *@param jsonObj 从远端服务器获取到的资源名称json数据对象
 *@param sourceBaseUrl 远端资源基础url
 */
-async function pullAir105Source(jsonObj:any,sourceBaseUrl:string) {
-    let sourceAbsloutePath:string = path.join(sourceBaseUrl,'105_lua_lod',jsonObj['105_lua_lod']);
-    const air105CoreSourceTempPath:string =  getTempSavePath('105_lua_lod');
-    const sourceDistPath:string = path.join(air105CoreSourceTempPath,jsonObj['105_lua_lod']);
-    await download(sourceAbsloutePath,sourceDistPath);
-    await unzip(sourceDistPath,air105CoreSourceTempPath);
-    if (fs.existsSync(path.join(air105CoreSourceTempPath,'demo'))) {
-        const demoDistPath:string = getAir105DefaultDemoPath();
-        air105DemoHandle(path.join(air105CoreSourceTempPath,'demo'),demoDistPath);
+async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '105_lua_lod', jsonObj['105_lua_lod']);
+    const air105CoreSourceTempPath: string = getTempSavePath('105_lua_lod');
+    const sourceDistPath: string = path.join(air105CoreSourceTempPath, jsonObj['105_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air105CoreSourceTempPath);
+    if (fs.existsSync(path.join(air105CoreSourceTempPath, 'demo'))) {
+        const demoDistPath: string = getAir105DefaultDemoPath();
+        air105DemoHandle(path.join(air105CoreSourceTempPath, 'demo'), demoDistPath);
     }
     air105CoreHandle(air105CoreSourceTempPath);
     await deleteFolderRecursive(air105CoreSourceTempPath);
@@ -387,13 +389,13 @@ async function pullAir105Source(jsonObj:any,sourceBaseUrl:string) {
 *处理拉取到临时文件夹的air105固件 
 *@param coreSourcePath air105固件资源临时存储路径
 */
-function air105CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = getAir105DefaultCorePath();
+function air105CoreHandle(coreSourcePath: string) {
+    const air101CoreDistPath: string = getAir105DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         if (extname === '.soc') {
-            fs.copyFileSync(path.join(coreSourcePath,fileName),path.join(air101CoreDistPath,fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air101CoreDistPath, fileName));
         }
     });
 }
@@ -402,14 +404,14 @@ function air105CoreHandle(coreSourcePath:string) {
 *处理拉取到临时文件夹的air105 demo
 *@param coreSourcePath air105固件资源临时存储路径
 */
-function air105DemoHandle(sourceDir:string,distDir:string) {
+function air105DemoHandle(sourceDir: string, distDir: string) {
     const demoNameArray = fs.readdirSync(sourceDir);
     demoNameArray.forEach((demoName) => {
-        if (fs.existsSync(path.join(sourceDir,demoName,'Air105'))) {
-            copyDir(path.join(sourceDir,demoName,'Air105'),path.join(distDir,demoName));
+        if (fs.existsSync(path.join(sourceDir, demoName, 'Air105'))) {
+            copyDir(path.join(sourceDir, demoName, 'Air105'), path.join(distDir, demoName));
         }
-        else if (fs.existsSync(path.join(sourceDir,demoName,'main.lua'))) {
-            copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
+        else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
         }
     });
 }
@@ -419,14 +421,14 @@ function air105DemoHandle(sourceDir:string,distDir:string) {
 *@param sourceDir air103 DEMO临时存储路径
 *@param distDir air103 demo将要存储的路径
 */
-function air103DemoHandle(sourceDir:string,distDir:string) {
+function air103DemoHandle(sourceDir: string, distDir: string) {
     const demoNameArray = fs.readdirSync(sourceDir);
     demoNameArray.forEach((demoName) => {
-        if (fs.existsSync(path.join(sourceDir,demoName,'Air103'))) {
-            copyDir(path.join(sourceDir,demoName,'Air103'),path.join(distDir,demoName));
+        if (fs.existsSync(path.join(sourceDir, demoName, 'Air103'))) {
+            copyDir(path.join(sourceDir, demoName, 'Air103'), path.join(distDir, demoName));
         }
-        else if (fs.existsSync(path.join(sourceDir,demoName,'main.lua'))) {
-            copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
+        else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
         }
     });
 }
@@ -435,13 +437,13 @@ function air103DemoHandle(sourceDir:string,distDir:string) {
 *处理拉取到临时文件夹的air103 固件
 *@param coreSourcePath air103固件资源临时存储路径
 */
-function air103CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = getAir103DefaultCorePath();
+function air103CoreHandle(coreSourcePath: string) {
+    const air101CoreDistPath: string = getAir103DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         if (extname === '.soc') {
-            fs.copyFileSync(path.join(coreSourcePath,fileName),path.join(air101CoreDistPath,fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air101CoreDistPath, fileName));
         }
     });
 }
@@ -450,13 +452,13 @@ function air103CoreHandle(coreSourcePath:string) {
 *处理拉取到临时文件夹的air101 固件
 *@param coreSourcePath air101固件资源临时存储路径
 */
-function air101CoreHandle(coreSourcePath:string) {
-    const air101CoreDistPath:string = getAir101DefaultCorePath();
+function air101CoreHandle(coreSourcePath: string) {
+    const air101CoreDistPath: string = getAir101DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         if (extname === '.soc') {
-            fs.copyFileSync(path.join(coreSourcePath,fileName),path.join(air101CoreDistPath,fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air101CoreDistPath, fileName));
         }
     });
 }
@@ -466,14 +468,14 @@ function air101CoreHandle(coreSourcePath:string) {
 *@param sourceDir air101 DEMO临时存储路径
 *@param distDir air101 demo将要存储的路径
 */
-function air101DemoHandle(sourceDir:string,distDir:string) {
+function air101DemoHandle(sourceDir: string, distDir: string) {
     const demoNameArray = fs.readdirSync(sourceDir);
     demoNameArray.forEach((demoName) => {
-        if (fs.existsSync(path.join(sourceDir,demoName,'Air101'))) {
-            copyDir(path.join(sourceDir,demoName,'Air101'),path.join(distDir,demoName));
+        if (fs.existsSync(path.join(sourceDir, demoName, 'Air101'))) {
+            copyDir(path.join(sourceDir, demoName, 'Air101'), path.join(distDir, demoName));
         }
-        else if (fs.existsSync(path.join(sourceDir,demoName,'main.lua'))) {
-            copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
+        else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
         }
     });
 }
@@ -482,15 +484,15 @@ function air101DemoHandle(sourceDir:string,distDir:string) {
 *处理拉取到临时文件夹的air72XUX 固件
 *@param coreSourcePath air72XUX固件资源临时存储路径
 */
-function air72XUXCoreHandle(coreSourcePath:string) {
-    const air72XUXCoreDistPath:string = getAir72XUXDefaultCorePath();
+function air72XUXCoreHandle(coreSourcePath: string) {
+    const air72XUXCoreDistPath: string = getAir72XUXDefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     // console.log('=============3',files);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         // console.log('==========4',extname);
         if (extname === '.pac') {
-            fs.copyFileSync(path.join(coreSourcePath,fileName),path.join(air72XUXCoreDistPath,fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air72XUXCoreDistPath, fileName));
         }
     });
 }
@@ -500,19 +502,19 @@ function air72XUXCoreHandle(coreSourcePath:string) {
 *@param sourceDir air72XUX DEMO临时存储路径
 *@param distDir air72XUX demo将要存储的路径
 */
-function air72XUXDemoHandle(demoSourcePath:string,demoName:string) {
+function air72XUXDemoHandle(demoSourcePath: string, demoName: string) {
     const reg = /.*?(V[\d\.]+?)\.zip/ig;
-    let demoVersionArray:any = reg.exec(demoName);
-    if (demoVersionArray===null) {
+    let demoVersionArray: any = reg.exec(demoName);
+    if (demoVersionArray === null) {
         return;
     }
-    const demoVersion:string = demoVersionArray[1];
-    const air72XUXDemoPath:string = getAir72XUXDefaultDemoPath();
-    const demoDistPath:string = path.join(air72XUXDemoPath,demoVersion);
+    const demoVersion: string = demoVersionArray[1];
+    const air72XUXDemoPath: string = getAir72XUXDefaultDemoPath();
+    const demoDistPath: string = path.join(air72XUXDemoPath, demoVersion);
     if (!fs.existsSync(demoDistPath)) {
         fs.mkdirSync(demoDistPath);
     }
-    air72XUXDemoParse(demoSourcePath,demoDistPath);
+    air72XUXDemoParse(demoSourcePath, demoDistPath);
 }
 
 /*
@@ -520,12 +522,12 @@ function air72XUXDemoHandle(demoSourcePath:string,demoName:string) {
 *@param sourceDir air72XUX DEMO临时存储路径
 *@param distDir air72XUX demo将要存储的路径
 */
-function air72XUXDemoParse(sourceDir:string,distDir:string) {
+function air72XUXDemoParse(sourceDir: string, distDir: string) {
     const demoNameArray = fs.readdirSync(sourceDir);
     demoNameArray.forEach((demoName) => {
-        const demoMainLuaPath:string = path.join(sourceDir,demoName,'main.lua');
+        const demoMainLuaPath: string = path.join(sourceDir, demoName, 'main.lua');
         if (fs.existsSync(demoMainLuaPath)) {
-            copyDir(path.join(sourceDir,demoName),path.join(distDir,demoName));
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
         }
     });
 
@@ -536,19 +538,19 @@ function air72XUXDemoParse(sourceDir:string,distDir:string) {
 *@param sourceDir air72XUX LIB临时存储路径
 *@param distDir air72XUX LIB将要存储的路径
 */
-function air72XUXLibHandle(libSourcePath:string,libName:string) {
+function air72XUXLibHandle(libSourcePath: string, libName: string) {
     const reg = /.*?(V[\d\.]+?)\.zip/ig;
-    let libVersionArray:any = reg.exec(libName);
-    if (libVersionArray===null) {
+    let libVersionArray: any = reg.exec(libName);
+    if (libVersionArray === null) {
         return;
     }
-    const libVersion:string = libVersionArray[1];
-    const air72XUXLibPath:string = getAir72XUXDefaultLibPath();
-    if (!fs.existsSync(path.join(air72XUXLibPath,libVersion))) {
-        fs.mkdirSync(path.join(air72XUXLibPath,libVersion));
+    const libVersion: string = libVersionArray[1];
+    const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
+    if (!fs.existsSync(path.join(air72XUXLibPath, libVersion))) {
+        fs.mkdirSync(path.join(air72XUXLibPath, libVersion));
     }
-    const libDistPath:string = path.join(air72XUXLibPath,libVersion,'lib');
-    copyDir(libSourcePath,libDistPath);
+    const libDistPath: string = path.join(air72XUXLibPath, libVersion, 'lib');
+    copyDir(libSourcePath, libDistPath);
 }
 
 /*
@@ -558,39 +560,38 @@ export async function checkSourceUpdate() {
     const air72XUXSourceUpdateState = await checkAir72XUXScriptUpdate();
     console.log(air72XUXSourceUpdateState);
     if (air72XUXSourceUpdateState) {
-        const downloadReadyHint:string = '检测到air72XUX/air82XUX的DEMO及Lib文件有更新,是否更新？';
-        const downloadingHint:string = '正在为您拉取最新air72XUX/air82XUX的DEMO及Lib文件,请耐心等待';
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXScript);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        const downloadReadyHint: string = '检测到air72XUX/air82XUX的DEMO及Lib文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air72XUX/air82XUX的DEMO及Lib文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir72XUXScript);
     }
     const air72XUXCoreUpdateState = await checkAir72XUXCoreUpdate();
     console.log(air72XUXCoreUpdateState);
     if (air72XUXCoreUpdateState) {
-        const downloadReadyHint:string = '检测到air72XUX/air82XUX固件有更新,是否更新？';
-        const downloadingHint:string = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir72XUXCore);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        const downloadReadyHint: string = '检测到air72XUX/air82XUX固件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir72XUXCore);
     }
     const air101SourceState = await checkAir101SourceUpdate();
     console.log(air101SourceState);
     if (air101SourceState) {
-        const downloadReadyHint:string = '检测到air101资源文件有更新,是否更新？';
-        const downloadingHint:string = '正在为您拉取最新air101资源文件,请耐心等待';
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir101Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        const downloadReadyHint: string = '检测到air101资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air101资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir101Source);
 
     }
     const air103SourceState = await checkAir103SourceUpdate();
     console.log(air103SourceState);
     if (air103SourceState) {
-        const downloadReadyHint:string = '检测到air103的资源文件有更新,是否更新？';
-        const downloadingHint:string = '正在为您拉取最新air103资源文件,请耐心等待';
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir103Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-
+        const downloadReadyHint: string = '检测到air103的资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air103资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir103Source);
     }
     const air105SourceState = await checkAir105SourceUpdate();
     console.log(air105SourceState);
     if (air105SourceState) {
-        const downloadReadyHint:string = '检测到air105的资源文件有更新,是否更新？';
-        const downloadingHint:string = '正在为您拉取最新air105资源文件,请耐心等待';
-        updateHintForUser(downloadReadyHint,downloadingHint,pullAir105Source);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        const downloadReadyHint: string = '检测到air105的资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air105资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir105Source);
     }
 }
 // checkSourceUpdate();
