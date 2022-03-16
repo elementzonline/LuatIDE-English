@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 // import { LuatideProvider } from './project/projectView';
 // import {OperationExplorer} from './project/toolshub';
 import { PluginConfigInit} from './config';
-import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete } from './project/ProjectHandle';
+import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete, exportProducFile} from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
 // import { ProjectManage } from './webview/projectWebview';
 import { HistoryProjectDataProvider, HistoryProjectTreeItem } from './project/projectTreeView';
@@ -139,6 +139,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => activityProjectTreeDataProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
+
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.exportProducFile',async () => exportProducFile()));
+
 	// 注册快速上手命令，点击后打开doc使用说明文档
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
