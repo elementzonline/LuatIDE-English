@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-17 10:59:56
+ * @LastEditTime: 2022-03-17 11:01:17
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -119,3 +119,21 @@ export async function close() {
 
 
 
+export async function sendData(type: cmdType, cmd: string, param: string) {
+    if (gSocketHandle === null) {
+        console.log("设备链接未就绪,无法输出控制命令");
+        return;
+    }
+    let serverCmd: { state: string, command: { cmdstyle: string, param: string } } = { state: type, command: { cmdstyle: cmd, param: param } };
+    console.log(TAG, "serverCmd:", serverCmd);
+    const cmdStr = JSON.stringify(serverCmd)+'\r\n';
+    try {
+        gSocketHandle.write(cmdStr, (err: any) => {
+            if (err) {
+                console.log(TAG, "sendData:", err);
+            }
+        });
+    }
+    catch (e) { console.log(TAG, "write:", e); }
+    return true;
+}
