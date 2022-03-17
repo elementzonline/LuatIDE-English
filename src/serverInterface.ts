@@ -85,8 +85,18 @@ export async function open(mockhand:any) {
     // 连接中端客户端
     if (await serverConnect() === false) { return false; }
 
+    gSocketHandle?.on('close', () => {
 
+        console.log(TAG, ">> client connection closed\n");
+        gSocketHandle?.destroy();
+        gSocketHandle = null;
+    });
+    gSocketHandle?.on('end', () => {
 
+        console.log(TAG, '>> client connection end\n');
+        gSocketHandle?.destroy();
+        gSocketHandle = null;
+    });
 }
 
 
