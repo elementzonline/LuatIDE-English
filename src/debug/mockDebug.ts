@@ -740,34 +740,6 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 
 		}
-		// kill活动终端
-		vscode.commands.executeCommand("workbench.action.terminal.kill");
-
-		// 打开调试模式显示到用户工作台
-		const path_exe_new = path.join(__dirname, "../..", "luatide_server", "build", "ide_service", "ide_service.exe");
-		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-		console.log(path_exe_new);
-
-		const isCmd = /cmd.exe$/i.test(vscode.env.shell);
-		const invokePrefix = isCmd ? '' : '& ';
-		const cmdPrefixSuffix = isCmd ? '"' : '';
-		let commandLine = invokePrefix + "'" + path_exe_new + "'";
-		/*+\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
-		const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE Debug", 'Service');
-		/*-\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
-		task.execution = new vscode.ShellExecution(cmdPrefixSuffix + commandLine + cmdPrefixSuffix);
-		/*+\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-		task.isBackground = false; //true 隐藏日志
-		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-
-		task.presentationOptions = {
-			echo: false,
-			focus: false,
-			clear: true,
-			showReuseMessage: true
-		};
-
-		vscode.tasks.executeTask(task);
 		
 
 		// 写入lua运行日志到用户工程下的log文件夹
