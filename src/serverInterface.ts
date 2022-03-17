@@ -88,6 +88,11 @@ async function serverConnect() {
 }
 
 export async function open(mockhand:any) {
+    if(gSocketHandle !== null)
+    {
+        console.log(TAG, "server runing! Duplicate open is not allowed");
+        return false;
+    }
     // 启动中端服务
     serverStart();
     // 连接中端客户端
@@ -95,13 +100,13 @@ export async function open(mockhand:any) {
 
     gSocketHandle?.on('close', () => {
 
-        console.log(TAG, ">> client connection closed\n");
+        console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
     gSocketHandle?.on('end', () => {
 
-        console.log(TAG, '>> client connection end\n');
+        console.log(TAG, '>> client connection end');
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
