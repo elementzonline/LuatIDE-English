@@ -9,6 +9,7 @@
 
 import * as vscode from "vscode";
 import * as path from "path";
+import * as net from 'net';
 
 import * as util from 'util';
 const sleep = util.promisify(setTimeout);
@@ -40,13 +41,53 @@ function serverStart() {
     vscode.tasks.executeTask(task);
 }
 
+async function socketConnect() {
+    let socketstat: number = 0;
+    const socket = net.connect(21331, '127.0.0.1', () => {
+        socketstat = 1;
+        console.log(TAG, "socketConnect ok socketstat", socketstat);
+    });
+    socket.on('error', function (err) {
+        socket.destroy();
+        socketstat = -1;
+        console.log(TAG, "socketConnect err", err);
+    });
+    for (var i = 0; i < 20; i++) {
+        await sleep(100);
+        if (socketstat === 1) {
+            return socket;
+        }
+        else if (socketstat === -1) {
+            return null;
+        }
+    }
+    return null;
+}
+
+
+async function serverConnect() {
+
+    for (var i = 0; i < 50; i++) {
+        gSocketHandle = await socketConnect();
+        // console.log(TAG, "socket", socketHandle);
+        if (gSocketHandle !== null) { return true; }
+        console.log(TAG, "socketConnect flase,trying");
+        await sleep(100);
+    }
+    console.log(TAG, "socket too many retries,over");
+    // vscode.debug.stopDebugging();
+    return false;
+}
 
 export async function open(mockhand:any) {
     // 启动中端服务
     serverStart();
+    // 连接中端客户端
+    if (await serverConnect() === false) { return false; }
+
+
+
 }
-
-
 
 
 
