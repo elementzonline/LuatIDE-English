@@ -97,6 +97,11 @@ export async function open(mockhand:any) {
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
+    gSocketHandle?.on('data', (data: Buffer) => {
+        mockhand.serverRecvCb(data);
+    });
+
+    return true;
 }
 
 
