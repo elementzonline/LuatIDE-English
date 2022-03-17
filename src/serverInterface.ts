@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-17 11:01:17
+ * @LastEditTime: 2022-03-17 15:09:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -76,32 +76,37 @@ async function socketConnect() {
 async function serverConnect() {
 
     for (var i = 0; i < 50; i++) {
-        gSocketHandle = await socketConnect();
+        let sockethand:net.Socket | null = await socketConnect();
         // console.log(TAG, "socket", socketHandle);
-        if (gSocketHandle !== null) { return true; }
+        if (sockethand !== null) { return sockethand; }
         console.log(TAG, "socketConnect flase,trying");
         await sleep(100);
     }
     console.log(TAG, "socket too many retries,over");
     // vscode.debug.stopDebugging();
-    return false;
+    return null;
 }
 
 export async function open(mockhand:any) {
+    if(gSocketHandle !== null)
+    {
+        console.log(TAG, "server runing! Duplicate open is not allowed");
+        return false;
+    }
     // 启动中端服务
     serverStart();
     // 连接中端客户端
-    if (await serverConnect() === false) { return false; }
+    if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
     gSocketHandle?.on('close', () => {
 
-        console.log(TAG, ">> client connection closed\n");
+        console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
     gSocketHandle?.on('end', () => {
 
-        console.log(TAG, '>> client connection end\n');
+        console.log(TAG, '>> client connection end');
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
@@ -114,6 +119,7 @@ export async function open(mockhand:any) {
 
 export async function close() {
     gSocketHandle?.destroy();
+    vscode.commands.executeCommand("workbench.action.terminal.kill");
     return true;
 }
 

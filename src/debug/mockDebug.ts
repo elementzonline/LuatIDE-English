@@ -26,6 +26,8 @@ import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigT
 // import { getAirSimulatorSkinConfigPath } from '../variableInterface';
 
 
+const TAG = "[LuatIDE] " + path.basename(__filename) + "";
+
 // 获取当前时间戳，并解析后格式化输出
 function formatConsoleDate(date: any) {
 	var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
@@ -211,18 +213,18 @@ export class MockDebugSession extends LoggingDebugSession {
 			const isDir = stats.isDirectory(); // 是否为文件夹
 			if (isFile) {
 				if (userSourceListTmp[i].lastIndexOf('.lua') !== -1) {
-					console.log(filePath);
+					console.log(TAG,filePath);
 					this.userSourceList.push(userSourceListTmp[i]);
 					this.userSourceListPath.push(path.join(filePath, userSourceListTmp[i]));
-					console.log("当前文件：", userSourceListTmp[i]);
+					console.log(TAG,"当前文件：", userSourceListTmp[i]);
 				}
 			} else if (isDir) {
 				this.fileDisplay(filepath); // 递归，如果是文件夹，就继续遍历该文件夹里面的文件	
-				console.log(userSourceListTmp);
+				console.log(TAG,userSourceListTmp);
 
 			}
 		};
-		console.log("处理后：", this.userSourceList);
+		console.log(TAG,"处理后：", this.userSourceList);
 		return this.userSourceList;
 	}
 	// /*-\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
@@ -273,7 +275,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 
 			if (currentconfigSourceFileList.indexOf(sourceName) !== -1) {
-				console.log("当前", currentconfigSourceFileList);
+				console.log(TAG,"当前", currentconfigSourceFileList);
 				for (let i = 0; i < currentconfigSourceFileList.length; i++) {
 					const projectFile = path.basename(configSourceFilepathList[i]);
 					if (projectFile === sourceName) {
@@ -322,7 +324,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 补丁：过滤模块上报空json文件干扰
 		else if (index !== 5) {
 			this.dbgVarsArray.push(exts);
-			// console.log("dbg_vars");
+			// console.log(TAG,"dbg_vars");
 		}
 	}
 	public dbg_resp_gvars(heads: any, exts: String) {
@@ -339,7 +341,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//变量全部打印完毕了
-			console.log("当前的exts是", exts);
+			console.log(TAG,"当前的exts是", exts);
 			this._watchvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
@@ -377,8 +379,8 @@ export class MockDebugSession extends LoggingDebugSession {
 				this.varsData += msg;
 				this.varsDataRecvLen += msg.length;
 			}
-			console.log("varsDataRecvLen:", this.varsDataRecvLen);
-			console.log("varsDataLen:", this.varsDataLen);
+			console.log(TAG,"varsDataRecvLen:", this.varsDataRecvLen);
+			console.log(TAG,"varsDataLen:", this.varsDataLen);
 			if (this.varsDataRecvLen === this.varsDataLen) {
 				this.dbg_dispatcher(this.varsHands, this.varsData.toString());
 				this.varsDataRecvStartFlag = false;
@@ -398,7 +400,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 判断队列是否有元素
 		if (this.timer1 === undefined) {
 			if (!queue.isEmpty()) {
-				console.log("当前的dataReceiveFlag：", this.dataReceiveFlag);
+				console.log(TAG,"当前的dataReceiveFlag：", this.dataReceiveFlag);
 				this.timer1 = setInterval(this.commandprint1, 5, this);
 			}
 
@@ -418,15 +420,15 @@ export class MockDebugSession extends LoggingDebugSession {
 				arg.timer1 = undefined;
 				return;
 			}
-			console.log("当前队列第一条数据", queue.front()[0]);
+			console.log(TAG,"当前队列第一条数据", queue.front()[0]);
 			// 接收消息队列出队数据
 			const requestDataArr: string[] = queue.front();
 			const requestData = requestDataArr[0];
 			arg.requestMessage = requestDataArr[1];
-			console.log("当前出队数据：", requestData);
+			console.log(TAG,"当前出队数据：", requestData);
 			// arg.dbg_write_cmd(requestData);
 			ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg " + requestData);
-			console.log("队列发送数据成功", requestData);
+			console.log(TAG,"队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
 	}
@@ -452,12 +454,12 @@ export class MockDebugSession extends LoggingDebugSession {
 				if (offset > - 1) {
 					msglen = offset + 1;
 					msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
-					console.log(msg, "数据接收成功:", msg);
+					console.log(TAG,"serverRecvCb", msg);
 
 					if (!queue.isEmpty()) {
 						if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
 							this.dataReceiveFlag = 1;
-							console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
+							console.log(TAG,"当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
 							// // at交互数据发送到console终端
 							// if(msg.indexOf(queue.front()[0])!==-1){
 							// 	vscode.debug.activeDebugConsole.appendLine(msg);
@@ -539,17 +541,17 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
-		
+
 		this.activeWorkspace = getPluginConfigActivityProject();		
 		// 如果是NDK工程，就需要先去编译
 		if(getProjectConfigType(this.activeWorkspace)==="ndk")
 		{
-			console.log("this is ndk project!!!");
+			console.log(TAG,"this is ndk project!!!");
 			let result = await ndkProject.build(this.activeWorkspace);
 			if(result===false)
 			{
 				// 编译失败
-				console.log("NDK compilation failed");
+				console.log(TAG,"NDK compilation failed");
 				// 强行终止调试器
 				vscode.debug.stopDebugging();
 				return;
@@ -557,7 +559,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			else
 			{
 				// 编译成功，继续执行
-				console.log("The NDK was compiled successfully");
+				console.log(TAG,"The NDK was compiled successfully");
 			}
 
 		}
@@ -585,12 +587,8 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket === null)
-			{
-				return;
-			}
 			if (this.download_state === 0) {
-				console.log("等待download_state");
+				console.log(TAG,"等待download_state");
 				await this.download_success.wait(300);
 			} else {
 				break;
@@ -599,15 +597,11 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket === null)
-			{
-				return;
-			}
 			if (this.dbg_state === 1) {
-				console.log("waiting for debugger ok");
+				console.log(TAG,"waiting for debugger ok");
 				break;
 			} else {
-				console.log("等待waiting for debugger");
+				console.log(TAG,"等待waiting for debugger");
 				await this.sleep(300);
 			}
 		}
@@ -652,7 +646,7 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		this.current_messagearr = ["start", "D/dbg [state,changed,"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg start入队成功");
+		console.log(TAG,"dbg start入队成功");
 		this.messageRequestManage();
 
 		this.sendResponse(response);
@@ -674,7 +668,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			let temp_flag = false;
 			for (let i = 0; i < project_filelist_temp.length; i++) {
 				const element = project_filelist_temp[i];
-				// console.log("===============",element,path,element.indexOf(path));
+				// console.log(TAG,"===============",element,path,element.indexOf(path));
 				// 排除字符串大小写问题干扰，统一处理
 				if (element.toLocaleLowerCase().indexOf(path.toLocaleLowerCase()) !== -1) {
 					temp_flag = true;
@@ -695,7 +689,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			// this.first_messageflag  = true;
 			queue.enqueue(this.current_messagearr);
 			this.messageRequestManage();
-			console.log("break clr 入队成功");
+			console.log(TAG,"break clr 入队成功");
 
 			var srcname = args.source.name;
 			this.sourceMaping.set(srcname, args.source.path);
@@ -708,13 +702,13 @@ export class MockDebugSession extends LoggingDebugSession {
 						if (args.source.name.indexOf("main.lua") !== -1) {
 							this.current_messagearr = ["break add " + args.source.name + " " + (Number(point.line) + 1).toString(), `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line) + 1}`];
 							queue.enqueue(this.current_messagearr);
-							console.log("dbg add 入队成功", point.line + 1);
+							console.log(TAG,"dbg add 入队成功", point.line + 1);
 							this.messageRequestManage();
 						}
 						else {
 							this.current_messagearr = ["break add " + args.source.name + " " + point.line, `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line)}`];
 							queue.enqueue(this.current_messagearr);
-							console.log("dbg add 入队成功", point.line);
+							console.log(TAG,"dbg add 入队成功", point.line);
 							this.messageRequestManage();
 						}
 					}
@@ -740,19 +734,19 @@ export class MockDebugSession extends LoggingDebugSession {
 		ideServer.sendData(ideServer.cmdType.dbg,"dbg","dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		ideServer.sendData(ideServer.cmdType.server,"servicekill","");
+		ideServer.close();
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
 		this.timer1 = undefined;
 		clearInterval(this.timer1);
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
-		let child_process = require('child_process');
+		let childProcess = require('child_process');
 		// child_process.exec('taskkill -f -im ide_service.exe');
 		if (getProjectConfigModuleModel(this.activeWorkspace) === "simulator") {
-			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
-			child_process.exec('taskkill -f -im lcd_plugin.exe');
+			childProcess.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
+			childProcess.exec('taskkill -f -im lcd_plugin.exe');
 		}
-		console.log("执行了断开连接的请求");
-		this._socket = null;
+		console.log(TAG,"执行了断开连接的请求");
 		/*-\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		this.sendResponse(response);
 
@@ -787,12 +781,12 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*-\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
 		this.current_messagearr = ["bt", "D/dbg [resp,stack,1,-1]"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg bt入队成功");
+		console.log(TAG,"dbg bt入队成功");
 		this.messageRequestManage();
 		// 断点显示的不能删
-		console.log("before bt wait");
+		console.log(TAG,"before bt wait");
 		await this._stackDone.wait(5000);
-		console.log("after bt wait");
+		console.log(TAG,"after bt wait");
 
 		response.body = {
 			stackFrames: this.dbg_stack,
@@ -827,24 +821,24 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		const id = this._variableHandles.get(args.variablesReference);
 		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端开发全局变量的显示的功能*/
-		console.log("variables  id= ", id);
+		console.log(TAG,"variables  id= ", id);
 		if (id === 'local' || id === 'global') {
 			if (id === 'local') {
 				this.current_messagearr = ["vars", "D/dbg [resp,vars,0]"];
 				queue.enqueue(this.current_messagearr);
-				// console.log("dbg vars 入队");
+				// console.log(TAG,"dbg vars 入队");
 				this.messageRequestManage();
 				await this._varsDone.wait(500);//接收到变量接收完成通知
 				let exts: string = "";
 				// this.localvarsArray = [];
 				while (1) {
 					exts = this.dbgVarsArray.shift();
-					//console.log("variables 出栈",exts);
+					//console.log(TAG,"variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
 					}
 
-					//console.log("exts:",exts);
+					//console.log(TAG,"exts:",exts);
 					var items = JSON.parse(exts);
 
 
@@ -881,18 +875,18 @@ export class MockDebugSession extends LoggingDebugSession {
 			else if (id === 'global') {
 				this.current_messagearr = ["gvars", "D/dbg [resp,gvars,0]"];
 				queue.enqueue(this.current_messagearr);
-				// console.log("dbg gvars 入队");
+				// console.log(TAG,"dbg gvars 入队");
 				this.messageRequestManage();
 				await this._gvarsDone.wait(500);//接收到全局变量接收完成通知
 				let exts: string = "";
 				while (1) {
 					exts = this.dbgGvarsArray.shift();
-					//console.log("variables 出栈2",exts);
+					//console.log(TAG,"variables 出栈2",exts);
 					if (typeof exts === "undefined") {
 						break;
 					}
 
-					//console.log("exts:",exts);
+					//console.log(TAG,"exts:",exts);
 					var items = JSON.parse(exts);
 
 
@@ -933,7 +927,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		else if (id !== undefined) {
 			if (id.indexOf(`{"Tables":[{"type":`) === 0) {
-				// console.log("==++++++",id,typeof(id));
+				// console.log(TAG,"==++++++",id,typeof(id));
 				var tables = JSON.parse(id)["Tables"];
 				for (var i = 0; i < tables.length; i++) {
 					var items: any = tables[i];
@@ -979,13 +973,13 @@ export class MockDebugSession extends LoggingDebugSession {
 				// let jvars_data_lastflag = jvars_data_arraytmp.pop();
 				this.current_messagearr = ["jvars " + jvars_data, "D/dbg [resp,jvars,0]"];
 				queue.enqueue(this.current_messagearr);
-				// console.log("dbg vars 入队");
+				// console.log(TAG,"dbg vars 入队");
 				this.messageRequestManage();
 				await this._watchvarsDone.wait(500);//接收到变量接收完成通知
 				let exts: string = "";
 				while (1) {
 					exts = this.dbgJvarsArray.shift();
-					//console.log("variables 出栈",exts);
+					//console.log(TAG,"variables 出栈",exts);
 					if (typeof exts === "undefined") {
 						break;
 					}
@@ -1044,7 +1038,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments) {
 		this.current_messagearr = ["continue", "D/dbg [state,changed,3,2]"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg continue 入队");
+		console.log(TAG,"dbg continue 入队");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1057,7 +1051,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments) {
 		this.current_messagearr = ["next", "D/dbg [state,changed,4,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg next 入队成功");
+		console.log(TAG,"dbg next 入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1068,7 +1062,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments) {
 		this.current_messagearr = ["stepIn", "D/dbg [state,changed,5,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg stepin入队成功");
+		console.log(TAG,"dbg stepin入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1080,7 +1074,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stepOutRequest(response: DebugProtocol.StepOutResponse, args: DebugProtocol.StepOutArguments) {
 		this.current_messagearr = ["stepOut", "D/dbg [state,changed,6,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log("dbg stepout 入队成功");
+		console.log(TAG,"dbg stepout 入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
