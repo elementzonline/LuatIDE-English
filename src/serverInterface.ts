@@ -16,6 +16,11 @@ const sleep = util.promisify(setTimeout);
 
 const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
+export enum cmdType {
+    server = "0",
+    dbg = "1",
+    at = "2"
+}
 function serverStart() {
     // kill活动终端
     vscode.commands.executeCommand("workbench.action.terminal.kill");
