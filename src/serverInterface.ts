@@ -121,7 +121,7 @@ export async function close() {
 
 export async function sendData(type: cmdType, cmd: string, param: string) {
     if (gSocketHandle === null) {
-        console.log("设备链接未就绪,无法输出控制命令");
+        console.log(TAG, "设备链接未就绪,无法输出控制命令");
         return;
     }
     let serverCmd: { state: string, command: { cmdstyle: string, param: string } } = { state: type, command: { cmdstyle: cmd, param: param } };
