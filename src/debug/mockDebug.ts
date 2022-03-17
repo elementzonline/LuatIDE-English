@@ -431,7 +431,8 @@ export class MockDebugSession extends LoggingDebugSession {
 			const requestData = requestDataArr[0];
 			arg.requestMessage = requestDataArr[1];
 			console.log("当前出队数据：", requestData);
-			arg.dbg_write_cmd(requestData);
+			// arg.dbg_write_cmd(requestData);
+			ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg " + requestData);
 			console.log("队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
@@ -529,135 +530,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		return false;
 	}
 
-	//原有命令写入python服务器逻辑，有修改
-	public dbg_write_cmd(data: String) {
-		console.log(data);
-		for (var i = 0; i < 100; i++) {
-			if (this._socket !== null) {
-				break;
-			}
-			this._socketReady.wait(1000);
-		}
-		if (this._socket === null) {
-			console.log("设备链接未就绪,无法输出控制命令");
-			return;
-		}
 
-		//功能兼容改写,增加了发送给vscode数据的多样化情况适配。
-		var line_temp = {
-			"state": "1",
-			"command": "",
-			"extension_temp": "this is a extension"
-		};
-
-
-		let dataCommand: any;
-		let dataState: string;
-		if (data.indexOf("Po/Rt") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(5,);
-			dataCommand = { "cmdstyle": "openport", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		else if (data.indexOf("LuatIDE_Down/LoAd") !== -1) {
-			dataState = "0";
-			dataCommand = { "cmdstyle": "download" };
-		}
-		else if (data.indexOf("work_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "work_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("plug_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "plug_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("ulib_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "ulib_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("upac_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "upac_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		/*+\NEW\czm\2021.07.02\支持多模块，通过模块型号指定选择端口号名称使其兼容1603模块端口​*/
-		else if (data.indexOf("module_model") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(13,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "module_model", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		/*-\NEW\czm\2021.07.02\支持多模块，通过模块型号指定选择端口号名称使其兼容1603模块端口​*/
-		else if (data.indexOf("Close/Port") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(10,);
-			dataCommand = { "cmdstyle": "closeport", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		else if (data.indexOf("service/kill") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(10,);
-			dataCommand = { "cmdstyle": "servicekill" };
-		}
-		/*+\NEW\czm\2021.05.9\添加调试控制台>输入框发送at的功能*/
-		else if (data.indexOf("modem/sendat") !== -1) {
-			dataState = "2";
-			var dataTemp = data.substring(13,);
-			dataCommand = { "cmdstyle": "sendat", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		else if (data.indexOf("watch/jvars") !== -1) {
-			dataState = "2";
-			var dataTemp = data.substring(12,);
-			dataCommand = { "cmdstyle": "watch/jvars", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		/*-\NEW\czm\2021.05.9\添加调试控制台>输入框发送at的功能*/
-
-		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		else {
-			dataState = "1";
-			var dataTemp = "dbg " + data;
-			dataCommand = { "cmdstyle": "dbg", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		line_temp.state = dataState;
-		line_temp.command = dataCommand;
-		// \r\n用来解析的，不可去掉
-		const line = JSON.stringify(line_temp) + "\r\n";
-
-		try {
-			this._socket.write(line, (err: any) => {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}
-		catch (e) { }
-	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
@@ -886,9 +759,9 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 清除队列
 		queue.clear();
 		// 怀疑是bug，修改后：
-		this.dbg_write_cmd("disconnect " + args.restart);
+		ideServer.sendData(ideServer.cmdType.dbg,"dbg","dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		this.dbg_write_cmd("service/kill");
+		ideServer.sendData(ideServer.cmdType.server,"servicekill","");
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
 		this.timer1 = undefined;
@@ -1254,7 +1127,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		//调试控制台输入请求
 		switch (args.context) {
 			case 'repl':
-				this.dbg_write_cmd("modem/sendat " + args.expression);
+				ideServer.sendData(ideServer.cmdType.at,"sendat",args.expression);
 				this.sendResponse(response);
 			default:
 				while (true) {
