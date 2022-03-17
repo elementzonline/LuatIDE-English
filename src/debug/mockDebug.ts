@@ -11,15 +11,11 @@ import {
 import { DebugProtocol } from 'vscode-debugprotocol';
 // import { FileAccessor } from './mockRuntime';
 const { Subject } = require('await-notify');
-import * as Net from 'net';
+import * as ideServer from '../serverInterface';
 /*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path'; // 导入fs库和path库
-
-
-// import { PluginJsonParse } from '../plugConfigParse';
-// import { ProjectJsonParse } from "../project/projectConfigParse";
 
 
 import * as ndkProject from "../ndk/ndkProject";
@@ -96,17 +92,14 @@ export class MockDebugSession extends LoggingDebugSession {
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
-	private _socketReady = new Subject();
-	// private _socket_connect_ok = new Subject();
+
 	private dbgInputBuffer = Buffer.from("");
 
 	private btLock = true;
 	private btLockDone = new Subject();
 
 	private download_success = new Subject();
-	protected _socket: any = null;
 
-	private timesleep = new Subject();
 
 	protected dbg_state: Number = 0;
 	protected download_state: Number = 0;
@@ -439,6 +432,8 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
+	
+
 	public serverRecvCb(data: Buffer){
 
 			if (this.dbgInputBuffer.length > 0) {
