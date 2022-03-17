@@ -531,6 +531,15 @@ export class MockDebugSession extends LoggingDebugSession {
 	 * to interrogate the features the debug adapter provides.
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
+
+		// 清空历史输出的数据
+		_outputChannel.clear();
+		// 设置输出展示，默认值为false，不会显示焦点
+		_outputChannel.show(false);
+		// 每次调试前清空队列数据
+		queue.clear();
+		this.fullvarsArray = [];
+		
 		this.activeWorkspace = getPluginConfigActivityProject();		
 		// 如果是NDK工程，就需要先去编译
 		if(getProjectConfigType(this.activeWorkspace)==="ndk")
@@ -567,15 +576,6 @@ export class MockDebugSession extends LoggingDebugSession {
 			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'));
 		}
 		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
-		// execFile(path_exe_new);
-		// 清空历史输出的数据
-		_outputChannel.clear();
-		// 设置输出展示，默认值为false，不会显示焦点
-		_outputChannel.show(false);
-		// 每次调试前清空队列数据
-		queue.clear();
-		this.fullvarsArray = [];
-
 
 		if (await this.downloadStart() === false) {
 			// 强行终止调试器
