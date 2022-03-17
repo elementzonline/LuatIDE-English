@@ -507,31 +507,26 @@ export class MockDebugSession extends LoggingDebugSession {
 			setTimeout(res, time);
 		});
 	}
-	public async downpath_send() {
+	public async downloadStart() {
 		this.download_state = 0;
 		// 获取用户工作区路径
 		if (vscode.workspace) {
 			// 用户当前点击文件获取。
-			/*+\NEW\zhw\2021.05.25\用户工作空间路径从插件配置文件里读取*/
-			const user_path_data = "work_path " + this.activeWorkspace;
-			this.dbg_write_cmd(user_path_data);
+			ideServer.sendData(ideServer.cmdType.server,"work_path",this.activeWorkspace);
 			await this.sleep(100);
-
 			// 插件所在路径获取
-			const plug_path: string = path.join(__dirname, "../..");
-			const plug_path_data: any = "plug_path " + plug_path;
-			this.dbg_write_cmd(plug_path_data);
+			const plugPath: string = path.join(__dirname, "../..");
+			ideServer.sendData(ideServer.cmdType.server,"plug_path",plugPath);
 			await this.sleep(100);
-
-
-			const module_model = getProjectConfigModuleModel(this.activeWorkspace);
+			const moduleModel = getProjectConfigModuleModel(this.activeWorkspace);
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
-			if (module_model === undefined) {
+			if (moduleModel === undefined) {
 				setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
 			}
-			this.dbg_write_cmd("LuatIDE_Down/LoAd");
+			ideServer.sendData(ideServer.cmdType.server,"download","");
 			return true;
 		}
+		return false;
 	}
 
 	//原有命令写入python服务器逻辑，有修改
@@ -723,8 +718,9 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
-		const flag: any = await this.downpath_send();
-		if (flag === false) {
+
+
+		if (await this.downloadStart() === false) {
 			// 强行终止调试器
 			vscode.debug.stopDebugging();
 			return;
