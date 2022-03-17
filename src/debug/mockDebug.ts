@@ -678,29 +678,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		catch (e) { }
 	}
-	protected async socketConnect(){
-		let socketstat : number = 0;
-		const socket = Net.connect(21331, '127.0.0.1', () => {
-			// this._socket_connect_ok.notify();
-			socketstat = 1;
-			console.log("socketConnect ok socketstat",socketstat);
-		});
-		socket.on('error', function (err) {
-			socket.destroy();
-			socketstat = -1;
-			console.log("socketConnect err",err);
-		});
-		for (var i = 0; i < 20; i++) {
-			await this.timesleep.wait(100);
-			if (socketstat === 1) {
-				return socket;
-			}
-			else if (socketstat === -1){
-				return null;
-			}
-		}
-		return null;
-	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
