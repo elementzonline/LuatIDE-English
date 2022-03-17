@@ -539,7 +539,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
-		
+
 		this.activeWorkspace = getPluginConfigActivityProject();		
 		// 如果是NDK工程，就需要先去编译
 		if(getProjectConfigType(this.activeWorkspace)==="ndk")
@@ -585,10 +585,6 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket === null)
-			{
-				return;
-			}
 			if (this.download_state === 0) {
 				console.log("等待download_state");
 				await this.download_success.wait(300);
@@ -599,10 +595,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 		
 		for (var i = 0; i < 120 * 3; i++) {
-			if(this._socket === null)
-			{
-				return;
-			}
 			if (this.dbg_state === 1) {
 				console.log("waiting for debugger ok");
 				break;
@@ -740,19 +732,19 @@ export class MockDebugSession extends LoggingDebugSession {
 		ideServer.sendData(ideServer.cmdType.dbg,"dbg","dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		ideServer.sendData(ideServer.cmdType.server,"servicekill","");
+		ideServer.close();
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
 		this.timer1 = undefined;
 		clearInterval(this.timer1);
 		/*+\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
-		let child_process = require('child_process');
+		let childProcess = require('child_process');
 		// child_process.exec('taskkill -f -im ide_service.exe');
 		if (getProjectConfigModuleModel(this.activeWorkspace) === "simulator") {
-			child_process.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
-			child_process.exec('taskkill -f -im lcd_plugin.exe');
+			childProcess.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
+			childProcess.exec('taskkill -f -im lcd_plugin.exe');
 		}
 		console.log("执行了断开连接的请求");
-		this._socket = null;
 		/*-\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		this.sendResponse(response);
 
