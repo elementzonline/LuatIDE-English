@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-17 11:01:17
+ * @LastEditTime: 2022-03-17 15:09:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -119,6 +119,7 @@ export async function open(mockhand:any) {
 
 export async function close() {
     gSocketHandle?.destroy();
+    vscode.commands.executeCommand("workbench.action.terminal.kill");
     return true;
 }
 
