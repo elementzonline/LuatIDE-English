@@ -536,19 +536,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	 * to interrogate the features the debug adapter provides.
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
-
-		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
-		while(this._socket !== null)
-		{
-			console.log("wait socket reset");
-			await this.sleep(500);
-		}
-		console.log("initializeRequest",this._socket);
-		// require('child_process').exec('taskkill -f -im ide_service.exe');
-		// kill活动终端
-		vscode.commands.executeCommand("workbench.action.terminal.kill");
-		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
-
 		this.activeWorkspace = getPluginConfigActivityProject();		
 		// 如果是NDK工程，就需要先去编译
 		if(getProjectConfigType(this.activeWorkspace)==="ndk")
