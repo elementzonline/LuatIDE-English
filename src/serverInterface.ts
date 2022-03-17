@@ -104,6 +104,10 @@ export async function open(mockhand:any) {
     return true;
 }
 
+export async function close() {
+    gSocketHandle?.destroy();
+    return true;
+}
 
 
 
