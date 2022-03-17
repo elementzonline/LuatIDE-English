@@ -76,22 +76,22 @@ async function socketConnect() {
 async function serverConnect() {
 
     for (var i = 0; i < 50; i++) {
-        gSocketHandle = await socketConnect();
+        let sockethand:net.Socket | null = await socketConnect();
         // console.log(TAG, "socket", socketHandle);
-        if (gSocketHandle !== null) { return true; }
+        if (sockethand !== null) { return sockethand; }
         console.log(TAG, "socketConnect flase,trying");
         await sleep(100);
     }
     console.log(TAG, "socket too many retries,over");
     // vscode.debug.stopDebugging();
-    return false;
+    return null;
 }
 
 export async function open(mockhand:any) {
     // 启动中端服务
     serverStart();
     // 连接中端客户端
-    if (await serverConnect() === false) { return false; }
+    if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
     gSocketHandle?.on('close', () => {
 
