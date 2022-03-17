@@ -436,66 +436,66 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	public serverRecvCb(data: Buffer){
 
-			if (this.dbgInputBuffer.length > 0) {
-				this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
-			}
-			else {
-				this.dbgInputBuffer = data;
-			}
+		if (this.dbgInputBuffer.length > 0) {
+			this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
+		}
+		else {
+			this.dbgInputBuffer = data;
+		}
 
-			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-			while (true) {
-				let msg: any;
-				let msglen: number = 0;
-				if (this.varsDataRecvStartFlag === false) {
-					var offset = this.dbgInputBuffer.indexOf('\n');
-					if (offset > - 1) {
-						msglen = offset + 1;
-						msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
-						console.log(msg, "数据接收成功:", msg);
+		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
+		while (true) {
+			let msg: any;
+			let msglen: number = 0;
+			if (this.varsDataRecvStartFlag === false) {
+				var offset = this.dbgInputBuffer.indexOf('\n');
+				if (offset > - 1) {
+					msglen = offset + 1;
+					msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
+					console.log(msg, "数据接收成功:", msg);
 
-						if (!queue.isEmpty()) {
-							if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
-								this.dataReceiveFlag = 1;
-								console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
-								// // at交互数据发送到console终端
-								// if(msg.indexOf(queue.front()[0])!==-1){
-								// 	vscode.debug.activeDebugConsole.appendLine(msg);
-								// }
-								queue.dequeue();
-								// await this.dataReceive.notify();
-							}
-							// 补丁：3103版本固件回传的有问题
-							if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
-								this.dataReceiveFlag = 1;
-								queue.dequeue();
-							}
+					if (!queue.isEmpty()) {
+						if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
+							this.dataReceiveFlag = 1;
+							console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
+							// // at交互数据发送到console终端
+							// if(msg.indexOf(queue.front()[0])!==-1){
+							// 	vscode.debug.activeDebugConsole.appendLine(msg);
+							// }
+							queue.dequeue();
+							// await this.dataReceive.notify();
+						}
+						// 补丁：3103版本固件回传的有问题
+						if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
+							this.dataReceiveFlag = 1;
+							queue.dequeue();
 						}
 					}
-					else {
+				}
+				else {
+					break;
+				}
+			}
+			else if (this.varsDataRecvStartFlag === true) {
+				if (this.varsDataLen !== 0) {
+					msglen = this.varsDataLen - this.varsDataRecvLen;
+
+					msg = this.dbgInputBuffer.subarray(0, msglen);
+					if (msg.length <= 0) {
 						break;
 					}
 				}
-				else if (this.varsDataRecvStartFlag === true) {
-					if (this.varsDataLen !== 0) {
-						msglen = this.varsDataLen - this.varsDataRecvLen;
-
-						msg = this.dbgInputBuffer.subarray(0, msglen);
-						if (msg.length <= 0) {
-							break;
-						}
-					}
-					else {
-						this.dbg_handle_msg(msg);
-						break;
-					}
-
+				else {
+					this.dbg_handle_msg(msg);
+					break;
 				}
-				// 	//原有处理逻辑
-				this.dbg_handle_msg(msg);
-				this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
+
 			}
-			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
+			// 	//原有处理逻辑
+			this.dbg_handle_msg(msg);
+			this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
+		}
+		/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	}
 	// 增加休眠时间函数
 	public async sleep(time: number): Promise<void> {
