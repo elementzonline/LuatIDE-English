@@ -438,15 +438,14 @@ export class MockDebugSession extends LoggingDebugSession {
 	}
 
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
+	public serverRecvCb(data: Buffer){
 
-		//vscode接收来自python服务器数据
 			if (this.dbgInputBuffer.length > 0) {
 				this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
 			}
 			else {
 				this.dbgInputBuffer = data;
 			}
-	public serverRecvCb(data: Buffer){
 
 			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 			while (true) {
@@ -501,9 +500,6 @@ export class MockDebugSession extends LoggingDebugSession {
 				this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
 			}
 			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-		});
-		this._socket = socket;
-		this._socketReady.notify();
 	}
 	// 增加休眠时间函数
 	public async sleep(time: number): Promise<void> {
