@@ -761,29 +761,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
-		//监听21331端口，准备tcp连接。
-
-		for (var i = 0; i < 50; i++) {
-			let socket_handle:any = null;
-			socket_handle = await this.socketConnect();
-			console.log("socket",socket_handle);
-			if (socket_handle === null) {
-				console.log("socketConnect flase,trying");
-			}
-			else
-			{
-				this.bindSocket(socket_handle);			
-				break;
-			}
-			if(i === 50-1)
-			{
-				console.log("socket too many retries,over");
-				vscode.debug.stopDebugging();
-				return;
-			}
-			await this.timesleep.wait(100);
-			console.log(formatConsoleDate(new Date()));
-		}
 		const flag: any = await this.downpath_send();
 		if (flag === false) {
 			// 强行终止调试器
