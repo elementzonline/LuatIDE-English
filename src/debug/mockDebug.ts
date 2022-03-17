@@ -698,6 +698,12 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		}
 		
+		// 启动中端
+		if(await ideServer.open(this)===false){
+			// 中端启动失败,停止调试器
+			vscode.debug.stopDebugging();
+			return;
+		}
 
 		// 写入lua运行日志到用户工程下的log文件夹
 		// if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
