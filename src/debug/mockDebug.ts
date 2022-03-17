@@ -578,10 +578,6 @@ export class MockDebugSession extends LoggingDebugSession {
 			return;
 		}
 
-		// 写入lua运行日志到用户工程下的log文件夹
-		// if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
-		// 	fs.mkdirSync(this.activeWorkspace + "\\LuatIDE_log");
-		// }
 		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide'))) {
 			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide'));
 		}
@@ -604,6 +600,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			vscode.debug.stopDebugging();
 			return;
 		}
+
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if(this._socket === null)
@@ -711,7 +708,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 
 			/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
-			// this.dbg_write_cmd("break clr " + args.source.name);
+
 			this.current_messagearr = ["break clr " + args.source.name, "D/dbg [resp,break,clear,ok]"];
 			// this.first_messageflag  = true;
 			queue.enqueue(this.current_messagearr);
@@ -755,7 +752,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//断开连接请求
 	
 	protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
-		// this.dbg_write_cmd("dbg disconnect " + args.restart)
 		// 清除队列
 		queue.clear();
 		// 怀疑是bug，修改后：
@@ -852,7 +848,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		console.log("variables  id= ", id);
 		if (id === 'local' || id === 'global') {
 			if (id === 'local') {
-				// this.dbg_write_cmd("vars");
 				this.current_messagearr = ["vars", "D/dbg [resp,vars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg vars 入队");
@@ -902,7 +897,6 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 			}
 			else if (id === 'global') {
-				// this.dbg_write_cmd("gvars");
 				this.current_messagearr = ["gvars", "D/dbg [resp,gvars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg gvars 入队");
@@ -1066,7 +1060,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F5继续运行，直到遇到之前设置的断点。
 	//dbg continue
 	protected async continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments) {
-		// this.dbg_write_cmd("continue");
 		this.current_messagearr = ["continue", "D/dbg [state,changed,3,2]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg continue 入队");
@@ -1080,7 +1073,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F10单步跳过遇到方法，一步执行完，无法看到方法的执行情况。
 	//dbg next
 	protected async nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments) {
-		// this.dbg_write_cmd("next");
 		this.current_messagearr = ["next", "D/dbg [state,changed,4,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg next 入队成功");
@@ -1092,7 +1084,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F11单步调试，进入到方法内部，可以查看方法的具体执行情况。
 	//dbg stepIn
 	protected async stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments) {
-		// this.dbg_write_cmd("stepIn");
 		this.current_messagearr = ["stepIn", "D/dbg [state,changed,5,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg stepin入队成功");
