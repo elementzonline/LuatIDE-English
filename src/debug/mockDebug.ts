@@ -11,15 +11,11 @@ import {
 import { DebugProtocol } from 'vscode-debugprotocol';
 // import { FileAccessor } from './mockRuntime';
 const { Subject } = require('await-notify');
-import * as Net from 'net';
+import * as ideServer from '../serverInterface';
 /*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path'; // 导入fs库和path库
-
-
-// import { PluginJsonParse } from '../plugConfigParse';
-// import { ProjectJsonParse } from "../project/projectConfigParse";
 
 
 import * as ndkProject from "../ndk/ndkProject";
@@ -96,17 +92,14 @@ export class MockDebugSession extends LoggingDebugSession {
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	private _stackDone = new Subject();
 	private _stateChanged = new Subject();
-	private _socketReady = new Subject();
-	// private _socket_connect_ok = new Subject();
+
 	private dbgInputBuffer = Buffer.from("");
 
 	private btLock = true;
 	private btLockDone = new Subject();
 
 	private download_success = new Subject();
-	protected _socket: any = null;
 
-	private timesleep = new Subject();
 
 	protected dbg_state: Number = 0;
 	protected download_state: Number = 0;
@@ -431,90 +424,78 @@ export class MockDebugSession extends LoggingDebugSession {
 			const requestData = requestDataArr[0];
 			arg.requestMessage = requestDataArr[1];
 			console.log("当前出队数据：", requestData);
-			arg.dbg_write_cmd(requestData);
+			// arg.dbg_write_cmd(requestData);
+			ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg " + requestData);
 			console.log("队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
 	}
 
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-	public bindSocket(socket: Net.Socket) {
+	
 
-		socket.on('close', () => {
-			console.log(">> client connection closed\n");
-			socket.destroy();
-			this._socket = null;
-		});
-		socket.on('end', () => {
-			console.log('>> client connection end\n');
-			socket.destroy();
-			this._socket = null;
-		});
-		//vscode接收来自python服务器数据
-		socket.on('data', async (data: Buffer) => {
-			if (this.dbgInputBuffer.length > 0) {
-				this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
-			}
-			else {
-				this.dbgInputBuffer = data;
-			}
+	public serverRecvCb(data: Buffer){
 
-			/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-			while (true) {
-				let msg: any;
-				let msglen: number = 0;
-				if (this.varsDataRecvStartFlag === false) {
-					var offset = this.dbgInputBuffer.indexOf('\n');
-					if (offset > - 1) {
-						msglen = offset + 1;
-						msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
-						console.log(msg, "数据接收成功:", msg);
+		if (this.dbgInputBuffer.length > 0) {
+			this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
+		}
+		else {
+			this.dbgInputBuffer = data;
+		}
 
-						if (!queue.isEmpty()) {
-							if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
-								this.dataReceiveFlag = 1;
-								console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
-								// // at交互数据发送到console终端
-								// if(msg.indexOf(queue.front()[0])!==-1){
-								// 	vscode.debug.activeDebugConsole.appendLine(msg);
-								// }
-								queue.dequeue();
-								// await this.dataReceive.notify();
-							}
-							// 补丁：3103版本固件回传的有问题
-							if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
-								this.dataReceiveFlag = 1;
-								queue.dequeue();
-							}
+		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
+		while (true) {
+			let msg: any;
+			let msglen: number = 0;
+			if (this.varsDataRecvStartFlag === false) {
+				var offset = this.dbgInputBuffer.indexOf('\n');
+				if (offset > - 1) {
+					msglen = offset + 1;
+					msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
+					console.log(msg, "数据接收成功:", msg);
+
+					if (!queue.isEmpty()) {
+						if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
+							this.dataReceiveFlag = 1;
+							console.log("当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
+							// // at交互数据发送到console终端
+							// if(msg.indexOf(queue.front()[0])!==-1){
+							// 	vscode.debug.activeDebugConsole.appendLine(msg);
+							// }
+							queue.dequeue();
+							// await this.dataReceive.notify();
+						}
+						// 补丁：3103版本固件回传的有问题
+						if (msg.indexOf("D/dbg [resp,wvars,0]") !== -1) {
+							this.dataReceiveFlag = 1;
+							queue.dequeue();
 						}
 					}
-					else {
+				}
+				else {
+					break;
+				}
+			}
+			else if (this.varsDataRecvStartFlag === true) {
+				if (this.varsDataLen !== 0) {
+					msglen = this.varsDataLen - this.varsDataRecvLen;
+
+					msg = this.dbgInputBuffer.subarray(0, msglen);
+					if (msg.length <= 0) {
 						break;
 					}
 				}
-				else if (this.varsDataRecvStartFlag === true) {
-					if (this.varsDataLen !== 0) {
-						msglen = this.varsDataLen - this.varsDataRecvLen;
-
-						msg = this.dbgInputBuffer.subarray(0, msglen);
-						if (msg.length <= 0) {
-							break;
-						}
-					}
-					else {
-						this.dbg_handle_msg(msg);
-						break;
-					}
-
+				else {
+					this.dbg_handle_msg(msg);
+					break;
 				}
-				// 	//原有处理逻辑
-				this.dbg_handle_msg(msg);
-				this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
+
 			}
-			/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-		});
-		this._socket = socket;
-		this._socketReady.notify();
+			// 	//原有处理逻辑
+			this.dbg_handle_msg(msg);
+			this.dbgInputBuffer = this.dbgInputBuffer.slice(msglen);
+		}
+		/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
 	}
 	// 增加休眠时间函数
 	public async sleep(time: number): Promise<void> {
@@ -522,203 +503,43 @@ export class MockDebugSession extends LoggingDebugSession {
 			setTimeout(res, time);
 		});
 	}
-	public async downpath_send() {
+	public async downloadStart() {
 		this.download_state = 0;
 		// 获取用户工作区路径
 		if (vscode.workspace) {
 			// 用户当前点击文件获取。
-			/*+\NEW\zhw\2021.05.25\用户工作空间路径从插件配置文件里读取*/
-			const user_path_data = "work_path " + this.activeWorkspace;
-			this.dbg_write_cmd(user_path_data);
+			ideServer.sendData(ideServer.cmdType.server,"work_path",this.activeWorkspace);
 			await this.sleep(100);
-
 			// 插件所在路径获取
-			const plug_path: string = path.join(__dirname, "../..");
-			const plug_path_data: any = "plug_path " + plug_path;
-			this.dbg_write_cmd(plug_path_data);
+			const plugPath: string = path.join(__dirname, "../..");
+			ideServer.sendData(ideServer.cmdType.server,"plug_path",plugPath);
 			await this.sleep(100);
-
-
-			const module_model = getProjectConfigModuleModel(this.activeWorkspace);
+			const moduleModel = getProjectConfigModuleModel(this.activeWorkspace);
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
-			if (module_model === undefined) {
+			if (moduleModel === undefined) {
 				setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
 			}
-			this.dbg_write_cmd("LuatIDE_Down/LoAd");
+			ideServer.sendData(ideServer.cmdType.server,"download","");
 			return true;
 		}
+		return false;
 	}
 
-	//原有命令写入python服务器逻辑，有修改
-	public dbg_write_cmd(data: String) {
-		console.log(data);
-		for (var i = 0; i < 100; i++) {
-			if (this._socket !== null) {
-				break;
-			}
-			this._socketReady.wait(1000);
-		}
-		if (this._socket === null) {
-			console.log("设备链接未就绪,无法输出控制命令");
-			return;
-		}
 
-		//功能兼容改写,增加了发送给vscode数据的多样化情况适配。
-		var line_temp = {
-			"state": "1",
-			"command": "",
-			"extension_temp": "this is a extension"
-		};
-
-
-		let dataCommand: any;
-		let dataState: string;
-		if (data.indexOf("Po/Rt") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(5,);
-			dataCommand = { "cmdstyle": "openport", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		else if (data.indexOf("LuatIDE_Down/LoAd") !== -1) {
-			dataState = "0";
-			dataCommand = { "cmdstyle": "download" };
-		}
-		else if (data.indexOf("work_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "work_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("plug_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "plug_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("ulib_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "ulib_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		else if (data.indexOf("upac_path") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(10,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "upac_path", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		/*+\NEW\czm\2021.07.02\支持多模块，通过模块型号指定选择端口号名称使其兼容1603模块端口​*/
-		else if (data.indexOf("module_model") !== -1) {
-			dataState = "0";
-			/*+\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			var dataTemp = data.substring(13,);
-			/*-\NEW\czm\2021.05.8\自动启动服务换电脑大概率失效*/
-			dataCommand = { "cmdstyle": "module_model", "param": "" };
-			dataCommand.param = dataTemp;
-
-		}
-		/*-\NEW\czm\2021.07.02\支持多模块，通过模块型号指定选择端口号名称使其兼容1603模块端口​*/
-		else if (data.indexOf("Close/Port") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(10,);
-			dataCommand = { "cmdstyle": "closeport", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		else if (data.indexOf("service/kill") !== -1) {
-			dataState = "0";
-			var dataTemp = data.substring(10,);
-			dataCommand = { "cmdstyle": "servicekill" };
-		}
-		/*+\NEW\czm\2021.05.9\添加调试控制台>输入框发送at的功能*/
-		else if (data.indexOf("modem/sendat") !== -1) {
-			dataState = "2";
-			var dataTemp = data.substring(13,);
-			dataCommand = { "cmdstyle": "sendat", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		else if (data.indexOf("watch/jvars") !== -1) {
-			dataState = "2";
-			var dataTemp = data.substring(12,);
-			dataCommand = { "cmdstyle": "watch/jvars", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		/*-\NEW\czm\2021.05.9\添加调试控制台>输入框发送at的功能*/
-
-		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		else {
-			dataState = "1";
-			var dataTemp = "dbg " + data;
-			dataCommand = { "cmdstyle": "dbg", "param": "" };
-			dataCommand.param = dataTemp;
-		}
-		line_temp.state = dataState;
-		line_temp.command = dataCommand;
-		// \r\n用来解析的，不可去掉
-		const line = JSON.stringify(line_temp) + "\r\n";
-
-		try {
-			this._socket.write(line, (err: any) => {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}
-		catch (e) { }
-	}
-	protected async socketConnect(){
-		let socketstat : number = 0;
-		const socket = Net.connect(21331, '127.0.0.1', () => {
-			// this._socket_connect_ok.notify();
-			socketstat = 1;
-			console.log("socketConnect ok socketstat",socketstat);
-		});
-		socket.on('error', function (err) {
-			socket.destroy();
-			socketstat = -1;
-			console.log("socketConnect err",err);
-		});
-		for (var i = 0; i < 20; i++) {
-			await this.timesleep.wait(100);
-			if (socketstat === 1) {
-				return socket;
-			}
-			else if (socketstat === -1){
-				return null;
-			}
-		}
-		return null;
-	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 
-		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
-		while(this._socket !== null)
-		{
-			console.log("wait socket reset");
-			await this.sleep(500);
-		}
-		console.log("initializeRequest",this._socket);
-		// require('child_process').exec('taskkill -f -im ide_service.exe');
-		// kill活动终端
-		vscode.commands.executeCommand("workbench.action.terminal.kill");
-		/*+\NEW\zhw\2021.05.28\解决重启无法实现*/
-
+		// 清空历史输出的数据
+		_outputChannel.clear();
+		// 设置输出展示，默认值为false，不会显示焦点
+		_outputChannel.show(false);
+		// 每次调试前清空队列数据
+		queue.clear();
+		this.fullvarsArray = [];
+		
 		this.activeWorkspace = getPluginConfigActivityProject();		
 		// 如果是NDK工程，就需要先去编译
 		if(getProjectConfigType(this.activeWorkspace)==="ndk")
@@ -740,40 +561,14 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 
 		}
-		// kill活动终端
-		vscode.commands.executeCommand("workbench.action.terminal.kill");
-
-		// 打开调试模式显示到用户工作台
-		const path_exe_new = path.join(__dirname, "../..", "luatide_server", "build", "ide_service", "ide_service.exe");
-		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-		console.log(path_exe_new);
-
-		const isCmd = /cmd.exe$/i.test(vscode.env.shell);
-		const invokePrefix = isCmd ? '' : '& ';
-		const cmdPrefixSuffix = isCmd ? '"' : '';
-		let commandLine = invokePrefix + "'" + path_exe_new + "'";
-		/*+\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
-		const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE Debug", 'Service');
-		/*-\NEW\zhw\2021.05.27\shell改为powershell,解决不能写日志到文件代码*/
-		task.execution = new vscode.ShellExecution(cmdPrefixSuffix + commandLine + cmdPrefixSuffix);
-		/*+\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-		task.isBackground = false; //true 隐藏日志
-		/*-\NEW\zhw\2021.05.27\日志由控制台输出到文件*/
-
-		task.presentationOptions = {
-			echo: false,
-			focus: false,
-			clear: true,
-			showReuseMessage: true
-		};
-
-		vscode.tasks.executeTask(task);
 		
+		// 启动中端
+		if(await ideServer.open(this)===false){
+			// 中端启动失败,停止调试器
+			vscode.debug.stopDebugging();
+			return;
+		}
 
-		// 写入lua运行日志到用户工程下的log文件夹
-		// if (!fs.existsSync(this.activeWorkspace + "\\LuatIDE_log")) {
-		// 	fs.mkdirSync(this.activeWorkspace + "\\LuatIDE_log");
-		// }
 		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide'))) {
 			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide'));
 		}
@@ -781,43 +576,13 @@ export class MockDebugSession extends LoggingDebugSession {
 			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'));
 		}
 		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
-		// execFile(path_exe_new);
-		// 清空历史输出的数据
-		_outputChannel.clear();
-		// 设置输出展示，默认值为false，不会显示焦点
-		_outputChannel.show(false);
-		// 每次调试前清空队列数据
-		queue.clear();
-		this.fullvarsArray = [];
-		//监听21331端口，准备tcp连接。
 
-		for (var i = 0; i < 50; i++) {
-			let socket_handle:any = null;
-			socket_handle = await this.socketConnect();
-			console.log("socket",socket_handle);
-			if (socket_handle === null) {
-				console.log("socketConnect flase,trying");
-			}
-			else
-			{
-				this.bindSocket(socket_handle);			
-				break;
-			}
-			if(i === 50-1)
-			{
-				console.log("socket too many retries,over");
-				vscode.debug.stopDebugging();
-				return;
-			}
-			await this.timesleep.wait(100);
-			console.log(formatConsoleDate(new Date()));
-		}
-		const flag: any = await this.downpath_send();
-		if (flag === false) {
+		if (await this.downloadStart() === false) {
 			// 强行终止调试器
 			vscode.debug.stopDebugging();
 			return;
 		}
+
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if(this._socket === null)
@@ -925,7 +690,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			}
 
 			/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
-			// this.dbg_write_cmd("break clr " + args.source.name);
+
 			this.current_messagearr = ["break clr " + args.source.name, "D/dbg [resp,break,clear,ok]"];
 			// this.first_messageflag  = true;
 			queue.enqueue(this.current_messagearr);
@@ -969,13 +734,12 @@ export class MockDebugSession extends LoggingDebugSession {
 	//断开连接请求
 	
 	protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
-		// this.dbg_write_cmd("dbg disconnect " + args.restart)
 		// 清除队列
 		queue.clear();
 		// 怀疑是bug，修改后：
-		this.dbg_write_cmd("disconnect " + args.restart);
+		ideServer.sendData(ideServer.cmdType.dbg,"dbg","dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		this.dbg_write_cmd("service/kill");
+		ideServer.sendData(ideServer.cmdType.server,"servicekill","");
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
 		this.timer1 = undefined;
@@ -1066,7 +830,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		console.log("variables  id= ", id);
 		if (id === 'local' || id === 'global') {
 			if (id === 'local') {
-				// this.dbg_write_cmd("vars");
 				this.current_messagearr = ["vars", "D/dbg [resp,vars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg vars 入队");
@@ -1116,7 +879,6 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 			}
 			else if (id === 'global') {
-				// this.dbg_write_cmd("gvars");
 				this.current_messagearr = ["gvars", "D/dbg [resp,gvars,0]"];
 				queue.enqueue(this.current_messagearr);
 				// console.log("dbg gvars 入队");
@@ -1280,7 +1042,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F5继续运行，直到遇到之前设置的断点。
 	//dbg continue
 	protected async continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments) {
-		// this.dbg_write_cmd("continue");
 		this.current_messagearr = ["continue", "D/dbg [state,changed,3,2]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg continue 入队");
@@ -1294,7 +1055,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F10单步跳过遇到方法，一步执行完，无法看到方法的执行情况。
 	//dbg next
 	protected async nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments) {
-		// this.dbg_write_cmd("next");
 		this.current_messagearr = ["next", "D/dbg [state,changed,4,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg next 入队成功");
@@ -1306,7 +1066,6 @@ export class MockDebugSession extends LoggingDebugSession {
 	//F11单步调试，进入到方法内部，可以查看方法的具体执行情况。
 	//dbg stepIn
 	protected async stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments) {
-		// this.dbg_write_cmd("stepIn");
 		this.current_messagearr = ["stepIn", "D/dbg [state,changed,5,3]"];
 		queue.enqueue(this.current_messagearr);
 		console.log("dbg stepin入队成功");
@@ -1341,7 +1100,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		//调试控制台输入请求
 		switch (args.context) {
 			case 'repl':
-				this.dbg_write_cmd("modem/sendat " + args.expression);
+				ideServer.sendData(ideServer.cmdType.at,"sendat",args.expression);
 				this.sendResponse(response);
 			default:
 				while (true) {
