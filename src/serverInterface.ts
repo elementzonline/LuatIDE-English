@@ -21,6 +21,9 @@ export enum cmdType {
     dbg = "1",
     at = "2"
 }
+
+
+let gSocketHandle: net.Socket | null = null;
 function serverStart() {
     // kill活动终端
     vscode.commands.executeCommand("workbench.action.terminal.kill");
