@@ -8,11 +8,9 @@ import { activityMemoryProjectPathBuffer } from "../extension";
 import { getActivityProjectConfigOptionsList, getDefaultWorkspacePath } from "../variableInterface";
 import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigModuleModel, popProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
-// import { HistoryProjectDataProvider } from "./projectTreeView";
 
+import * as ideServer from '../serverInterface';
 
-// let pluginJsonParse: any = new PluginJsonParse();
-// let projectJsonParse: any = new ProjectJsonParse();
 
 // 激活工程处理
 export class ProjectActiveHandle {
