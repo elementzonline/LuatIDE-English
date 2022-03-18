@@ -3,7 +3,7 @@ import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigType, pushProjectConfigAppFile } from '../project/projectConfigParse';
-import { getUiDesignPath } from '../variableInterface';
+import { getLuatIDEDataPath, getUiDesignDefaultPath } from '../variableInterface';
 
 // ui设计器操作
 export class UiDesign{
@@ -22,7 +22,7 @@ export class UiDesign{
             vscode.window.showErrorMessage('非UI工程不支持UI设计器相关功能,请新建UI工程后重试',{modal:true});
             return;
         }
-        const uiDesignPath:string = getUiDesignPath();
+        const uiDesignPath:string = getUiDesignDefaultPath();
         if (fs.existsSync(path.join(uiDesignPath,'vscode-ext','lvgl-editor','vscode-polyfill.js'))) {
             const projectLuatIDEPath:string = path.join(activityProjectPath,'.luatide');
             let uiDesignName:string|undefined = this.getUiDesignName(projectLuatIDEPath);
