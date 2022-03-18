@@ -192,6 +192,7 @@ export class UiDesignPanel {
             UiDesignPanel.currentPanel.uiPanel.reveal(column);
             return;
         }
+        const luatideDataPath = getLuatIDEDataPath();
         // 新建UI设计器panel
         const uiPanel = vscode.window.createWebviewPanel(
             UiDesignPanel.viewType,
@@ -200,6 +201,7 @@ export class UiDesignPanel {
             {
                 enableScripts: true,
                 retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+                localResourceRoots:[vscode.Uri.file(luatideDataPath)]
             }
         );
         UiDesignPanel.currentPanel = new UiDesignPanel(uiPanel, context, uiDesignName, currentLvgl);
@@ -270,7 +272,9 @@ export class UiDesignPanel {
     // 更新webview
     private update(context:vscode.ExtensionContext,uiDesignName: string) {
         // const webview = this._panel.webview;
-        this.updateForUiDesign(context, "./src/webview/UI-Designer/vscode-ext/lvgl-editor/index.html", uiDesignName);
+        const uiDesignDefaultPath:string = getUiDesignDefaultPath();
+        const uiDesignHtmlPath:string = path.join(uiDesignDefaultPath,'vscode-ext','lvgl-editor','index.html');
+        this.updateForUiDesign(context, uiDesignHtmlPath, uiDesignName);
     }
     
     // 更新ui设计器具体逻辑
@@ -282,16 +286,15 @@ export class UiDesignPanel {
     // ui设计器webview
     private getUiWebViewContent(context:vscode.ExtensionContext, templatePath:string) {
         console.log("> getWebViewContent:", templatePath);
-        const resourcePath = path.join(context.extensionPath, templatePath);
-        console.log("> resource:", resourcePath);
-        const dirPath = path.dirname(resourcePath);
+        // const resourcePath = path.join(context.extensionPath, templatePath);
+        console.log("> resource:", templatePath);
+        const dirPath = path.dirname(templatePath);
         console.log("> dirPath:", dirPath);
-        let html = fs.readFileSync(resourcePath, 'utf-8');
+        let html = fs.readFileSync(templatePath, 'utf-8');
         //vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
         html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
-            return $1 + vscode.Uri.file(path.resolve(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+            return $1 + vscode.Uri.file(path.join(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
         });
         return html;
 }
-
 }
