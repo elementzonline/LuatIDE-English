@@ -87,9 +87,9 @@ async function serverConnect() {
     return null;
 }
 
-export async function open(mockhand:any) {
     if(gSocketHandle !== null)
     {
+export async function open(serverRecvCb: Function|null) {
         console.log(TAG, "server runing! Duplicate open is not allowed");
         return false;
     }
@@ -111,7 +111,9 @@ export async function open(mockhand:any) {
         gSocketHandle = null;
     });
     gSocketHandle?.on('data', (data: Buffer) => {
-        mockhand.serverRecvCb(data);
+        if (serverRecvCb !== null) {
+            serverRecvCb(data);
+        }
     });
 
     return true;
