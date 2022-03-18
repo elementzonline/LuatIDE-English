@@ -404,47 +404,48 @@ font_spi = spi.SPI_1
 font_bpp = 2
 
 thick_table = {
-  40, 46, 48, 54, 54, 54, 54, 54, 54, 56, 60, 72, 76, 80, 82, 86, 90, 94, 96, 102, 102, 104, 106, 108, 110, 112, 114, 116, 
-  118, 120, 124, 126, 128, 130, 136, 140, 150, 160, 170, 180
+    40, 46, 48, 54, 54, 54, 54, 54, 54, 56, 60, 72, 76, 80, 82, 86, 90, 94, 96, 102, 102, 104, 106, 108, 110, 112, 114, 116, 
+    118, 120, 124, 126, 128, 130, 136, 140, 150, 160, 170, 180
 }
 
 local function normal(s)
-  if s % 2 == 1 then s = s - 1 end
-  return thick_table[(s - 16) / 2 + 1]
+    if s % 2 == 1 then s = s - 1 end
+    return thick_table[(s - 16) / 2 + 1]
 end
 
 local function light(s)
-  if s >= 48 then return normal(s) - 25
-  else return normal(s) - 20 end
+    if s >= 48 then return normal(s) - 25
+    else return normal(s) - 20 end
 end
 
 local function heavy(s)
-  if s >= 48 then return normal(s) + 25
-  else return normal(s) + 20 end
+    if s >= 48 then return normal(s) + 25
+    else return normal(s) + 20 end
 end
 
 local function font_load(...)
-  args = {...}
-  if type(args[1]) == 'string' then
+    args = {...}
+    if type(args[1]) == 'string' then
     if args[2] == nil then 
-      return loader(args[1]) -- 加载文件
+        return loader(args[1]) -- 加载文件
     else
-      -- 设计器
-      if string.find(args[1], 'light') then
+        -- 设计器
+        if string.find(args[1], 'light') then
         return loader(font_spi, args[2], font_bpp, light(args[2]))
-      elseif string.find(args[1], 'normal') then
+        elseif string.find(args[1], 'normal') then
         return loader(font_spi, args[2], font_bpp, normal(args[2]))
-      elseif string.find(args[1], 'heavy') then
+        elseif string.find(args[1], 'heavy') then
         return loader(font_spi, args[2], font_bpp, heavy(args[2]))
-      end
+        end
     end
-  else
+    else
     return loader(...) -- 加载矢量字库
-  end
+    end
 end
 
 lvgl.font_load = font_load
 require "UiDesign"
+require "UiTp"
 
 local function input()
     if lvgl.indev_get_emu_touch ~= nil then
@@ -472,7 +473,7 @@ end
 
 
 local function init()
-    lvgl.init(demo_WindowInit, input)
+    lvgl.init(demo_WindowInit, UiTp.input)
 end
 
 sys.taskInit(init, nil)
@@ -777,6 +778,130 @@ lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_h
 ------------USER CODE DATA--------------
 end         
         `;
+        const uiTpData:string = `
+module(..., package.seeall)
+----GT911
+
+require "misc"
+require "utils"
+require "pins"
+
+local GT911addr = 0x14
+local i2cid = 2
+
+local rst = pins.setup(23, 1)
+local int = pins.setup(19)
+
+local function init()
+    if i2c.setup(i2cid, i2c.SLOW) ~= i2c.SLOW then
+        print("i2c.init fail")
+        return
+    end
+    -------------------------初始化-------------------------
+    rst(0)
+    int(1)
+    sys.wait(10)
+    rst(1)
+    sys.wait(10)
+    int(0)
+    sys.wait(55)
+    sys.wait(50)
+end
+
+sys.taskInit(init)
+
+local ispress = false
+local last_x, last_y
+x = 0
+y = 0
+
+iskeypress = false
+lastKeypress = false
+local keyid = 0
+local keycb = nil
+function tpkeyprase()
+    if iskeypress ~= lastKeypress then
+        lastKeypress = iskeypress
+        if keycb ~= nil then keycb(2, iskeypress) end
+    end
+end
+
+function cb(cb)
+    log.info("msg2238 cb ")
+    keycb = cb
+end
+
+function get()
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x4e))
+    pressed = i2c.recv(i2cid, GT911addr, 1)
+    if pressed:byte() == nil then return false, false, -1, -1 end
+    pressed = bit.band(pressed:byte(), 0x0f)
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x4e, 0x00, 0x00))
+    if pressed == 0 then
+        if ispress == false then return false, false, -1, -1 end
+
+        ispress = false
+        -- log.info("ispress x,y ", ispress, x, y)
+        return true, ispress, x, y
+    end
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x51))
+    xh = i2c.recv(i2cid, GT911addr, 1):byte()
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x50))
+    xl = i2c.recv(i2cid, GT911addr, 1):byte()
+
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x53))
+    yh = i2c.recv(i2cid, GT911addr, 1):byte()
+    i2c.send(i2cid, GT911addr, string.char(0x81, 0x52))
+    yl = i2c.recv(i2cid, GT911addr, 1):byte()
+    x = xl + (xh * 256)
+    y = yl + (yh * 256)
+    if ispress == true and last_x == x and last_y == y then
+        return false, false, -1, -1
+    end
+    ispress = true
+    last_x = x
+    last_y = y
+    -- log.info("ispress x,y ", ispress, x, y)
+    return true, ispress, x, y
+    -- end
+end
+
+local data = {type = lvgl.INDEV_TYPE_POINTER}
+
+function input()
+
+    if lvgl.indev_get_emu_touch then
+        return lvgl.indev_get_emu_touch()
+    end
+
+    pmd.sleep(100)
+    local ret, ispress, px, py = tp.get()
+    if ret then
+        if lastispress == ispress and lastpx == px and lastpy == py then
+            return data
+        end
+        lastispress = ispress
+        lastpx = px
+        lastpy = py
+        if ispress then
+            tpstate = lvgl.INDEV_STATE_PR
+        else
+            tpstate = lvgl.INDEV_STATE_REL
+        end
+    else
+        return data
+    end
+    data.state = tpstate
+    data.point = {x = px, y = py}
+    return data
+end
+
+
+-- sys.timerLoopStart(function() 
+--     local a=i2c.read(i2cid,0x5051,2)
+--     print("a",a)
+-- end,50)
+        `;
         if (!fs.existsSync(path.join(projectPath, ".luatide"))) {
             fs.mkdirSync(path.join(projectPath, ".luatide"));
         }
@@ -789,6 +914,9 @@ end
         // 写入初始化lcd.lua文件
         const lcdLuaPath:string = path.join(projectPath,'LCD.lua');
         fs.writeFileSync(lcdLuaPath,lcdLuaData);
+        // 写入初始化uiTp.lua文件
+        const uiTpLuaPath:string = path.join(projectPath,'UiTp.lua');
+        fs.writeFileSync(uiTpLuaPath,uiTpData);
         // copy二维码图片资源文件到目录
         const luatidePngPath:string = getGroupChatQrCodePath();
         const idePngProjectPath:string = path.join(projectPath,'qrcode.png');
