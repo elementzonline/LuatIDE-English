@@ -87,9 +87,12 @@ async function serverConnect() {
     return null;
 }
 
-    if(gSocketHandle !== null)
-    {
+
+
+
 export async function open(serverRecvCb: Function|null) {
+
+    if (gSocketHandle !== null) {
         console.log(TAG, "server runing! Duplicate open is not allowed");
         return false;
     }
@@ -98,8 +101,8 @@ export async function open(serverRecvCb: Function|null) {
     // 连接中端客户端
     if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
-    gSocketHandle?.on('close', () => {
 
+    gSocketHandle?.on('close', () => {
         console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
         gSocketHandle = null;
@@ -121,7 +124,8 @@ export async function open(serverRecvCb: Function|null) {
 
 export async function close() {
     gSocketHandle?.destroy();
-    vscode.commands.executeCommand("workbench.action.terminal.kill");
+    // 有时候断开连接时后台还有未处理完的任务，不能直接关掉任务终端
+    // vscode.commands.executeCommand("workbench.action.terminal.kill");
     return true;
 }
 
