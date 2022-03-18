@@ -76,7 +76,7 @@ async function socketConnect() {
 async function serverConnect() {
 
     for (var i = 0; i < 50; i++) {
-        let sockethand:net.Socket | null = await socketConnect();
+        let sockethand: net.Socket | null = await socketConnect();
         // console.log(TAG, "socket", socketHandle);
         if (sockethand !== null) { return sockethand; }
         console.log(TAG, "socketConnect flase,trying");
@@ -132,7 +132,7 @@ export async function sendData(type: cmdType, cmd: string, param: string) {
     }
     let serverCmd: { state: string, command: { cmdstyle: string, param: string } } = { state: type, command: { cmdstyle: cmd, param: param } };
     console.log(TAG, "serverCmd:", serverCmd);
-    const cmdStr = JSON.stringify(serverCmd)+'\r\n';
+    const cmdStr = JSON.stringify(serverCmd) + '\r\n';
     try {
         gSocketHandle.write(cmdStr, (err: any) => {
             if (err) {
