@@ -2,7 +2,3 @@
 	url  = https://gitee.com/openLuat/luatos-ui2code
 	path = src/webview/UI-Converter
 
-[submodule "src/webview/UI-Designer"]
-	url  = https://gitee.com/openLuat/luatos-uidesign
-	path = src/webview/UI-Designer
-
