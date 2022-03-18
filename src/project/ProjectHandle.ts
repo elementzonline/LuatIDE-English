@@ -8,11 +8,9 @@ import { activityMemoryProjectPathBuffer } from "../extension";
 import { getActivityProjectConfigOptionsList, getDefaultWorkspacePath } from "../variableInterface";
 import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigModuleModel, popProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
-// import { HistoryProjectDataProvider } from "./projectTreeView";
 
+import * as ideServer from '../serverInterface';
 
-// let pluginJsonParse: any = new PluginJsonParse();
-// let projectJsonParse: any = new ProjectJsonParse();
 
 // 激活工程处理
 export class ProjectActiveHandle {
@@ -494,7 +492,19 @@ export function getDefaultProjectName() {
 }
 
 // 导出量产文件
-export function exportProducFile() {
-    console.log("hahahahahaah1111111");
-
+export async function exportProducFile() {
+    // 这里返回false的话说明不在调试状态，中端没有启动，我需要先去启动中端
+    if(ideServer.connectStatus()===false)
+    {
+        await ideServer.open(null);
+        const activeWorkspace = getPluginConfigActivityProject();	
+        ideServer.sendData(ideServer.cmdType.server,"work_path",activeWorkspace);
+        const plugPath: string = path.join(__dirname, "../..");
+        ideServer.sendData(ideServer.cmdType.server,"plug_path",plugPath);
+        ideServer.sendData(ideServer.cmdType.server, "producFileGen", "");
+        ideServer.close();
+        return;
+    }
+    // 如果中端正在运行，就直接发送指令
+    ideServer.sendData(ideServer.cmdType.server, "producFileGen", "");
 }

@@ -565,7 +565,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		}
 		
 		// 启动中端
-		if(await ideServer.open(this)===false){
+		if(await ideServer.open(this.serverRecvCb.bind(this))===false){
 			// 中端启动失败,停止调试器
 			vscode.debug.stopDebugging();
 			return;

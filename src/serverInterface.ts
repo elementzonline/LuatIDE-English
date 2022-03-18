@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-17 15:09:26
+ * @LastEditTime: 2022-03-18 17:47:10
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -76,7 +76,7 @@ async function socketConnect() {
 async function serverConnect() {
 
     for (var i = 0; i < 50; i++) {
-        let sockethand:net.Socket | null = await socketConnect();
+        let sockethand: net.Socket | null = await socketConnect();
         // console.log(TAG, "socket", socketHandle);
         if (sockethand !== null) { return sockethand; }
         console.log(TAG, "socketConnect flase,trying");
@@ -87,9 +87,15 @@ async function serverConnect() {
     return null;
 }
 
-export async function open(mockhand:any) {
-    if(gSocketHandle !== null)
-    {
+
+export function connectStatus() {
+    return gSocketHandle === null ? false : true;
+}
+
+
+export async function open(serverRecvCb: Function|null) {
+
+    if (gSocketHandle !== null) {
         console.log(TAG, "server runing! Duplicate open is not allowed");
         return false;
     }
@@ -98,20 +104,21 @@ export async function open(mockhand:any) {
     // 连接中端客户端
     if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
-    gSocketHandle?.on('close', () => {
 
+    gSocketHandle?.on('close', () => {
         console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
     gSocketHandle?.on('end', () => {
-
         console.log(TAG, '>> client connection end');
         gSocketHandle?.destroy();
         gSocketHandle = null;
     });
     gSocketHandle?.on('data', (data: Buffer) => {
-        mockhand.serverRecvCb(data);
+        if (serverRecvCb !== null) {
+            serverRecvCb(data);
+        }
     });
 
     return true;
@@ -119,7 +126,8 @@ export async function open(mockhand:any) {
 
 export async function close() {
     gSocketHandle?.destroy();
-    vscode.commands.executeCommand("workbench.action.terminal.kill");
+    // 有时候断开连接时后台还有未处理完的任务，不能直接关掉任务终端
+    // vscode.commands.executeCommand("workbench.action.terminal.kill");
     return true;
 }
 
@@ -132,7 +140,7 @@ export async function sendData(type: cmdType, cmd: string, param: string) {
     }
     let serverCmd: { state: string, command: { cmdstyle: string, param: string } } = { state: type, command: { cmdstyle: cmd, param: param } };
     console.log(TAG, "serverCmd:", serverCmd);
-    const cmdStr = JSON.stringify(serverCmd)+'\r\n';
+    const cmdStr = JSON.stringify(serverCmd) + '\r\n';
     try {
         gSocketHandle.write(cmdStr, (err: any) => {
             if (err) {
