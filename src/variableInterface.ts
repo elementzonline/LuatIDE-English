@@ -849,3 +849,9 @@ export function getUiDesignPath() {
     const uiDesignPath:string = path.join(extensionPath,'src','webview','UI-Designer');
     return uiDesignPath;
 }
+
+// 获取ui设计器文件默认存储路径
+export function getUiDesignDefaultPath() {
+    const uiDesignDefaultPath:string = path.join(appDataPath,'LuatIDE','LuatideUiDesign');
+    return uiDesignDefaultPath;
+}
