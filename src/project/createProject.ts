@@ -643,7 +643,7 @@ sys.run()
 -- 1. This file automatically generates code for the LuatOS's UI designer
 -- 2. In case of accident, modification is strictly prohibited
 ----------------------------------------------------------------------------
-
+module(..., package.seeall)
 --Import event file
 require "UiHandle"
 
@@ -757,6 +757,7 @@ end
         const uiHandleData:string = `
 --This function name and notes cannot be modified
 --@@funCfg: <joinUs, exist>
+module(..., package.seeall)
 function joinUs()
 ------------USER CODE DATA--------------
 lvgl.style_set_bg_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFF0000))
