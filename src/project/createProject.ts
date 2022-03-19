@@ -875,7 +875,7 @@ function input()
     end
 
     pmd.sleep(100)
-    local ret, ispress, px, py = tp.get()
+    local ret, ispress, px, py = get()
     if ret then
         if lastispress == ispress and lastpx == px and lastpy == py then
             return data
