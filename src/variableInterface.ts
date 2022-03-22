@@ -61,13 +61,6 @@ export function getAir72XUXCorePath() {
     return getAir72XUXCorepath;
 }
 
-// 获取esp32c3默认core文件存储路径
-export function getEsp32c3DefaultCorePath() {
-    // esp32c3 demo暂无接口,先使用air101的
-    const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
-    return air101DefaultCorePath;
-}
-
 // 获取101默认core文件存储路径
 export function getAir101DefaultCorePath() {
     const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
@@ -83,6 +76,12 @@ export function getAir103DefaultCorePath() {
 // 获取105默认core文件存储路径
 export function getAir105DefaultCorePath() {
     const defaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
+    return defaultCorePath;
+}
+
+// 获取esp32c3默认core文件存储路径
+export function getEsp32c3DefaultCorePath() {
+    const defaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "ESP32C3_CORE");
     return defaultCorePath;
 }
 
