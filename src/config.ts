@@ -9,6 +9,8 @@ import {
     getAir103DefaultDemoPath,
     getAir105DefaultCorePath,
     getAir105DefaultDemoPath,
+    getEsp32c3DefaultCorePath,
+    getEsp32c3DefaultDemoPath,
     getAir72XUXCorePath,
     getAir72XUXDemoPath,
     getAir72XUXLibPath,
@@ -35,6 +37,7 @@ export class PluginConfigInit {
     private air101Demopath: any = getAir101DefaultDemoPath();
     private air103Demopath: any = getAir103DefaultDemoPath();
     private air105Demopath: any = getAir105DefaultDemoPath();
+    private esp32c3Demopath: any = getEsp32c3DefaultDemoPath();
     private air72XUXLibpath: any = getAir72XUXLibPath();
     private dataIntroduce: any = path.join(this.appDataPath, 'LuatIDE', '文件夹说明.txt');
     private introduceData: any = '该文件夹为合宙vscode插件LuatIDE的配置保存文件,删除后可能导致插件历史配置丢失,插件不可使用,请谨慎删除';
@@ -45,6 +48,7 @@ export class PluginConfigInit {
     private air101Corepath: any = getAir101DefaultCorePath();
     private air103Corepath: any = getAir103DefaultCorePath();
     private air105Corepath: any = getAir105DefaultCorePath();
+    private esp32c3Corepath: any = getEsp32c3DefaultCorePath();
 
     constructor() {
 
@@ -60,6 +64,7 @@ export class PluginConfigInit {
         this.folderInit(this.air101Demopath);
         this.folderInit(this.air103Demopath);
         this.folderInit(this.air105Demopath);
+        this.folderInit(this.esp32c3Demopath);
         this.folderInit(this.air72XUXLibpath);
         this.fileInit(this.dataIntroduce);
         this.fileInit(this.pluginconfigPath);
@@ -69,6 +74,7 @@ export class PluginConfigInit {
         this.folderInit(this.air101Corepath);
         this.folderInit(this.air103Corepath);
         this.folderInit(this.air105Corepath);
+        this.folderInit(this.esp32c3Corepath);
     }
 
     // 获取当前插件配置文件初始化版本号
