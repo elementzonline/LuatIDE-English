@@ -115,6 +115,12 @@ export function getAir105DefaultDemoPath() {
     return defaultDemoPath;
 }
 
+// 获取ESP32C3默认demo
+export function getEsp32c3DefaultDemoPath() {
+    const defaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "ESP32C3_Demo");
+    return defaultDemoPath;
+}
+
 // 依据模块型号获取core路径
 export function getCorePathBaseModuleModel(moduleModel: any) {
     let corePath: any;
@@ -130,6 +136,9 @@ export function getCorePathBaseModuleModel(moduleModel: any) {
             break;
         case 'air105':
             corePath = getAir105DefaultCorePath();
+            break;
+        case 'esp32c3':
+            corePath = getEsp32c3DefaultCorePath();
             break;
     }
     return corePath;
@@ -159,6 +168,13 @@ export function getAir105Reg() {
     return reg;
 }
 
+// 获取获取ESP32C3固件版本号正则解析表达式
+export function getEsp32c3Reg() {
+    const reg = /LuatOS-SoC_V(\d+)_ESP32C3/ig;
+    return reg;
+}
+
+
 // 依据模块型号获取解析的正则表达式
 export function getRegBaseModel(moduleModel: any) {
     let reg: any;
@@ -174,6 +190,9 @@ export function getRegBaseModel(moduleModel: any) {
             break;
         case 'air105':
             reg = getAir105Reg();
+            break;
+        case 'esp32c3':
+            reg = getEsp32c3Reg();
             break;
     }
     return reg;
@@ -447,6 +466,20 @@ export function getAir105DefaultCoreList() {
     return coreList;
 }
 
+// 获取Esp32c3默认core文件列表
+export function getEsp32c3DefaultCoreList() {
+    const coreList: string[] = [];
+    const defaultCorePath: string = getEsp32c3DefaultCorePath();
+    const files: string[] = fs.readdirSync(defaultCorePath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (path.extname(path.join(defaultCorePath, element)) === '.soc') {
+            coreList.unshift(element);
+        }
+    }
+    return coreList;
+}
+
 // 获取air101默认最新corePath名称
 export function getAir101DefaultLatestCoreName() {
     const air101CorePath: string = getAir101DefaultCorePath();
@@ -544,10 +577,47 @@ export function getAir105DefaultLatestCoreName() {
     return coreName;
 }
 
+// 获取esp32c3默认最新corePath路径
+export function getEsp32c3DefaultLatestCoreName() {
+    const corePath: string = getEsp32c3DefaultCorePath();
+    const coreList: string[] = fs.readdirSync(corePath);
+    const reg = getEsp32c3Reg();
+    let currentVersion = undefined;
+    let coreName = '';
+    for (let index = 0; index < coreList.length; index++) {
+        const currentCoreName: string = coreList[index];
+        if (path.extname(currentCoreName) === '.soc') {
+            const coreNameVersionArray: any = reg.exec(currentCoreName);
+            reg.lastIndex = 0;
+            if (coreNameVersionArray !== null && currentVersion === undefined) {
+                currentVersion = coreNameVersionArray[1];
+                coreName = currentCoreName;
+            }
+            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
+                currentVersion = coreNameVersionArray[1];
+                coreName = currentCoreName;
+            }
+        }
+    }
+    return coreName;
+}
+
+
 // 获取Air105默认最新core完整路径
 export function getAir105DefaultLatestCorePath() {
     const defaultLatestCoreName:string = getAir105DefaultLatestCoreName();
     const defaultCorePath:string = getAir105DefaultCorePath();
+    let defaultLatestCorePath:string = '';
+    if (defaultLatestCoreName!=='') {
+        defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
+    }
+    return defaultLatestCorePath;
+}
+
+// 获取esp32c3默认最新core完整路径
+export function getEsp32c3DefaultLatestCorePath() {
+    const defaultLatestCoreName:string = getEsp32c3DefaultLatestCoreName();
+    const defaultCorePath:string = getEsp32c3DefaultCorePath();
     let defaultLatestCorePath:string = '';
     if (defaultLatestCoreName!=='') {
         defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
@@ -706,6 +776,9 @@ export function getExtnameBaseModel(moduleModel: any) {
         case 'air105':
             extname = '.soc';
             break;
+        case 'esp32c3':
+            extname = '.soc';
+            break;
     }
     return extname;
 }
@@ -727,7 +800,7 @@ export function getCoreListBaseMoudeleMode(moduleModel: any) {
             coreList = getAir105DefaultCoreList();
             break;
         case 'esp32c3':
-            coreList = getAir101DefaultCoreList();
+            coreList = getEsp32c3DefaultCoreList();
             break;
         default:
             coreList = getAir72XUXDefaultCoreList();
