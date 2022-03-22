@@ -387,7 +387,8 @@ export class ProjectConfigOperation {
 				"air101",
                 "air103",
                 "air105",
-				"simulator"
+				"simulator",
+                "esp32c3"
 			],
 			{
 				canPickMany:false,
