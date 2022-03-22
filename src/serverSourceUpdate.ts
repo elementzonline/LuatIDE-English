@@ -16,6 +16,9 @@ import {
     getAir105DefaultCorePath,
     getAir105DefaultDemoPath,
     getAir105DefaultLatestCoreName,
+    getEsp32c3DefaultCorePath,
+    getEsp32c3DefaultDemoPath,
+    getEsp32c3DefaultLatestCoreName,
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
     getAir72XUXDefaultLatestCoreName,
@@ -654,6 +657,14 @@ export async function checkSourceUpdate() {
         const downloadReadyHint: string = '检测到air105的资源文件有更新,是否更新？';
         const downloadingHint: string = '正在为您拉取最新air105资源文件,请耐心等待';
         updateHintForUser(downloadReadyHint, downloadingHint, pullAir105Source);
+    }
+
+    const esp32c3SourceState = await checkEsp32c3SourceUpdate();
+    console.log(esp32c3SourceState);
+    if (esp32c3SourceState) {
+        const downloadReadyHint: string = '检测到Esp32C3的资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新Esp32C3资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullEsp32c3Source);
     }
 }
 // checkSourceUpdate();
