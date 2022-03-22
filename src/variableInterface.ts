@@ -154,7 +154,7 @@ export function getAir103Reg() {
     return reg;
 }
 
-// 获取获取Air101固件版本号正则解析表达式
+// 获取获取Air105固件版本号正则解析表达式
 export function getAir105Reg() {
     const reg = /LuatOS-SoC_V(\d+)_AIR105/ig;
     return reg;
@@ -441,7 +441,7 @@ export function getAir105DefaultCoreList() {
     const files: string[] = fs.readdirSync(defaultCorePath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
-        if (path.extname(path.join(air105DefaultCorePath, element)) === '.soc') {
+        if (path.extname(path.join(defaultCorePath, element)) === '.soc') {
             coreList.unshift(element);
         }
     }
@@ -553,7 +553,7 @@ export function getAir105DefaultLatestCorePath() {
     if (defaultLatestCoreName!=='') {
         defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
     }
-    return air105DefaultLatestCorePath;
+    return defaultLatestCorePath;
 }
 
 // 获取air72XUX默认最新core名称
