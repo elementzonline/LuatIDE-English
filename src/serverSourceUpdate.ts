@@ -16,6 +16,9 @@ import {
     getAir105DefaultCorePath,
     getAir105DefaultDemoPath,
     getAir105DefaultLatestCoreName,
+    getEsp32c3DefaultCorePath,
+    getEsp32c3DefaultDemoPath,
+    getEsp32c3DefaultLatestCoreName,
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
     getAir72XUXDefaultLatestCoreName,
@@ -118,9 +121,21 @@ async function checkAir105SourceUpdate() {
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '105_lua_lod';
     const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
-    // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir105UpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
-    return checkAir105UpdateState;
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);
+}
+
+/*
+*检查esp32c3是否有更新
+*@returns checkEsp32c3UpdateState Esp32c3资源更新状态 true:固件有更新,false:固件没有更新
+*/
+async function checkEsp32c3SourceUpdate() {
+    const localScriptReg = /V([\d]+)_/ig;
+    const localSourceName: string = getEsp32c3DefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
+    const remoteScriptReg = /V([\d]+)\.zip/ig;
+    const apiName: string = 'esp32c3_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);;
 }
 
 /*
@@ -373,16 +388,35 @@ async function pullAir103Source(jsonObj: any, sourceBaseUrl: string) {
 */
 async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
     let sourceAbsloutePath: string = path.join(sourceBaseUrl, '105_lua_lod', jsonObj['105_lua_lod']);
-    const air105CoreSourceTempPath: string = getTempSavePath('105_lua_lod');
-    const sourceDistPath: string = path.join(air105CoreSourceTempPath, jsonObj['105_lua_lod']);
+    const coreSourceTempPath: string = getTempSavePath('105_lua_lod');
+    const sourceDistPath: string = path.join(coreSourceTempPath, jsonObj['105_lua_lod']);
     await download(sourceAbsloutePath, sourceDistPath);
-    await unzip(sourceDistPath, air105CoreSourceTempPath);
-    if (fs.existsSync(path.join(air105CoreSourceTempPath, 'demo'))) {
+    await unzip(sourceDistPath, coreSourceTempPath);
+    if (fs.existsSync(path.join(coreSourceTempPath, 'demo'))) {
         const demoDistPath: string = getAir105DefaultDemoPath();
-        air105DemoHandle(path.join(air105CoreSourceTempPath, 'demo'), demoDistPath);
+        air105DemoHandle(path.join(coreSourceTempPath, 'demo'), demoDistPath);
     }
-    air105CoreHandle(air105CoreSourceTempPath);
-    await deleteFolderRecursive(air105CoreSourceTempPath);
+    air105CoreHandle(coreSourceTempPath);
+    await deleteFolderRecursive(coreSourceTempPath);
+}
+
+/*
+*从远端服务器拉取esp32的资源
+*@param jsonObj 从远端服务器获取到的资源名称json数据对象
+*@param sourceBaseUrl 远端资源基础url
+*/
+async function pullEsp32c3Source(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, 'esp32c3_lua_lod', jsonObj['esp32c3_lua_lod']);
+    const coreSourceTempPath: string = getTempSavePath('esp32c3_lua_lod');
+    const sourceDistPath: string = path.join(coreSourceTempPath, jsonObj['esp32c3_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, coreSourceTempPath);
+    if (fs.existsSync(path.join(coreSourceTempPath, 'demo'))) {
+        const demoDistPath: string = getEsp32c3DefaultDemoPath();
+        esp32c3DemoHandle(path.join(coreSourceTempPath, 'demo'), demoDistPath);
+    }
+    esp32c3CoreHandle(coreSourceTempPath);
+    await deleteFolderRecursive(coreSourceTempPath);
 }
 
 /*
@@ -390,12 +424,12 @@ async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
 *@param coreSourcePath air105固件资源临时存储路径
 */
 function air105CoreHandle(coreSourcePath: string) {
-    const air101CoreDistPath: string = getAir105DefaultCorePath();
+    const coreDistPath: string = getAir105DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         if (extname === '.soc') {
-            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air101CoreDistPath, fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(coreDistPath, fileName));
         }
     });
 }
@@ -409,6 +443,37 @@ function air105DemoHandle(sourceDir: string, distDir: string) {
     demoNameArray.forEach((demoName) => {
         if (fs.existsSync(path.join(sourceDir, demoName, 'Air105'))) {
             copyDir(path.join(sourceDir, demoName, 'Air105'), path.join(distDir, demoName));
+        }
+        else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
+        }
+    });
+}
+
+/*
+*处理拉取到临时文件夹的esp32c3固件 
+*@param coreSourcePath esp32c3固件资源临时存储路径
+*/
+function esp32c3CoreHandle(coreSourcePath: string) {
+    const coreDistPath: string = getEsp32c3DefaultCorePath();
+    const files = fs.readdirSync(coreSourcePath);
+    files.forEach((fileName) => {
+        const extname = path.extname(fileName);
+        if (extname === '.soc') {
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(coreDistPath, fileName));
+        }
+    });
+}
+
+/*
+*处理拉取到临时文件夹的esp32c3 demo
+*@param coreSourcePath esp32c3固件资源临时存储路径
+*/
+function esp32c3DemoHandle(sourceDir: string, distDir: string) {
+    const demoNameArray = fs.readdirSync(sourceDir);
+    demoNameArray.forEach((demoName) => {
+        if (fs.existsSync(path.join(sourceDir, demoName, 'esp32'))) {
+            copyDir(path.join(sourceDir, demoName, 'esp32'), path.join(distDir, demoName));
         }
         else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
             copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
@@ -592,6 +657,14 @@ export async function checkSourceUpdate() {
         const downloadReadyHint: string = '检测到air105的资源文件有更新,是否更新？';
         const downloadingHint: string = '正在为您拉取最新air105资源文件,请耐心等待';
         updateHintForUser(downloadReadyHint, downloadingHint, pullAir105Source);
+    }
+
+    const esp32c3SourceState = await checkEsp32c3SourceUpdate();
+    console.log(esp32c3SourceState);
+    if (esp32c3SourceState) {
+        const downloadReadyHint: string = '检测到Esp32C3的资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新Esp32C3资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullEsp32c3Source);
     }
 }
 // checkSourceUpdate();

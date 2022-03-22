@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
+import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath,getEsp32c3DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
 // import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
@@ -933,6 +933,7 @@ end
         const air101DefaultDemoPath: string = getAir101DefaultDemoPath();
         const air103DefaultDemoPath: string = getAir103DefaultDemoPath();
         const air105DefaultDemoPath: string = getAir105DefaultDemoPath();
+        const esp32c3DefaultDemoPath: string = getEsp32c3DefaultDemoPath();
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
                 const air72XUXDefaultVersionDemoPath: string = getAir72XUXDefaultLatestDemoPath();
@@ -957,8 +958,7 @@ end
                 copyDir(demoPath, projectDemoDistPath);
                 break;
             case 'esp32c3':
-                // esp32 demo暂未出来,先使用101的demo
-                demoPath = path.join(air101DefaultDemoPath, projectDemo);
+                demoPath = path.join(esp32c3DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
         }
