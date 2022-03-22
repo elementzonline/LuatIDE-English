@@ -190,20 +190,7 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
     return corePath;
 }
 
-// 接收到的webview发送的esp32c3的core处理
-export function getCreateProjectEsp32CorepathHandle(corePath:string){
-    const esp32c3DefaultCorePath = getEsp32c3DefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getAir101DefaultLatestCorePath();
-    }
-    else{
-        corePath = path.join(esp32c3DefaultCorePath,corePath);
-    }
-    return corePath;
-}
+
 
 // 接收到的webview发送的air101的core处理
 export function getCreateProjectAir101CorepathHandle(corePath:string){
