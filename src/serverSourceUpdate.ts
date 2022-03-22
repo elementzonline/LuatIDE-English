@@ -398,6 +398,25 @@ async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
 }
 
 /*
+*从远端服务器拉取esp32的资源
+*@param jsonObj 从远端服务器获取到的资源名称json数据对象
+*@param sourceBaseUrl 远端资源基础url
+*/
+async function pullEsp32c3Source(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, 'esp32c3_lua_lod', jsonObj['esp32c3_lua_lod']);
+    const coreSourceTempPath: string = getTempSavePath('esp32c3_lua_lod');
+    const sourceDistPath: string = path.join(coreSourceTempPath, jsonObj['esp32c3_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, coreSourceTempPath);
+    if (fs.existsSync(path.join(coreSourceTempPath, 'demo'))) {
+        const demoDistPath: string = getEsp32c3DefaultDemoPath();
+        esp32c3DemoHandle(path.join(coreSourceTempPath, 'demo'), demoDistPath);
+    }
+    esp32c3CoreHandle(coreSourceTempPath);
+    await deleteFolderRecursive(coreSourceTempPath);
+}
+
+/*
 *处理拉取到临时文件夹的air105固件 
 *@param coreSourcePath air105固件资源临时存储路径
 */
