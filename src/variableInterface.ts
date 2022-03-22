@@ -315,20 +315,6 @@ export function getAir72XUXDefaultExampleList() {
     return demoList;
 }
 
-// 获取esp32c3默认示例demo列表
-export function getEsp32c3DefaultExampleList() {
-    const demoList: string[] = [];
-    const air101DefaultDemoPath: string = getAir101DefaultDemoPath();
-    const files: string[] = fs.readdirSync(air101DefaultDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(air101DefaultDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
 // 获取Air101默认示例demo列表
 export function getAir101DefaultExampleList() {
     const demoList: string[] = [];
@@ -361,6 +347,20 @@ export function getAir103DefaultExampleList() {
 export function getAir105DefaultExampleList() {
     const demoList: string[] = [];
     const defaultDemoPath: string = getAir105DefaultDemoPath();
+    const files: string[] = fs.readdirSync(defaultDemoPath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (fs.statSync(path.join(defaultDemoPath, element)).isDirectory()) {
+            demoList.push(element);
+        }
+    }
+    return demoList;
+}
+
+// 获取Esp32c3默认示例demo列表
+export function getEsp32c3DefaultExampleList() {
+    const demoList: string[] = [];
+    const defaultDemoPath: string = getEsp32c3DefaultDemoPath();
     const files: string[] = fs.readdirSync(defaultDemoPath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
