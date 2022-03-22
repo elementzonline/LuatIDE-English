@@ -82,8 +82,8 @@ export function getAir103DefaultCorePath() {
 
 // 获取105默认core文件存储路径
 export function getAir105DefaultCorePath() {
-    const air105DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
-    return air105DefaultCorePath;
+    const defaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
+    return defaultCorePath;
 }
 
 // 获取Air72XUX lib存储路径
@@ -112,8 +112,8 @@ export function getAir103DefaultDemoPath() {
 
 // 获取air105默认demo
 export function getAir105DefaultDemoPath() {
-    const air105DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
-    return air105DefaultDemoPath;
+    const defaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
+    return defaultDemoPath;
 }
 
 // 依据模块型号获取core路径
@@ -361,11 +361,11 @@ export function getAir103DefaultExampleList() {
 // 获取Air105默认示例demo列表
 export function getAir105DefaultExampleList() {
     const demoList: string[] = [];
-    const air105DefaultDemoPath: string = getAir105DefaultDemoPath();
-    const files: string[] = fs.readdirSync(air105DefaultDemoPath);
+    const defaultDemoPath: string = getAir105DefaultDemoPath();
+    const files: string[] = fs.readdirSync(defaultDemoPath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
-        if (fs.statSync(path.join(air105DefaultDemoPath, element)).isDirectory()) {
+        if (fs.statSync(path.join(defaultDemoPath, element)).isDirectory()) {
             demoList.push(element);
         }
     }
@@ -437,8 +437,8 @@ export function getAir103DefaultCoreList() {
 // 获取air105默认core文件列表
 export function getAir105DefaultCoreList() {
     const coreList: string[] = [];
-    const air105DefaultCorePath: string = getAir105DefaultCorePath();
-    const files: string[] = fs.readdirSync(air105DefaultCorePath);
+    const defaultCorePath: string = getAir105DefaultCorePath();
+    const files: string[] = fs.readdirSync(defaultCorePath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
         if (path.extname(path.join(air105DefaultCorePath, element)) === '.soc') {
@@ -522,8 +522,8 @@ export function getAir103DefaultLatestCorePath() {
 
 // 获取air105默认最新corePath路径
 export function getAir105DefaultLatestCoreName() {
-    const air105CorePath: string = getAir105DefaultCorePath();
-    const coreList: string[] = fs.readdirSync(air105CorePath);
+    const corePath: string = getAir105DefaultCorePath();
+    const coreList: string[] = fs.readdirSync(corePath);
     const reg = getAir105Reg();
     let currentVersion = undefined;
     let coreName = '';
@@ -547,11 +547,11 @@ export function getAir105DefaultLatestCoreName() {
 
 // 获取Air105默认最新core完整路径
 export function getAir105DefaultLatestCorePath() {
-    const air105DefaultLatestCoreName:string = getAir105DefaultLatestCoreName();
-    const air105DefaultCorePath:string = getAir105DefaultCorePath();
-    let air105DefaultLatestCorePath:string = '';
-    if (air105DefaultLatestCoreName!=='') {
-        air105DefaultLatestCorePath = path.join(air105DefaultCorePath,air105DefaultLatestCoreName);
+    const defaultLatestCoreName:string = getAir105DefaultLatestCoreName();
+    const defaultCorePath:string = getAir105DefaultCorePath();
+    let defaultLatestCorePath:string = '';
+    if (defaultLatestCoreName!=='') {
+        defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
     }
     return air105DefaultLatestCorePath;
 }
