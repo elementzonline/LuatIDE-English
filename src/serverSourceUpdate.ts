@@ -448,6 +448,37 @@ function air105DemoHandle(sourceDir: string, distDir: string) {
 }
 
 /*
+*处理拉取到临时文件夹的esp32c3固件 
+*@param coreSourcePath esp32c3固件资源临时存储路径
+*/
+function esp32c3CoreHandle(coreSourcePath: string) {
+    const coreDistPath: string = getEsp32c3DefaultCorePath();
+    const files = fs.readdirSync(coreSourcePath);
+    files.forEach((fileName) => {
+        const extname = path.extname(fileName);
+        if (extname === '.soc') {
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(coreDistPath, fileName));
+        }
+    });
+}
+
+/*
+*处理拉取到临时文件夹的esp32c3 demo
+*@param coreSourcePath esp32c3固件资源临时存储路径
+*/
+function esp32c3DemoHandle(sourceDir: string, distDir: string) {
+    const demoNameArray = fs.readdirSync(sourceDir);
+    demoNameArray.forEach((demoName) => {
+        if (fs.existsSync(path.join(sourceDir, demoName, 'esp32'))) {
+            copyDir(path.join(sourceDir, demoName, 'esp32'), path.join(distDir, demoName));
+        }
+        else if (fs.existsSync(path.join(sourceDir, demoName, 'main.lua'))) {
+            copyDir(path.join(sourceDir, demoName), path.join(distDir, demoName));
+        }
+    });
+}
+
+/*
 *处理拉取到临时文件夹的air103 DEMO 
 *@param sourceDir air103 DEMO临时存储路径
 *@param distDir air103 demo将要存储的路径
