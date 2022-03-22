@@ -118,9 +118,7 @@ async function checkAir105SourceUpdate() {
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '105_lua_lod';
     const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
-    // console.log(localScriptVersion,remoteScriptVersion);
-    const checkAir105UpdateState: boolean | undefined = checkUpdateState(localScriptVersion, remoteScriptVersion);
-    return checkAir105UpdateState;
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);
 }
 
 /*
@@ -373,16 +371,16 @@ async function pullAir103Source(jsonObj: any, sourceBaseUrl: string) {
 */
 async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
     let sourceAbsloutePath: string = path.join(sourceBaseUrl, '105_lua_lod', jsonObj['105_lua_lod']);
-    const air105CoreSourceTempPath: string = getTempSavePath('105_lua_lod');
-    const sourceDistPath: string = path.join(air105CoreSourceTempPath, jsonObj['105_lua_lod']);
+    const coreSourceTempPath: string = getTempSavePath('105_lua_lod');
+    const sourceDistPath: string = path.join(coreSourceTempPath, jsonObj['105_lua_lod']);
     await download(sourceAbsloutePath, sourceDistPath);
-    await unzip(sourceDistPath, air105CoreSourceTempPath);
-    if (fs.existsSync(path.join(air105CoreSourceTempPath, 'demo'))) {
+    await unzip(sourceDistPath, coreSourceTempPath);
+    if (fs.existsSync(path.join(coreSourceTempPath, 'demo'))) {
         const demoDistPath: string = getAir105DefaultDemoPath();
-        air105DemoHandle(path.join(air105CoreSourceTempPath, 'demo'), demoDistPath);
+        air105DemoHandle(path.join(coreSourceTempPath, 'demo'), demoDistPath);
     }
-    air105CoreHandle(air105CoreSourceTempPath);
-    await deleteFolderRecursive(air105CoreSourceTempPath);
+    air105CoreHandle(coreSourceTempPath);
+    await deleteFolderRecursive(coreSourceTempPath);
 }
 
 /*
@@ -390,12 +388,12 @@ async function pullAir105Source(jsonObj: any, sourceBaseUrl: string) {
 *@param coreSourcePath air105固件资源临时存储路径
 */
 function air105CoreHandle(coreSourcePath: string) {
-    const air101CoreDistPath: string = getAir105DefaultCorePath();
+    const coreDistPath: string = getAir105DefaultCorePath();
     const files = fs.readdirSync(coreSourcePath);
     files.forEach((fileName) => {
         const extname = path.extname(fileName);
         if (extname === '.soc') {
-            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air101CoreDistPath, fileName));
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(coreDistPath, fileName));
         }
     });
 }
