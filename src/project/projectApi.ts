@@ -185,7 +185,7 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
             corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
             break;
         case 'esp32c3':
-            corePath = getCreateProjectEsp32CorepathHandle(corePath);
+            corePath = getCreateProjectEsp32c3CorepathHandle(corePath);
     }
     return corePath;
 }
