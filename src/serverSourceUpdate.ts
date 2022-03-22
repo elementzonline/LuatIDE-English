@@ -122,6 +122,20 @@ async function checkAir105SourceUpdate() {
 }
 
 /*
+*检查esp32c3是否有更新
+*@returns checkEsp32c3UpdateState Esp32c3资源更新状态 true:固件有更新,false:固件没有更新
+*/
+async function checkEsp32c3SourceUpdate() {
+    const localScriptReg = /V([\d]+)_/ig;
+    const localSourceName: string = getEsp32c3DefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
+    const remoteScriptReg = /V([\d]+)\.zip/ig;
+    const apiName: string = 'esp32c3_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);;
+}
+
+/*
 *检查服务器是否有新的版本更新，通过输入本地资源版本号及远端资源版本号进行比对
 *@param localSourceVersion 本地资源版本号
 *@param remoteSourceVersion 远端资源版本号
