@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-18 17:47:10
+ * @LastEditTime: 2022-03-23 18:01:49
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -109,11 +109,13 @@ export async function open(serverRecvCb: Function|null) {
         console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
         gSocketHandle = null;
+        vscode.debug.stopDebugging();
     });
     gSocketHandle?.on('end', () => {
         console.log(TAG, '>> client connection end');
         gSocketHandle?.destroy();
         gSocketHandle = null;
+        vscode.debug.stopDebugging();
     });
     gSocketHandle?.on('data', (data: Buffer) => {
         if (serverRecvCb !== null) {
