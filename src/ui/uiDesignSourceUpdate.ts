@@ -105,7 +105,7 @@ async function uiDesignPullHandle(url:string,dir:string){
 }
 
 // ui设计器工程下载检测处理
-export async function uiProjectHandle() {
+export async function uiProjectCheckUpdate() {
     if (uiDesignFlag === false) {
         return;
     }
