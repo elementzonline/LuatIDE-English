@@ -273,9 +273,8 @@ export class HomeManage {
                         vscode.window.showInformationMessage("LuatTools 工程导入成功");
                         // 执行激活工程到活动工程操作
                         setPluginConfigActivityProject(path.join(importLuatToolsData[0], importLuatToolsData[1]));
-                        projectActiveInterfact(importLuatToolsData[1], importLuatToolsData[0]);
+                        projectActiveInterfact(importLuatToolsData[1], path.join(importLuatToolsData[0], importLuatToolsData[1]));
                         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
-                        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                     }
                 }
                 else{
