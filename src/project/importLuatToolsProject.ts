@@ -153,6 +153,12 @@ export class importLuatToolsProjectClass {
                         let temDes = path.basename(temDir);
                         fs.mkdirSync(path.join(luatToolsProjectFloder, temDes));
                         fileJson["data"].push(temDes);
+                        /* 判断文件是否存在 */
+                        for (let i = 0; i < analyRes[key].length; i++){
+                            if (!fs.existsSync(path.join(temDir, analyRes[key][i]))) {
+                                return "ERROR: " + path.join(temDir, analyRes[key][i]);
+                            }
+                        }
                         analyRes[key].forEach((e: any) => {
                             fs.copyFileSync(path.join(temDir, e), path.join(luatToolsProjectFloder, temDes, e));
                             fileJson["data"].push(path.join(temDes, e));
