@@ -3,8 +3,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigPath, getAir72XUXDefaultLatestLibPath } from '../variableInterface';
 
-
-
 export class importLuatToolsProjectClass {
     constructor() {
     }
@@ -21,6 +19,9 @@ export class importLuatToolsProjectClass {
         const importLuatToolsProjectPath: any = await this.getLuatToolsImportPath(options);
         if (importLuatToolsProjectPath === undefined) {
             return undefined;
+        }
+        if (importLuatToolsProjectPath === "core find failed"){
+            return "core find failed";
         }
         return importLuatToolsProjectPath;
     }
@@ -65,6 +66,11 @@ export class importLuatToolsProjectClass {
                         }
                     }
                 });
+
+                if (!analyObj["corePath"] || analyObj["corePath"][0] === "" || !fs.existsSync(analyObj["corePath"][0])){
+                    return "core find failed";
+                }
+                
                 return analyObj;
             }
             return undefined;
@@ -85,6 +91,9 @@ export class importLuatToolsProjectClass {
             const analyRes = await this.analyzeLuatToolsIniFile(importProjectPath);
             if (!analyRes){
                 return undefined;
+            }
+            if (analyRes === "core find failed"){
+                return "core find failed";
             }
 
             /* 选择工程的保存地址 */
