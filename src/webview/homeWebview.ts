@@ -14,12 +14,16 @@ import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
+import { importLuatToolsProjectClass } from '../project/importLuatToolsProject';
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
 // let projectJsonParse = new ProjectJsonParse();
 let openProject = new OpenProject();
+/* 导入 LuatTools 项目对象实例化 */
+let importLuatToolsProject = new importLuatToolsProjectClass();
+
 export const sleep = (ms)=> {
     return new Promise(resolve=>setTimeout(resolve, ms));
   };
@@ -253,6 +257,22 @@ export class HomeManage {
                             text: this.openProjectJson
                         }
                     );
+                }
+                else{
+                    return undefined;
+                }
+                break;
+                /* 导入 LuatTools 项目 */ 
+            case 'importLuatToolsProject':
+                /* 获取导入的 LuatTools 项目的导入数据 */
+                const importLuatToolsData: any = await importLuatToolsProject.openFileSystemControl(context);
+                if (importLuatToolsData !== undefined) {
+                    vscode.window.showInformationMessage("LuatTools 工程导入成功");
+                    // 执行激活工程到活动工程操作
+                    setPluginConfigActivityProject(path.join(importLuatToolsData[0], importLuatToolsData[1]));
+                    projectActiveInterfact(importLuatToolsData[1], importLuatToolsData[0]);
+                    vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 }
                 else{
                     return undefined;
