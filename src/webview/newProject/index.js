@@ -462,7 +462,6 @@ $(".nP-select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             /* 目前 Air10X 没有 lib */
             nP_isInAir101 = true;
             nP_isInAirCx72 = false;
@@ -496,6 +495,19 @@ $(".nP-select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             nP_addOptionToSelect(libSelected, nP_temPureProjectData.libList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, nP_temPureProjectData.coreList, nP_moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
+            $(".tip_spaceLib").show();
+            break;
+        case nP_moduleSeven:
+            /* 目前 Air10X 没有 lib */
+            nP_isInAir101 = true;
+            nP_isInAirCx72 = false;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            nP_addOptionToSelect(libSelected, nP_temPureProjectData.libList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, nP_temPureProjectData.coreList, nP_moduleSeven);
             /* 添加自定义选项 */
             libSelected.append('<option class="space_customeLibOption">自定义</option>');
             coreSelected.append('<option class="space_customeCoreOption">自定义</option>');
@@ -542,7 +554,6 @@ function pureProjectInitDataManagment(initData) {
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleThree);
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_addOptionToSelect(libSelected, initData.libList, nP_moduleFour);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleFour);
             break;
@@ -553,6 +564,10 @@ function pureProjectInitDataManagment(initData) {
         case nP_moduleSix:
             nP_addOptionToSelect(libSelected, initData.libList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSix);
+            break;
+        case nP_moduleSeven:
+            nP_addOptionToSelect(libSelected, initData.libList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSeven);
             break;
         default:
             break;
@@ -623,7 +638,6 @@ $(".nP-select_getExample_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             nP_addOptionToSelect(exampleSelected, nP_temExampleProjectData.exampleList, nP_moduleFour);
@@ -642,6 +656,13 @@ $(".nP-select_getExample_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             nP_addOptionToSelect(exampleSelected, nP_temExampleProjectData.exampleList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, nP_temExampleProjectData.coreList, nP_moduleSix);
+            coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
+            break;
+        case nP_moduleSeven:
+            nP_isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
+            nP_addOptionToSelect(exampleSelected, nP_temExampleProjectData.exampleList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, nP_temExampleProjectData.coreList, nP_moduleSeven);
             coreSelected.append('<option class="example_customeCoreOption">自定义</option>');
             break;
         default:
@@ -681,7 +702,6 @@ function exampleProjectInitDataManagment(initData) {
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleThree);
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleFour);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleFour);
             break;
@@ -692,6 +712,10 @@ function exampleProjectInitDataManagment(initData) {
         case nP_moduleSix:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSix);
+            break;
+        case nP_moduleSeven:
+            nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSeven);
             break;
         default:
             break;
@@ -771,7 +795,6 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
             });
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleFour);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
@@ -787,6 +810,13 @@ $(".nP-select_getNDK_ModuleInfo").on("change", function () {
             break;
         case nP_moduleSix:
             // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSix);
+            exampleSelected.prop("disabled", true);
+            exampleSelected.css({
+                "opacity": "0.4"
+            });
+            break;
+        case nP_moduleSeven:
+            // nP_addOptionToSelect(exampleSelected, nP_temNdkProjectData.exampleList, nP_moduleSeven);
             exampleSelected.prop("disabled", true);
             exampleSelected.css({
                 "opacity": "0.4"
@@ -837,7 +867,6 @@ function ndkProjectInitDataManagment(initData) {
             exampleSelected.prop("disabled", true);
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleFour);
             exampleSelected.prop("disabled", true);
             break;
@@ -847,6 +876,10 @@ function ndkProjectInitDataManagment(initData) {
             break;
         case nP_moduleSix:
             nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleSix);
+            exampleSelected.prop("disabled", true);
+            break;
+        case nP_moduleSeven:
+            nP_addOptionToSelect(exampleSelected, initData.exampleList, nP_moduleSeven);
             exampleSelected.prop("disabled", true);
             break;
         default:
@@ -937,7 +970,6 @@ $(".nP-select_getUi_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_isInAirCx72 = false;
             nP_isInAir101 = true;
             libSelected.prop("disabled", true);
@@ -968,6 +1000,18 @@ $(".nP-select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             nP_addOptionToSelect(libSelected, nP_temUiProjectData.libList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, nP_temUiProjectData.coreList, nP_moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
+            $(".tip_uiLib").show();
+            break;
+        case nP_moduleSeven:
+            nP_isInAirCx72 = false;
+            nP_isInAir101 = true;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            nP_addOptionToSelect(libSelected, nP_temUiProjectData.libList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, nP_temUiProjectData.coreList, nP_moduleSeven);
             /* 添加自定义选项 */
             libSelected.append('<option class="ui_customeLibOption">自定义</option>');
             coreSelected.append('<option class="ui_customeCoreOption">自定义</option>');
@@ -1014,7 +1058,6 @@ function uiProjectInitDataManagment(initData) {
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleThree);
             break;
         case nP_moduleFour:
-        case nP_moduleSeven:
             nP_addOptionToSelect(libSelected, initData.libList, nP_moduleFour);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleFour);
             break;
@@ -1025,6 +1068,10 @@ function uiProjectInitDataManagment(initData) {
         case nP_moduleSix:
             nP_addOptionToSelect(libSelected, initData.libList, nP_moduleSix);
             nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSix);
+            break;
+        case nP_moduleSeven:
+            nP_addOptionToSelect(libSelected, initData.libList, nP_moduleSeven);
+            nP_addOptionToSelect(coreSelected, initData.coreList, nP_moduleSeven);
             break;
         default:
             break;
@@ -1126,14 +1173,6 @@ function changeThemeColor(style) {
 }
 
 
-/* 发起请求通知 VsCode 进行数据通信 */
-function htmlInit(){
-    vscode.postMessage({
-        command: "homePageReady",
-    });
-}
-htmlInit();
-
 
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
@@ -1221,3 +1260,12 @@ window.addEventListener('message', event => {
             break;
     }
 });
+
+
+/* 发起请求通知 VsCode 进行数据通信 */
+function htmlInit(){
+    vscode.postMessage({
+        command: "homePageReady",
+    });
+}
+htmlInit();

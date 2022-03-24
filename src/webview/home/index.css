@@ -396,12 +396,12 @@ i {
 
 .operatBox ul li {
   list-style: none;
-  margin: 60px;
+  margin: 32px 110px;
 }
 
 .select {
-  width: 280px;
-  height: 70px;
+  width: 260px;
+  height: 65px;
   background: none;
   outline: none;
   border-radius: 2px;

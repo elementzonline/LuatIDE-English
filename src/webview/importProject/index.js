@@ -412,7 +412,6 @@ $(".iP-select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="iP_space_customeCoreOption">自定义</option>');
             break;
         case iP_moduleFour:
-        case iP_moduleSeven:
             /* 目前 Air10X 没有 lib */
             iP_isInAir101 = true;
             iP_isInAirCx72 = false;
@@ -444,6 +443,18 @@ $(".iP-select_getSpace_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             iP_addOptionToSelect(libSelected, iP_temPureProjectData.libList, iP_moduleSix);
             iP_addOptionToSelect(coreSelected, iP_temPureProjectData.coreList, iP_moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="iP_space_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="iP_space_customeCoreOption">自定义</option>');
+            break;
+        case iP_moduleSeven:
+            /* 目前 Air10X 没有 lib */
+            iP_isInAir101 = true;
+            iP_isInAirCx72 = false;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            iP_addOptionToSelect(libSelected, iP_temPureProjectData.libList, iP_moduleSeven);
+            iP_addOptionToSelect(coreSelected, iP_temPureProjectData.coreList, iP_moduleSeven);
             /* 添加自定义选项 */
             libSelected.append('<option class="iP_space_customeLibOption">自定义</option>');
             coreSelected.append('<option class="iP_space_customeCoreOption">自定义</option>');
@@ -534,7 +545,6 @@ $(".iP-select_getExample_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="iP_example_customeCoreOption">自定义</option>');
             break;
         case iP_moduleFour:
-        case iP_moduleSeven:
             iP_isInAirCx72 = false;
             coreSelected.prop("disabled", false);
             iP_addOptionToSelect(exampleSelected, iP_temExampleProjectData.exampleList, iP_moduleFour);
@@ -553,6 +563,13 @@ $(".iP-select_getExample_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             iP_addOptionToSelect(exampleSelected, iP_temExampleProjectData.exampleList, iP_moduleSix);
             iP_addOptionToSelect(coreSelected, iP_temExampleProjectData.coreList, iP_moduleSix);
+            coreSelected.append('<option class="iP_example_customeCoreOption">自定义</option>');
+            break;
+        case iP_moduleSeven:
+            iP_isInAirCx72 = false;
+            coreSelected.prop("disabled", false);
+            iP_addOptionToSelect(exampleSelected, iP_temExampleProjectData.exampleList, iP_moduleSeven);
+            iP_addOptionToSelect(coreSelected, iP_temExampleProjectData.coreList, iP_moduleSeven);
             coreSelected.append('<option class="iP_example_customeCoreOption">自定义</option>');
             break;
         default:
@@ -640,7 +657,6 @@ $(".iP-select_getNDK_ModuleInfo").on("change", function () {
             iP_addOptionToSelect(exampleSelected, iP_temNdkProjectData.exampleList, iP_moduleThree);
             break;
         case iP_moduleFour:
-        case iP_moduleSeven:
             iP_addOptionToSelect(exampleSelected, iP_temNdkProjectData.exampleList, iP_moduleFour);
             break;
         case iP_moduleFive:
@@ -648,6 +664,9 @@ $(".iP-select_getNDK_ModuleInfo").on("change", function () {
             break;
         case iP_moduleSix:
             iP_addOptionToSelect(exampleSelected, iP_temNdkProjectData.exampleList, iP_moduleSix);
+            break;
+        case iP_moduleSeven:
+            iP_addOptionToSelect(exampleSelected, iP_temNdkProjectData.exampleList, iP_moduleSeven);
             break;
         default:
             break;
@@ -751,7 +770,6 @@ $(".iP-select_getUi_ModuleInfo").on("change", function () {
             coreSelected.append('<option class="iP_ui_customeCoreOption">自定义</option>');
             break;
         case iP_moduleFour:
-        case iP_moduleSeven:
             iP_isInAirCx72 = false;
             iP_isInAir101 = true;
             libSelected.prop("disabled", true);
@@ -782,6 +800,18 @@ $(".iP-select_getUi_ModuleInfo").on("change", function () {
             coreSelected.prop("disabled", false);
             iP_addOptionToSelect(libSelected, iP_temUiProjectData.libList, iP_moduleSix);
             iP_addOptionToSelect(coreSelected, iP_temUiProjectData.coreList, iP_moduleSix);
+            /* 添加自定义选项 */
+            libSelected.append('<option class="iP_ui_customeLibOption">自定义</option>');
+            coreSelected.append('<option class="iP_ui_customeCoreOption">自定义</option>');
+            $(".tip_uiLib").show();
+            break;
+        case iP_moduleSeven:
+            iP_isInAirCx72 = false;
+            iP_isInAir101 = true;
+            libSelected.prop("disabled", true);
+            coreSelected.prop("disabled", false);
+            iP_addOptionToSelect(libSelected, iP_temUiProjectData.libList, iP_moduleSeven);
+            iP_addOptionToSelect(coreSelected, iP_temUiProjectData.coreList, iP_moduleSeven);
             /* 添加自定义选项 */
             libSelected.append('<option class="iP_ui_customeLibOption">自定义</option>');
             coreSelected.append('<option class="iP_ui_customeCoreOption">自定义</option>');

@@ -30,6 +30,11 @@ $(".openProject").on("click", function () {
     command: 'openProjectWebview'
   });
 });
+$(".openLuatToolsProject").on("click", function () {
+  vscode.postMessage({
+    command: 'importLuatToolsProject'
+  });
+});
 
 
 /* 技术支持 */
