@@ -13,7 +13,7 @@ import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103Default
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
-import { uiProjectHandle } from '../ui/uiDesignSourceUpdate';
+import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
@@ -385,7 +385,7 @@ export class HomeManage {
                         );
                         break;
                     case 'ui':
-                        await uiProjectHandle();
+                        await uiDesignUpdate.uiProjectCheckUpdate();
                         // 传送ui工程所需数据
                         homePanel.webview.postMessage(
                             {

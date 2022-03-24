@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as vscode  from 'vscode';
 import * as fs from 'fs';
+import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigType, pushProjectConfigAppFile } from '../project/projectConfigParse';
 import { getLuatIDEDataPath, getUiDesignDefaultPath } from '../variableInterface';
@@ -22,6 +23,8 @@ export class UiDesign{
             vscode.window.showErrorMessage('非UI工程不支持UI设计器相关功能,请新建UI工程后重试',{modal:true});
             return;
         }
+        // 打开UI设计器之前先检查UI设计器是否需要下载/更新
+        await uiDesignUpdate.uiProjectCheckUpdate();
         const uiDesignPath:string = getUiDesignDefaultPath();
         if (fs.existsSync(path.join(uiDesignPath,'vscode-ext','lvgl-editor','vscode-polyfill.js'))) {
             const projectLuatIDEPath:string = path.join(activityProjectPath,'.luatide');
