@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-17 16:11:48
- * @LastEditTime: 2022-02-25 16:12:10
+ * @LastEditTime: 2022-03-25 15:21:07
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\ndk\ndkbuild.ts
@@ -17,6 +17,8 @@ const { Subject } = require('await-notify');
 import { popProjectConfigAppFile, pushProjectConfigAppFile } from '../project/projectConfigParse';
 
 import { getNdkDefaultPath } from "../variableInterface";
+
+const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
 
 export function getExampleList() {
@@ -55,9 +57,9 @@ export async function resourceCopyProject(activeWorkspace: string) {
 
 export async function build(activeWorkspace: string) {
     const ndkPath: string = getNdkDefaultPath();
-    console.log("Start compiling the NDK, please wait");
-    console.log("ndk project path:", activeWorkspace);
-    console.log("ndk Compilation tool chain path:", ndkPath);
+    console.log(TAG, "Start compiling the NDK, please wait");
+    console.log(TAG, "ndk project path:", activeWorkspace);
+    console.log(TAG, "ndk Compilation tool chain path:", ndkPath);
 
     let ndkBuildLibPath: string = path.join(activeWorkspace, "ndk", "build", "user.lib");
 
@@ -66,13 +68,13 @@ export async function build(activeWorkspace: string) {
     // 如果NDK工程中build目录存在，先删除掉，后面通过build目录中的user.lib判断是否编译成功
     let ndkBuildPath: string = path.join(activeWorkspace, "ndk", "build");
     if (fs.existsSync(ndkBuildPath) === true) {
-        console.log("If the build directory exists, delete the directory");
+        console.log(TAG, "If the build directory exists, delete the directory");
         deleteFolder(ndkBuildPath);
     }
 
     // 开始编译
     const pathExeNew = path.join(activeWorkspace, "ndk", "build.bat");
-    console.log(pathExeNew);
+    console.log(TAG, pathExeNew);
     const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE", 'NDK build');
 
     task.execution = new vscode.ShellExecution(pathExeNew, [ndkPath]);
@@ -89,9 +91,8 @@ export async function build(activeWorkspace: string) {
     // 这里订阅的Task结束事件，不区分Task，所有的的Task的时间都会过来，
     // 所以在用完通知之后需要使用dispose取消订阅
     let onDidEndTaskHand = vscode.tasks.onDidEndTask(function (event: any) {
-        console.log(event);
-        if(event.execution._task._name==="LuatIDE" && event.execution._task._source==="NDK build")
-        {
+        console.log(TAG, event);
+        if (event.execution._task._name === "LuatIDE" && event.execution._task._source === "NDK build") {
             taskRunStatus = true;
         }
     });
@@ -101,7 +102,7 @@ export async function build(activeWorkspace: string) {
     while (1) {
         if (taskRunStatus === false) {
             await timesleep.wait(1000);
-            console.log("Wait for the NDK compilation task to finish!");
+            console.log(TAG, "Wait for the NDK compilation task to finish!");
         }
         else {
             // 取消订阅这个消息
