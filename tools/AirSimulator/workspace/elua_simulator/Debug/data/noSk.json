@@ -1,23 +1,23 @@
 {
     "buttonRectXYXY": [
-        [
-            90,
-            979,
-            168,
-            1051
-        ],
-        [
-            237,
-            979,
-            328,
-            1051
-        ],
-        [
-            395,
-            979,
-            486,
-            1051
-        ]
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
     ],
     "buttonSize": 3,
     "moveRectXYXY": [
@@ -28,7 +28,7 @@
     ],
     "picMaskName": "data/phonemaskU.bmp",
     "picName": "data/phoneU.bmp",
-    "showDirection": 0,
+    "showDirection": 1,
     "showRectXYWH": [
         35,
         112,
