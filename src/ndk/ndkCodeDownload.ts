@@ -5,11 +5,13 @@ import { getNdkDefaultPath } from '../variableInterface';
 import git = require('isomorphic-git');
 import http = require('isomorphic-git/http/node');
 
+const TAG = "[LuatIDE] " + path.basename(__filename) + "";
+
 // let gitOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel("NDK Update");
 let ndkFlag: boolean = true;
 // 下载 NDK 代码
 async function getNdkCode() {
-    console.log("\x1b[0;96m[正在下载 NDK 编译环境，请等待......]");
+    console.log(TAG, "\x1b[0;96m[正在下载 NDK 编译环境，请等待......]");
     let dir: any = getNdkDefaultPath();
     let url: string = 'https://gitee.com/openLuat/luatos-ndk.git';
     if (!fs.existsSync(dir)) {
@@ -51,11 +53,11 @@ async function getNdkCode() {
             );
     }
     else {
-        ndkPullHandle(url,dir);
+        ndkPullHandle(url, dir);
     }
 }
 
-async function ndkPullHandle(url:string,dir:string){
+async function ndkPullHandle(url: string, dir: string) {
     // 获取远端最新commit id
     let remoteInfo = await git.getRemoteInfo({
         http,
@@ -68,7 +70,7 @@ async function ndkPullHandle(url:string,dir:string){
         dir,
     });
     let localOid = test2[0]?.oid;
-    if (localOid!==remoteOid) {
+    if (localOid !== remoteOid) {
         vscode.window
             .withProgress(
                 {
