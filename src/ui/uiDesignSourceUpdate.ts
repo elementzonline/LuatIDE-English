@@ -30,6 +30,7 @@ async function getUiDesignCode() {
                         http,
                         dir,
                         url: url,
+                        ref: 'master',
                         onMessage: console.log,
                         onProgress: (gitProgress) => {
                             progress.report({
@@ -82,6 +83,7 @@ async function uiDesignPullHandle(url:string,dir:string){
                         fs,
                         http,
                         dir,
+                        ref: 'master',
                         onMessage: console.log,
                         onProgress: (gitProgress) => {
                             progress.report({
