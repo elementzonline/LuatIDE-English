@@ -1,4 +1,0 @@
-[submodule "src/webview/UI-Converter"]
-	url  = https://gitee.com/openLuat/luatos-ui2code
-	path = src/webview/UI-Converter
-
