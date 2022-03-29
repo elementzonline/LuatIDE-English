@@ -141,8 +141,7 @@ export class UiDesignPanel {
                         vscode.window.showErrorMessage(message.text);
                         return;
                     case 'lvgl_json_receive':
-                        this.updateUiCodeToProjectPath(uiDesignName,message);
-                        this.updateUiCodeToProjectConfig(this.activeProjectPath+"\\"+uiDesignName+'.lua');
+                        this.uiJsonHandle(uiDesignName,message);
                         return;
                     case 'lvglPageReady':
                         if (message.text) {
@@ -165,7 +164,7 @@ export class UiDesignPanel {
                         let base64 = Buffer.from(bitmap).toString('base64');
                         console.log("转换为base64", base64.substring(0, 100), "...");
                         // 获取后缀名
-                        let suffix = path.extname(pictureBase64Path);
+                        let suffix = path.extname(pictureBase64Path).substring(1,);
                         let prefix = `data:image/${suffix};base64`;
 
                         // 将内容发送给 webview
@@ -178,6 +177,10 @@ export class UiDesignPanel {
                                     base64: `${prefix},${base64}`
                                 }
                             });
+                        break;
+                    case "uiConvertOutputData":
+                        this.uiConvertToProject(message.text);
+                        this.updateUiCodeToProjectConfig(this.activeProjectPath+"\\"+uiDesignName+'.lua');
                         break;
                 }
             },
@@ -210,16 +213,13 @@ export class UiDesignPanel {
         UiDesignPanel.currentPanel = new UiDesignPanel(uiPanel, context, uiDesignName, currentLvgl);
     }
 
-    // 更新uidesign生成的代码到活动工程
-    public updateUiCodeToProjectPath(uiDesignName:any, message:any) {
-        let uiConvert:any;
-        try {
-            uiConvert = require('./UI-Converter/scripts/LvglDecoder');
-        } catch (error) {
-            console.log('未检测到UI转码器文件,转码失败');
-        }
+    // 接收UI设计器传送过来的数据，处理后将json对象及事件数据文件内容通过命令传递给UI设计器
+    public uiJsonHandle(uiDesignName:any, message:any){
+        // 获取当前活动工程工程类型
+        const activityProjectPath:string = getPluginConfigActivityProject();
+        const activityProjectType:string = getProjectConfigType(activityProjectPath);
+        const uiLuaType:string = this.getUiConvertLuaType(activityProjectType);
         const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
-        const uiLuaPath:string = path.join(this.activeProjectPath,'UiDesign.lua');
         const uiHandlePath:string = path.join(this.activeProjectPath,'UiHandle.lua');
         if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
             fs.mkdirSync(this.activeProjectPath + "\\" + ".luatide");
@@ -227,10 +227,22 @@ export class UiDesignPanel {
         if (!fs.existsSync(uiHandlePath)) {
             fs.writeFileSync(uiHandlePath,'');
         }
-        const uiHandleData:Buffer = fs.readFileSync(uiHandlePath);
         fs.writeFileSync(uiJsonPath, JSON.stringify(message.text, null, "\t"));
-        // uiConvert.glJsonToCodeInit(uiJsonPath,this.activeProjectPath);
-        const uiDesignObj:any = uiConvert.glJsonToCodeInit(uiJsonPath,uiHandleData);
+        const uiHandleData:string = fs.readFileSync(uiHandlePath).toString();
+        this.uiPanel.webview.postMessage(
+            {
+                "command" : "uiConvert",
+                "text" :  [message.text,uiHandleData,uiLuaType]
+            }
+        );
+    }
+
+    /**
+     * uiConvertToProject
+     */
+    public uiConvertToProject(uiDesignObj:any) {
+        const uiLuaPath:string = path.join(this.activeProjectPath,'UiDesign.lua');
+        const uiHandlePath:string = path.join(this.activeProjectPath,'UiHandle.lua');
         const projectAppFile:string[] = getProjectConfigAppFile(this.activeProjectPath);
         if (uiDesignObj.uiDesignLua!==undefined) {
             fs.writeFileSync(uiLuaPath,uiDesignObj.uiDesignLua);
@@ -243,6 +255,29 @@ export class UiDesignPanel {
             pushProjectConfigAppFile([path.basename(uiHandlePath)],this.activeProjectPath);
         }
         vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+    }
+
+    // 依据工程类型判断ui设计器生成代码类型
+    getUiConvertLuaType(projectType:string){
+        let uiLuaType:string;
+        switch (projectType) {
+            case 'air101': 
+                uiLuaType = 'soc';
+                break;
+            case 'air103':
+                uiLuaType = 'soc';
+                break;
+            case 'air105':
+                uiLuaType = 'soc';
+                break;
+            case 'esp32c3':
+                uiLuaType = 'soc';
+                break;
+            default:
+                uiLuaType = 'air';
+                break;
+        }
+        return uiLuaType;
     }
 
     // 更新uidesign生成的代码到活动工程
