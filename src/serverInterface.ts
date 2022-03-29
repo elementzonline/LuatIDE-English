@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-03-16 11:32:34
- * @LastEditTime: 2022-03-23 18:01:49
+ * @LastEditTime: 2022-03-29 10:46:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\serverInterface.ts
@@ -100,7 +100,7 @@ export async function open(serverRecvCb: Function|null) {
         return false;
     }
     // 启动中端服务
-    serverStart();
+    // serverStart();
     // 连接中端客户端
     if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
