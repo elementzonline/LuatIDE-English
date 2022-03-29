@@ -139,8 +139,7 @@ export function popProjectConfigAppFile(appFilePath:any,projectPath:any){
         const relativeFilePath:string = path.relative(projectPath,appFilePath);
         const index = projectJsonObj.appFile.indexOf(relativeFilePath);
         if (index!==-1) {
-            projectJsonObj.appFile.splice(index,1);
-            if (fs.statSync(appFilePath).isDirectory()) {
+            if (!fs.existsSync(appFilePath) || fs.statSync(appFilePath).isDirectory()) {
                 // 若用户删除的是文件夹，则删除appfile目录中其所有子文件
                 for (let i = 0; i < projectJsonObj.appFile.length; i++) {
                     const element:string = projectJsonObj.appFile[i];
@@ -149,6 +148,9 @@ export function popProjectConfigAppFile(appFilePath:any,projectPath:any){
                         i = i-1;
                     }
                 }
+            }
+            else{
+                projectJsonObj.appFile.splice(index,1);
             }
             refreshProjectJson(projectJsonObj,projectConfigPath);
         }

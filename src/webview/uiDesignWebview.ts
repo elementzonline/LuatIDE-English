@@ -232,7 +232,9 @@ export class UiDesignPanel {
         // uiConvert.glJsonToCodeInit(uiJsonPath,this.activeProjectPath);
         const uiDesignObj:any = uiConvert.glJsonToCodeInit(uiJsonPath,uiHandleData);
         const projectAppFile:string[] = getProjectConfigAppFile(this.activeProjectPath);
-        fs.writeFileSync(uiLuaPath,uiDesignObj.uiDesignLua);
+        if (uiDesignObj.uiDesignLua!==undefined) {
+            fs.writeFileSync(uiLuaPath,uiDesignObj.uiDesignLua);
+        }
         if (projectAppFile.indexOf(path.basename(uiLuaPath))===-1) {
             pushProjectConfigAppFile([path.basename(uiLuaPath)],this.activeProjectPath);
         }
