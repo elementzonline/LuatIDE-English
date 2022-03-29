@@ -480,8 +480,7 @@ sys.taskInit(init, nil)
 
 --启动系统框架
 sys.init(0, 0)
-sys.run()
-        `;
+sys.run()`;
         const lcdLuaData:string = `
 --- 模块功能：ILI9806E驱动芯片LCD命令配置
 -- @author openLuat
@@ -636,8 +635,7 @@ function backlightopen(on)
 end
 backlightopen(true)
 -- 初始化
-init()        
-        `;
+init()`;
         const uiLuaData:string = `
 ----------------------------------------------------------------------------
 -- 1. This file automatically generates code for the LuatOS's UI designer
@@ -750,9 +748,7 @@ end
 ----------------------------------------------------------------------------
 function lvglUiInitial()
 	ScreenA.create()
-end
-
-        `;
+end`;
         const uiHandleData:string = `
 --This function name and notes cannot be modified
 --@@funCfg: <joinUs, exist>
@@ -775,8 +771,7 @@ lvgl.style_set_value_str(Style_LvglButton2_1, lvgl.STATE_DEFAULT, "Hello LuatOS 
 lvgl.obj_add_style(ScreenA.LvglButton2.self, lvgl.BTN_PART_MAIN, Style_LvglButton2_1)
 lvgl.style_set_value_color(Style_LvglButton2_1, lvgl.STATE_DEFAULT, lvgl.color_hex(0xFFFFFF))
 ------------USER CODE DATA--------------
-end         
-        `;
+end`;
         const uiTpData:string = `
 module(..., package.seeall)
 ----GT911
@@ -899,8 +894,7 @@ end
 -- sys.timerLoopStart(function() 
 --     local a=i2c.read(i2cid,0x5051,2)
 --     print("a",a)
--- end,50)
-        `;
+-- end,50)`;
         if (!fs.existsSync(path.join(projectPath, ".luatide"))) {
             fs.mkdirSync(path.join(projectPath, ".luatide"));
         }
