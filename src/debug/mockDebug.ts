@@ -271,24 +271,25 @@ export class MockDebugSession extends LoggingDebugSession {
 			else {
 				sourceName = tmp[0].substring(1,);
 			}
-			let source: string = "";
-			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 
-			if (currentconfigSourceFileList.indexOf(sourceName) !== -1) {
-				console.log(TAG,"当前", currentconfigSourceFileList);
-				for (let i = 0; i < currentconfigSourceFileList.length; i++) {
-					const projectFile = path.basename(configSourceFilepathList[i]);
-					if (projectFile === sourceName) {
-						source = configSourceFilepathList[i];
-						break;
-					}
+			let source: string = "";
+			let projectAppFilePathList = getProjectConfigAppFile(this.activeWorkspace);
+			for (let index = 0; index < projectAppFilePathList.length; index++) {
+				if (projectAppFilePathList[index].indexOf(sourceName) !== -1) {
+					// 工程内路径
+					source=path.join(this.activeWorkspace, projectAppFilePathList[index]);
+					break;
 				}
 			}
-			else {
-				source = path.join(__dirname, "../..", "lib_merge_temp", sourceName);
+			let libPath=getProjectConfigLibPath(this.activeWorkspace);   
+			let projectLibFilePathList: string[] = fs.readdirSync(libPath);
+			if(projectLibFilePathList.indexOf(sourceName) !== -1)
+			{
+				// lib路径
+				source= path.join(getProjectConfigLibPath(this.activeWorkspace), sourceName);
 			}
-			// /*-\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
-			// const line = parseInt(tmp[1])
+
+
 			let line: number;
 			if (sourceName === "main.lua") {
 				line = parseInt(tmp[1]) - 1;
