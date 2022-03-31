@@ -652,38 +652,37 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.sendResponse(response);
 	}
 
+	private breakPointsIsProject(sourceFile: string) {
+		sourceFile = sourceFile.toLocaleLowerCase();
+		let projectAppFilePathList: string[] = this.generateProjectFilePath()[1];
+		projectAppFilePathList = projectAppFilePathList.map((x)=>{
+			return x.toLocaleLowerCase();
+		});
+		let libPath=getProjectConfigLibPath(this.activeWorkspace);      
+		let projectLibFilePathList: string[] = fs.readdirSync(libPath);
+		projectLibFilePathList = projectLibFilePathList.map((fileName)=>{
+			return path.join(libPath,fileName).toLocaleLowerCase();
+		});
+		if((projectAppFilePathList.indexOf(sourceFile) >= 0) || (projectLibFilePathList.indexOf(sourceFile) >= 0))
+		{
+			return true;
+		}
+		return false;
+	}
+
 	//设置断点请求（清除也在里面）
 	//dbg break clr
 	//dbg break add
 	protected async setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments) {
-		//资源文件路径不在用户当前选择路径下，则过滤这些断点
-		/*+\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
+		
 		var points: DebugProtocol.Breakpoint[] = [];
 		if (args.source.path) {
-			const pathIndex = args.source.path.lastIndexOf("\\");
-			let path: string = args.source.path.substring(0, pathIndex);
-			// 修改不能跳转到其它地方问题,解析json
-			const project_filelist_temp = this.generateProjectFilePath()[1];
-			// 遍历json文件
-			let temp_flag = false;
-			for (let i = 0; i < project_filelist_temp.length; i++) {
-				const element = project_filelist_temp[i];
-				// console.log(TAG,"===============",element,path,element.indexOf(path));
-				// 排除字符串大小写问题干扰，统一处理
-				if (element.toLocaleLowerCase().indexOf(path.toLocaleLowerCase()) !== -1) {
-					temp_flag = true;
-					break;
-				}
-				else {
-					temp_flag = false;
-				}
-			}
-			if (temp_flag === false) {
+			// 判断当前文件是否是工程内的文件
+			if (this.breakPointsIsProject(args.source.path) === false) {
+				//资源文件路径不在用户当前选择路径下，则过滤这些断点
 				this.sendResponse(response);
 				return;
 			}
-
-			/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 
 			this.current_messagearr = ["break clr " + args.source.name, "D/dbg [resp,break,clear,ok]"];
 			// this.first_messageflag  = true;
