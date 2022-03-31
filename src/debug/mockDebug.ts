@@ -775,10 +775,8 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 			}
 		}
-		/*+\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
-		//this.dbg_stack = new Array();
+
 		this.dbg_stack.splice(0);
-		/*-\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
 		this.current_messagearr = ["bt", "D/dbg [resp,stack,1,-1]"];
 		queue.enqueue(this.current_messagearr);
 		console.log(TAG,"dbg bt入队成功");
