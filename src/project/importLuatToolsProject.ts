@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigPath, getAir72XUXDefaultLatestLibPath } from '../variableInterface';
-import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
+import {getCreateProjectCorepathHandle, getCreateProjectLibpathHandle} from '../project/projectApi';
 
 export class importLuatToolsProjectClass {
     constructor() {
