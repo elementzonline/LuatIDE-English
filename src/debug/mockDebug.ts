@@ -22,7 +22,7 @@ import * as ndkProject from "../ndk/ndkProject";
 import * as tsQueue from "../tsQueue";
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
+import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
 // import { getAirSimulatorSkinConfigPath } from '../variableInterface';
 
 
@@ -157,7 +157,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		vscode.debug.activeDebugConsole.append(exts);
 		_outputChannel.append(exts);
 		// 增加lua运行日志文件下载到本地活动工程目录
-		fs.appendFile(this.activeWorkspace + "\\.luatide"  + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
+		fs.appendFile(this.activeWorkspace + "\\.luatide" + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
 	}
 	/*-\NEW\czm\2021.05.8\调试控制台输出日志*/
 
@@ -213,18 +213,18 @@ export class MockDebugSession extends LoggingDebugSession {
 			const isDir = stats.isDirectory(); // 是否为文件夹
 			if (isFile) {
 				if (userSourceListTmp[i].lastIndexOf('.lua') !== -1) {
-					console.log(TAG,filePath);
+					console.log(TAG, filePath);
 					this.userSourceList.push(userSourceListTmp[i]);
 					this.userSourceListPath.push(path.join(filePath, userSourceListTmp[i]));
-					console.log(TAG,"当前文件：", userSourceListTmp[i]);
+					console.log(TAG, "当前文件：", userSourceListTmp[i]);
 				}
 			} else if (isDir) {
 				this.fileDisplay(filepath); // 递归，如果是文件夹，就继续遍历该文件夹里面的文件	
-				console.log(TAG,userSourceListTmp);
+				console.log(TAG, userSourceListTmp);
 
 			}
 		};
-		console.log(TAG,"处理后：", this.userSourceList);
+		console.log(TAG, "处理后：", this.userSourceList);
 		return this.userSourceList;
 	}
 	// /*-\NEW\zhw\2021.07.12\修复调试模式部分文件无法加载源文件bug*/
@@ -237,7 +237,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		let configSourceFilepathList: string[] = [];
 		let projectFileslist = getProjectConfigAppFile(this.activeWorkspace);
 		for (let index = 0; index < projectFileslist.length; index++) {
-			const projectAbsoluteFile = path.join(this.activeWorkspace, projectFileslist[index]) ;
+			const projectAbsoluteFile = path.join(this.activeWorkspace, projectFileslist[index]);
 			const projectFile = path.basename(projectAbsoluteFile);
 			if (fs.statSync(projectAbsoluteFile).isFile()) {
 				configSourceFileList.push(projectFile);
@@ -257,10 +257,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		else {
 			var fullname = exts.trim();
 			let tmp = fullname.split(":");
-			// 跳转路径修改
-			let currentconfigSourceFileList: any = [];
-			let configSourceFilepathList: any = this.generateProjectFilePath()[1];
-			currentconfigSourceFileList = this.generateProjectFilePath()[0];
+
 			let sourceName: string = "";
 			if (tmp[0].indexOf("/lua/") !== -1) {
 				sourceName = tmp[0].substring(4 + 1,);
@@ -271,24 +268,24 @@ export class MockDebugSession extends LoggingDebugSession {
 			else {
 				sourceName = tmp[0].substring(1,);
 			}
-			let source: string = "";
-			// /*+\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
 
-			if (currentconfigSourceFileList.indexOf(sourceName) !== -1) {
-				console.log(TAG,"当前", currentconfigSourceFileList);
-				for (let i = 0; i < currentconfigSourceFileList.length; i++) {
-					const projectFile = path.basename(configSourceFilepathList[i]);
-					if (projectFile === sourceName) {
-						source = configSourceFilepathList[i];
-						break;
-					}
+			let source: string = "";
+			let projectAppFilePathList = getProjectConfigAppFile(this.activeWorkspace);
+			for (let index = 0; index < projectAppFilePathList.length; index++) {
+				if (projectAppFilePathList[index].indexOf(sourceName) !== -1) {
+					// 工程内路径
+					source = path.join(this.activeWorkspace, projectAppFilePathList[index]);
+					break;
 				}
 			}
-			else {
-				source = path.join(__dirname, "../..", "lib_merge_temp", sourceName);
+			let libPath = getProjectConfigLibPath(this.activeWorkspace);
+			let projectLibFilePathList: string[] = fs.readdirSync(libPath);
+			if (projectLibFilePathList.indexOf(sourceName) !== -1) {
+				// lib路径
+				source = path.join(getProjectConfigLibPath(this.activeWorkspace), sourceName);
 			}
-			// /*-\NEW\zhw\2021.06.28\多级文件跳转逻辑适配性修改*/
-			// const line = parseInt(tmp[1])
+
+
 			let line: number;
 			if (sourceName === "main.lua") {
 				line = parseInt(tmp[1]) - 1;
@@ -341,7 +338,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		const index = parseInt(heads[2]);
 		if (index === 0) {
 			//变量全部打印完毕了
-			console.log(TAG,"当前的exts是", exts);
+			console.log(TAG, "当前的exts是", exts);
 			this._watchvarsDone.notify();//通知dbg vars变量接收完成
 		}
 		else {
@@ -379,8 +376,8 @@ export class MockDebugSession extends LoggingDebugSession {
 				this.varsData += msg;
 				this.varsDataRecvLen += msg.length;
 			}
-			console.log(TAG,"varsDataRecvLen:", this.varsDataRecvLen);
-			console.log(TAG,"varsDataLen:", this.varsDataLen);
+			console.log(TAG, "varsDataRecvLen:", this.varsDataRecvLen);
+			console.log(TAG, "varsDataLen:", this.varsDataLen);
 			if (this.varsDataRecvLen === this.varsDataLen) {
 				this.dbg_dispatcher(this.varsHands, this.varsData.toString());
 				this.varsDataRecvStartFlag = false;
@@ -400,7 +397,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 判断队列是否有元素
 		if (this.timer1 === undefined) {
 			if (!queue.isEmpty()) {
-				console.log(TAG,"当前的dataReceiveFlag：", this.dataReceiveFlag);
+				console.log(TAG, "当前的dataReceiveFlag：", this.dataReceiveFlag);
 				this.timer1 = setInterval(this.commandprint1, 5, this);
 			}
 
@@ -420,23 +417,23 @@ export class MockDebugSession extends LoggingDebugSession {
 				arg.timer1 = undefined;
 				return;
 			}
-			console.log(TAG,"当前队列第一条数据", queue.front()[0]);
+			console.log(TAG, "当前队列第一条数据", queue.front()[0]);
 			// 接收消息队列出队数据
 			const requestDataArr: string[] = queue.front();
 			const requestData = requestDataArr[0];
 			arg.requestMessage = requestDataArr[1];
-			console.log(TAG,"当前出队数据：", requestData);
+			console.log(TAG, "当前出队数据：", requestData);
 			// arg.dbg_write_cmd(requestData);
 			ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg " + requestData);
-			console.log(TAG,"队列发送数据成功", requestData);
+			console.log(TAG, "队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
 	}
 
 	/*-\NEW\czm\2021.05.21\VS code 插件开发 / vscode端需要支持table的展开显示*/
-	
 
-	public serverRecvCb(data: Buffer){
+
+	public serverRecvCb(data: Buffer) {
 
 		if (this.dbgInputBuffer.length > 0) {
 			this.dbgInputBuffer = Buffer.concat([this.dbgInputBuffer, data]);
@@ -454,12 +451,12 @@ export class MockDebugSession extends LoggingDebugSession {
 				if (offset > - 1) {
 					msglen = offset + 1;
 					msg = this.dbgInputBuffer.subarray(0, msglen).toString("utf-8");
-					console.log(TAG,"serverRecvCb", msg);
+					console.log(TAG, "serverRecvCb", msg);
 
 					if (!queue.isEmpty()) {
 						if (msg.indexOf(queue.front()[1]) !== -1 && queue.front()[1] !== "") {
 							this.dataReceiveFlag = 1;
-							console.log(TAG,"当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
+							console.log(TAG, "当前回传确认数据是", queue.front()[1], "当前接收数据是：", msg);
 							// // at交互数据发送到console终端
 							// if(msg.indexOf(queue.front()[0])!==-1){
 							// 	vscode.debug.activeDebugConsole.appendLine(msg);
@@ -510,18 +507,18 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 获取用户工作区路径
 		if (vscode.workspace) {
 			// 用户当前点击文件获取。
-			ideServer.sendData(ideServer.cmdType.server,"work_path",this.activeWorkspace);
+			ideServer.sendData(ideServer.cmdType.server, "work_path", this.activeWorkspace);
 			await this.sleep(100);
 			// 插件所在路径获取
 			const plugPath: string = path.join(__dirname, "../..");
-			ideServer.sendData(ideServer.cmdType.server,"plug_path",plugPath);
+			ideServer.sendData(ideServer.cmdType.server, "plug_path", plugPath);
 			await this.sleep(100);
 			const moduleModel = getProjectConfigModuleModel(this.activeWorkspace);
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
 			if (moduleModel === undefined) {
 				setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
 			}
-			ideServer.sendData(ideServer.cmdType.server,"download","");
+			ideServer.sendData(ideServer.cmdType.server, "download", "");
 			return true;
 		}
 		return false;
@@ -542,40 +539,37 @@ export class MockDebugSession extends LoggingDebugSession {
 		queue.clear();
 		this.fullvarsArray = [];
 
-		this.activeWorkspace = getPluginConfigActivityProject();		
+		this.activeWorkspace = getPluginConfigActivityProject();
 		// 如果是NDK工程，就需要先去编译
-		if(getProjectConfigType(this.activeWorkspace)==="ndk")
-		{
-			console.log(TAG,"this is ndk project!!!");
+		if (getProjectConfigType(this.activeWorkspace) === "ndk") {
+			console.log(TAG, "this is ndk project!!!");
 			let result = await ndkProject.build(this.activeWorkspace);
-			if(result===false)
-			{
+			if (result === false) {
 				// 编译失败
-				console.log(TAG,"NDK compilation failed");
+				console.log(TAG, "NDK compilation failed");
 				// 强行终止调试器
 				vscode.debug.stopDebugging();
 				return;
 			}
-			else
-			{
+			else {
 				// 编译成功，继续执行
-				console.log(TAG,"The NDK was compiled successfully");
+				console.log(TAG, "The NDK was compiled successfully");
 			}
 
 		}
-		
+
 		// 启动中端
-		if(await ideServer.open(this.serverRecvCb.bind(this))===false){
+		if (await ideServer.open(this.serverRecvCb.bind(this)) === false) {
 			// 中端启动失败,停止调试器
 			vscode.debug.stopDebugging();
 			return;
 		}
 
-		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide'))) {
-			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide'));
+		if (!fs.existsSync(path.join(this.activeWorkspace, '.luatide'))) {
+			fs.mkdirSync(path.join(this.activeWorkspace, '.luatide'));
 		}
-		if (!fs.existsSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'))) {
-			fs.mkdirSync(path.join(this.activeWorkspace,'.luatide','LuatIDE_log'));
+		if (!fs.existsSync(path.join(this.activeWorkspace, '.luatide', 'LuatIDE_log'))) {
+			fs.mkdirSync(path.join(this.activeWorkspace, '.luatide', 'LuatIDE_log'));
 		}
 		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
 
@@ -588,20 +582,20 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 等待下载完成状态
 		for (var i = 0; i < 120 * 3; i++) {
 			if (this.download_state === 0) {
-				console.log(TAG,"等待download_state");
+				console.log(TAG, "等待download_state");
 				await this.download_success.wait(300);
 			} else {
 				break;
 			}
 		}
 		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
-		
+
 		for (var i = 0; i < 120 * 3; i++) {
 			if (this.dbg_state === 1) {
-				console.log(TAG,"waiting for debugger ok");
+				console.log(TAG, "waiting for debugger ok");
 				break;
 			} else {
-				console.log(TAG,"等待waiting for debugger");
+				console.log(TAG, "等待waiting for debugger");
 				await this.sleep(300);
 			}
 		}
@@ -646,50 +640,48 @@ export class MockDebugSession extends LoggingDebugSession {
 
 		this.current_messagearr = ["start", "D/dbg [state,changed,"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg start入队成功");
+		console.log(TAG, "dbg start入队成功");
 		this.messageRequestManage();
 
 		this.sendResponse(response);
+	}
+
+	private breakPointsIsProject(sourceFile: string) {
+		sourceFile = sourceFile.toLocaleLowerCase();
+		let projectAppFilePathList: string[] = this.generateProjectFilePath()[1];
+		projectAppFilePathList = projectAppFilePathList.map((x) => {
+			return x.toLocaleLowerCase();
+		});
+		let libPath = getProjectConfigLibPath(this.activeWorkspace);
+		let projectLibFilePathList: string[] = fs.readdirSync(libPath);
+		projectLibFilePathList = projectLibFilePathList.map((fileName) => {
+			return path.join(libPath, fileName).toLocaleLowerCase();
+		});
+		if ((projectAppFilePathList.indexOf(sourceFile) >= 0) || (projectLibFilePathList.indexOf(sourceFile) >= 0)) {
+			return true;
+		}
+		return false;
 	}
 
 	//设置断点请求（清除也在里面）
 	//dbg break clr
 	//dbg break add
 	protected async setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments) {
-		//资源文件路径不在用户当前选择路径下，则过滤这些断点
-		/*+\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
+
 		var points: DebugProtocol.Breakpoint[] = [];
 		if (args.source.path) {
-			const pathIndex = args.source.path.lastIndexOf("\\");
-			let path: string = args.source.path.substring(0, pathIndex);
-			// 修改不能跳转到其它地方问题,解析json
-			const project_filelist_temp = this.generateProjectFilePath()[1];
-			// 遍历json文件
-			let temp_flag = false;
-			for (let i = 0; i < project_filelist_temp.length; i++) {
-				const element = project_filelist_temp[i];
-				// console.log(TAG,"===============",element,path,element.indexOf(path));
-				// 排除字符串大小写问题干扰，统一处理
-				if (element.toLocaleLowerCase().indexOf(path.toLocaleLowerCase()) !== -1) {
-					temp_flag = true;
-					break;
-				}
-				else {
-					temp_flag = false;
-				}
-			}
-			if (temp_flag === false) {
+			// 判断当前文件是否是工程内的文件
+			if (this.breakPointsIsProject(args.source.path) === false) {
+				//资源文件路径不在用户当前选择路径下，则过滤这些断点
 				this.sendResponse(response);
 				return;
 			}
-
-			/*-\NEW\czm\2021.05.26\进入调试时未删除激活工程以外的断点*/
 
 			this.current_messagearr = ["break clr " + args.source.name, "D/dbg [resp,break,clear,ok]"];
 			// this.first_messageflag  = true;
 			queue.enqueue(this.current_messagearr);
 			this.messageRequestManage();
-			console.log(TAG,"break clr 入队成功");
+			console.log(TAG, "break clr 入队成功");
 
 			var srcname = args.source.name;
 			this.sourceMaping.set(srcname, args.source.path);
@@ -702,13 +694,13 @@ export class MockDebugSession extends LoggingDebugSession {
 						if (args.source.name.indexOf("main.lua") !== -1) {
 							this.current_messagearr = ["break add " + args.source.name + " " + (Number(point.line) + 1).toString(), `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line) + 1}`];
 							queue.enqueue(this.current_messagearr);
-							console.log(TAG,"dbg add 入队成功", point.line + 1);
+							console.log(TAG, "dbg add 入队成功", point.line + 1);
 							this.messageRequestManage();
 						}
 						else {
 							this.current_messagearr = ["break add " + args.source.name + " " + point.line, `D/dbg [resp,break,add,ok] ${args.source.name}:${Number(point.line)}`];
 							queue.enqueue(this.current_messagearr);
-							console.log(TAG,"dbg add 入队成功", point.line);
+							console.log(TAG, "dbg add 入队成功", point.line);
 							this.messageRequestManage();
 						}
 					}
@@ -726,14 +718,14 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.sendResponse(response);
 	}
 	//断开连接请求
-	
+
 	protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
 		// 清除队列
 		queue.clear();
 		// 怀疑是bug，修改后：
-		ideServer.sendData(ideServer.cmdType.dbg,"dbg","dbg disconnect");
+		ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		ideServer.sendData(ideServer.cmdType.server,"servicekill","");
+		ideServer.sendData(ideServer.cmdType.server, "servicekill", "");
 		ideServer.close();
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
@@ -746,7 +738,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			childProcess.exec('taskkill -f -im LuatOS-Air_SIMULATOR.exe');
 			childProcess.exec('taskkill -f -im lcd_plugin.exe');
 		}
-		console.log(TAG,"执行了断开连接的请求");
+		console.log(TAG, "执行了断开连接的请求");
 		/*-\NEW\czm\2021.05.27\终端在调试模式结束按停止按钮后有时不能正常关闭*/
 		this.sendResponse(response);
 
@@ -775,18 +767,16 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 			}
 		}
-		/*+\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
-		//this.dbg_stack = new Array();
+
 		this.dbg_stack.splice(0);
-		/*-\NEW\czm\2021.05.27\调试慢，重复NEW，内存泄漏*/
 		this.current_messagearr = ["bt", "D/dbg [resp,stack,1,-1]"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg bt入队成功");
+		console.log(TAG, "dbg bt入队成功");
 		this.messageRequestManage();
 		// 断点显示的不能删
-		console.log(TAG,"before bt wait");
+		console.log(TAG, "before bt wait");
 		await this._stackDone.wait(5000);
-		console.log(TAG,"after bt wait");
+		console.log(TAG, "after bt wait");
 
 		response.body = {
 			stackFrames: this.dbg_stack,
@@ -821,7 +811,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		this.fullvarsArray = [];
 		const id = this._variableHandles.get(args.variablesReference);
 		/*+\NEW\czm\2021.05.21\VS code 插件开发 / vscode端开发全局变量的显示的功能*/
-		console.log(TAG,"variables  id= ", id);
+		console.log(TAG, "variables  id= ", id);
 		if (id === 'local' || id === 'global') {
 			if (id === 'local') {
 				this.current_messagearr = ["vars", "D/dbg [resp,vars,0]"];
@@ -1038,7 +1028,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments) {
 		this.current_messagearr = ["continue", "D/dbg [state,changed,3,2]"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg continue 入队");
+		console.log(TAG, "dbg continue 入队");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1051,7 +1041,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments) {
 		this.current_messagearr = ["next", "D/dbg [state,changed,4,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg next 入队成功");
+		console.log(TAG, "dbg next 入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1062,7 +1052,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments) {
 		this.current_messagearr = ["stepIn", "D/dbg [state,changed,5,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg stepin入队成功");
+		console.log(TAG, "dbg stepin入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1074,7 +1064,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async stepOutRequest(response: DebugProtocol.StepOutResponse, args: DebugProtocol.StepOutArguments) {
 		this.current_messagearr = ["stepOut", "D/dbg [state,changed,6,3]"];
 		queue.enqueue(this.current_messagearr);
-		console.log(TAG,"dbg stepout 入队成功");
+		console.log(TAG, "dbg stepout 入队成功");
 		this.messageRequestManage();
 		await this._stateChanged.wait(1000);
 		this.sendResponse(response);
@@ -1094,7 +1084,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		//调试控制台输入请求
 		switch (args.context) {
 			case 'repl':
-				ideServer.sendData(ideServer.cmdType.at,"sendat",args.expression);
+				ideServer.sendData(ideServer.cmdType.at, "sendat", args.expression);
 				this.sendResponse(response);
 			default:
 				while (true) {
