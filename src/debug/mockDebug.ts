@@ -22,7 +22,7 @@ import * as ndkProject from "../ndk/ndkProject";
 import * as tsQueue from "../tsQueue";
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
+import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
 // import { getAirSimulatorSkinConfigPath } from '../variableInterface';
 
 
@@ -257,10 +257,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		else {
 			var fullname = exts.trim();
 			let tmp = fullname.split(":");
-			// 跳转路径修改
-			let currentconfigSourceFileList: any = [];
-			let configSourceFilepathList: any = this.generateProjectFilePath()[1];
-			currentconfigSourceFileList = this.generateProjectFilePath()[0];
+
 			let sourceName: string = "";
 			if (tmp[0].indexOf("/lua/") !== -1) {
 				sourceName = tmp[0].substring(4 + 1,);
