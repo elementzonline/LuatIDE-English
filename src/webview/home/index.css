@@ -12,6 +12,10 @@ i {
 }
 
 :root {
+
+  /* 为 LuatTools 项目特殊化的鼠标样式 */
+  --default-cursorForLuatTools: not-allowed;
+
   /* 默认样式 */
   --default-bgColor: white;
   --default-fontColor: black;

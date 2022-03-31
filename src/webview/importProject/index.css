@@ -165,3 +165,7 @@ div .iP-submit {
 .disableCursor:hover{
     cursor: not-allowed;
 }
+
+.cursorursorForLuatTools:hover{
+    cursor: var(--default-cursorForLuatTools);
+}

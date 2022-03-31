@@ -41,6 +41,8 @@ let iP_isInImportProject = false;
 let iP_isInAir101 = false;
 // 判断是否是 Air72XCX 模块型号
 let iP_isInAirCx72 = false;
+//判断是否导入的是 LuatTools 项目
+let isLuatTools = false;
 // 当前的模块型号的值
 let curSaveModule = "";
 // 不同工程的保存数据
@@ -49,8 +51,6 @@ let iP_temPureProjectData = null,
     iP_temNdkProjectData = null,
     iP_temUiProjectData = null;
 
-//激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
 
 
 $(iP_allHideStr).hide()
@@ -898,9 +898,17 @@ function importSpaceProject(importData, moduleWhichSelected) {
     $('.iP-select_getSpace_LibInfo').find("option[id=iP-space_customeLib]").prop("selected", "selected");
     $('.iP-select_getSpace_CoreInfo').find("option[id=iP-space_customeCore]").prop("selected", "selected");
 
-    /* 禁用工程路径, 工程名称的修改 */
-    $("input[name=iP-space_project_path]").prop("disabled", true);
-    $("input[name=iP-space_project_name]").prop("disabled", true);
+    /* 禁用工程路径, 工程名称的修改(当工程不为 LuatTools 项目时) */
+    if (isLuatTools) {
+        $("input[name=iP-space_project_path]").prop("disabled", false);
+        $("input[name=iP-space_project_name]").prop("disabled", false);
+        document.documentElement.style.setProperty("--default-cursorForLuatTools", 'default');
+    } else {
+        $("input[name=iP-space_project_path]").prop("disabled", true);
+        $("input[name=iP-space_project_name]").prop("disabled", true);
+        /* 设置导入空白工程时的鼠标样式 */
+        document.documentElement.style.setProperty("--default-cursorForLuatTools", 'not-allowed');
+    }
 
     /* 添加工程初始化数据 */
     for (let key in moduleWhichSelected) {
@@ -1229,10 +1237,15 @@ function iP_sendImportProjectData(tar) {
     }
     switch (tar) {
         case "space":
+            let temType = "pure";
+            //当导入的工程为 LuatTools 的项目时，修改其中的类型
+            if (isLuatTools) {
+                temType = "luatTools"
+            }
             vscode.postMessage({
                 command: "importProject",
                 text: {
-                    "type": "pure",
+                    "type": temType,
                     "data": {
                         "projectName": projectName,
                         "projectPath": (projectPath + "\\" + projectName),
@@ -1380,7 +1393,14 @@ function gl_importProjectInitData(type, data) {
     console.log("[[[[init]]]]\n", data);
     importProjectInitData = data;
     switch (type) {
+        //添加导入 LuatTools 项目的功能
+        case "luatTools":
+            isLuatTools = true;
+            iP_temPureProjectData = data;
+            iP_pureProjectInitDataManagment(data);
+            break;
         case "pure":
+            isLuatTools = false;
             iP_temPureProjectData = data;
             iP_pureProjectInitDataManagment(data);
             break;
@@ -1418,6 +1438,8 @@ function gl_importProjectData(type, data) {
     let targetProject = null;
     iP_isInImportProject = true;
     switch (type) {
+        //添加导入 LuatTools 项目的功能
+        case "luatTools":
         case "pure":
             iP_curActiveContent = "space";
             targetProject = $(".iP-content_space");

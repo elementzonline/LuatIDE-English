@@ -26,7 +26,7 @@ let importLuatToolsProject = new importLuatToolsProjectClass();
 
 export const sleep = (ms)=> {
     return new Promise(resolve=>setTimeout(resolve, ms));
-  };
+};
 
 export class HomeManage {
     constructor() {
@@ -35,6 +35,8 @@ export class HomeManage {
     homePanel: vscode.WebviewPanel | undefined = undefined;
     // private importProjectInitJson:any;
     private openProjectJson:any;
+    // private parse for luatTools import project
+    private luatToolsData: any;
     // 工程主页webview管理
     homeManage(context:vscode.ExtensionContext,homeLoadingState:any=undefined,openProjectJson:any={}) {
         this.openProjectJson =openProjectJson;
@@ -267,17 +269,29 @@ export class HomeManage {
                 /* 获取导入的 LuatTools 项目的导入数据 */
                 const importLuatToolsData: any = await importLuatToolsProject.openFileSystemControl(context);
                 if (importLuatToolsData !== undefined) {
-                    if (importLuatToolsData === "core find failed"){
-                        vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
-                    } else if (importLuatToolsData.match(/^ERROR: /)){
-                        vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importLuatToolsData.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                    if (typeof(importLuatToolsData) === "string"){
+                        if (importLuatToolsData === "core find failed"){
+                            vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
+                            return undefined;
+                        } else if (importLuatToolsData.match(/^ERROR: /)){
+                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importLuatToolsData.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                            return undefined;
+                        }
                         return undefined;
                     } else{
-                        vscode.window.showInformationMessage("LuatTools 工程导入成功");
+                        this.luatToolsData = importLuatToolsData[0];
+                        this.openProjectJson = importLuatToolsData[1];
+                        homePanel.webview.postMessage(
+                            {
+                                command: 'importProjectData',
+                                text: this.openProjectJson
+                            }
+                        );
+                        // vscode.window.showInformationMessage("LuatTools 工程导入成功");
                         // 执行激活工程到活动工程操作
-                        setPluginConfigActivityProject(path.join(importLuatToolsData[0], importLuatToolsData[1]));
-                        projectActiveInterfact(importLuatToolsData[1], path.join(importLuatToolsData[0], importLuatToolsData[1]));
-                        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                        // setPluginConfigActivityProject(path.join(importLuatToolsData[0], importLuatToolsData[1]));
+                        // projectActiveInterfact(importLuatToolsData[1], path.join(importLuatToolsData[0], importLuatToolsData[1]));
+                        // vscode.commands.executeCommand('luatide-history-project.Project.refresh');
                     }
                 }
                 else{
@@ -546,7 +560,27 @@ export class HomeManage {
             // 用户导入工程信息接收
             case 'importProject':
                 // 处理导入工程传过来的路径数据
-                this.openProjectReceiveDataHandle(message);
+                if (message.text.type === "luatTools") {
+                    let importRet = await importLuatToolsProject.checkLuatToolsProjectCorrectWithInterface(message, this.luatToolsData);
+                    if (typeof(importRet) === "string"){
+                        if (importRet === "core find failed"){
+                            vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
+                            return undefined;
+                        } else if (importRet.match(/^ERROR: /)){
+                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importRet.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                            return undefined;
+                        }
+                        return undefined;
+                    } else if (typeof(importRet) === "object") {
+                        vscode.window.showInformationMessage("LuatTools 工程导入成功");
+                        // 执行激活工程到活动工程操作
+                        setPluginConfigActivityProject(path.join(importRet[0], importRet[1]));
+                        projectActiveInterfact(importRet[1], path.join(importRet[0], importRet[1]));
+                        vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+                    }
+                } else {
+                    this.openProjectReceiveDataHandle(message);
+                }
                 break;
             // 接收webview提交的打开资源管理器选择用户工程路径请求
             case 'openSourceOpenProject':
