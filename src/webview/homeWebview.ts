@@ -274,7 +274,7 @@ export class HomeManage {
                             vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
                             return undefined;
                         } else if (importLuatToolsData.match(/^ERROR: /)){
-                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importLuatToolsData.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importLuatToolsData.replace(/ERROR: /, "")} 的文件不存在，请检查后重试`);
                             return undefined;
                         }
                         return undefined;
@@ -567,7 +567,7 @@ export class HomeManage {
                             vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
                             return undefined;
                         } else if (importRet.match(/^ERROR: /)){
-                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importRet.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importRet.replace(/ERROR: /, "")} 的文件不存在，请检查后重试`);
                             return undefined;
                         }
                         return undefined;
