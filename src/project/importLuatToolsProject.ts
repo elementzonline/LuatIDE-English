@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { getPluginConfigPath, getAir72XUXDefaultLatestLibPath } from '../variableInterface';
-import {getCreateProjectCorepathHandle, getCreateProjectLibpathHandle} from '../project/projectApi';
+import { getPluginConfigPath, getAir72XUXDefaultLatestLibPath, getDefaultWorkspacePath } from '../variableInterface';
+import { getDefaultProjectName } from '../project/ProjectHandle';
+import { getCreateProjectCorepathHandle, getCreateProjectLibpathHandle} from '../project/projectApi';
 
 export class importLuatToolsProjectClass {
     constructor() {
@@ -69,7 +70,7 @@ export class importLuatToolsProjectClass {
                 });
 
                 if (!analyObj["corePath"] || analyObj["corePath"][0] === "" || !fs.existsSync(analyObj["corePath"][0])){
-                    return "core find failed";
+                    return ["core find failed", analyObj];
                 }
                 
                 return analyObj;
@@ -205,6 +206,7 @@ export class importLuatToolsProjectClass {
     /* 2. 获取导入的 LuatTools 工程的路径 */
     async getLuatToolsImportPathWithInterface(options:any){
         let temRetOne =  await vscode.window.showOpenDialog(options);
+        let fileToExist: any;
 
         if (temRetOne !== undefined) {
             const importProjectPath = temRetOne[0].fsPath.toString();
@@ -214,22 +216,40 @@ export class importLuatToolsProjectClass {
             if (!analyRes){
                 return undefined;
             }
-            if (analyRes === "core find failed"){
-                return "core find failed";
-            }
 
             let firstImportData = {};
-
             firstImportData["type"] = "luatTools";
             firstImportData["errorData"] = {};
             firstImportData["correctData"] = {};
-            firstImportData["correctData"].projectName = "";
-            firstImportData["correctData"].projectPath = "";
+            firstImportData["correctData"].projectName = getDefaultProjectName();
+            firstImportData["correctData"].projectPath = getDefaultWorkspacePath();
             firstImportData["correctData"].moduleModel = "air72XUX/air82XUX";
             firstImportData["correctData"].libPath = getAir72XUXDefaultLatestLibPath();
-            firstImportData["correctData"].corePath = analyRes["corePath"][0].toString();
 
-            return [analyRes, firstImportData];
+            /* 判断是否是数组，当为数组时，表示 Core 存在问题 */
+            if (Array.isArray(analyRes)){
+                if (analyRes[0] === "core find failed"){
+                    firstImportData["errorData"].corePath = analyRes[1]["corePath"][0].toString();
+                    fileToExist = analyRes[1];
+                }
+            } else {
+                firstImportData["correctData"].corePath = analyRes["corePath"][0].toString();
+                fileToExist = analyRes;
+            }
+
+            /* 判断文件是否存在 */
+            for (let key in fileToExist){
+                if (key !== "[info]" && key !== "corePath"){
+                    let temDir = key.replace(/\[|\]/g, "");
+                    for (let i = 0; i < fileToExist[key].length; i++){
+                        if (!fs.existsSync(path.join(temDir, fileToExist[key][i]))) {
+                            return "ERROR: " + path.join(temDir, fileToExist[key][i]);
+                        }
+                    }
+                }
+            }
+
+            return [fileToExist, firstImportData];
         }
         return undefined;
     }
@@ -237,16 +257,36 @@ export class importLuatToolsProjectClass {
     async checkLuatToolsProjectCorrectWithInterface(projectData: any, analyRes: any) {
         
         let inputProjrctPath = projectData.text.data.projectPath;
+        // 项目文件夹名称
         let defProjectName = projectData.text.data.projectName;
+        // 项目文件夹所在路径
+        let selectedPath = path.join(inputProjrctPath, "..");
 
         if (inputProjrctPath === undefined) {
             return undefined;
         }
 
+        /* 检查是否存在相同名称的项目 */
+        let ideJson: any = await JSON.parse(fs.readFileSync(getPluginConfigPath()).toString());
+        const ideVersion = ideJson.version;
+        /* 写入appData中的json文件中 */
+        for (let i = 0; i < ideJson.projectList.length; i++){
+            if (defProjectName === ideJson.projectList[i]["projectName"] && selectedPath === ideJson.projectList[i]["projectPath"]){
+                vscode.window.showErrorMessage("同一地址下存在相同名称的工程，请重试！");
+                return undefined;
+            }
+        }
+        let tarPJson = {
+            projectPath: selectedPath,
+            projectName: defProjectName
+        };
+        ideJson.projectList.push(tarPJson);
+        fs.writeFileSync(getPluginConfigPath(), JSON.stringify(ideJson).toString());
+
         if (defProjectName){
             /* 在选中的地址下创建项目文件夹 */
             let luatToolsProjectFloder = inputProjrctPath;
-            let selectedPath = path.join(inputProjrctPath, "..");
+
             if (!fs.existsSync(luatToolsProjectFloder)){
                 fs.mkdirSync(luatToolsProjectFloder);
             }
@@ -260,16 +300,6 @@ export class importLuatToolsProjectClass {
             fileJson["data"] = [];
             /* 进行文件的读写操作 */
             for (let key in analyRes){
-                if (key === "corePath"){
-                    if (analyRes[key]){
-                        let tarStr = analyRes[key][0].toString();
-                        let temFileName = path.basename(tarStr);
-                        if (temFileName){
-                            fs.copyFileSync(tarStr, path.join(luatToolsProjectFloder, temFileName));
-                            fileJson["core"] = path.join(luatToolsProjectFloder, temFileName);
-                        }
-                    }
-                }
                 if (key !== "[info]" && key !== "corePath"){
                     let temDir = key.replace(/\[|\]/g, "");
                     let temDes = path.basename(temDir);
@@ -288,21 +318,11 @@ export class importLuatToolsProjectClass {
                 }
             }
 
-            let ideJson: any = await JSON.parse(fs.readFileSync(getPluginConfigPath()).toString());
-            const ideVersion = ideJson.version;
-            /* 写入appData中的json文件中 */
-            for (let i = 0; i < ideJson.projectList.length; i++){
-                if (defProjectName === ideJson.projectList[i]["projectName"] && selectedPath === ideJson.projectList[i]["projectPath"]){
-                    vscode.window.showErrorMessage("同一地址下存在相同名称的工程，请重试！");
-                    return undefined;
-                }
-            }
-            let tarPJson = {
-                projectPath: selectedPath,
-                projectName: defProjectName
-            };
-            ideJson.projectList.push(tarPJson);
-            fs.writeFileSync(getPluginConfigPath(), JSON.stringify(ideJson).toString());
+            //获取core文件
+            let tarCoreStr = getCreateProjectCorepathHandle(projectData.text.data.corePath, projectData.text.data.moduleModel);
+            let temFileName = path.basename(tarCoreStr);
+            fs.copyFileSync(tarCoreStr, path.join(luatToolsProjectFloder, temFileName));
+            fileJson["core"] = path.join(luatToolsProjectFloder, temFileName);
 
             /* 写入工程的appfile所在文件 */
             let appFileJson = {};
