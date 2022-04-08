@@ -20,6 +20,8 @@ import * as path from 'path'; // 导入fs库和path库
 
 import * as ndkProject from "../ndk/ndkProject";
 import * as tsQueue from "../tsQueue";
+import * as displayLog from "./displayLog";
+
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
@@ -28,29 +30,10 @@ import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModul
 
 const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
-// 获取当前时间戳，并解析后格式化输出
-function formatConsoleDate(date: any) {
-	var year = date.getFullYear();  // 获取完整的年份(4位,1970-????)
-	var month = date.getMonth();    // 获取当前月份(0-11,0代表1月)
-	var day = date.getDate();
-	var hour = date.getHours();
-	var minutes = date.getMinutes();
-	var seconds = date.getSeconds();
-	return year +
-		'-' + (month + 1) +
-		'-' + day +
-		'_' +
-		((hour < 10) ? '0' + hour : hour) +
-		'-' +
-		((minutes < 10) ? '0' + minutes : minutes) +
-		'-' +
-		((seconds < 10) ? '0' + seconds : seconds);
-}
 
 
 let queue = new tsQueue.Queue();//实例化队列
-// 定义输出日志到输出
-let _outputChannel = vscode.window.createOutputChannel("LuatIDE_log");
+
 
 // let configDataPath: any = process.env['APPDATA'];
 
@@ -123,7 +106,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	public current_messagearr: any;
 
 	private dataReceiveFlag: number = 1;
-	private current_logfilename: string = "";
+
 	// private configDataPath: any = process.env['APPDATA'];
 
 	// private pluginJsonParse: any = new PluginJsonParse();
@@ -154,10 +137,7 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	/*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 	public dbg_luat_log(heads: any, exts: any) {
-		vscode.debug.activeDebugConsole.append(exts);
-		_outputChannel.append(exts);
-		// 增加lua运行日志文件下载到本地活动工程目录
-		fs.appendFile(this.activeWorkspace + "\\.luatide" + "\\LuatIDE_log" + "\\" + this.current_logfilename, exts + "\r\n", () => { });
+		this.displayLog.print(exts);
 	}
 	/*-\NEW\czm\2021.05.8\调试控制台输出日志*/
 
@@ -535,15 +515,17 @@ export class MockDebugSession extends LoggingDebugSession {
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 
-		// 清空历史输出的数据
-		_outputChannel.clear();
-		// 设置输出展示，默认值为false，不会显示焦点
-		_outputChannel.show(false);
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
 
 		this.activeWorkspace = getPluginConfigActivityProject();
+
+		this.displayLog = new displayLog.LOGOUTPUT();
+		this.displayLog.debugConsoleEnable();
+		this.displayLog.outputWindowEnable();
+		this.displayLog.outputFileEnable(this.activeWorkspace);
+
 		// 如果是NDK工程，就需要先去编译
 		if (getProjectConfigType(this.activeWorkspace) === "ndk") {
 			console.log(TAG, "this is ndk project!!!");
@@ -575,7 +557,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		if (!fs.existsSync(path.join(this.activeWorkspace, '.luatide', 'LuatIDE_log'))) {
 			fs.mkdirSync(path.join(this.activeWorkspace, '.luatide', 'LuatIDE_log'));
 		}
-		this.current_logfilename = formatConsoleDate(new Date()) + "_log.txt";
+
 
 		if (await this.downloadStart() === false) {
 			// 强行终止调试器
