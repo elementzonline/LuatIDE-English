@@ -341,10 +341,7 @@ export class ProjectConfigOperation {
             vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程",{modal: true});
             return false;
         }
-        if (appFile.indexOf(filePath)!==-1) {
-            vscode.window.showErrorMessage("该文件已存在于工程，不能重复添加",{modal: true});
-            return false;
-        }
+        
         if (filePath.toLocaleLowerCase()===activityPath.toLocaleLowerCase()){
             vscode.window.showErrorMessage("不支持导入工程自身",{modal: true});
             return false;
@@ -352,6 +349,13 @@ export class ProjectConfigOperation {
         if (filePath.toLocaleLowerCase()===path.join(activityPath,'luatide_project.json').toLocaleLowerCase()) {
             vscode.window.showErrorMessage("不支持导入LuatIDE工程配置文件",{modal: true});
             return false;
+        }
+        for (let index = 0; index < appFile.length; index++) {
+            const appFilePath:string = appFile[index];
+            if (path.join(activityPath,appFilePath).toLocaleLowerCase() === filePath.toLocaleLowerCase()) {
+                vscode.window.showErrorMessage("该文件已存在于工程，不能重复添加",{modal: true});
+                return false;
+            }
         }
         return true;
     }
