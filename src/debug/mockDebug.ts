@@ -279,10 +279,14 @@ export class MockDebugSession extends LoggingDebugSession {
 				}
 			}
 			let libPath = getProjectConfigLibPath(this.activeWorkspace);
-			let projectLibFilePathList: string[] = fs.readdirSync(libPath);
-			if (projectLibFilePathList.indexOf(sourceName) !== -1) {
-				// lib路径
-				source = path.join(getProjectConfigLibPath(this.activeWorkspace), sourceName);
+			let projectLibFilePathList: string[]=[];
+			if(libPath !== "")
+			{
+				projectLibFilePathList = fs.readdirSync(libPath);
+				if (projectLibFilePathList.indexOf(sourceName) !== -1) {
+					// lib路径
+					source = path.join(getProjectConfigLibPath(this.activeWorkspace), sourceName);
+				}
 			}
 
 
@@ -653,10 +657,15 @@ export class MockDebugSession extends LoggingDebugSession {
 			return x.toLocaleLowerCase();
 		});
 		let libPath = getProjectConfigLibPath(this.activeWorkspace);
-		let projectLibFilePathList: string[] = fs.readdirSync(libPath);
-		projectLibFilePathList = projectLibFilePathList.map((fileName) => {
-			return path.join(libPath, fileName).toLocaleLowerCase();
-		});
+		let projectLibFilePathList: string[]=[];
+		if(libPath !== "")
+		{
+			projectLibFilePathList= fs.readdirSync(libPath);
+			projectLibFilePathList = projectLibFilePathList.map((fileName) => {
+				return path.join(libPath, fileName).toLocaleLowerCase();
+			});
+		}
+
 		if ((projectAppFilePathList.indexOf(sourceFile) >= 0) || (projectLibFilePathList.indexOf(sourceFile) >= 0)) {
 			return true;
 		}
