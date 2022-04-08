@@ -111,6 +111,8 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	// private configDataPath: any = process.env['APPDATA'];
 
+	private displayLog:displayLog.LOGOUTPUT = new displayLog.LOGOUTPUT();
+
 	// private pluginJsonParse: any = new PluginJsonParse();
 	// private projectJsonParse: any = new ProjectJsonParse();
 	// dbg_dispatcher元素隐式具有 "any" 类型，因为类型为 "any" 的表达式不能用于索引类型 "MockDebugSession"。
@@ -139,7 +141,7 @@ export class MockDebugSession extends LoggingDebugSession {
 
 	/*+\NEW\czm\2021.05.8\调试控制台输出日志*/
 	public dbg_luat_log(heads: any, exts: any) {
-		this.displayLog.print(exts);
+		this.displayLog?.print(exts);
 	}
 	/*-\NEW\czm\2021.05.8\调试控制台输出日志*/
 
@@ -524,8 +526,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		await checkFile.getProjectConfigFiles();
 
 		this.activeWorkspace = getPluginConfigActivityProject();
-
-		this.displayLog = new displayLog.LOGOUTPUT();
 		this.displayLog.debugConsoleEnable();
 		this.displayLog.outputWindowEnable();
 		this.displayLog.outputFileEnable(this.activeWorkspace);

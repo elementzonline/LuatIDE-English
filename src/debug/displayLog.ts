@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-04-07 17:47:01
- * @LastEditTime: 2022-04-07 21:33:34
+ * @LastEditTime: 2022-04-08 16:31:31
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\debug\displayLog.ts
@@ -59,10 +59,10 @@ export class LOGOUTPUT {
         this.outputFileName = "";
         this.outputFilePath = "";
     }
-    debugConsoleEnable() {
+    public debugConsoleEnable() {
         this.debugConsoleFlag = true;
     }
-    outputWindowEnable() {
+    public outputWindowEnable() {
         // 定义输出日志到输出
         this.outputWindowChannel = vscode.window.createOutputChannel("LuatIDE");
         // 清空历史输出的数据
@@ -71,13 +71,13 @@ export class LOGOUTPUT {
         this.outputWindowChannel.show(false);
         this.outputWindowFlag = true;
     }
-    outputFileEnable(outputPath) {
+    public outputFileEnable(outputPath) {
         this.outputFileName = formatConsoleDate(new Date()) + "_log.txt";
         this.outputFilePath = outputPath;
         this.outputFileFlag = true;
     }
 
-    print(data: string) {
+    public print(data: string) {
         const reg: any = /\[[TDIWEF]\]-/;
         const resule: any = reg.exec(data);
         let exts: string;
