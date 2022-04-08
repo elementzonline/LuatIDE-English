@@ -4,27 +4,21 @@
 
 'use strict';
 import * as vscode from 'vscode';
-// import { LuatideProvider } from './project/projectView';
-// import {OperationExplorer} from './project/toolshub';
-import { PluginConfigInit} from './config';
-import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete, exportProducFile} from './project/ProjectHandle';
+import { PluginConfigInit } from './config';
+import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete, exportProducFile } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
-// import { ProjectManage } from './webview/projectWebview';
 import { HistoryProjectDataProvider, HistoryProjectTreeItem } from './project/projectTreeView';
 import * as path from 'path';
 import { HomeManage } from './webview/homeWebview';
 import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityProjectTreeView';
 import { OpenProject } from './project/openProject';
-// import { PluginJsonParse } from './plugConfigParse';
 import * as fs from 'fs';
 import { UiDesign } from './webview/uiDesignWebview';
-// import { DataProvider,TreeViewItem } from './project/historyTreeviewTest';
-// import {OperationDataProvider, OperationExplorer} from './project/toolshub';
-import {checkSourceUpdate} from './serverSourceUpdate';
+import { checkSourceUpdate } from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
-import {clientOperation} from './LSP/client/client';
+import { clientOperation } from './LSP/client/client';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -32,37 +26,25 @@ export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 }));
 
 function runProject(resource: vscode.Uri): void {
-	// let targetResource = resource;
-	// if (!targetResource && vscode.window.activeTextEditor) {
-	// 	targetResource = vscode.window.activeTextEditor.document.uri;
-	// }
-	// if (targetResource) {
-		vscode.debug.startDebugging(undefined, {
-			type: 'luat',
-			name: 'LuatIDE Run',
-			request: 'launch',
-			program: "${command:activityProjectGet}",
-			stopOnEntry: false,
-			noDebug: true
-		}
-		);
-	// }
+	vscode.debug.startDebugging(undefined, {
+		type: 'luat',
+		name: 'LuatIDE Run',
+		request: 'launch',
+		program: "${command:activityProjectGet}",
+		stopOnEntry: false,
+		noDebug: true
+	}
+	);
 }
 function debugProject(resource: vscode.Uri): void {
-	// let targetResource = resource;
-	// if (!targetResource && vscode.window.activeTextEditor) {
-	// 	targetResource = vscode.window.activeTextEditor.document.uri;
-	// }
-	// if (targetResource) {
-		vscode.debug.startDebugging(undefined, {
-			type: 'luat',
-			name: 'LuatIDE Debug',
-			request: 'launch',
-			program: "${command:activityProjectGet}",
-			stopOnEntry: true,
-			noDebug: false
-		});
-	// }
+	vscode.debug.startDebugging(undefined, {
+		type: 'luat',
+		name: 'LuatIDE Debug',
+		request: 'launch',
+		program: "${command:activityProjectGet}",
+		stopOnEntry: true,
+		noDebug: false
+	});
 }
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
@@ -75,8 +57,8 @@ let activityProjectTreeDataProvider = new ActivityTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 let uiDesign = new UiDesign();
 const selectors: { language: string; scheme: string }[] = [
-    { language: 'lua', scheme: 'file' },
-    { language: 'lua', scheme: 'untitled' },
+	{ language: 'lua', scheme: 'file' },
+	{ language: 'lua', scheme: 'untitled' },
 ];
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
@@ -96,9 +78,9 @@ export function activate(context: vscode.ExtensionContext) {
 	const activityProject: string = getCurrentPluginConfigActivityProject();
 	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => homeManage.homeManage(context,'loadNewProjectModelBox')));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.createProject', async () => homeManage.homeManage(context, 'loadNewProjectModelBox')));
 	// 注册打开工程命令,当点击用户历史工程标题区域打开工程按钮时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject', async () => openProject.openProject(context,homeManage)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.openProject', async () => openProject.openProject(context, homeManage)));
 	// 注册运行工程命令,当点击活动工程标题区域运行工程按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.runProject', runProject));
 	// 注册调试工程命令,当点击活动工程标题区域调试工程按钮时触发
@@ -111,10 +93,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.active', async (filePath) => projectActiveHandle.projectActive(filePath)));
 	// 注册获取活动工程的命令
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.activityProjectGet', (config) => {
-		let path:string=activityMemoryProjectPathBuffer.activityMemoryProjectPath;
+		let path: string = activityMemoryProjectPathBuffer.activityMemoryProjectPath;
 		return path;
 	}));
-
 	// 注册删除工程文件命令,当点击活动工程内部区域删除工程文件夹或文件按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.sourceFile.delete', async (filePath: ActivityTreeItem) => projectSoruceFileDelete.projectSourceFileDelete(filePath)));
 	// 注册删除活动工程命令，当点击活动工程右侧删除按钮时触发
@@ -127,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click', (label, filePath) => {
 		const selectPath = path.join(filePath, label);
 		if (fs.statSync(selectPath).isFile()) {
-			vscode.commands.executeCommand('vscode.open',vscode.Uri.file(selectPath));
+			vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selectPath));
 		}
 	}));
 	// 注册用户历史工程TreeView
@@ -139,32 +120,31 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => activityProjectTreeDataProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design', async () => uiDesign.uiDesign(context)));
 	// 注册导出量产文件命令,当点击活动工程菜单栏导出量产文件时生效
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.exportProducFile',async () => exportProducFile()));
-
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.exportProducFile', async () => exportProducFile()));
 	// 注册快速上手命令，点击后打开doc使用说明文档
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart',async ()=> {
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
 	}));
 	// 注册技术支持命令，点击后打开luatide用户支持群链接
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport',async ()=> {
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://jq.qq.com/?_wv=1027&k=cl7grKU4'));
 	}));
 	// 注册工具源码命令，点击后打开luatide源码
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.SourceCode',async ()=> {
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.SourceCode', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://gitee.com/openLuat/luatide'));
 	}));
 	// 注册联系我们命令，点击后打开官网
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs',async ()=> {
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.contactUs', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com'));
 	}));
 	// 注册用户erp注册命令，点击后打开erp注册页面
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.register',async ()=>{
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.register', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://erp.openluat.com/login'));
 	}));
 	// 注册luatosWiki命令,点击后打开luatos的wiki页面
-	context.subscriptions.push(vscode.commands.registerCommand('luatide.luatosWiki',async ()=> {
+	context.subscriptions.push(vscode.commands.registerCommand('luatide.luatosWiki', async () => {
 		vscode.env.openExternal(vscode.Uri.parse('https://wiki.luatos.com'));
 	}));
 	dataReport.activaReport();
