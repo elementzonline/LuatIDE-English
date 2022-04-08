@@ -28,7 +28,7 @@
     ],
     "picMaskName": "data/phonemaskU.bmp",
     "picName": "data/phoneU.bmp",
-    "showDirection": 0,
+    "showDirection": 1,
     "showRectXYWH": [
         35,
         112,
