@@ -152,10 +152,10 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
         libPath = libPath;
     }
     else{
-        if (libPath==='' && moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel!=='simulator') {
+        if (libPath==='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
             libPath = getAir72XUXDefaultLatestLibPath();
         }
-        if (libPath!=='' && moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel!=='simulator') {
+        if (libPath!=='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
             libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
         }
         else{
