@@ -151,15 +151,18 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
     if (fs.existsSync(libPath)) {
         libPath = libPath;
     }
-    else if (libPath==='' && moduleModel!=='air101'  && moduleModel!=='air103'  && moduleModel!=='air105'  && moduleModel!=='esp32c3') {
-        libPath = getAir72XUXDefaultLatestLibPath();
-    }
-    else if (libPath==='' && moduleModel==='air101'  || moduleModel ==='air103'  || moduleModel==='air105' || moduleModel === 'esp32c3') {
-        libPath = '';
-    }
     else{
-        libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
+        if (libPath==='' && moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel!=='simulator') {
+            libPath = getAir72XUXDefaultLatestLibPath();
+        }
+        if (libPath!=='' && moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel!=='simulator') {
+            libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
+        }
+        else{
+            libPath = '';
+        }
     }
+ 
     return libPath;
 }
 
