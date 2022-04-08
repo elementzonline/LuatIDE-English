@@ -36,7 +36,7 @@ export class checkFiles {
         let FileIgnored = projectConfigJson.ignore;
 
         // 检查后的文件数组
-        let curChangeFiles: any = [];
+        // let curChangeFiles: any = [];
         // 待检查文件变化的文件对象
         let fileToDisplay = {};
         fileToDisplay["add"] = [];

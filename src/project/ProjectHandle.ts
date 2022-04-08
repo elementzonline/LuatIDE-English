@@ -293,7 +293,7 @@ export class ProjectConfigOperation {
         }
 
         // 检测文件
-        const checkFileRet = await checkFile.getProjectConfigFiles(temFile);
+        await checkFile.getProjectConfigFiles(temFile);
     }
 
     // 打开文件资源管理器接口选择添加文件夹
@@ -330,7 +330,7 @@ export class ProjectConfigOperation {
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
         // 检测文件夹内文件
-        const checkFileRet = await checkFile.getProjectConfigFiles(temFiles);
+        await checkFile.getProjectConfigFiles(temFiles);
     }
 
     // 添加至活动工程的文件、文件夹必要条件校验
