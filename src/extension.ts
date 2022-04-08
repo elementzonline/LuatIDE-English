@@ -24,6 +24,7 @@ import {checkSourceUpdate} from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
+import {clientOperation} from './LSP/client/client';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -167,6 +168,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.env.openExternal(vscode.Uri.parse('https://wiki.luatos.com'));
 	}));
 	dataReport.activaReport();
+	// 调用LSP 客户端操作
+	clientOperation(context);
 }
 
 /** 这个方法当插件结束时被调用 */
