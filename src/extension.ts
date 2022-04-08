@@ -140,7 +140,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.Project.refresh', async (filePath: ActivityTreeItem) => activityProjectTreeDataProvider.refresh()));
 	// 注册UI设计器命令,当点击活动工程菜单栏UI设计器时生效
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-ui.design',async () => uiDesign.uiDesign(context)));
-
+	// 注册导出量产文件命令,当点击活动工程菜单栏导出量产文件时生效
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.exportProducFile',async () => exportProducFile()));
 
 	// 注册快速上手命令，点击后打开doc使用说明文档
