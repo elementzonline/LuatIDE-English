@@ -227,6 +227,9 @@ export function projectConfigCompatible(projectPath: string) {
     else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
         projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
     }
+    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+        projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
+    }
 }
 
 // 获取指定路径工程配置的对象
@@ -357,6 +360,37 @@ export function projectConfigCompatibleVersionTwoPointOne(projectPath: string, p
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
     luatideProjectNewJson.moduleModel = moduleModel;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
+    fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+}
+
+// 工程配置文件2.2版本配置文件兼容至2.3版本
+export function projectConfigCompatibleVersionTwoPointThree(projectPath: string, projectOldJsonObj: any) {
+    const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+    const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
+    // 工程模块型号兼容
+    let moduleModel: string = projectOldJsonObj.moduleModel;
+    if (moduleModel === 'air10X') {
+        moduleModel = 'air101';
+    }
+    // 工程core文件兼容
+    let corePath: string = projectOldJsonObj.corePath;
+    if (corePath !== '' && corePath.indexOf('Air72X_CORE') !== -1) {
+        corePath = corePath.replace('\\LuatIDE\\LuatideCore\\Air72X_CORE', '\\LuatIDE\\LuatideCore\\Air72XUX_CORE');
+    }
+    // 工程lib文件兼容
+    let libPath: string = projectOldJsonObj.libPath;
+    if (libPath !== '' && libPath.indexOf('Air72X_LIB') !== -1) {
+        libPath = libPath.replace('\\LuatIDE\\LuatideLib\\Air72X_LIB', '\\LuatIDE\\LuatideLib\\Air72XUX_LIB');
+    }
+    luatideProjectNewJson.version = '2.3';
+    luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+    luatideProjectNewJson.corePath = corePath;
+    luatideProjectNewJson.libPath = libPath;
+    luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
+    luatideProjectNewJson.moduleModel = moduleModel;
+    luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.ignore = [];
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }

@@ -163,7 +163,7 @@ export class CreateProject {
         const projectConfigVersion: string = getprojectConfigInitVersion();
         setProjectConfigVersion(projectConfigVersion,createProjectMessage.createProjectPath);
          // 获取写入配置文件的实际core路径
-         const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
+        const createProjectCorePath:string = getCreateProjectCorepathHandle(createProjectMessage.createProjectCorePath,createProjectMessage.createProjectModuleModel);
         setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath); 
         // 获取写入配置文件的实际lib路径
         const createProjectLibPath:string = getCreateProjectLibpathHandle(createProjectMessage.createProjectLibPath,createProjectMessage.createProjectModuleModel);
