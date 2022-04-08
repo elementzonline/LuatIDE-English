@@ -25,10 +25,7 @@ import * as displayLog from "./displayLog";
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
-import { checkFiles } from './checkFile';
 // import { getAirSimulatorSkinConfigPath } from '../variableInterface';
-
-const checkFile = new checkFiles();
 
 const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
@@ -522,8 +519,6 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
-
-		await checkFile.getProjectConfigFiles();
 
 		this.activeWorkspace = getPluginConfigActivityProject();
 		this.displayLog.debugConsoleEnable();
