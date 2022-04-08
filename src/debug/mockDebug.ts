@@ -23,8 +23,10 @@ import * as tsQueue from "../tsQueue";
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
+import { checkFiles } from './checkFile';
 // import { getAirSimulatorSkinConfigPath } from '../variableInterface';
 
+const checkFile = new checkFiles();
 
 const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
@@ -538,6 +540,8 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 每次调试前清空队列数据
 		queue.clear();
 		this.fullvarsArray = [];
+
+		const checkFileRet = await checkFile.getProjectConfigFiles();
 
 		this.activeWorkspace = getPluginConfigActivityProject();
 		// 如果是NDK工程，就需要先去编译
