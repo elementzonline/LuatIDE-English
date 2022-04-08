@@ -10,7 +10,7 @@ import { getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath } fro
 
     // 获取当前工程文件初始化版本号
 export function getprojectConfigInitVersion(){
-        const projectConfigInitVersion:string = '2.2';
+        const projectConfigInitVersion:string = '2.3';
         return projectConfigInitVersion;
     }
 
@@ -193,6 +193,7 @@ export function  generateProjectJson(projectPath:any){
             moduleModel:'',
             appFile:[],
             modulePort:'',
+            ignore:[],
         };
         refreshProjectJson(projectJson,projectConfigPath);
     }
@@ -209,6 +210,7 @@ export function  generateImportProjectInitJson(projectPath:any){
             moduleModel:'',
             appFile:[],
             modulePort:'',
+            ignore:[],
         };
         projectJson.corePath = corePath;
         projectJson.libPath = libPath;
