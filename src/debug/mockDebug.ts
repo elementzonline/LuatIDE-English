@@ -521,7 +521,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		queue.clear();
 		this.fullvarsArray = [];
 
-		const checkFileRet = await checkFile.getProjectConfigFiles();
+		await checkFile.getProjectConfigFiles();
 
 		this.activeWorkspace = getPluginConfigActivityProject();
 
