@@ -33,45 +33,55 @@ export class checkFiles {
             return true;
         }
         let filesChecked = projectConfigJson.appFile;
-        let FileIgnored = projectConfigJson.ignore;
+        let fileIgnored = projectConfigJson.ignore;
 
-        // 检查后的文件数组
-        // let curChangeFiles: any = [];
         // 待检查文件变化的文件对象
         let fileToDisplay = {};
         fileToDisplay["add"] = [];
         let tipsToUser = "";
         let msgOptions = "";
+        let floderAll = "default";
 
         if (tar){
             if (Array.isArray(tar)) {
-                tar.forEach((e: any) => {
-                    fileToDisplay["add"].push(e);
-                    if (!e.includes(".") && !e.includes("/") && !e.includes("\\")) {
-                        tipsToUser = e;
-                        msgOptions = "是否添加 " + tipsToUser + " 文件夹到下载列表，NO 则忽略下载，Cancel则默认下载";
+                for (let i = 0; i < tar.length; i++) {
+                    let e = tar[i];
+                    if (floderAll === "default") {
+                        if (e.includes(".")) {
+                            tipsToUser = e;
+                            msgOptions = "是否忽略 " + tipsToUser + " 文件到下载列表，是：则忽略此文件下载，全是：则忽略所有文件下载，全不：则全部下载否则默认下载";
+                            const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是", "全是", "全不");
+                            if (downOption === '是') {
+                                fileIgnored.push(e);
+                            } else if (downOption === '全是') {
+                                floderAll = "all";
+                                fileIgnored.push(e);
+                            } else if (downOption === '全不') {
+                                floderAll = "none";
+                                filesChecked.push(e);
+                            } else{
+                                filesChecked.push(e);
+                            }
+                        }
+                    } else if (floderAll === "all") {
+                        fileIgnored.push(e);
+                    } else if (floderAll === "none") {
+                        filesChecked.push(e);
+                    } else{
+                        filesChecked.push(e);
                     }
-                });
+                }
             } else {
-                fileToDisplay["add"].push(tar);
                 tipsToUser = path.basename(tar);
-                msgOptions = "是否添加文件 " + tipsToUser + " 到下载列表，NO 则忽略下载，Cancel则默认下载";
+                msgOptions = "是否忽略文件 " + tipsToUser + " 到下载列表，是：则忽略下载，否则默认下载";
+                const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是");
+                if (downOption === '是') {
+                    fileIgnored.push(tar);
+                } else{
+                    filesChecked.push(tar);
+                }
             }
-    
-            const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "Yes", "No");
-            if (downOption === 'Yes') {
-                fileToDisplay["add"].forEach((e: any) => {
-                    // filesChecked.push(e);
-                });
-            } else if (downOption === 'No') {
-                fileToDisplay["add"].forEach((e: any) => {
-                    FileIgnored.push(e);
-                    filesChecked.splice(filesChecked.indexOf(e), 1);
-                });
-            } else {
-            }
-    
-            projectConfigJson.ignore = FileIgnored;
+            projectConfigJson.ignore = fileIgnored;
             projectConfigJson.appFile = filesChecked;
             fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson));
         }
