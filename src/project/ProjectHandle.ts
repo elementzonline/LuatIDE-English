@@ -10,9 +10,6 @@ import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathL
 import { getProjectConfigAppFile, getProjectConfigModuleModel, popProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
 
 import * as ideServer from '../serverInterface';
-import { checkFiles } from './checkFile';
-
-const checkFile = new checkFiles();
 
 // 激活工程处理
 export class ProjectActiveHandle {
@@ -291,9 +288,6 @@ export class ProjectConfigOperation {
             pushProjectConfigAppFile(filePathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
-
-        // 检测文件
-        await checkFile.getProjectConfigFiles(temFile);
     }
 
     // 打开文件资源管理器接口选择添加文件夹
@@ -329,8 +323,6 @@ export class ProjectConfigOperation {
             pushProjectConfigAppFile(folderPathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
-        // 检测文件夹内文件
-        await checkFile.getProjectConfigFiles(temFiles);
     }
 
     // 添加至活动工程的文件、文件夹必要条件校验
