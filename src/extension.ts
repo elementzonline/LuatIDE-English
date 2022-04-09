@@ -19,6 +19,8 @@ import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
 import { clientOperation } from './LSP/client/client';
+import { checkFiles } from './project/checkFile';
+import { getFileForDirRecursion } from './project/projectApi';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -46,6 +48,48 @@ function debugProject(resource: vscode.Uri): void {
 		noDebug: false
 	});
 }
+
+/* 文件检测 */
+const checkFile = new checkFiles();
+let timeId: any;
+let oldAp: any = undefined;
+let oldFd: any = undefined;
+let curFd: any = undefined;
+async function checkFloderControlUpdate(){
+	let aP = getCurrentPluginConfigActivityProject();
+	curFd = getFileForDirRecursion(aP, "");
+	console.log("oldAp:", oldAp);
+	console.log("aP:", aP);
+	if (!oldAp){
+		oldAp = aP;
+		oldFd = curFd;
+		
+	}
+	if (oldAp !== aP){
+		oldAp = aP;
+		oldFd = curFd;
+	}
+	let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
+	if (diff.length > 0){
+		clearInterval(timeId);
+		if (diff.length === 1){
+			console.log("文件发生变化：", diff[0]);
+			const ret = await checkFile.getProjectConfigFiles(diff[0]);
+			if (ret){
+				oldFd = curFd;
+				timeId = setInterval(checkFloderControlUpdate, 2000);
+			}
+		} else{
+			const ret = await checkFile.getProjectConfigFiles(diff);
+			if (ret){
+				oldFd = curFd;
+				timeId = setInterval(checkFloderControlUpdate, 2000);
+			}
+		}
+	}
+}
+timeId = setInterval(checkFloderControlUpdate, 2000);
+
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
