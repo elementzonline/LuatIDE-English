@@ -368,27 +368,15 @@ export function projectConfigCompatibleVersionTwoPointOne(projectPath: string, p
 export function projectConfigCompatibleVersionTwoPointThree(projectPath: string, projectOldJsonObj: any) {
     const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
     const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
-    // 工程模块型号兼容
-    let moduleModel: string = projectOldJsonObj.moduleModel;
-    if (moduleModel === 'air10X') {
-        moduleModel = 'air101';
-    }
-    // 工程core文件兼容
-    let corePath: string = projectOldJsonObj.corePath;
-    if (corePath !== '' && corePath.indexOf('Air72X_CORE') !== -1) {
-        corePath = corePath.replace('\\LuatIDE\\LuatideCore\\Air72X_CORE', '\\LuatIDE\\LuatideCore\\Air72XUX_CORE');
-    }
     // 工程lib文件兼容
     let libPath: string = projectOldJsonObj.libPath;
-    if (libPath !== '' && libPath.indexOf('Air72X_LIB') !== -1) {
+    if (libPath !== '' && (projectOldJsonObj.moduleModel === 'air101') || (projectOldJsonObj.moduleModel === 'air103')  || (projectOldJsonObj.moduleModel === 'air105') || ((projectOldJsonObj.moduleModel === 'esp32c3'))) {
         libPath = libPath.replace('\\LuatIDE\\LuatideLib\\Air72X_LIB', '\\LuatIDE\\LuatideLib\\Air72XUX_LIB');
     }
     luatideProjectNewJson.version = '2.3';
     luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
-    luatideProjectNewJson.corePath = corePath;
     luatideProjectNewJson.libPath = libPath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
-    luatideProjectNewJson.moduleModel = moduleModel;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
     luatideProjectNewJson.ignore = [];
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
