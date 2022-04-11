@@ -15,7 +15,9 @@ import {
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultLatestCorePath,
     getAir72XUXDefaultLatestLibPath,
-    getAir72XUXDefaultLibPath
+    getAir72XUXDefaultLibPath,
+    getAir72XCXDefaultCorePath,
+    getAir72XCXDefaultLatestCorePath
 } from "../variableInterface";
 
 // let pluginJsonParse:any = new PluginJsonParse(); 
@@ -173,7 +175,7 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
             corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
             break;
         case 'air72XCX':
-            corePath = '';
+            corePath = getCreateProjectAir72XCXCorepathHandle(corePath);
             break;
         case 'air101':
             corePath = getCreateProjectAir101CorepathHandle(corePath);
@@ -266,6 +268,21 @@ export function getCreateProjectAir72XUXCorepathHandle(corePath:string){
     }
     else{
         corePath = path.join(air72XUXDefaultCorePath,corePath);
+    }
+    return corePath;
+}
+
+// 接收到的webview发送的air72XCX的core处理
+export function getCreateProjectAir72XCXCorepathHandle(corePath:string){
+    const air72XCXDefaultCorePath = getAir72XCXDefaultCorePath();
+    if (fs.existsSync(corePath)) {
+        corePath = corePath;
+    }
+    else if (corePath==='') {
+        corePath = getAir72XCXDefaultLatestCorePath();
+    }
+    else{
+        corePath = path.join(air72XCXDefaultCorePath,corePath);
     }
     return corePath;
 }
