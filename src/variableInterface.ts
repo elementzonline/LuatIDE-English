@@ -416,6 +416,12 @@ export function getAir72XUXDefaultCorePath() {
     return air72XUXDefaultCorePath;
 }
 
+// 获取72XUX默认core文件存储路径
+export function getAir72XCXDefaultCorePath() {
+    const air72XUXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XCX_CORE");
+    return air72XUXDefaultCorePath;
+}
+
 // 获取air72XUX默认core文件列表
 export function getAir72XUXDefaultCoreList() {
     const coreList: string[] = [];
