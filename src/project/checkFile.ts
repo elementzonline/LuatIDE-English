@@ -30,9 +30,9 @@ export class checkFiles {
             projectConfigJson.ignore = [];
         }
         // 当工程为 Ui 和 NDK 工程时，直接返回
-        if (projectConfigJson.projectType === "ui" || projectConfigJson.projectType === "ndk"){
-            return true;
-        }
+        // if (projectConfigJson.projectType === "ui" || projectConfigJson.projectType === "ndk"){
+        //     return true;
+        // }
         let filesChecked = projectConfigJson.appFile;
         let fileIgnored = projectConfigJson.ignore;
 
@@ -50,18 +50,18 @@ export class checkFiles {
                     if (floderAll === "default") {
                         if (e.includes(".")) {
                             tipsToUser = e;
-                            msgOptions = "是否忽略 " + tipsToUser + " 文件到下载列表，是：则忽略此文件下载，全是：则忽略所有文件下载，全不：则全部下载否则默认下载";
+                            msgOptions = "是否添加 " + tipsToUser + " 文件到下载列表，是：则添加此文件下载，全是：则添加所有文件，全不：则全不添加，否则单次不添加";
                             const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是", "全是", "全不");
                             if (downOption === '是') {
-                                fileIgnored.push(e);
-                            } else if (downOption === '全是') {
+                                filesChecked.push(e);
+                            } else if (downOption === '全不') {
                                 floderAll = "all";
                                 fileIgnored.push(e);
-                            } else if (downOption === '全不') {
+                            } else if (downOption === '全是') {
                                 floderAll = "none";
                                 filesChecked.push(e);
                             } else{
-                                filesChecked.push(e);
+                                fileIgnored.push(e);
                             }
                         }
                     } else if (floderAll === "all") {
@@ -74,12 +74,12 @@ export class checkFiles {
                 }
             } else {
                 tipsToUser = path.basename(tar);
-                msgOptions = "是否忽略文件 " + tipsToUser + " 到下载列表，是：则忽略下载，否则默认下载";
+                msgOptions = "是否添加文件 " + tipsToUser + " 到下载列表，是：添加，否则不添加";
                 const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是");
                 if (downOption === '是') {
-                    fileIgnored.push(tar);
-                } else{
                     filesChecked.push(tar);
+                } else{
+                    fileIgnored.push(tar);
                 }
             }
             projectConfigJson.ignore = fileIgnored;
