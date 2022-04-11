@@ -21,7 +21,8 @@ import {
     getHistoryLibPath,
     getLuatIDEDataPath,
     getPluginConfigPath,
-    getUserUUIDPath
+    getUserUUIDPath,
+    getAir72XCXDefaultCorePath
 } from './variableInterface';
 
 /**
@@ -49,13 +50,14 @@ export class PluginConfigInit {
     private air103Corepath: any = getAir103DefaultCorePath();
     private air105Corepath: any = getAir105DefaultCorePath();
     private esp32c3Corepath: any = getEsp32c3DefaultCorePath();
+    private air72XCXCorePath:any = getAir72XCXDefaultCorePath();
 
     constructor() {
 
     }
                                                                                                                                                                                                                        
     // config实例化
-    configInit(){
+    configInit(){0
         this.folderInit(this.plugDataPath);
         this.folderInit(this.pluginDefaultWorkspacePath);
         this.folderInit(this.historyLibpath);
@@ -75,6 +77,7 @@ export class PluginConfigInit {
         this.folderInit(this.air103Corepath);
         this.folderInit(this.air105Corepath);
         this.folderInit(this.esp32c3Corepath);
+        this.folderInit(this.air72XCXCorePath);
     }
 
     // 获取当前插件配置文件初始化版本号
