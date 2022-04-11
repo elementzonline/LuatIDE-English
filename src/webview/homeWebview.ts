@@ -292,7 +292,6 @@ export class HomeManage {
                     }
                 }
                 else{
-                    vscode.window.showErrorMessage("LuatTools 项目中文件错误导入失败，请检查后重试！");
                     return undefined;
                 }
                 break;
