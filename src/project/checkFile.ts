@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { clearScreenDown } from 'readline';
 
 /*
     check the change of the source code
