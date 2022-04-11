@@ -5,7 +5,7 @@ import { getPluginConfigPath, getAir72XUXDefaultLatestLibPath, getDefaultWorkspa
 import { getDefaultProjectName } from '../project/ProjectHandle';
 import { getCreateProjectCorepathHandle, getCreateProjectLibpathHandle} from '../project/projectApi';
 
-export class importLuatToolsProjectClass {
+export class ImportLuatToolsProjectClass {
     constructor() {
     }
 
