@@ -58,8 +58,8 @@ let curFd: any = undefined;
 async function checkFloderControlUpdate(){
 	let aP = getCurrentPluginConfigActivityProject();
 	curFd = getFileForDirRecursion(aP, "");
-	console.log("oldAp:", oldAp);
-	console.log("aP:", aP);
+	// console.log("oldAp:", oldAp);
+	// console.log("aP:", aP);
 	if (!oldAp){
 		oldAp = aP;
 		oldFd = curFd;
