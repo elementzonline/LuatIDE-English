@@ -436,6 +436,20 @@ export function getAir72XUXDefaultCoreList() {
     return coreList;
 }
 
+// 获取air72XCX默认core文件列表
+export function getAir72XCXDefaultCoreList() {
+    const coreList:string[] = [];
+    const air72XCXDefaultCorePath:string =  getAir72XCXDefaultCorePath();
+    const files:string[] = fs.readdirSync(air72XCXDefaultCorePath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (path.extname(path.join(air72XCXDefaultCorePath, element)) === '.zip') {
+            coreList.unshift(element);
+        }
+    }
+    return coreList;
+}
+
 // 获取air101默认core文件列表
 export function getAir101DefaultCoreList() {
     const coreList: string[] = [];
