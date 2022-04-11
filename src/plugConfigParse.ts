@@ -227,7 +227,7 @@ export function projectConfigCompatible(projectPath: string) {
     else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
         projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
     }
-    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
         projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
     }
 }
