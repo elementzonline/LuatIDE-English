@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
+import { clearScreenDown } from 'readline';
 
 /*
     check the change of the source code
@@ -83,8 +84,42 @@ export class checkFiles {
             }
             projectConfigJson.ignore = fileIgnored;
             projectConfigJson.appFile = filesChecked;
-            fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson));
+            fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
         }
         return true;
-    }   
+    }
+    
+    async delFiles(tar: any){
+        const curProjectName = getPluginConfigActivityProject();
+        if (curProjectName === '') {
+            return true;
+        }
+
+        let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
+
+        if (!projectConfigJson.ignore){
+            projectConfigJson.ignore = [];
+        }
+
+        let filesChecked = projectConfigJson.appFile;
+        let fileIgnored = projectConfigJson.ignore;
+
+        if (tar){
+            for (let i = 0; i < tar.length; i++){
+                let e = tar[i];
+
+                if (filesChecked.includes(e)){
+                    filesChecked.splice(filesChecked.indexOf(e), 1);
+                }
+                if (fileIgnored.includes(e)){
+                    fileIgnored.splice(fileIgnored.indexOf(e), 1);
+                }
+            }
+        }
+        projectConfigJson.ignore = fileIgnored;
+        projectConfigJson.appFile = filesChecked;
+        fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
+
+        return true;
+    }
 }
