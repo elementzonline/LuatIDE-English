@@ -2,7 +2,7 @@
 	"name": "luatide",
 	"displayName": "luatIDE",
 	"description": "合宙官方IDE",
-	"version": "2.1.17",
+	"version": "2.1.18",
 	"publisher": "luater",
 	"engines": {
 		"vscode": "^1.63.0"
