@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getEsp32c3DefaultCoreList, getEsp32c3DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+import { getAir101DefaultCoreList, getAir101DefaultExampleList, getAir103DefaultCoreList, getAir103DefaultExampleList, getAir105DefaultCoreList, getAir105DefaultExampleList, getEsp32c3DefaultCoreList, getEsp32c3DefaultExampleList, getAir72XUXDefaultCoreList, getAir72XUXDefaultExampleList, getAir72XUXDefaultLibList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion, getAir72XCXDefaultCoreList } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -215,7 +215,7 @@ export class HomeManage {
         const air103CoreList:string[] = getAir103DefaultCoreList();
         const air105CoreList:string[] = getAir105DefaultCoreList();
         const esp32c3CoreList:string[] = getEsp32c3DefaultCoreList();
-        const air72XCXCoreList:string[] = [];
+        const air72XCXCoreList:string[] = getAir72XCXDefaultCoreList();
         const air101LibList:string[] = []; 
         const air103LibList:string[] = []; 
         const air105LibList:string[] = []; 
