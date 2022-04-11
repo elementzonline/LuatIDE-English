@@ -263,7 +263,6 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件
     async selectProjectFileAddOperation() {
-        let temFile: any;
         const activityProjectPath = getPluginConfigActivityProject();
         const options = {
 			canSelectFiles: true,		//是否选择文件
@@ -282,7 +281,6 @@ export class ProjectConfigOperation {
                     return false;
                 }
                 const relativeFilePath:string = path.relative(activityProjectPath,filePath);
-                temFile = relativeFilePath;
                 filePathList.push(relativeFilePath);
             }
             pushProjectConfigAppFile(filePathList, activityProjectPath);
@@ -292,7 +290,6 @@ export class ProjectConfigOperation {
 
     // 打开文件资源管理器接口选择添加文件夹
     async selectProjectFolderAddOperation() {
-        let temFiles: any;
         const activityProjectPath = getPluginConfigActivityProject();
         const options = {
             canSelectFiles: false,		//是否选择文件
@@ -319,7 +316,6 @@ export class ProjectConfigOperation {
                 folderChildrenList.push(relativeFilePath);
                 folderPathList = folderPathList.concat(folderChildrenList);
             }
-            temFiles = folderPathList;
             pushProjectConfigAppFile(folderPathList, activityProjectPath);
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         }
