@@ -644,7 +644,7 @@ export class HomeManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择底包',
                             filters: {
-                                json: ['pac', "soc"], // 文件类型过滤
+                                json: ['pac', "soc","zip"], // 文件类型过滤
                             },
                         };
                         const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
