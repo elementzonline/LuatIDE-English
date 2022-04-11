@@ -57,7 +57,7 @@ export class PluginConfigInit {
     }
                                                                                                                                                                                                                        
     // config实例化
-    configInit(){0
+    configInit(){
         this.folderInit(this.plugDataPath);
         this.folderInit(this.pluginDefaultWorkspacePath);
         this.folderInit(this.historyLibpath);
