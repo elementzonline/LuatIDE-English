@@ -19,7 +19,7 @@ import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
 import { clientOperation } from './LSP/client/client';
-import { checkFiles } from './project/checkFile';
+import { CheckFiles } from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
@@ -50,7 +50,7 @@ function debugProject(resource: vscode.Uri): void {
 }
 
 /* 文件检测 */
-const checkFile = new checkFiles();
+const checkFile = new CheckFiles();
 let timeId: any;
 let oldAp: any = undefined;
 let oldFd: any = undefined;

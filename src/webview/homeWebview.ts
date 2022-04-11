@@ -14,7 +14,7 @@ import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
-import { importLuatToolsProjectClass } from '../project/importLuatToolsProject';
+import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 // let pluginVariablesInit = new PluginVariablesInit();
 let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
@@ -22,7 +22,7 @@ let createProject = new CreateProject();
 // let projectJsonParse = new ProjectJsonParse();
 let openProject = new OpenProject();
 /* 导入 LuatTools 项目对象实例化 */
-let importLuatToolsProject = new importLuatToolsProjectClass();
+let importLuatToolsProject = new ImportLuatToolsProjectClass();
 
 export const sleep = (ms)=> {
     return new Promise(resolve=>setTimeout(resolve, ms));

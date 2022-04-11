@@ -12,7 +12,7 @@ import { getPluginConfigActivityProject } from '../plugConfigParse';
             "file2": false,
         }
 */
-export class checkFiles {
+export class CheckFiles {
     constructor() {
     }
 
