@@ -24,7 +24,9 @@ import {
     getAir72XUXDefaultLatestCoreName,
     getAir72XUXDefaultLatestLibName,
     getAir72XUXDefaultLibPath,
-    getLuatIDEDataPath
+    getLuatIDEDataPath,
+    getAir72XCXDefaultCorePath,
+    getAir72XCXDefaultLatestCoreName
 } from './variableInterface';
 import { copyDir } from './project/projectApi';
 
@@ -135,7 +137,21 @@ async function checkEsp32c3SourceUpdate() {
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = 'esp32c3_lua_lod';
     const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
-    return checkUpdateState(localScriptVersion, remoteScriptVersion);;
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);
+}
+
+/*
+*检查air72xcx是否有更新
+*@returns checkEsp32c3UpdateState air72xcx资源更新状态 true:固件有更新,false:固件没有更新
+*/
+async function checkair72xcxSourceUpdate(){
+    const localScriptReg = /V([\d]+)_/ig;
+    const localSourceName: string = getAir72XCXDefaultLatestCoreName();
+    const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
+    const remoteScriptReg = /V([\d]+)\.zip/ig;
+    const apiName: string = '1603_lua_lod';
+    const remoteScriptVersion: string | undefined = await getRemoteScriptVersion(remoteScriptReg, apiName);
+    return checkUpdateState(localScriptVersion, remoteScriptVersion);
 }
 
 /*
@@ -345,6 +361,21 @@ async function pullAir72XUXCore(jsonObj: any, sourceBaseUrl: string) {
     await unzip(sourceDistPath, air72XUXCoreSourceTempPath);
     air72XUXCoreHandle(air72XUXCoreSourceTempPath);
     await deleteFolderRecursive(air72XUXCoreSourceTempPath);
+}
+
+/*
+*从远端服务器拉取air72XCX的core
+*@param jsonObj 从远端服务器获取到的资源名称json数据对象
+*@param sourceBaseUrl 远端资源基础url
+*/
+async function pullAir72XCXCore(jsonObj: any, sourceBaseUrl: string) {
+    let sourceAbsloutePath: string = path.join(sourceBaseUrl, '1603_lua_lod', jsonObj['1603_lua_lod']);
+    const air72XCXCoreSourceTempPath: string = getTempSavePath('1603_lua_lod');
+    const sourceDistPath: string = path.join(air72XCXCoreSourceTempPath, jsonObj['1603_lua_lod']);
+    await download(sourceAbsloutePath, sourceDistPath);
+    await unzip(sourceDistPath, air72XCXCoreSourceTempPath);
+    air72XCXCoreHandle(air72XCXCoreSourceTempPath);
+    await deleteFolderRecursive(air72XCXCoreSourceTempPath);
 }
 
 /*
@@ -561,7 +592,22 @@ function air72XUXCoreHandle(coreSourcePath: string) {
         }
     });
 }
-
+/*
+*处理拉取到临时文件夹的air72XCX 固件
+*@param coreSourcePath air72XCX固件资源临时存储路径
+*/
+function air72XCXCoreHandle(coreSourcePath: string) {
+    const air72XCXCoreDistPath: string = getAir72XCXDefaultCorePath();
+    const files = fs.readdirSync(coreSourcePath);
+    // console.log('=============3',files);
+    files.forEach((fileName) => {
+        const extname = path.extname(fileName);
+        // console.log('==========4',extname);
+        if (extname === '.zip' && fileName.startsWith('LuatOS-Air')) {
+            fs.copyFileSync(path.join(coreSourcePath, fileName), path.join(air72XCXCoreDistPath, fileName));
+        }
+    });
+}
 /*
 *处理拉取到临时文件夹的air72XUX DEMO 
 *@param sourceDir air72XUX DEMO临时存储路径
@@ -665,6 +711,14 @@ export async function checkSourceUpdate() {
         const downloadReadyHint: string = '检测到Esp32C3的资源文件有更新,是否更新？';
         const downloadingHint: string = '正在为您拉取最新Esp32C3资源文件,请耐心等待';
         updateHintForUser(downloadReadyHint, downloadingHint, pullEsp32c3Source);
+    }
+
+    const air72xcxState = await checkair72xcxSourceUpdate();
+    console.log(air72xcxState);
+    if (air72xcxState) {
+        const downloadReadyHint: string = '检测到air72XCX的资源文件有更新,是否更新？';
+        const downloadingHint: string = '正在为您拉取最新air72XCX资源文件,请耐心等待';
+        updateHintForUser(downloadReadyHint, downloadingHint, pullAir72XCXCore);
     }
 }
 // checkSourceUpdate();
