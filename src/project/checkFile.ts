@@ -46,39 +46,43 @@ export class checkFiles {
             if (Array.isArray(tar)) {
                 for (let i = 0; i < tar.length; i++) {
                     let e = tar[i];
-                    if (floderAll === "default") {
-                        if (e.includes(".")) {
-                            tipsToUser = e;
-                            msgOptions = "是否添加 " + tipsToUser + " 文件到下载列表，是：则添加此文件下载，全是：则添加所有文件，全不：则全不添加，否则单次不添加";
-                            const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是", "全是", "全不");
-                            if (downOption === '是') {
-                                filesChecked.push(e);
-                            } else if (downOption === '全不') {
-                                floderAll = "all";
-                                fileIgnored.push(e);
-                            } else if (downOption === '全是') {
-                                floderAll = "none";
-                                filesChecked.push(e);
-                            } else{
-                                fileIgnored.push(e);
+                    if (!e.match(/^\.luatide/)){
+                        if (floderAll === "default") {
+                            if (e.includes(".")) {
+                                tipsToUser = e;
+                                msgOptions = "是否添加 " + tipsToUser + " 文件到下载列表，是：则添加此文件下载，全是：则添加所有文件，全不：则全不添加，否则单次不添加";
+                                const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是", "全是", "全不");
+                                if (downOption === '是') {
+                                    filesChecked.push(e);
+                                } else if (downOption === '全不') {
+                                    floderAll = "all";
+                                    fileIgnored.push(e);
+                                } else if (downOption === '全是') {
+                                    floderAll = "none";
+                                    filesChecked.push(e);
+                                } else{
+                                    fileIgnored.push(e);
+                                }
                             }
+                        } else if (floderAll === "all") {
+                            fileIgnored.push(e);
+                        } else if (floderAll === "none") {
+                            filesChecked.push(e);
+                        } else{
+                            filesChecked.push(e);
                         }
-                    } else if (floderAll === "all") {
-                        fileIgnored.push(e);
-                    } else if (floderAll === "none") {
-                        filesChecked.push(e);
-                    } else{
-                        filesChecked.push(e);
                     }
                 }
             } else {
-                tipsToUser = path.basename(tar);
-                msgOptions = "是否添加文件 " + tipsToUser + " 到下载列表，是：添加，否则不添加";
-                const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是");
-                if (downOption === '是') {
-                    filesChecked.push(tar);
-                } else{
-                    fileIgnored.push(tar);
+                if (!tar.match(/^\.luatide/)){
+                    tipsToUser = path.basename(tar);
+                    msgOptions = "是否添加文件 " + tipsToUser + " 到下载列表，是：添加，否则不添加";
+                    const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是");
+                    if (downOption === '是') {
+                        filesChecked.push(tar);
+                    } else{
+                        fileIgnored.push(tar);
+                    }
                 }
             }
             projectConfigJson.ignore = fileIgnored;
