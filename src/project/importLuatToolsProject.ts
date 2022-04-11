@@ -20,6 +20,7 @@ export class importLuatToolsProjectClass {
 		};
         const importLuatToolsProjectPath: any = await this.getLuatToolsImportPathWithInterface(options);
         if (importLuatToolsProjectPath === undefined) {
+            vscode.window.showErrorMessage("LuatTools 项目中文件错误导入失败，请检查后重试！");
             return undefined;
         }
         if (importLuatToolsProjectPath === "core find failed"){
