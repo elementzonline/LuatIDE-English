@@ -9,14 +9,14 @@ export class importLuatToolsProjectClass {
     constructor() {
     }
 
-    /* 0. 用户点击导入 LuatTools 项目按钮后，出现文件资源管理器界面 */
+    /* 0. 用户点击导入 LuaTools 项目按钮后，出现文件资源管理器界面 */
     async openFileSystemControl(context:vscode.ExtensionContext){
         const options = {
 			canSelectFiles: true,		//是否选择文件
 			canSelectFolders: false,		//是否选择文件夹
 			canSelectMany: false,		//是否选择多个文件
 			defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
-			openLabel: '选择您需要导入的 LuatTools 项目 ini 文件'
+			openLabel: '选择您需要导入的 LuaTools 项目 ini 文件'
 		};
         const importLuatToolsProjectPath: any = await this.getLuatToolsImportPathWithInterface(options);
         if (importLuatToolsProjectPath === undefined) {
@@ -29,7 +29,7 @@ export class importLuatToolsProjectClass {
     }
     
     /*
-    解析 LuatTools 工程文件
+    解析 LuaTools 工程文件
     @fileDir:               ini文件绝对路径
     */
     async analyzeLuatToolsIniFile(fileDir: any){
@@ -80,7 +80,7 @@ export class importLuatToolsProjectClass {
         return undefined;
     }
 
-    /* 1. 获取导入的 LuatTools 工程的路径 */
+    /* 1. 获取导入的 LuaTools 工程的路径 */
     async getLuatToolsImportPath(options:any){
         let temRetOne =  await vscode.window.showOpenDialog(options);
 
@@ -104,7 +104,7 @@ export class importLuatToolsProjectClass {
                 canSelectFolders: true,		//是否选择文件夹
                 canSelectMany: false,		//是否选择多个文件
                 defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
-                openLabel: '选择您导入的 LuatTools 项目的保存地址'
+                openLabel: '选择您导入的 LuaTools 项目的保存地址'
             });
             
             if (inputProjrctPath === undefined) {
@@ -115,7 +115,7 @@ export class importLuatToolsProjectClass {
                 password:false,
                 ignoreFocusOut:true, // 默认false，设置为true时鼠标点击别的地方输入框不会消失
                 placeHolder:'请勿输入特殊字符', // 在输入框内的提示信息
-                prompt:"请输入导入的 LuatTools 的工程的初始化名称"
+                prompt:"请输入导入的 LuaTools 的工程的初始化名称"
             });
 
             if (defProjectName){
@@ -214,7 +214,7 @@ export class importLuatToolsProjectClass {
             /* 解析ini中的数据并提取 */
             const analyRes = await this.analyzeLuatToolsIniFile(importProjectPath);
             if (!analyRes){
-                vscode.window.showErrorMessage("LuatTools 项目中文件错误导入失败，请检查后重试！");
+                vscode.window.showErrorMessage("LuaTools 项目中文件错误导入失败，请检查后重试！");
                 return undefined;
             }
 
