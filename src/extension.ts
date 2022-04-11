@@ -70,6 +70,7 @@ async function checkFloderControlUpdate(){
 		oldFd = curFd;
 	}
 	let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
+	let del = oldFd.filter(function(v: any){ return curFd.indexOf(v) === -1; });
 	if (diff.length > 0){
 		clearInterval(timeId);
 		if (diff.length === 1){
@@ -77,18 +78,28 @@ async function checkFloderControlUpdate(){
 			const ret = await checkFile.getProjectConfigFiles(diff[0]);
 			if (ret){
 				oldFd = curFd;
-				timeId = setInterval(checkFloderControlUpdate, 2000);
+				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}
 		} else{
 			const ret = await checkFile.getProjectConfigFiles(diff);
 			if (ret){
 				oldFd = curFd;
-				timeId = setInterval(checkFloderControlUpdate, 2000);
+				timeId = setInterval(checkFloderControlUpdate, 1000);
+			}
+		}
+	}
+	if (oldFd.length !== curFd.length){
+		if (del.length > 0){
+			clearInterval(timeId);
+			const ret = await checkFile.delFiles(del);
+			if (ret){
+				oldFd = curFd;
+				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}
 		}
 	}
 }
-timeId = setInterval(checkFloderControlUpdate, 2000);
+timeId = setInterval(checkFloderControlUpdate, 1000);
 
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
