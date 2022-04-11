@@ -150,6 +150,12 @@ export function getAir72XUXReg() {
     return reg;
 }
 
+// 获取获取Air72XCX固件版本号正则解析表达式
+export function getAir72XCXReg() {
+    const reg = /LuatOS-\w{3}_V(\d+)_ASR1603/gi;
+    return reg;
+}
+
 // 获取获取Air101固件版本号正则解析表达式
 export function getAir101Reg() {
     const reg = /LuatOS-SoC_V(\d+)_AIR101/ig;
