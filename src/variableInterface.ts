@@ -687,6 +687,42 @@ export function getAir72XUXDefaultLatestCorePath() {
     return air72XUXDefaultLatestCorePath;
 }
 
+// 获取air72XUX默认最新core名称
+export function getAir72XCXDefaultLatestCoreName() {
+    const air72XCXCorePath: string = getAir72XCXDefaultCorePath();
+    const coreList: string[] = fs.readdirSync(air72XCXCorePath);
+    const reg = getAir72XCXReg();
+    let currentVersion = undefined;
+    let coreName = '';
+    for (let index = 0; index < coreList.length; index++) {
+        let currentCoreName: string = coreList[index];
+        if (path.extname(currentCoreName) === '.zip') {
+            const coreNameVersionArray: any = reg.exec(currentCoreName);
+            reg.lastIndex = 0;
+            if (coreNameVersionArray !== null && currentVersion === undefined) {
+                currentVersion = coreNameVersionArray[1];
+                coreName = currentCoreName;
+            }
+            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
+                currentVersion = coreNameVersionArray[1];
+                coreName = currentCoreName;
+            }
+        }
+    }
+    return coreName;
+}
+
+// 获取air72XUX默认最新core完整路径
+export function getAir72XCXDefaultLatestCorePath() {
+    const air72XCXDefaultLatestCoreName:string = getAir72XCXDefaultLatestCoreName();
+    const air72XCXDefaultCorePath:string = getAir72XCXDefaultCorePath();
+    let air72XCXDefaultLatestCorePath:string = '';
+    if (air72XCXDefaultLatestCoreName!=='') {
+        air72XCXDefaultLatestCorePath = path.join(air72XCXDefaultCorePath,air72XCXDefaultLatestCoreName);
+    }
+    return air72XCXDefaultLatestCorePath;
+}
+
 // 获取air72XUX默认最新lib版本名称
 export function getAir72XUXDefaultLatestLibName() {
     const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
