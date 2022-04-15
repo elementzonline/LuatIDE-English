@@ -1,6 +1,8 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import {SerialPort} from 'serialport';
+
 // 获取数据存储路径
 let appDataPath: any = process.env['APPDATA'];
 // 获取用户扩展路径
@@ -996,4 +998,23 @@ export function getActiveProjectHtmlPath() {
     return homeHtmlPath;
 }
 
+// 获取本地所有串口信息
+export async function getSerialPortInfoList() {
+    let portFriendlyNameList:string[] = [];
+    try {
+        let ports = await SerialPort.list();
+        for (let index = 0; index < ports.length; index++) {
+            const element = ports[index];
+            const friendlyName = JSON.parse(JSON.stringify(element)).friendlyName;
+            const comPort = JSON.parse(JSON.stringify(element)).path;
+            const portDesc:string = "["+comPort+"] "+friendlyName;
+            portFriendlyNameList.push(portDesc);
+        }
+        // console.log(ports); // 打印串口列表
+        portFriendlyNameList.unshift("");
+        return portFriendlyNameList;
+    } catch (error) {
+        console.log(error);
+        return portFriendlyNameList;
+    }
 }
