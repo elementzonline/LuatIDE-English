@@ -3,6 +3,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
+import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface';
+import { PluginConfigInit } from '../config';
 
 /*
     check the change of the source code
@@ -12,9 +14,169 @@ import { getPluginConfigActivityProject } from '../plugConfigParse';
             "file2": false,
         }
 */
+
+const getIsUserClose = new PluginConfigInit();
 export class CheckFiles {
     constructor() {
     }
+    
+    downloadPage: vscode.WebviewPanel | undefined = undefined;
+    
+    async downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
+
+        //判断是否需要显示webview
+        const fileRet: any = await this.checkFilesType(files.all, files.new);
+
+        if (fileRet){
+            if (this.downloadPage) {
+                return true;
+            }
+            else {
+                this.downloadPage = vscode.window.createWebviewPanel(
+                    'download', //仅供内部使用的面板类型
+                    'LuatIDE 下载配置', //webview 展示标题
+                    vscode.ViewColumn.Active,
+                    {
+                        enableScripts: true,
+                        retainContextWhenHidden: true
+                    }
+                );
+            }
+
+            // 获取webview界面
+            this.downloadPage.webview.html = this.getDownloadPageHtml();
+
+            let temPanel = this.downloadPage;
+
+            /* 实时检测主题颜色变化 */
+            vscode.window.onDidChangeActiveColorTheme((e) => {
+                temPanel.webview.postMessage(
+                    {
+                        command: "switchTheme",
+                        text: e.kind === 1 ? "light" : "dark"
+                    }
+                );
+            });
+            temPanel.webview.postMessage(
+                {
+                    command: 'filesChange',
+                    text: {
+                        "all": fileRet.all,
+                        "new": fileRet.new,
+                        "ignore": fileRet.ignore,
+                    },
+                }
+            );
+
+            this.downloadPage.webview.onDidReceiveMessage(
+                message => this.receiveMessageHandle(context,this.downloadPage, message)
+            );
+
+            // Reset when the current panel is closed
+            this.downloadPage.onDidDispose(
+                () => {
+                    this.downloadPage = undefined;
+                },
+                null,
+                context.subscriptions
+            );
+        }
+        return true;
+    }
+
+    
+    // 获取webview的html内容
+    getDownloadPageHtml() {
+        const downloadHtmlJsPath = getDownloadSourcePath();
+        const downloadHtmlPath: string = getDownloadHtmlPath();
+        let homeHtml: string = fs.readFileSync(downloadHtmlPath, "utf-8");
+        homeHtml = homeHtml.replace(
+            /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
+            (m, $1, $2) => {
+                return (
+                    $1 +
+                    vscode.Uri.file(path.resolve(downloadHtmlJsPath, $2))
+                        .with({ scheme: "vscode-resource" })
+                        .toString() +
+                    '"'
+                );
+            }
+        );
+        return homeHtml;
+    }
+
+    /* 处理从 WebView 来的数据 */
+    async receiveMessageHandle(context:vscode.ExtensionContext,downloadPage: any, message: any) {
+        switch (message.command) {
+            case "downloadConfig":
+                getIsUserClose.changeIsUserCloseDownloadPage(true);
+                const ret = await this.checkFilesConfig(message.text);
+                if (ret){
+                    downloadPage.dispose();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 分析文件判断是否需要打开webview */
+    async checkFilesType(allFiles: any, newFiles: any){
+        const curProjectName = getPluginConfigActivityProject();
+        if (curProjectName === '') {
+            return true;
+        }
+        let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
+
+        if (!projectConfigJson.ignore){
+            projectConfigJson.ignore = [];
+        }
+
+        let fileIgnored = projectConfigJson.ignore;
+
+        let temNewFiles = newFiles.filter((item: any) => {
+            return !item.match(/^(\.luatide|\.vscode|\.git|.svn)/);
+        });
+
+        if (temNewFiles.length > 0){
+            return {
+                "all": allFiles,
+                "new": temNewFiles,
+                "ignore": fileIgnored,
+            };
+        }
+        return false;
+    }
+
+    /* 分析从 WebView 收到的文件配置 */
+    async checkFilesConfig(files: any){
+        const curProjectName = getPluginConfigActivityProject();
+        if (curProjectName === '') {
+            return true;
+        }
+
+        let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
+
+        if (!projectConfigJson.ignore){
+            projectConfigJson.ignore = [];
+        }
+
+        let appFile: any = [],
+            ignore: any = [];
+        for (let key in files){
+            if (files[key]){
+                appFile.push(key);
+            } else {
+                ignore.push(key);
+            }
+        }
+
+        projectConfigJson.ignore = ignore;
+        projectConfigJson.appFile = appFile;
+        fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
+        return true;
+    }
+
 
     /* 获取工程的配置文件 */
     async getProjectConfigFiles(tar: any) {
@@ -113,10 +275,40 @@ export class CheckFiles {
 
                 if (filesChecked.includes(e)){
                     filesChecked.splice(filesChecked.indexOf(e), 1);
+                    vscode.window.showWarningMessage("已经删除 " + e + " 文件");
                 }
                 if (fileIgnored.includes(e)){
                     fileIgnored.splice(fileIgnored.indexOf(e), 1);
+                    vscode.window.showWarningMessage("已经删除 " + e + " 文件");
                 }
+            }
+        }
+        projectConfigJson.ignore = fileIgnored;
+        projectConfigJson.appFile = filesChecked;
+        fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
+
+        return true;
+    }
+
+    async defIgnore(tar: any) {
+        const curProjectName = getPluginConfigActivityProject();
+        if (curProjectName === '') {
+            return true;
+        }
+
+        let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
+
+        if (!projectConfigJson.ignore){
+            projectConfigJson.ignore = [];
+        }
+
+        let filesChecked = projectConfigJson.appFile;
+        let fileIgnored = projectConfigJson.ignore;
+
+        if (tar){
+            for (let i = 0; i < tar.length; i++){
+                let e = tar[i];
+                fileIgnored.push(e);
             }
         }
         projectConfigJson.ignore = fileIgnored;

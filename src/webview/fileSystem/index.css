@@ -1,0 +1,119 @@
+/* 消除界面样式 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* 明亮 */
+    --default-bgColor: rgb(255, 255, 255, 0.8);
+    --default-fontColor: rgb(56, 53, 53);
+
+    /* 新添加文件颜色 */
+    --default-addFile-fontColor: rgb(19, 148, 15);
+
+    /* 忽略文件颜色 */
+    --default-ignoreFile-fontColor: rgba(87, 83, 83, 0.4);
+
+    /* 暗黑 */
+    --default-bgColor: rgb(37, 37, 38);
+    --default-fontColor: rgba(255, 255, 255, 0.55);
+
+    /* 新添加文件颜色 */
+    --default-addFile-fontColor: rgb(21, 180, 16, 0.8);
+
+    /* 忽略文件颜色 */
+    --default-ignoreFile-fontColor: rgba(255, 255, 255, 0.2);
+
+    /* 完成按钮 */
+    --default-btnBorderColor: 1px solid rgb(142, 142, 142);
+    --default-btnFontColor: rgb(142, 142, 142);
+    --default-hoverColor: rgb(64, 128, 208);
+}
+
+/* 设置全局样式 */
+body {
+    position: relative;
+    background-color: var(--default-bgColor);
+    color: var(--default-fontColor);
+    text-align: center;
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
+        "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+}
+
+i {
+    color: var(--default-fontColor);
+}
+
+/* 文件下载配置界面容器样式 */
+.fileSystemMain {
+    width: 70%;
+    margin: auto;
+    margin-top: 10px;
+    border: var(--default-btnBorderColor);
+    border-radius: 4px;
+}
+
+/* 设置文件夹的样式 ↓ */
+
+.floderBox {
+    margin-top: 2%;
+    min-height: 600px;
+    width: 100%;
+    background-color: inherit;
+}
+
+.perFloder {
+    margin: auto;
+    width: 70%;
+    margin-bottom: 5px;
+}
+
+/* 根目录下文件/文件夹样式 */
+.floderCont {
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    color: inherit;
+    text-align: left;
+}
+
+.floderCont:only-child label:hover {
+    color: var(--default-hoverColor);
+    cursor: pointer;
+}
+
+/* 非根目录下文件/文件夹样式 */
+.floderChildStyle {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.floderChildStyle:hover {
+    background-color: var(--default-bgColor);
+}
+
+/* 选择框样式 */
+input[type=checkbox] {
+    opacity: 0.6;
+}
+
+/* 设置文件夹的样式 ↑ */
+
+/* 完成按钮样式 */
+.download {
+    width: 130px;
+    height: 35px;
+    background: none;
+    outline: none;
+    border-radius: 2px;
+    margin-bottom: 40px;
+    border: var(--default-btnBorderColor);
+    color: var(--default-btnFontColor);
+}
+
+.download:hover {
+    color: var(--default-hoverColor);
+    border-color: var(--default-hoverColor);
+}

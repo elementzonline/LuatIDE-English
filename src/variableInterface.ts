@@ -234,6 +234,17 @@ export function getHomeSourcePath() {
     return projectSourcePath;
 }
 
+export function getDownloadSourcePath(){
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem');
+    return projectSourcePath;
+}
+
+// 获取下载配置界面html路径
+export function getDownloadHtmlPath() {
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem', 'index.html');
+    return homeHtmlPath;
+}
+
 // 获取新建project主页html按钮
 export function getProjectHtmlPath() {
     const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'newProject', 'index.html');
