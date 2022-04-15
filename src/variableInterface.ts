@@ -989,3 +989,11 @@ export function getUiDesignDefaultPath() {
     const uiDesignDefaultPath:string = path.join(appDataPath,'LuatIDE','LuatideUiDesign');
     return uiDesignDefaultPath;
 }
+
+// 获取活动工程配置html资源路径
+export function getActiveProjectHtmlPath() {
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'configActiveProject', 'index.html');
+    return homeHtmlPath;
+}
+
+}
