@@ -5,7 +5,7 @@
 'use strict';
 import * as vscode from 'vscode';
 import { PluginConfigInit } from './config';
-import { ProjectActiveHandle, ProjectConfigOperation, ProjectDeleteHandle, ProjectSoruceFileDelete, exportProducFile } from './project/ProjectHandle';
+import { ProjectActiveHandle, ProjectDeleteHandle, ProjectSoruceFileDelete, exportProducFile } from './project/ProjectHandle';
 import { activateMockDebug } from './debug/activateMockDebug';
 import { HistoryProjectDataProvider, HistoryProjectTreeItem } from './project/projectTreeView';
 import * as path from 'path';
@@ -21,6 +21,7 @@ import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from '.
 import { clientOperation } from './LSP/client/client';
 import { CheckFiles } from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
+import { projectConfigOperation } from './project/activeProjectOperation';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -104,7 +105,7 @@ timeId = setInterval(checkFloderControlUpdate, 1000);
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
-let projectConfigOperation = new ProjectConfigOperation();
+// let projectConfigOperation = new ProjectConfigOperation();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let historyProjectTreeDataProvider = new HistoryProjectDataProvider();
@@ -158,7 +159,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册点击home主页命令,当点击历史工程标题区域主页按钮时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Home', async () => homeManage.homeManage(context)));
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
-	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation', async () => projectConfigOperation.projectConfigOperation()));
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation', async () => projectConfigOperation(context)));
 	// 注册活动工程文件点击命令，当点击活动工程文件时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click', (label, filePath) => {
 		const selectPath = path.join(filePath, label);
