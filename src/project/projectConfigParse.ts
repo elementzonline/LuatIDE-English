@@ -22,6 +22,8 @@ export function getProjectConfigJson(projectPath:any){
         const projectConfigJsonObj:any = JSON.parse(projectConfigJson);
         return projectConfigJsonObj;
     }
+    
+    // 获取工程配置类型
 export function  getProjectConfigType(projectPath:any){
         const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);
         const projectConfigType:string = projectConfigJsonObj.projectType;
@@ -197,6 +199,7 @@ export function  generateProjectJson(projectPath:any){
         };
         refreshProjectJson(projectJson,projectConfigPath);
     }
+    
     // 导入空文件夹生成默认配置文件
 export function  generateImportProjectInitJson(projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');

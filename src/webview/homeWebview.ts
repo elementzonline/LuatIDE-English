@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import path = require('path');
-import { getDefaultProjectName, ProjectConfigOperation } from '../project/ProjectHandle';
+import { getDefaultProjectName } from '../project/ProjectHandle';
 // import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
@@ -15,8 +15,9 @@ import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfi
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
+import { showOpenDialog } from '../project/activeProjectOperation';
 // let pluginVariablesInit = new PluginVariablesInit();
-let projectConfigOperation = new ProjectConfigOperation();
+// let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
 // let projectJsonParse = new ProjectJsonParse();
@@ -467,7 +468,7 @@ export class HomeManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择工程文件夹'
                         };
-                        const customProjectPathResult:any = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        const customProjectPathResult:any = await showOpenDialog(customProjectOptions);
                         if (customProjectPathResult!==undefined) {
                             const customProjectPath = customProjectPathResult[0].fsPath;
                             homePanel.webview.postMessage(
@@ -489,7 +490,7 @@ export class HomeManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择工程Lib文件夹'
                         };
-                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        const customLibPathResult = await showOpenDialog(customLibOptions);
                         if (customLibPathResult!==undefined) {
                             const customLibPath:string = customLibPathResult[0].fsPath;
                             homePanel.webview.postMessage(
@@ -515,7 +516,7 @@ export class HomeManage {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
                             },
                         };
-                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        const customCorePathResult = await showOpenDialog(customCoreOptions);
                         if (customCorePathResult!==undefined) {
                             const customCorePath = customCorePathResult[0].fsPath;
                             homePanel.webview.postMessage(
@@ -590,7 +591,7 @@ export class HomeManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
-                        const customProjectPathResult = await projectConfigOperation.showOpenDialog(customProjectOptions);
+                        const customProjectPathResult = await showOpenDialog(customProjectOptions);
                         let customProjectPath:string|undefined;
                         if (customProjectPathResult!==undefined) {
                             customProjectPath = customProjectPathResult[0].fsPath;
@@ -616,7 +617,7 @@ export class HomeManage {
                             defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
-                        const customLibPathResult = await projectConfigOperation.showOpenDialog(customLibOptions);
+                        const customLibPathResult = await showOpenDialog(customLibOptions);
                         let customLibPath:string|undefined;
                         if (customLibPathResult!==undefined) {
                             customLibPath = customLibPathResult[0].fsPath;
@@ -646,7 +647,7 @@ export class HomeManage {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
                             },
                         };
-                        const customCorePathResult = await projectConfigOperation.showOpenDialog(customCoreOptions);
+                        const customCorePathResult = await showOpenDialog(customCoreOptions);
                         let customCorePath:string|undefined;
                         if (customCorePathResult!==undefined) {
                             customCorePath = customCorePathResult[0].fsPath;

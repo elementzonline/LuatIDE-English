@@ -98,6 +98,7 @@
 		"isomorphic-git": "^1.13.1",
 		"luaparse": "^0.3.1",
 		"node-fetch": "^2.6.6",
+		"serialport": "^10.4.0",
 		"uuid": "^8.3.2",
 		"vscode-debugadapter": "^1.51.0",
 		"vscode-languageclient": "^6.1.4",
