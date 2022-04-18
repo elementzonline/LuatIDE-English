@@ -83,7 +83,7 @@ async function checkFloderControlUpdate(){
 		const ret = await checkFile.downloadConfigDisplay(temContext, files);
 		if (ret){
 			if (stateMachine.getState()){
-				oldFd = curFd;
+				oldFd = stateMachine.getCurFd();
 				stateMachine.setState(false);
 			}
 			timeId = setInterval(checkFloderControlUpdate, 1000);

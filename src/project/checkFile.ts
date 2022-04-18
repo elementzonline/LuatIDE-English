@@ -14,6 +14,7 @@ import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface
         }
 */
 let isUserClose = false;
+let curFdInWeb = undefined;
 
 export class CheckFiles {
     constructor() {
@@ -43,6 +44,8 @@ export class CheckFiles {
                 );
             }
 
+            /* 赋值当前WebView 中的当前数据*/
+            curFdInWeb = files.all;
             // 获取webview界面
             this.downloadPage.webview.html = this.getDownloadPageHtml();
 
@@ -329,5 +332,9 @@ export class StateMachine {
 
     getState() {
         return isUserClose;
+    }
+
+    getCurFd() {
+        return curFdInWeb;
     }
 }
