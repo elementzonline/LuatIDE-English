@@ -11,9 +11,8 @@ import {
     getAir105DefaultDemoPath,
     getEsp32c3DefaultCorePath,
     getEsp32c3DefaultDemoPath,
-    getAir72XUXCorePath,
-    getAir72XUXDemoPath,
-    getAir72XUXLibPath,
+    getAir72XUXDefaultCorePath,
+    getAir72XUXDefaultLibPath,
     getAppDataPath,
     getDefaultWorkspacePath,
     getHistoryCorePath,
@@ -22,7 +21,8 @@ import {
     getLuatIDEDataPath,
     getPluginConfigPath,
     getUserUUIDPath,
-    getAir72XCXDefaultCorePath
+    getAir72XCXDefaultCorePath,
+    getAir72XUXDefaultDemoPath
 } from './variableInterface';
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
@@ -33,18 +33,18 @@ export class PluginConfigInit {
     private pluginDefaultWorkspacePath:any = getDefaultWorkspacePath();
     private historyLibpath: any = getHistoryLibPath();
     private historyDemopath: any = getHistoryDemoPath();
-    private air72XUXDemopath: any = getAir72XUXDemoPath();
+    private air72XUXDemopath: any = getAir72XUXDefaultDemoPath();
     private air101Demopath: any = getAir101DefaultDemoPath();
     private air103Demopath: any = getAir103DefaultDemoPath();
     private air105Demopath: any = getAir105DefaultDemoPath();
     private esp32c3Demopath: any = getEsp32c3DefaultDemoPath();
-    private air72XUXLibpath: any = getAir72XUXLibPath();
+    private air72XUXLibpath: any = getAir72XUXDefaultLibPath();
     private dataIntroduce: any = path.join(this.appDataPath, 'LuatIDE', '文件夹说明.txt');
     private introduceData: any = '该文件夹为合宙vscode插件LuatIDE的配置保存文件,删除后可能导致插件历史配置丢失,插件不可使用,请谨慎删除';
     private pluginconfigPath: any = getPluginConfigPath();
     private uuidPath = getUserUUIDPath();
     private corepath = getHistoryCorePath();
-    private air72XUXCorepath: any = getAir72XUXCorePath();
+    private air72XUXCorepath: any = getAir72XUXDefaultCorePath();
     private air101Corepath: any = getAir101DefaultCorePath();
     private air103Corepath: any = getAir103DefaultCorePath();
     private air105Corepath: any = getAir105DefaultCorePath();

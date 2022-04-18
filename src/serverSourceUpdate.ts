@@ -9,24 +9,19 @@ import * as path from 'path';
 import {
     getAir101DefaultCorePath,
     getAir101DefaultDemoPath,
-    getAir101DefaultLatestCoreName,
     getAir103DefaultCorePath,
     getAir103DefaultDemoPath,
-    getAir103DefaultLatestCoreName,
     getAir105DefaultCorePath,
     getAir105DefaultDemoPath,
-    getAir105DefaultLatestCoreName,
     getEsp32c3DefaultCorePath,
     getEsp32c3DefaultDemoPath,
-    getEsp32c3DefaultLatestCoreName,
     getAir72XUXDefaultCorePath,
     getAir72XUXDefaultDemoPath,
-    getAir72XUXDefaultLatestCoreName,
     getAir72XUXDefaultLatestLibName,
     getAir72XUXDefaultLibPath,
     getLuatIDEDataPath,
     getAir72XCXDefaultCorePath,
-    getAir72XCXDefaultLatestCoreName
+    getDefaultLatestCoreName,
 } from './variableInterface';
 import { copyDir } from './project/projectApi';
 
@@ -70,7 +65,7 @@ async function checkAir72XUXScriptUpdate() {
 */
 async function checkAir72XUXCoreUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localCoreName = getAir72XUXDefaultLatestCoreName();
+    const localCoreName = getDefaultLatestCoreName('air72XUX/air82XUX');
     const localCoreVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localCoreName);
     const remoteScriptReg = /V([\d\.]+)\.zip/ig;
     const apiName: string = '8910_lua_lod';
@@ -86,7 +81,7 @@ async function checkAir72XUXCoreUpdate() {
 */
 async function checkAir101SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getAir101DefaultLatestCoreName();
+    const localSourceName: string = getDefaultLatestCoreName('air101');
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '101_lua_lod';
@@ -102,7 +97,7 @@ async function checkAir101SourceUpdate() {
 */
 async function checkAir103SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getAir103DefaultLatestCoreName();
+    const localSourceName: string = getDefaultLatestCoreName('air103');
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '103_lua_lod';
@@ -118,7 +113,7 @@ async function checkAir103SourceUpdate() {
 */
 async function checkAir105SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getAir105DefaultLatestCoreName();
+    const localSourceName: string =  getDefaultLatestCoreName('air105');
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '105_lua_lod';
@@ -132,7 +127,7 @@ async function checkAir105SourceUpdate() {
 */
 async function checkEsp32c3SourceUpdate() {
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getEsp32c3DefaultLatestCoreName();
+    const localSourceName: string =  getDefaultLatestCoreName('esp32c3');
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = 'esp32c3_lua_lod';
@@ -146,7 +141,7 @@ async function checkEsp32c3SourceUpdate() {
 */
 async function checkair72xcxSourceUpdate(){
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getAir72XCXDefaultLatestCoreName();
+    const localSourceName: string = getDefaultLatestCoreName('air72XCX');
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '1603_lua_lod';
