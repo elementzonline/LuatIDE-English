@@ -24,7 +24,6 @@ import {
     getUserUUIDPath,
     getAir72XCXDefaultCorePath
 } from './variableInterface';
-let isUserCloseDownloadPage = false;
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
  */
@@ -148,14 +147,5 @@ export class PluginConfigInit {
         };
         // let configJsonObj = JSON.parse(configJson);
         return JSON.stringify(configJson,null,"\t");
-    }
-
-    changeIsUserCloseDownloadPage(state: boolean) {
-        isUserCloseDownloadPage = state;
-        return true;
-    }
-
-    getIsUserCloseDownloadPage(){
-        return isUserCloseDownloadPage;
     }
 }
