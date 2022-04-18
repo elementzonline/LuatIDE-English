@@ -187,7 +187,7 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
             corePath = getCreateProjectAir105CorepathHandle(corePath);
             break;
         case 'simulator':
-            corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
+            corePath = '';
             break;
         case 'esp32c3':
             corePath = getCreateProjectEsp32c3CorepathHandle(corePath);
