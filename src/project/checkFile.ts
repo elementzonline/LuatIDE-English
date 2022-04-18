@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface';
-import { PluginConfigInit } from '../config';
 
 /*
     check the change of the source code
@@ -14,8 +13,8 @@ import { PluginConfigInit } from '../config';
             "file2": false,
         }
 */
+let isUserClose = false;
 
-const getIsUserClose = new PluginConfigInit();
 export class CheckFiles {
     constructor() {
     }
@@ -28,10 +27,11 @@ export class CheckFiles {
         const fileRet: any = await this.checkFilesType(files.all, files.new);
 
         if (fileRet){
-            if (this.downloadPage) {
+            if (this.downloadPage || isUserClose) {
                 return true;
             }
             else {
+                isUserClose = false;
                 this.downloadPage = vscode.window.createWebviewPanel(
                     'download', //仅供内部使用的面板类型
                     'LuatIDE 下载配置', //webview 展示标题
@@ -109,7 +109,7 @@ export class CheckFiles {
     async receiveMessageHandle(context:vscode.ExtensionContext,downloadPage: any, message: any) {
         switch (message.command) {
             case "downloadConfig":
-                getIsUserClose.changeIsUserCloseDownloadPage(true);
+                isUserClose = true;
                 const ret = await this.checkFilesConfig(message.text);
                 if (ret){
                     downloadPage.dispose();
@@ -316,5 +316,18 @@ export class CheckFiles {
         fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
 
         return true;
+    }
+}
+
+export class StateMachine {
+    constructor() {
+    }
+
+    setState(sta: boolean) {
+        isUserClose = sta;
+    }
+
+    getState() {
+        return isUserClose;
     }
 }
