@@ -3,23 +3,32 @@ import * as fs from 'fs';
 import * as vscode from 'vscode';
 import {SerialPort} from 'serialport';
 
-// 获取数据存储路径
-let appDataPath: any = process.env['APPDATA'];
+/*++++++++++++++++++++++++++++++++++++++插件扩展信息相关接口+++++++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取用户扩展路径
 let extensionPath: any = path.join(__dirname, '../.');
-
-
-//获取用户APPDATA路径
-export function getAppDataPath() {
-    const appDataPath: any = process.env['APPDATA'];
-    return appDataPath;
-}
 
 // 获取用户当前插件安装版本号名称
 export function getPluginInstallVersion(){
     const pluginInstallVersion = vscode.extensions.getExtension('luater.luatide')!.packageJSON.version;
     return pluginInstallVersion;
 };
+
+// 获取插件支持的模块列表
+export function getPluginDefaultModuleList() {
+    const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator", "esp32c3"];
+    return moduleList;
+}
+/*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
+
+/*++++++++++++++++++++++++++++++++++++++插件数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取数据存储路径
+let appDataPath: any = process.env['APPDATA'];
+
+//获取用户APPDATA路径
+export function getAppDataPath() {
+    const appDataPath: any = process.env['APPDATA'];
+    return appDataPath;
+}
 
 //获取用户LuatIDE数据存储路径
 export function getLuatIDEDataPath() {
@@ -31,12 +40,6 @@ export function getLuatIDEDataPath() {
 export function getDefaultWorkspacePath() {
     const defaultProjectWorkspacePath:string = path.join(appDataPath,'LuatIDE','LuatideWorkspace');
     return defaultProjectWorkspacePath;
-}
-
-//获取用户插件配置文件路径
-export function getPluginConfigPath() {
-    const pluginConfigPath: string = path.join(appDataPath, 'LuatIDE', 'luatide_workspace.json');
-    return pluginConfigPath;
 }
 
 // 获取用户历史lib库存储路径
@@ -57,95 +60,251 @@ export function getHistoryCorePath() {
     return historyCorePath;
 }
 
-// 获取Air72XUX固件存储路径
-export function getAir72XUXCorePath() {
-    let getAir72XUXCorepath: any = path.join(appDataPath, 'LuatIDE', 'LuatideCore', 'Air72XUX_CORE');
-    return getAir72XUXCorepath;
+//获取用户插件配置文件路径
+export function getPluginConfigPath() {
+    const pluginConfigPath: string = path.join(appDataPath, 'LuatIDE', 'luatide_workspace.json');
+    return pluginConfigPath;
 }
 
+// 获取用户uuid数据存储路径
+export function getUserUUIDPath() {
+    const uuidPath:string = path.join(appDataPath, 'LuatIDE', 'uuid.txt');
+    return uuidPath;
+}
+
+/*++++++++++++++++++++++++++++++++++++++Air72XUX数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取Air72XUX默认demo存储路径
+export function getAir72XUXDefaultDemoPath() {
+    const air72XUXDefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air72XUX_Demo");
+    return air72XUXDefaultDemoPath;
+}
+
+// 获取72XUX默认core文件存储路径
+export function getAir72XUXDefaultCorePath() {
+    const air72XUXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XUX_CORE");
+    return air72XUXDefaultCorePath;
+}
+
+// 获取Air72XUX默认lib库存储路径
+export function getAir72XUXDefaultLibPath() {
+    const air72XUXDefaultLibPath: string = path.join(appDataPath, "LuatIDE", "LuatideLib", "Air72XUX_LIB");
+    return air72XUXDefaultLibPath;
+}
+/*--------------------------------------Air72XUX数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++Air72XCX数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// Air72XCX的demo及lib共用Air72XUX
+// 获取72XCX默认core文件存储路径
+export function getAir72XCXDefaultCorePath() {
+    const air72XCXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XCX_CORE");
+    return air72XCXDefaultCorePath;
+}
+/*--------------------------------------Air72XCX数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++air101数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取101默认core文件存储路径
 export function getAir101DefaultCorePath() {
     const air101DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air101_CORE");
     return air101DefaultCorePath;
 }
 
+// 获取air101默认demo存储路径
+export function getAir101DefaultDemoPath() {
+    const air101DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
+    return air101DefaultDemoPath;
+}
+/*--------------------------------------air101数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++air103数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取103默认core文件存储路径
 export function getAir103DefaultCorePath() {
     const air103DefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air103_CORE");
     return air103DefaultCorePath;
 }
 
+// 获取air103默认demo存储路径
+export function getAir103DefaultDemoPath() {
+    const air103DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air103_Demo");
+    return air103DefaultDemoPath;
+}
+/*--------------------------------------air103数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++air105数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取105默认core文件存储路径
 export function getAir105DefaultCorePath() {
     const defaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air105_CORE");
     return defaultCorePath;
 }
 
+// 获取air105默认demo存储路径
+export function getAir105DefaultDemoPath() {
+    const defaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
+    return defaultDemoPath;
+}
+/*--------------------------------------air105数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++Esp32C3数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取esp32c3默认core文件存储路径
 export function getEsp32c3DefaultCorePath() {
     const defaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "ESP32C3_CORE");
     return defaultCorePath;
 }
 
-// 获取Air72XUX lib存储路径
-export function getAir72XUXLibPath() {
-    let getAir72XUXLibPath: any = path.join(appDataPath, 'LuatIDE', 'LuatideLib', 'Air72XUX_LIB');
-    return getAir72XUXLibPath;
-}
-
-// 获取Air72XUX demo存储路径
-export function getAir72XUXDemoPath() {
-    let getAir72XUXDemoPath: any = path.join(appDataPath, 'LuatIDE', 'LuatideDemo', 'Air72XUX_DEMO');
-    return getAir72XUXDemoPath;
-}
-
-// 获取air101默认demo
-export function getAir101DefaultDemoPath() {
-    const air101DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air101_Demo");
-    return air101DefaultDemoPath;
-}
-
-// 获取air103默认demo
-export function getAir103DefaultDemoPath() {
-    const air103DefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air103_Demo");
-    return air103DefaultDemoPath;
-}
-
-// 获取air105默认demo
-export function getAir105DefaultDemoPath() {
-    const defaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air105_Demo");
-    return defaultDemoPath;
-}
-
-// 获取ESP32C3默认demo
+// 获取ESP32C3默认demo存储路径
 export function getEsp32c3DefaultDemoPath() {
     const defaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "ESP32C3_Demo");
     return defaultDemoPath;
 }
+/*--------------------------------------Esp32C3数据存储路径相关接口----------------------------------------*/ 
 
-// 依据模块型号获取core路径
-export function getCorePathBaseModuleModel(moduleModel: any) {
-    let corePath: any;
-    switch (moduleModel) {
-        case 'air72XUX/air82XUX':
-            corePath = getAir72XUXCorePath();
-            break;
-        case 'air101':
-            corePath = getAir101DefaultCorePath();
-            break;
-        case 'air103':
-            corePath = getAir103DefaultCorePath();
-            break;
-        case 'air105':
-            corePath = getAir105DefaultCorePath();
-            break;
-        case 'esp32c3':
-            corePath = getEsp32c3DefaultCorePath();
-            break;
-    }
-    return corePath;
+/*++++++++++++++++++++++++++++++++++++++NDK数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取NDK默认路径
+export function getNdkDefaultPath(){
+    const luatideDataPath:string = getLuatIDEDataPath();
+    const ndkDefaultPath:string = path.join(luatideDataPath,'LuatideNdk');
+    return ndkDefaultPath;
 }
 
+// 获取NDK默认最新demo路径
+export function getNdkDefaultDemoPath(){
+    const luatideDataPath:string = getLuatIDEDataPath();
+    let ndkDefaultDemoPath:string = path.join(luatideDataPath,'LuatideNdk','example');
+    if (!fs.existsSync(ndkDefaultDemoPath)) {
+        ndkDefaultDemoPath = '';
+    }
+    return ndkDefaultDemoPath;
+}
+/*--------------------------------------NDK数据存储路径相关接口----------------------------------------*/ 
+
+/*--------------------------------------插件数据存储路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++webview资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+
+/*++++++++++++++++++++++++++++++++++++++home界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取新闻api接口链接
+export function getNewsApi() {
+    const newsUrl = 'http://121.40.170.41:30050/api/site/hezhou_news';
+    return newsUrl;
+}
+
+// 获取主页LuatIDE logo图标路径
+export function getLogoPath() {
+    const logoPath: string = path.join(extensionPath, 'resource', 'images', 'Luat_IDE.png');
+    return logoPath;
+}
+
+// 获取home主页资源文件路径
+export function getHomeSourcePath() {
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'home');
+    return projectSourcePath;
+}
+
+// 获取home主页html路径
+export function getHomeHtmlPath() {
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'home', 'index.html');
+    return homeHtmlPath;
+}
+
+// 获取home模态框加载的js路径
+export function getHomeModalBoxPath() {
+    const homeModalBoxPath: string = path.join(extensionPath, 'webview', 'swiper.js');
+    return homeModalBoxPath;
+}
+/*--------------------------------------home界面资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++newProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取新建project主页资源文件路径
+export function getProjectSourcePath() {
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'newProject');
+    return projectSourcePath;
+}
+
+// 获取新建project主页html按钮
+export function getProjectHtmlPath() {
+    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'newProject', 'index.html');
+    return projectHtmlPath;
+}
+/*--------------------------------------newProject界面资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++importProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取打开工程project资源文件路径
+export function getOpenProjectSourcePath() {
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'importProject');
+    return projectSourcePath;
+}
+
+// 获取打开project主页html按钮
+export function getOpenProjectHtmlPath() {
+    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'importProject', 'index.html');
+    return projectHtmlPath;
+}
+/*--------------------------------------importProject界面资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++下载文件检测界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取下载配置界面资源文件路径
+export function getDownloadSourcePath(){
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem');
+    return projectSourcePath;
+}
+
+// 获取下载配置界面html路径
+export function getDownloadHtmlPath() {
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem', 'index.html');
+    return homeHtmlPath;
+}
+/*--------------------------------------下载文件检测界面资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++活动工程界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取活动工程配置html资源路径
+export function getActiveProjectHtmlPath() {
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'configActiveProject', 'index.html');
+    return homeHtmlPath;
+}
+/*--------------------------------------活动工程配置界面资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++登录界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取luatide qq群二维码图标路径
+export function getGroupChatQrCodePath() {
+    const quCodePath:string = path.join(extensionPath, 'resource', 'images', 'qrcode.png');
+    return quCodePath;
+}
+
+// 获取登录成功状态svg图标路径
+export function getLoginSuccessPath() {
+    const loginSuccessPath: string = path.join(extensionPath, 'webview', 'resource', 'loginSuccess.svg');
+    return loginSuccessPath;
+}
+
+// 获取登录失败状态svg图标路径
+export function getLoginFailedPath() {
+    const loginFailedPath: string = path.join(extensionPath, 'webview', 'resource', 'loginFail.svg');
+    return loginFailedPath;
+}
+/*--------------------------------------登录界面资源文件路径相关接口----------------------------------------*/ 
+
+/*--------------------------------------webview资源文件路径相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++UI设计器资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取ui设计器文件默认存储路径
+export function getUiDesignDefaultPath() {
+    const uiDesignDefaultPath:string = path.join(appDataPath,'LuatIDE','LuatideUiDesign');
+    return uiDesignDefaultPath;
+}
+
+// 获取ui转码器文件夹存储路径
+export function getUiConvertPath() {
+    const uiConvertPath:string = path.join(extensionPath,'src','webview','UI-Converter');
+    return uiConvertPath;
+}
+
+// 获取ui设计器文件夹存储路径
+export function getUiDesignPath() {
+    const uiDesignPath:string = path.join(extensionPath,'src','webview','UI-Designer');
+    return uiDesignPath;
+}
+/*--------------------------------------UI设计器资源文件路径相关接口----------------------------------------*/ 
+
+/**++++++++++++++++++++++++++++++++++++++固件版本名称正则解析相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取获取Air72XUX固件版本号正则解析表达式
 export function getAir72XUXReg() {
     const reg = /LuatOS-\w{3}_V(\d+)_RDA8910/gi;
@@ -182,13 +341,15 @@ export function getEsp32c3Reg() {
     return reg;
 }
 
-
 // 依据模块型号获取解析的正则表达式
 export function getRegBaseModel(moduleModel: any) {
     let reg: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             reg = getAir72XUXReg();
+            break;
+        case 'air72XCX':
+            reg = getAir72XCXReg();
             break;
         case 'air101':
             reg = getAir101Reg();
@@ -205,330 +366,70 @@ export function getRegBaseModel(moduleModel: any) {
     }
     return reg;
 }
+/*--------------------------------------固件版本名称正则解析相关接口----------------------------------------*/ 
 
-// 获取新闻api接口链接
-export function getNewsApi() {
-    const newsUrl = 'http://121.40.170.41:30050/api/site/hezhou_news';
-    return newsUrl;
-}
+/*++++++++++++++++++++++++++++++++++++++工程管理数据资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 
-// 获取home主页html路径
-export function getHomeHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'home', 'index.html');
-    return homeHtmlPath;
-}
-
-// 获取新建project主页资源文件路径
-export function getProjectSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'newProject');
-    return projectSourcePath;
-}
-
-// 获取打开工程project资源文件路径
-export function getOpenProjectSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'importProject');
-    return projectSourcePath;
-}
-
-// 获取project主页资源文件路径
-export function getHomeSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'home');
-    return projectSourcePath;
-}
-
-export function getDownloadSourcePath(){
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem');
-    return projectSourcePath;
-}
-
-// 获取下载配置界面html路径
-export function getDownloadHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem', 'index.html');
-    return homeHtmlPath;
-}
-
-// 获取新建project主页html按钮
-export function getProjectHtmlPath() {
-    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'newProject', 'index.html');
-    return projectHtmlPath;
-}
-
-// 获取打开project主页html按钮
-export function getOpenProjectHtmlPath() {
-    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'importProject', 'index.html');
-    return projectHtmlPath;
-}
-
-// 获取主页LuatIDE logo图标路径
-export function getLogoPath() {
-    const logoPath: string = path.join(extensionPath, 'resource', 'images', 'Luat_IDE.png');
-    return logoPath;
-}
-
-// 获取luatide qqqun二维码图标路径
-export function getGroupChatQrCodePath() {
-    const quCodePath:string = path.join(extensionPath, 'resource', 'images', 'qrcode.png');
-    return quCodePath;
-}
-
-// 获取登录成功状态svg图标路径
-export function getLoginSuccessPath() {
-    const loginSuccessPath: string = path.join(extensionPath, 'webview', 'resource', 'loginSuccess.svg');
-    return loginSuccessPath;
-}
-
-// 获取登录失败状态svg图标路径
-export function getLoginFailedPath() {
-    const loginFailedPath: string = path.join(extensionPath, 'webview', 'resource', 'loginFail.svg');
-    return loginFailedPath;
-}
-
-// 获取home模态框加载的js路径
-export function getHomeModalBoxPath() {
-    const homeModalBoxPath: string = path.join(extensionPath, 'webview', 'swiper.js');
-    return homeModalBoxPath;
-}
-
-// 获取Air72XUX系列main文件默认内容
-export function getAir72XUXDefaultMainData() {
-    const air72XUXMainData: string = 'PROJECT = \'test\'\r\nVERSION = \'2.0.0\'\r\nrequire \'log\'\r\nLOG_LEVEL = log.LOGLEVEL_TRACE\r\nrequire \'sys\'\r\n\r\n\r\n\r\nsys.taskInit(function()\r\n\twhile true do\r\n\t\t-- log.info(\'test\',array)\r\n\t\tlog.info(\'Hello world!\')\r\n\t\tsys.wait(1000)\r\n\tend\r\nend)\r\n\r\nsys.init(0, 0)\r\nsys.run()';
-    return air72XUXMainData;
-}
-
-// 获取Air10X系列main文件默认内容
-export function getAir10XDefaultMainData() {
-    const air10xMainData: string = '-- LuaTools需要PROJECT和VERSION这两个信息\r\nPROJECT = \'helloworld\'\r\nVERSION = \'1.0.0\'\r\n\r\n-- 引入必要的库文件(lua编写), 内部库不需要require\r\nlocal sys = require \'sys\'\r\nlog.info(\'main\', \'hello world\')\r\n\r\nprint(_VERSION)\r\n\r\nsys.timerLoopStart(function()\r\n\tprint(\'hi, LuatOS\')\r\nend, 3000)\r\n-- 用户代码已结束---------------------------------------------\r\n-- 结尾总是这一句\r\nsys.run()\r\n-- sys.run()之后后面不要加任何语句!!!!!';
-    return air10xMainData;
-}
-
-// 获取Air72XUX默认lib库路径
-export function getAir72XUXDefaultLibPath() {
-    const air72XUXDefaultLibPath: string = path.join(appDataPath, "LuatIDE", "LuatideLib", "Air72XUX_LIB");
-    return air72XUXDefaultLibPath;
-}
-
-// 获取Air72XUX默认demo
-export function getAir72XUXDefaultDemoPath() {
-    const air72XUXDefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air72XUX_Demo");
-    return air72XUXDefaultDemoPath;
-}
-
-// 获取插件支持的模块列表
-export function getPluginDefaultModuleList() {
-    const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator", "esp32c3"];
-    return moduleList;
-}
-
-// 获取NDK默认示例demo列表
-export function getNdkDefaultExampleList() {
-    const demoList: string[] = [];
-    const ndkDefaultLatestDemoPath: string = getNdkDefaultDemoPath();
-    if (ndkDefaultLatestDemoPath==='') {
-        return demoList;
+/*++++++++++++++++++++++++++++++++++++++工程固件数据处理相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 依据模块型号获取core路径
+export function getCorePathBaseModuleModel(moduleModel: any) {
+    let corePath: any;
+    switch (moduleModel) {
+        case 'air72XUX/air82XUX':
+            corePath = getAir72XUXDefaultCorePath();
+            break;
+        case 'air72XCX':
+            corePath = getAir72XCXDefaultCorePath();
+            break;
+        case 'air101':
+            corePath = getAir101DefaultCorePath();
+            break;
+        case 'air103':
+            corePath = getAir103DefaultCorePath();
+            break;
+        case 'air105':
+            corePath = getAir105DefaultCorePath();
+            break;
+        case 'esp32c3':
+            corePath = getEsp32c3DefaultCorePath();
+            break;
+        case 'simulator':
+            corePath = "";
+            break;
     }
-    const files: string[] = fs.readdirSync(ndkDefaultLatestDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(ndkDefaultLatestDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
+    return corePath;
 }
 
-// 获取Air72XUX默认示例demo列表
-export function getAir72XUXDefaultExampleList() {
-    const demoList: string[] = [];
-    const air72XUXDefaultLatestDemoPath: string = getAir72XUXDefaultLatestDemoPath();
-    if (air72XUXDefaultLatestDemoPath==='') {
-        return demoList;
-    }
-    const files: string[] = fs.readdirSync(air72XUXDefaultLatestDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(air72XUXDefaultLatestDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
-// 获取Air101默认示例demo列表
-export function getAir101DefaultExampleList() {
-    const demoList: string[] = [];
-    const air101DefaultDemoPath: string = getAir101DefaultDemoPath();
-    const files: string[] = fs.readdirSync(air101DefaultDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(air101DefaultDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
-// 获取Air103默认示例demo列表
-export function getAir103DefaultExampleList() {
-    const demoList: string[] = [];
-    const air103DefaultDemoPath: string = getAir103DefaultDemoPath();
-    const files: string[] = fs.readdirSync(air103DefaultDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(air103DefaultDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
-// 获取Air105默认示例demo列表
-export function getAir105DefaultExampleList() {
-    const demoList: string[] = [];
-    const defaultDemoPath: string = getAir105DefaultDemoPath();
-    const files: string[] = fs.readdirSync(defaultDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(defaultDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
-// 获取Esp32c3默认示例demo列表
-export function getEsp32c3DefaultExampleList() {
-    const demoList: string[] = [];
-    const defaultDemoPath: string = getEsp32c3DefaultDemoPath();
-    const files: string[] = fs.readdirSync(defaultDemoPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(defaultDemoPath, element)).isDirectory()) {
-            demoList.push(element);
-        }
-    }
-    return demoList;
-}
-
-// 获取air72XUX默认lib库列表
-export function getAir72XUXDefaultLibList() {
-    const libList: string[] = [];
-    const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
-    const files: string[] = fs.readdirSync(air72XUXDefaultLibPath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (fs.statSync(path.join(air72XUXDefaultLibPath, element)).isDirectory()) {
-            libList.unshift(element);
-        }
-    }
-    return libList;
-}
-
-// 获取72XUX默认core文件存储路径
-export function getAir72XUXDefaultCorePath() {
-    const air72XUXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XUX_CORE");
-    return air72XUXDefaultCorePath;
-}
-
-// 获取72XUX默认core文件存储路径
-export function getAir72XCXDefaultCorePath() {
-    const air72XUXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XCX_CORE");
-    return air72XUXDefaultCorePath;
-}
-
-// 获取air72XUX默认core文件列表
-export function getAir72XUXDefaultCoreList() {
+// 依据模块型号获取默认core文件列表
+export function getDefaultCoreList(moduleModel:string) {
     const coreList: string[] = [];
-    const air72XUXDefaultCorePath: string = getAir72XUXDefaultCorePath();
-    const files: string[] = fs.readdirSync(air72XUXDefaultCorePath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (path.extname(path.join(air72XUXDefaultCorePath, element)) === '.pac') {
-            coreList.unshift(element);
-        }
-    }
-    return coreList;
-}
-
-// 获取air72XCX默认core文件列表
-export function getAir72XCXDefaultCoreList() {
-    const coreList:string[] = [];
-    const air72XCXDefaultCorePath:string =  getAir72XCXDefaultCorePath();
-    const files:string[] = fs.readdirSync(air72XCXDefaultCorePath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (path.extname(path.join(air72XCXDefaultCorePath, element)) === '.zip') {
-            coreList.unshift(element);
-        }
-    }
-    return coreList;
-}
-
-// 获取air101默认core文件列表
-export function getAir101DefaultCoreList() {
-    const coreList: string[] = [];
-    const getAir101DefaultCoreList: string = getAir101DefaultCorePath();
-    const files: string[] = fs.readdirSync(getAir101DefaultCoreList);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (path.extname(path.join(getAir101DefaultCoreList, element)) === '.soc') {
-            coreList.unshift(element);
-        }
-    }
-    return coreList;
-}
-
-// 获取air103默认core文件列表
-export function getAir103DefaultCoreList() {
-    const coreList: string[] = [];
-    const air103DefaultCorePath: string = getAir103DefaultCorePath();
-    const files: string[] = fs.readdirSync(air103DefaultCorePath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (path.extname(path.join(air103DefaultCorePath, element)) === '.soc') {
-            coreList.unshift(element);
-        }
-    }
-    return coreList;
-}
-
-// 获取air105默认core文件列表
-export function getAir105DefaultCoreList() {
-    const coreList: string[] = [];
-    const defaultCorePath: string = getAir105DefaultCorePath();
+    const defaultCorePath:string = getCorePathBaseModuleModel(moduleModel);
+    const moduleModelExtname:string = getExtnameBaseModel(moduleModel);
     const files: string[] = fs.readdirSync(defaultCorePath);
     for (let index = 0; index < files.length; index++) {
         const element = files[index];
-        if (path.extname(path.join(defaultCorePath, element)) === '.soc') {
+        if (path.extname(path.join(defaultCorePath, element)) === moduleModelExtname) {
             coreList.unshift(element);
         }
     }
     return coreList;
 }
 
-// 获取Esp32c3默认core文件列表
-export function getEsp32c3DefaultCoreList() {
-    const coreList: string[] = [];
-    const defaultCorePath: string = getEsp32c3DefaultCorePath();
-    const files: string[] = fs.readdirSync(defaultCorePath);
-    for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        if (path.extname(path.join(defaultCorePath, element)) === '.soc') {
-            coreList.unshift(element);
-        }
-    }
-    return coreList;
-}
-
-// 获取air101默认最新corePath名称
-export function getAir101DefaultLatestCoreName() {
-    const air101CorePath: string = getAir101DefaultCorePath();
-    const coreList: string[] = fs.readdirSync(air101CorePath);
-    const reg = getAir101Reg();
+/*
+*依据模块型号获取默认最新corePath名称
+*@param moduleModel 模块的具体型号
+*@return coreName 本地最新coreName
+*/ 
+export function getDefaultLatestCoreName(moduleModel:string){
+    const corePath: string = getCorePathBaseModuleModel(moduleModel);
+    const coreList:string[] = fs.readdirSync(corePath);
+    const reg = getRegBaseModel(moduleModel);
+    const moduleModelExtname:string = getExtnameBaseModel(moduleModel);
     let currentVersion = undefined;
     let coreName = '';
     for (let index = 0; index < coreList.length; index++) {
         const currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.soc') {
+        if (path.extname(currentCoreName) === moduleModelExtname) {
             const coreNameVersionArray: any = reg.exec(currentCoreName);
             reg.lastIndex = 0;
             if (coreNameVersionArray !== null && currentVersion === undefined) {
@@ -544,108 +445,14 @@ export function getAir101DefaultLatestCoreName() {
     return coreName;
 }
 
-// 获取Air101默认最新core完整路径
-export function getAir101DefaultLatestCorePath() {
-    const air101DefaultLatestCoreName:string = getAir101DefaultLatestCoreName();
-    const air101DefaultCorePath:string = getAir101DefaultCorePath();
-    let air101DefaultLatestCorePath:string = '';
-    if (air101DefaultLatestCoreName!=='') {
-        air101DefaultLatestCorePath = path.join(air101DefaultCorePath,air101DefaultLatestCoreName);
-    }
-    return air101DefaultLatestCorePath;
-}
-
-// 获取air103默认最新corePath路径
-export function getAir103DefaultLatestCoreName() {
-    const air103CorePath: string = getAir103DefaultCorePath();
-    const coreList: string[] = fs.readdirSync(air103CorePath);
-    const reg = getAir103Reg();
-    let currentVersion = undefined;
-    let coreName = '';
-    for (let index = 0; index < coreList.length; index++) {
-        const currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.soc') {
-            const coreNameVersionArray: any = reg.exec(currentCoreName);
-            reg.lastIndex = 0;
-            if (coreNameVersionArray !== null && currentVersion === undefined) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-        }
-    }
-    return coreName;
-}
-
-// 获取Air103默认最新core完整路径
-export function getAir103DefaultLatestCorePath() {
-    const air103DefaultLatestCoreName:string = getAir103DefaultLatestCoreName();
-    const air103DefaultCorePath:string = getAir103DefaultCorePath();
-    let air103DefaultLatestCorePath:string = '';
-    if (air103DefaultLatestCoreName!=='') {
-        air103DefaultLatestCorePath = path.join(air103DefaultCorePath,air103DefaultLatestCoreName);
-    }
-    return air103DefaultLatestCorePath;
-}
-
-// 获取air105默认最新corePath路径
-export function getAir105DefaultLatestCoreName() {
-    const corePath: string = getAir105DefaultCorePath();
-    const coreList: string[] = fs.readdirSync(corePath);
-    const reg = getAir105Reg();
-    let currentVersion = undefined;
-    let coreName = '';
-    for (let index = 0; index < coreList.length; index++) {
-        const currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.soc') {
-            const coreNameVersionArray: any = reg.exec(currentCoreName);
-            reg.lastIndex = 0;
-            if (coreNameVersionArray !== null && currentVersion === undefined) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-        }
-    }
-    return coreName;
-}
-
-// 获取esp32c3默认最新corePath路径
-export function getEsp32c3DefaultLatestCoreName() {
-    const corePath: string = getEsp32c3DefaultCorePath();
-    const coreList: string[] = fs.readdirSync(corePath);
-    const reg = getEsp32c3Reg();
-    let currentVersion = undefined;
-    let coreName = '';
-    for (let index = 0; index < coreList.length; index++) {
-        const currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.soc') {
-            const coreNameVersionArray: any = reg.exec(currentCoreName);
-            reg.lastIndex = 0;
-            if (coreNameVersionArray !== null && currentVersion === undefined) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-        }
-    }
-    return coreName;
-}
-
-
-// 获取Air105默认最新core完整路径
-export function getAir105DefaultLatestCorePath() {
-    const defaultLatestCoreName:string = getAir105DefaultLatestCoreName();
-    const defaultCorePath:string = getAir105DefaultCorePath();
+/*
+* 依据模块型号获取默认最新corePath路径
+*@param moduleModel 模块的具体型号
+*@return defaultLatestCorePath 本地默认最新core路径
+*/
+export function getDefaultLatestCorePath(moduleModel:string){
+    const defaultLatestCoreName:string = getDefaultLatestCoreName(moduleModel);
+    const defaultCorePath:string = getCorePathBaseModuleModel(moduleModel);
     let defaultLatestCorePath:string = '';
     if (defaultLatestCoreName!=='') {
         defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
@@ -653,130 +460,34 @@ export function getAir105DefaultLatestCorePath() {
     return defaultLatestCorePath;
 }
 
-// 获取esp32c3默认最新core完整路径
-export function getEsp32c3DefaultLatestCorePath() {
-    const defaultLatestCoreName:string = getEsp32c3DefaultLatestCoreName();
-    const defaultCorePath:string = getEsp32c3DefaultCorePath();
-    let defaultLatestCorePath:string = '';
-    if (defaultLatestCoreName!=='') {
-        defaultLatestCorePath = path.join(defaultCorePath,defaultLatestCoreName);
+// 依据模块型号获取固件名后缀
+export function getExtnameBaseModel(moduleModel: any) {
+    let extname: any;
+    switch (moduleModel) {
+        case 'air72XUX/air82XUX':
+            extname = '.pac';
+            break;
+        case 'air72XCX':
+            extname = '.zip';
+            break;
+        case 'air101':
+            extname = '.soc';
+            break;
+        case 'air103':
+            extname = '.soc';
+            break;
+        case 'air105':
+            extname = '.soc';
+            break;
+        case 'esp32c3':
+            extname = '.soc';
+            break;
     }
-    return defaultLatestCorePath;
+    return extname;
 }
+/*--------------------------------------工程固件数据处理相关接口----------------------------------------*/ 
 
-// 获取air72XUX默认最新core名称
-export function getAir72XUXDefaultLatestCoreName() {
-    const air72XUXCorePath: string = getAir72XUXDefaultCorePath();
-    const coreList: string[] = fs.readdirSync(air72XUXCorePath);
-    const reg = getAir72XUXReg();
-    let currentVersion = undefined;
-    let coreName = '';
-    for (let index = 0; index < coreList.length; index++) {
-        let currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.pac') {
-            const coreNameVersionArray: any = reg.exec(currentCoreName);
-            reg.lastIndex = 0;
-            if (coreNameVersionArray !== null && currentVersion === undefined) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-        }
-    }
-    return coreName;
-}
-
-// 获取air72XUX默认最新core完整路径
-export function getAir72XUXDefaultLatestCorePath() {
-    const air72XUXDefaultLatestCoreName:string = getAir72XUXDefaultLatestCoreName();
-    const air72XUXDefaultCorePath:string = getAir72XUXDefaultCorePath();
-    let air72XUXDefaultLatestCorePath:string = '';
-    if (air72XUXDefaultLatestCoreName!=='') {
-        air72XUXDefaultLatestCorePath = path.join(air72XUXDefaultCorePath,air72XUXDefaultLatestCoreName);
-    }
-    return air72XUXDefaultLatestCorePath;
-}
-
-// 获取air72XUX默认最新core名称
-export function getAir72XCXDefaultLatestCoreName() {
-    const air72XCXCorePath: string = getAir72XCXDefaultCorePath();
-    const coreList: string[] = fs.readdirSync(air72XCXCorePath);
-    const reg = getAir72XCXReg();
-    let currentVersion = undefined;
-    let coreName = '';
-    for (let index = 0; index < coreList.length; index++) {
-        let currentCoreName: string = coreList[index];
-        if (path.extname(currentCoreName) === '.zip') {
-            const coreNameVersionArray: any = reg.exec(currentCoreName);
-            reg.lastIndex = 0;
-            if (coreNameVersionArray !== null && currentVersion === undefined) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-            else if (coreNameVersionArray !== null && currentVersion !== undefined && coreNameVersionArray[1] > currentVersion) {
-                currentVersion = coreNameVersionArray[1];
-                coreName = currentCoreName;
-            }
-        }
-    }
-    return coreName;
-}
-
-// 获取air72XUX默认最新core完整路径
-export function getAir72XCXDefaultLatestCorePath() {
-    const air72XCXDefaultLatestCoreName:string = getAir72XCXDefaultLatestCoreName();
-    const air72XCXDefaultCorePath:string = getAir72XCXDefaultCorePath();
-    let air72XCXDefaultLatestCorePath:string = '';
-    if (air72XCXDefaultLatestCoreName!=='') {
-        air72XCXDefaultLatestCorePath = path.join(air72XCXDefaultCorePath,air72XCXDefaultLatestCoreName);
-    }
-    return air72XCXDefaultLatestCorePath;
-}
-
-// 获取air72XUX默认最新lib版本名称
-export function getAir72XUXDefaultLatestLibName() {
-    const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
-    const libList: string[] = fs.readdirSync(air72XUXLibPath);
-    let libLatestPath:string = '';
-    if (libList.length===0) {
-        return libLatestPath;
-    }
-    const reg = /V([\d\.]+)/gi;
-    let currentVersion: string = '';
-    for (let index = 0; index < libList.length; index++) {
-        const currentLibName: string = libList[index];
-        const libNameVersionArray = reg.exec(currentLibName);
-        reg.lastIndex = 0;
-        if (libNameVersionArray === null) {
-            continue;
-        }
-        else if (currentVersion === '') {
-            currentVersion = libNameVersionArray[1];
-        }
-        else if (libNameVersionArray[1] > currentVersion) {
-            currentVersion = libNameVersionArray[1];
-        }
-    }
-    if (currentVersion!=='') {
-        currentVersion = 'V'+currentVersion;
-    }
-    return currentVersion;
-}
-
-// 获取air72XUX默认最新Lib路径
-export function getAir72XUXDefaultLatestLibPath() {
-    const air72XUXDefaultLatestLibName:string = getAir72XUXDefaultLatestLibName();
-    const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
-    let air72XUXDefaultLatestLibPath:string = '';
-    if (air72XUXDefaultLatestLibName!=='') {
-        air72XUXDefaultLatestLibPath = path.join(air72XUXDefaultLibPath,air72XUXDefaultLatestLibName,'lib');
-    }
-    return air72XUXDefaultLatestLibPath;
-}
-
+/*++++++++++++++++++++++++++++++++++++++工程demo数据处理相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取air72XUX默认最新demo名称
 export function getAir72XUXDefaultLatestDemoName() {
     const air72XUXDemoPath: string = getAir72XUXDefaultDemoPath();
@@ -818,70 +529,126 @@ export function getAir72XUXDefaultLatestDemoPath() {
     return air72XUXDefaultLatestDemoPath;
 }
 
-// 获取NDK默认路径
-export function getNdkDefaultPath(){
-    const luatideDataPath:string = getLuatIDEDataPath();
-    const ndkDefaultPath:string = path.join(luatideDataPath,'LuatideNdk');
-    return ndkDefaultPath;
-}
-
-// 获取NDK默认最新demo路径
-export function getNdkDefaultDemoPath(){
-    const luatideDataPath:string = getLuatIDEDataPath();
-    let ndkDefaultDemoPath:string = path.join(luatideDataPath,'LuatideNdk','example');
-    if (!fs.existsSync(ndkDefaultDemoPath)) {
-        ndkDefaultDemoPath = '';
-    }
-    return ndkDefaultDemoPath;
-}
-
-// 依据模块型号获取文件名后缀
-export function getExtnameBaseModel(moduleModel: any) {
-    let extname: any;
+// 依据模块型号获取demo路径
+export function getDemoPathBaseModuleModel(moduleModel: any) {
+    let demoPath: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
-            extname = '.pac';
+            demoPath = getAir72XUXDefaultLatestDemoPath();
+            break;
+        case 'air72XCX':
+            demoPath = getAir72XUXDefaultLatestDemoPath();
             break;
         case 'air101':
-            extname = '.soc';
+            demoPath = getAir101DefaultDemoPath();
             break;
         case 'air103':
-            extname = '.soc';
+            demoPath = getAir103DefaultDemoPath();
             break;
         case 'air105':
-            extname = '.soc';
+            demoPath = getAir105DefaultDemoPath();
             break;
         case 'esp32c3':
-            extname = '.soc';
+            demoPath = getEsp32c3DefaultDemoPath();
+            break;
+        case 'simulator':
+            demoPath = getAir72XUXDefaultLatestDemoPath();
             break;
     }
-    return extname;
+    return demoPath;
 }
 
-// 依据模块型号获取core文件列表
-export function getCoreListBaseMoudeleMode(moduleModel: any) {
-    let coreList: any;
-    switch (moduleModel) {
-        case 'air72XUX/air82XUX':
-            coreList = getAir72XUXDefaultCoreList();
-            break;
-        case 'air101':
-            coreList = getAir101DefaultCoreList();
-            break;
-        case 'air103':
-            coreList = getAir103DefaultCoreList();
-            break;
-        case 'air105':
-            coreList = getAir105DefaultCoreList();
-            break;
-        case 'esp32c3':
-            coreList = getEsp32c3DefaultCoreList();
-            break;
-        default:
-            coreList = getAir72XUXDefaultCoreList();
+// 依据模块型号获取默认示例demo列表
+export function getDefaultExampleList(moduleModel:string){
+    const demoList: string[] = [];
+    const defaultDemoPath: string = getDemoPathBaseModuleModel(moduleModel);
+    if (defaultDemoPath==='') {
+        return demoList;
     }
-    return coreList;
+    const files: string[] = fs.readdirSync(defaultDemoPath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (fs.statSync(path.join(defaultDemoPath, element)).isDirectory()) {
+            demoList.push(element);
+        }
+    }
+    return demoList;
 }
+
+// 获取NDK默认示例demo列表
+export function getNdkDefaultExampleList() {
+    const demoList: string[] = [];
+    const ndkDefaultLatestDemoPath: string = getNdkDefaultDemoPath();
+    if (ndkDefaultLatestDemoPath==='') {
+        return demoList;
+    }
+    const files: string[] = fs.readdirSync(ndkDefaultLatestDemoPath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (fs.statSync(path.join(ndkDefaultLatestDemoPath, element)).isDirectory()) {
+            demoList.push(element);
+        }
+    }
+    return demoList;
+}
+/*--------------------------------------工程demo数据处理相关接口----------------------------------------*/ 
+
+/*++++++++++++++++++++++++++++++++++++++工程lib库数据处理相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取air72XUX默认最新lib版本名称
+export function getAir72XUXDefaultLatestLibName() {
+    const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
+    const libList: string[] = fs.readdirSync(air72XUXLibPath);
+    let libLatestPath:string = '';
+    if (libList.length===0) {
+        return libLatestPath;
+    }
+    const reg = /V([\d\.]+)/gi;
+    let currentVersion: string = '';
+    for (let index = 0; index < libList.length; index++) {
+        const currentLibName: string = libList[index];
+        const libNameVersionArray = reg.exec(currentLibName);
+        reg.lastIndex = 0;
+        if (libNameVersionArray === null) {
+            continue;
+        }
+        else if (currentVersion === '') {
+            currentVersion = libNameVersionArray[1];
+        }
+        else if (libNameVersionArray[1] > currentVersion) {
+            currentVersion = libNameVersionArray[1];
+        }
+    }
+    if (currentVersion!=='') {
+        currentVersion = 'V'+currentVersion;
+    }
+    return currentVersion;
+}
+
+// 获取air72XUX默认最新Lib路径
+export function getAir72XUXDefaultLatestLibPath() {
+    const air72XUXDefaultLatestLibName:string = getAir72XUXDefaultLatestLibName();
+    const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
+    let air72XUXDefaultLatestLibPath:string = '';
+    if (air72XUXDefaultLatestLibName!=='') {
+        air72XUXDefaultLatestLibPath = path.join(air72XUXDefaultLibPath,air72XUXDefaultLatestLibName,'lib');
+    }
+    return air72XUXDefaultLatestLibPath;
+}
+
+// 获取air72XUX默认lib库列表
+export function getAir72XUXDefaultLibList() {
+    const libList: string[] = [];
+    const air72XUXDefaultLibPath: string = getAir72XUXDefaultLibPath();
+    const files: string[] = fs.readdirSync(air72XUXDefaultLibPath);
+    for (let index = 0; index < files.length; index++) {
+        const element = files[index];
+        if (fs.statSync(path.join(air72XUXDefaultLibPath, element)).isDirectory()) {
+            libList.unshift(element);
+        }
+    }
+    return libList;
+}
+
 // 依据模块型号获取lib文件列表
 export function getLibListBaseMoudeleMode(moduleModel: any) {
     let libList: any;
@@ -889,6 +656,9 @@ export function getLibListBaseMoudeleMode(moduleModel: any) {
         case 'air72XUX/air82XUX':
             libList = getAir72XUXDefaultLibList();
             break;
+        case 'air72XCX':
+            libList = getAir72XUXDefaultLibList();
+            break;
         case 'air101':
             libList = '';
             break;
@@ -900,114 +670,68 @@ export function getLibListBaseMoudeleMode(moduleModel: any) {
             break;
         case 'esp32c3':
             libList = '';
+            break;
+        case 'simulator':
+            libList = getAir72XUXDefaultLibList();
             break;
         default:
             libList = getAir72XUXDefaultLibList();
     }
     return libList;
 }
-// 依据模块型号获取example文件列表
-export function getExampleListBaseMoudeleMode(moduleModel: any) {
-    let exampleList: any;
-    switch (moduleModel) {
-        case 'air72XUX/air82XUX':
-            exampleList = getAir72XUXDefaultExampleList();
-            break;
-        case 'air101':
-            exampleList = getAir101DefaultExampleList();
-            break;
-        case 'air103':
-            exampleList = getAir103DefaultExampleList();
-            break;
-        case 'air105':
-            exampleList = getAir105DefaultExampleList();
-            break;
-        case 'esp32c3':
-            exampleList = getEsp32c3DefaultExampleList();
-            break;
-        default:
-            exampleList = getAir72XUXDefaultExampleList();
-    }
-    return exampleList;
-}
+/*--------------------------------------工程lib库数据处理相关接口----------------------------------------*/ 
 
+/*--------------------------------------工程管理数据资源文件路径相关接口----------------------------------------*/ 
+
+// 功能实现形式已改变，暂时废弃该接口
 // 依据模块型号获取活动工程可选配置项列表
-export function getActivityProjectConfigOptionsList(moduleModel:string) {
-    const configOptionsListDefault: string[] = [
-        "添加文件",
-        "添加文件夹",
-        "配置core文件",
-        "配置lib库文件",
-        "配置模块型号/模拟器",
-        "显示配置文件"
-    ];
-    const configOptionsListSimulator: string[] = [
-        "添加文件",
-        "添加文件夹",
-        "配置lib库文件",
-        "配置模块型号/模拟器",
-        "显示配置文件"
-    ];
-    const configOptionsListAir10X: string[] = [
-        "添加文件",
-        "添加文件夹",
-        "配置core文件",
-        "配置模块型号/模拟器",
-        "显示配置文件"
-    ];
-    switch (moduleModel) {
-        case 'air72XUX/air82XUX':
-            return configOptionsListDefault;
-        case 'air101':
-            return configOptionsListAir10X;
-        case 'air103':
-            return configOptionsListAir10X;
-        case 'air105':
-            return configOptionsListAir10X;
-        case 'esp32c3':
-            return configOptionsListAir10X;
-        case "simulator":
-            return configOptionsListSimulator;
-        default:
-            return configOptionsListDefault;
-    }
-}
+// export function getActivityProjectConfigOptionsList(moduleModel:string) {
+//     const configOptionsListDefault: string[] = [
+//         "添加文件",
+//         "添加文件夹",
+//         "配置core文件",
+//         "配置lib库文件",
+//         "配置模块型号/模拟器",
+//         "显示配置文件"
+//     ];
+//     const configOptionsListSimulator: string[] = [
+//         "添加文件",
+//         "添加文件夹",
+//         "配置lib库文件",
+//         "配置模块型号/模拟器",
+//         "显示配置文件"
+//     ];
+//     const configOptionsListAir10X: string[] = [
+//         "添加文件",
+//         "添加文件夹",
+//         "配置core文件",
+//         "配置模块型号/模拟器",
+//         "显示配置文件"
+//     ];
+//     switch (moduleModel) {
+//         case 'air72XUX/air82XUX':
+//             return configOptionsListDefault;
+//         case 'air101':
+//             return configOptionsListAir10X;
+//         case 'air103':
+//             return configOptionsListAir10X;
+//         case 'air105':
+//             return configOptionsListAir10X;
+//         case 'esp32c3':
+//             return configOptionsListAir10X;
+//         case "simulator":
+//             return configOptionsListSimulator;
+//         default:
+//             return configOptionsListDefault;
+//     }
+// }
+// 暂时废弃接口
+// // 获取airSimulator皮肤配置文件存储路径
+// export function getAirSimulatorSkinConfigPath() {
+//     const airSimulatorSkinConfigPath:string = path.join(extensionPath,'tools','AirSimulator','workspace','elua_simulator','Debug','data');
+//     return airSimulatorSkinConfigPath;
+// }
 
-// 获取用户uuid数据存储路径
-export function getUserUUIDPath() {
-    const uuidPath:string = path.join(appDataPath, 'LuatIDE', 'uuid.txt');
-    return uuidPath;
-}
-
-// 获取airSimulator皮肤配置文件存储路径
-export function getAirSimulatorSkinConfigPath() {
-    const airSimulatorSkinConfigPath:string = path.join(extensionPath,'tools','AirSimulator','workspace','elua_simulator','Debug','data');
-    return airSimulatorSkinConfigPath;
-}
-
-// 获取ui转码器文件夹存储路径
-export function getUiConvertPath() {
-    const uiConvertPath:string = path.join(extensionPath,'src','webview','UI-Converter');
-    return uiConvertPath;
-}
-
-// 获取ui设计器文件夹存储路径
-export function getUiDesignPath() {
-    const uiDesignPath:string = path.join(extensionPath,'src','webview','UI-Designer');
-    return uiDesignPath;
-}
-
-// 获取ui设计器文件默认存储路径
-export function getUiDesignDefaultPath() {
-    const uiDesignDefaultPath:string = path.join(appDataPath,'LuatIDE','LuatideUiDesign');
-    return uiDesignDefaultPath;
-}
-
-// 获取活动工程配置html资源路径
-export function getActiveProjectHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'configActiveProject', 'index.html');
-    return homeHtmlPath;
-}
 
 // 获取本地所有串口信息
 export async function getSerialPortInfoList() {

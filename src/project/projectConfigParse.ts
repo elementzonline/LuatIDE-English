@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 // import { PluginJsonParse } from '../plugConfigParse';
 import * as path from "path";
-import { getAir72XUXDefaultLatestCorePath, getAir72XUXDefaultLatestLibPath } from '../variableInterface';
+import { getAir72XUXDefaultLatestLibPath, getDefaultLatestCorePath } from '../variableInterface';
 // let pluginJsonParse = new PluginJsonParse();
 
 /**
@@ -203,7 +203,8 @@ export function  generateProjectJson(projectPath:any){
     // 导入空文件夹生成默认配置文件
 export function  generateImportProjectInitJson(projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
-        const corePath:string = getAir72XUXDefaultLatestCorePath();
+        // const corePath:string = getAir72XUXDefaultLatestCorePath();
+        const corePath:string = getDefaultLatestCorePath('air72XUX/air82XUX');
         const libPath:string = getAir72XUXDefaultLatestLibPath();
         const projectJson:any = {
             version:'',

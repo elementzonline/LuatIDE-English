@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath,getEsp32c3DefaultDemoPath, getAir10XDefaultMainData, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getAir72XUXDefaultMainData, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
+import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath,getEsp32c3DefaultDemoPath, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
 // import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
@@ -250,10 +250,11 @@ export class CreateProject {
 
     // 向工程中写入初始的main脚本
     createMainLuaData(moduleModel: any, mainLuaPath: any) {
-        const air10xMainData: string = getAir10XDefaultMainData();
+        const air10xMainData: string = '-- LuaTools需要PROJECT和VERSION这两个信息\r\nPROJECT = \'helloworld\'\r\nVERSION = \'1.0.0\'\r\n\r\n-- 引入必要的库文件(lua编写), 内部库不需要require\r\nlocal sys = require \'sys\'\r\nlog.info(\'main\', \'hello world\')\r\n\r\nprint(_VERSION)\r\n\r\nsys.timerLoopStart(function()\r\n\tprint(\'hi, LuatOS\')\r\nend, 3000)\r\n-- 用户代码已结束---------------------------------------------\r\n-- 结尾总是这一句\r\nsys.run()\r\n-- sys.run()之后后面不要加任何语句!!!!!';
+        const air72XUXMainData: string = 'PROJECT = \'test\'\r\nVERSION = \'2.0.0\'\r\nrequire \'log\'\r\nLOG_LEVEL = log.LOGLEVEL_TRACE\r\nrequire \'sys\'\r\n\r\n\r\n\r\nsys.taskInit(function()\r\n\twhile true do\r\n\t\t-- log.info(\'test\',array)\r\n\t\tlog.info(\'Hello world!\')\r\n\t\tsys.wait(1000)\r\n\tend\r\nend)\r\n\r\nsys.init(0, 0)\r\nsys.run()';
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-                const air72XUXMainData: string = getAir72XUXDefaultMainData();
+
                 fs.writeFileSync(mainLuaPath, air72XUXMainData);
                 break;
             case 'air101':
@@ -270,8 +271,7 @@ export class CreateProject {
                 fs.writeFileSync(mainLuaPath,air10xMainData); 
                 break; 
             default:
-                const airMainData: string = getAir72XUXDefaultMainData();
-                fs.writeFileSync(mainLuaPath, airMainData);
+                fs.writeFileSync(mainLuaPath, air72XUXMainData);
                 break;
         }
     }

@@ -4,20 +4,10 @@ import * as path  from "path";
 import * as vscode from 'vscode';
 import { getPluginConfigUserProjectList } from "../plugConfigParse";
 import {
-    getAir101DefaultCorePath,
-    getAir101DefaultLatestCorePath,
-    getAir103DefaultCorePath,
-    getAir103DefaultLatestCorePath,
-    getAir105DefaultCorePath,
-    getAir105DefaultLatestCorePath,
-    getEsp32c3DefaultCorePath,
-    getEsp32c3DefaultLatestCorePath,
-    getAir72XUXDefaultCorePath,
-    getAir72XUXDefaultLatestCorePath,
     getAir72XUXDefaultLatestLibPath,
     getAir72XUXDefaultLibPath,
-    getAir72XCXDefaultCorePath,
-    getAir72XCXDefaultLatestCorePath
+    getCorePathBaseModuleModel,
+    getDefaultLatestCorePath,
 } from "../variableInterface";
 
 // let pluginJsonParse:any = new PluginJsonParse(); 
@@ -35,7 +25,6 @@ export function checkSameProjectExistStatusForPluginConfig(projectName:any){
 export function createFolder(dir:any){
     fs.mkdirSync(dir);
 }
-
 
 /*
 * 复制目录、子目录，及其中的文件
@@ -170,122 +159,21 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
 
  //接收到的webview发送的core路径处理
  export function getCreateProjectCorepathHandle(corePath:string,moduleModel:string){
-    switch(moduleModel){
-        case 'air72XUX/air82XUX':
-            corePath = getCreateProjectAir72XUXCorepathHandle(corePath);
-            break;
-        case 'air72XCX':
-            corePath = getCreateProjectAir72XCXCorepathHandle(corePath);
-            break;
-        case 'air101':
-            corePath = getCreateProjectAir101CorepathHandle(corePath);
-            break;
-        case 'air103':
-            corePath = getCreateProjectAir103CorepathHandle(corePath);
-            break;
-        case 'air105':
-            corePath = getCreateProjectAir105CorepathHandle(corePath);
-            break;
-        case 'simulator':
-            corePath = '';
-            break;
-        case 'esp32c3':
-            corePath = getCreateProjectEsp32c3CorepathHandle(corePath);
-    }
-    return corePath;
-}
-
-
-
-// 接收到的webview发送的air101的core处理
-export function getCreateProjectAir101CorepathHandle(corePath:string){
-    const air101DefaultCorePath = getAir101DefaultCorePath();
+    const defaultCorePath:string = getCorePathBaseModuleModel(moduleModel);
     if (fs.existsSync(corePath)) {
         corePath = corePath;
     }
     else if (corePath==='') {
-        corePath = getAir101DefaultLatestCorePath();
+        corePath  = getDefaultLatestCorePath(moduleModel);
     }
-    else{
-        corePath = path.join(air101DefaultCorePath,corePath);
-    }
-    return corePath;
-}
-
-// 接收到的webview发送的air103的core处理
-export function getCreateProjectAir103CorepathHandle(corePath:string){
-    const air103DefaultCorePath = getAir103DefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getAir103DefaultLatestCorePath();
-    }
-    else{
-        corePath = path.join(air103DefaultCorePath,corePath);
-    }
-    return corePath;
-}
-
-// 接收到的webview发送的air105的core处理
-export function getCreateProjectAir105CorepathHandle(corePath:string){
-    const defaultCorePath = getAir105DefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getAir105DefaultLatestCorePath();
+    else if (moduleModel==='simulator') {
+        corePath = '';
     }
     else{
         corePath = path.join(defaultCorePath,corePath);
     }
     return corePath;
-}
-
-export function getCreateProjectEsp32c3CorepathHandle(corePath:string){
-    const defaultCorePath = getEsp32c3DefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getEsp32c3DefaultLatestCorePath();
-    }
-    else{
-        corePath = path.join(defaultCorePath,corePath);
-    }
-    return corePath;
-}
-
-
-// 接收到的webview发送的air72XUX的core处理
-export function getCreateProjectAir72XUXCorepathHandle(corePath:string){
-    const air72XUXDefaultCorePath = getAir72XUXDefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getAir72XUXDefaultLatestCorePath();
-    }
-    else{
-        corePath = path.join(air72XUXDefaultCorePath,corePath);
-    }
-    return corePath;
-}
-
-// 接收到的webview发送的air72XCX的core处理
-export function getCreateProjectAir72XCXCorepathHandle(corePath:string){
-    const air72XCXDefaultCorePath = getAir72XCXDefaultCorePath();
-    if (fs.existsSync(corePath)) {
-        corePath = corePath;
-    }
-    else if (corePath==='') {
-        corePath = getAir72XCXDefaultLatestCorePath();
-    }
-    else{
-        corePath = path.join(air72XCXDefaultCorePath,corePath);
-    }
-    return corePath;
-}
+ }
 
 // 获取指定路径文件对象
 export function getJsonObj(path:string) {

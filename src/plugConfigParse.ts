@@ -5,10 +5,10 @@ import * as path from 'path';
 import { activityMemoryProjectPathBuffer } from './extension';
 
 import {
-    getAir72XUXCorePath,
+    getAir72XUXDefaultCorePath,
     getAir72XUXDefaultLatestLibPath,
-    getAir72XUXDemoPath,
-    getAir72XUXLibPath,
+    getAir72XUXDefaultDemoPath,
+    getAir72XUXDefaultLibPath,
     getHistoryCorePath,
     getHistoryDemoPath,
     getHistoryLibPath,
@@ -170,17 +170,17 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     // Air72X_CORE路径内容复制到Air72XUX_CORE路径下
     const coreDataPath: string = getHistoryCorePath();
     const air72XOldCorePath: string = path.join(coreDataPath, 'Air72X_CORE');
-    const air72XUXCorePath: string = getAir72XUXCorePath();
+    const air72XUXCorePath: string = getAir72XUXDefaultCorePath();
     copyDir(air72XOldCorePath, air72XUXCorePath);
     // Air72X_DEMO路径内容复制到Air72XUX_DEMO路径下
     const demoDataPath: string = getHistoryDemoPath();
     const air72XOldDemoPath: string = path.join(demoDataPath, 'Air72X_DEMO');
-    const air72XUXDemoPath: string = getAir72XUXDemoPath();
+    const air72XUXDemoPath: string = getAir72XUXDefaultDemoPath();
     copyDir(air72XOldDemoPath, air72XUXDemoPath);
     // Air72X_LIB路径内容复制到Air72XUX_LIB路径下
     const libDataPath: string = getHistoryLibPath();
     const air72XOldLibPath: string = path.join(libDataPath, 'Air72X_LIB');
-    const air72XUXLibPath: string = getAir72XUXLibPath();
+    const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
     copyDir(air72XOldLibPath, air72XUXLibPath);
     // 删除Air72X_CORE所有内容
     deleteDirRecursive(air72XOldCorePath);
