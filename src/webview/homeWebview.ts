@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import {getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+import {getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -75,13 +75,16 @@ export class HomeManage {
             return;
         }
         else {
+            const luatideDataPath = getLuatIDEDataPath();
+            const extensionPath = path.join(__dirname, '../..');
             this.homePanel = vscode.window.createWebviewPanel(
                 'Home', //仅供内部使用的面板类型
                 'LuatIDE主页', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
-                    retainContextWhenHidden: true
+                    retainContextWhenHidden: true,
+                    localResourceRoots:[vscode.Uri.file(extensionPath),vscode.Uri.file(luatideDataPath)]
                 }
             );
         }
