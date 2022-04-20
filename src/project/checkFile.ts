@@ -136,10 +136,46 @@ export class CheckFiles {
         }
 
         let fileIgnored = projectConfigJson.ignore;
+        let fileFiled = projectConfigJson.appFile;
 
         let temNewFiles = newFiles.filter((item: any) => {
-            return !item.match(/^(\.luatide|\.vscode|\.git|.svn)/);
+            return !item.match(/^(\.luatide|\.vscode|\.git|.svn|ndk)/);
         });
+
+        //判断新添加的文件中是否存在同名文件
+        let fileArr: any = [];
+        for (let i = 0; i < temNewFiles.length; i++) {
+            let e = temNewFiles[i];
+            let file = e.match(/\w+\.\w+$/g);
+            if (file) {
+                if (!fileArr.includes(file[0])) {
+                    fileArr.push(file[0]);
+                } else {
+                    vscode.window.showErrorMessage("新添加文件" + file + "存在多个同名文件，请检查后重试");
+                    return false;
+                }
+            }
+        }
+
+        //判断工程中是否已有同名文件
+        for (let j = 0; j < temNewFiles.length; j++) {
+            let e = temNewFiles[j];
+            let file = e.match(/\w+\.\w+$/g);
+            if (file){
+                for (let k = 0; k < fileFiled.length; k++) {
+                    if (fileFiled[k].indexOf(file[0]) > -1) {
+                        vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
+                        return false;
+                    }
+                }
+                for (let k = 0; k < fileIgnored.length; k++) {
+                    if (fileIgnored[k].indexOf(file[0]) > -1) {
+                        vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
+                        return false;
+                    }
+                }
+            }
+        }
 
         if (temNewFiles.length > 0){
             return {
