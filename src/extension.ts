@@ -60,42 +60,44 @@ let oldFd: any = undefined;
 let curFd: any = undefined;
 async function checkFloderControlUpdate(){
 	let aP = getCurrentPluginConfigActivityProject();
-	curFd = getFileForDirRecursion(aP, "");
-	// console.log("oldAp:", oldAp);
-	// console.log("aP:", aP);
-	if (!oldAp){
-		oldAp = aP;
-		oldFd = curFd;
-		
-	}
-	if (oldAp !== aP){
-		oldAp = aP;
-		oldFd = curFd;
-	}
-	let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
-	let del = oldFd.filter(function(v: any){ return curFd.indexOf(v) === -1; });
-	if (diff.length > 0){
-		clearInterval(timeId);
-		let files = {
-			"all":curFd,
-			"new":diff,
-		};
-		const ret = await checkFile.downloadConfigDisplay(temContext, files);
-		if (ret){
-			if (stateMachine.getState()){
-				oldFd = stateMachine.getCurFd();
-				stateMachine.setState(false);
-			}
-			timeId = setInterval(checkFloderControlUpdate, 1000);
+	if (aP !== undefined && aP !== "") {
+		curFd = getFileForDirRecursion(aP, "");
+		// console.log("oldAp:", oldAp);
+		// console.log("aP:", aP);
+		if (!oldAp){
+			oldAp = aP;
+			oldFd = curFd;
+			
 		}
-	}
-	if (oldFd.length !== curFd.length){
-		if (del.length > 0){
+		if (oldAp !== aP){
+			oldAp = aP;
+			oldFd = curFd;
+		}
+		let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
+		let del = oldFd.filter(function(v: any){ return curFd.indexOf(v) === -1; });
+		if (diff.length > 0){
 			clearInterval(timeId);
-			const ret = await checkFile.delFiles(del);
+			let files = {
+				"all":curFd,
+				"new":diff,
+			};
+			const ret = await checkFile.downloadConfigDisplay(temContext, files);
 			if (ret){
-				oldFd = curFd;
+				if (stateMachine.getState()){
+					oldFd = stateMachine.getCurFd();
+					stateMachine.setState(false);
+				}
 				timeId = setInterval(checkFloderControlUpdate, 1000);
+			}
+		}
+		if (oldFd.length !== curFd.length){
+			if (del.length > 0){
+				clearInterval(timeId);
+				const ret = await checkFile.delFiles(del);
+				if (ret){
+					oldFd = curFd;
+					timeId = setInterval(checkFloderControlUpdate, 1000);
+				}
 			}
 		}
 	}
