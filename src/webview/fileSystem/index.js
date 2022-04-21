@@ -34,6 +34,7 @@ const floderStr = "floder";
 const fileStr = "file";
 /* 目录树数据状态统计 */
 let fileState = {};
+let isOpenProject = false;
 
 
 /*添加文件夹 [树形目录结构]
@@ -271,10 +272,20 @@ function fileStateInit(addArr, ignore) {
 /* 数据提交 */
 $(".download").on("click", function () {
     console.log('[LOG - fileState]: ', fileState);
-    vscode.postMessage({
-        command: "downloadConfig",
-        text: fileState,
-    });
+    if (isOpenProject){
+        vscode.postMessage({
+            command: "downloadConfigWithOpenProject",
+            text: {
+                fileState: fileState,
+                isOpenProject: isOpenProject
+            },
+        });
+    } else {
+        vscode.postMessage({
+            command: "downloadConfig",
+            text: fileState,
+        });
+    }
 });
 
 
@@ -301,6 +312,7 @@ window.addEventListener('message', event => {
             break;
         case "filesChange":
             console.log("oooooooooooooo\n", message.text);
+            isOpenProject = message.text.isOpenProject;
             fileTreeInit(createDirTree(message.text.all));
             fileStateInit(message.text.new, message.text.ignore);
             break;
