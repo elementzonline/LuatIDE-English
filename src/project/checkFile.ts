@@ -25,7 +25,7 @@ export class CheckFiles {
     async downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
 
         //判断是否需要显示webview
-        const fileRet: any = await this.checkFilesType(files.all, files.new);
+        const fileRet: any = await this.checkFilesType(files.all, files.new, false);
 
         if (fileRet){
             if (this.downloadPage || isUserClose) {
@@ -67,6 +67,73 @@ export class CheckFiles {
                         "all": fileRet.all,
                         "new": fileRet.new,
                         "ignore": fileRet.ignore,
+                        "isOpenProject": false
+                    },
+                }
+            );
+
+            this.downloadPage.webview.onDidReceiveMessage(
+                message => this.receiveMessageHandle(context,this.downloadPage, message)
+            );
+
+            // Reset when the current panel is closed
+            this.downloadPage.onDidDispose(
+                () => {
+                    this.downloadPage = undefined;
+                },
+                null,
+                context.subscriptions
+            );
+        }
+        return true;
+    }
+
+    /* 打开工程回调 */
+    async displayOpenProjectFiles(context:vscode.ExtensionContext, files: any, proPath: any) {
+
+        //判断是否需要显示webview
+        const fileRet: any = await this.checkFilesType(files.all, files.new, proPath);
+
+        if (fileRet){
+            if (this.downloadPage) {
+                return true;
+            }
+            else {
+                this.downloadPage = vscode.window.createWebviewPanel(
+                    'download', //仅供内部使用的面板类型
+                    'LuatIDE 下载配置', //webview 展示标题
+                    vscode.ViewColumn.Active,
+                    {
+                        enableScripts: true,
+                        retainContextWhenHidden: true
+                    }
+                );
+            }
+
+            /* 赋值当前WebView 中的当前数据*/
+            curFdInWeb = files.all;
+            // 获取webview界面
+            this.downloadPage.webview.html = this.getDownloadPageHtml();
+
+            let temPanel = this.downloadPage;
+
+            /* 实时检测主题颜色变化 */
+            vscode.window.onDidChangeActiveColorTheme((e) => {
+                temPanel.webview.postMessage(
+                    {
+                        command: "switchTheme",
+                        text: e.kind === 1 ? "light" : "dark"
+                    }
+                );
+            });
+            temPanel.webview.postMessage(
+                {
+                    command: 'filesChange',
+                    text: {
+                        "all": fileRet.all,
+                        "new": fileRet.new,
+                        "ignore": fileRet.ignore,
+                        "isOpenProject": proPath
                     },
                 }
             );
@@ -113,8 +180,14 @@ export class CheckFiles {
         switch (message.command) {
             case "downloadConfig":
                 isUserClose = true;
-                const ret = await this.checkFilesConfig(message.text);
+                const ret = await this.checkFilesConfig(message.text, false);
                 if (ret){
+                    downloadPage.dispose();
+                }
+                break;
+            case "downloadConfigWithOpenProject":
+                const ret2 = await this.checkFilesConfig(message.text.fileState, message.text.isOpenProject);
+                if (ret2){
                     downloadPage.dispose();
                 }
                 break;
@@ -124,11 +197,17 @@ export class CheckFiles {
     }
 
     /* 分析文件判断是否需要打开webview */
-    async checkFilesType(allFiles: any, newFiles: any){
-        const curProjectName = getPluginConfigActivityProject();
+    async checkFilesType(allFiles: any, newFiles: any, isOpenProject: boolean) {
+        let curProjectName: any;
+        if (!isOpenProject){
+            curProjectName = getPluginConfigActivityProject();
+        } else {
+            curProjectName = isOpenProject;
+        }
         if (curProjectName === '') {
             return true;
         }
+
         let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
         if (!projectConfigJson.ignore){
@@ -136,10 +215,48 @@ export class CheckFiles {
         }
 
         let fileIgnored = projectConfigJson.ignore;
+        let fileFiled = projectConfigJson.appFile;
 
         let temNewFiles = newFiles.filter((item: any) => {
-            return !item.match(/^(\.luatide|\.vscode|\.git|.svn)/);
+            return !item.match(/^(\.luatide|\.vscode|\.git|.svn|ndk)/);
         });
+
+        //判断新添加的文件中是否存在同名文件
+        let fileArr: any = [];
+        for (let i = 0; i < temNewFiles.length; i++) {
+            let e = temNewFiles[i];
+            let file = e.match(/\w+\.\w+$/g);
+            if (file) {
+                if (!fileArr.includes(file[0])) {
+                    fileArr.push(file[0]);
+                } else {
+                    vscode.window.showErrorMessage("新添加文件" + file + "存在多个同名文件，请检查后重试");
+                    return false;
+                }
+            }
+        }
+
+        if (!isOpenProject){
+            //判断工程中是否已有同名文件
+            for (let j = 0; j < temNewFiles.length; j++) {
+                let e = temNewFiles[j];
+                let file = e.match(/\w+\.\w+$/g);
+                if (file){
+                    for (let k = 0; k < fileFiled.length; k++) {
+                        if (fileFiled[k].indexOf(file[0]) > -1) {
+                            vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
+                            return false;
+                        }
+                    }
+                    for (let k = 0; k < fileIgnored.length; k++) {
+                        if (fileIgnored[k].indexOf(file[0]) > -1) {
+                            vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
 
         if (temNewFiles.length > 0){
             return {
@@ -152,8 +269,15 @@ export class CheckFiles {
     }
 
     /* 分析从 WebView 收到的文件配置 */
-    async checkFilesConfig(files: any){
-        const curProjectName = getPluginConfigActivityProject();
+    async checkFilesConfig(files: any, proPath: any){
+        let curProjectName: any;
+
+        if (!proPath){
+            curProjectName = getPluginConfigActivityProject();
+        } else {
+            curProjectName = proPath;
+        }
+
         if (curProjectName === '') {
             return true;
         }
