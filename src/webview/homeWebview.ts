@@ -6,7 +6,7 @@ import { getDefaultProjectName } from '../project/ProjectHandle';
 // import { PluginJsonParse } from '../plugConfigParse';
 import { CreateProject } from '../project/createProject';
 import * as fetch from 'node-fetch';
-import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, projectActiveInterfact} from '../project/projectApi';
+import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
 import {getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
@@ -16,6 +16,7 @@ import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfig
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 import { showOpenDialog } from '../project/activeProjectOperation';
+import { CheckFiles } from '../project/checkFile';
 // let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
@@ -24,7 +25,7 @@ let createProject = new CreateProject();
 let openProject = new OpenProject();
 /* 导入 LuatTools 项目对象实例化 */
 let importLuatToolsProject = new ImportLuatToolsProjectClass();
-
+let disOpenProjectFiles = new CheckFiles();
 export const sleep = (ms)=> {
     return new Promise(resolve=>setTimeout(resolve, ms));
 };
@@ -259,6 +260,8 @@ export class HomeManage {
                 const openProjectUserControlJson:string[]|undefined = await openProject.openProjectUserControl(context);
                 if (openProjectUserControlJson!==undefined) {
                     this.openProjectJson = openProjectUserControlJson;
+                    let openPath = openProject.getOpenProjectPath();
+                    this.displayOpenProjectFiles(openPath, context);
                     homePanel.webview.postMessage(
                         {
                             command: 'importProjectData',
@@ -859,5 +862,15 @@ export class HomeManage {
                     }
                 );
             }
+        }
+
+        async displayOpenProjectFiles(path: string, temContext: vscode.ExtensionContext) {
+            let files = getFileForDirRecursion(path, "");
+            let fileArr = {
+                "all": files,
+                "new": files,
+                "ignore": [],
+            };
+            disOpenProjectFiles.displayOpenProjectFiles(temContext, fileArr, path);
         }
 }

@@ -8,6 +8,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
 import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile } from './projectConfigParse';
+import { CheckFiles } from './checkFile';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
@@ -16,6 +17,8 @@ import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConf
 // let projectJsonParse:any = new ProjectJsonParse(); 
 // let pluginVariablesInit = new PluginVariablesInit();
 // let projectConfigOperation:any = new ProjectConfigOperation();
+
+const disOpenFiles = new CheckFiles();
 export class OpenProject {
     constructor() {
     }
@@ -35,9 +38,21 @@ export class OpenProject {
         }
         // 打开工程导入前做兼容性处理
         projectConfigCompatible(importProjectPath);
+        const filesArr = getFileForDirRecursion(importProjectPath, "");
+        let files = {
+            "all": filesArr,
+            "new": filesArr,
+            "ignore": [],
+        };
+        disOpenFiles.displayOpenProjectFiles(context, files, importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson);
+    }
+
+    private temOpenProjectPath: string = "";
+    getOpenProjectPath(){
+        return this.temOpenProjectPath;
     }
 
     // 用户点击home界面内打开工程显示内容 
@@ -54,6 +69,7 @@ export class OpenProject {
             return undefined;
         }
         // 打开工程导入前做兼容性处理
+        this.temOpenProjectPath = importProjectPath;
         projectConfigCompatible(importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
