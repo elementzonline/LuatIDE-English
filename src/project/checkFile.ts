@@ -301,6 +301,7 @@ export class CheckFiles {
         projectConfigJson.ignore = ignore;
         projectConfigJson.appFile = appFile;
         fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
+        vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
         return true;
     }
 
