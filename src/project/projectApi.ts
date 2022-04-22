@@ -146,7 +146,7 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
         if (libPath==='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
             libPath = getAir72XUXDefaultLatestLibPath();
         }
-        if (libPath!=='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
+        else if (libPath!=='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
             libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
         }
         else{
@@ -163,11 +163,11 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
     if (fs.existsSync(corePath)) {
         corePath = corePath;
     }
-    else if (corePath==='') {
-        corePath  = getDefaultLatestCorePath(moduleModel);
-    }
     else if (moduleModel==='simulator') {
         corePath = '';
+    }
+    else if (corePath==='') {
+        corePath  = getDefaultLatestCorePath(moduleModel);
     }
     else{
         corePath = path.join(defaultCorePath,corePath);
