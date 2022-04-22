@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 // import { PluginJsonParse } from '../plugConfigParse';
 // import {ProjectJsonParse} from './projectConfigParse';
 
-import {getFileForDirRecursion, getJsonObj} from './projectApi';
+import {getFileForDirRecursion, getJsonObj, getProjectIgnoreList} from './projectApi';
 // import { ProjectConfigOperation } from './ProjectHandle';
 import * as path from 'path';
 import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
-import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile } from './projectConfigParse';
+import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile, pushProjectConfigIgnoreFile } from './projectConfigParse';
 import { CheckFiles } from './checkFile';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
@@ -137,13 +137,27 @@ export class OpenProject {
 				if (!fs.existsSync(path.join(importProjectPath,'luatide_project.json'))) {
 					const selectProjectPath:any =  await vscode.window.showErrorMessage("该项目未配置工程，是否配置？", { modal: true }, "是").then(optionsResult =>  {
 						if (optionsResult === '是') {
-                            const appFile:string[]|undefined = getFileForDirRecursion(importProjectPath);
+                            let appFile:string[]|undefined = getFileForDirRecursion(importProjectPath);
                             if (appFile===undefined) {
                                 return undefined;
                             }
-                            generateImportProjectInitJson(importProjectPath);
-                            pushProjectConfigAppFile(appFile,importProjectPath);
-                            return importProjectPath;
+                            else{
+                                let ignoreFileList:string[] = this.importProjectFileHandler(appFile);
+                                if (ignoreFileList===undefined) {
+                                    return undefined;
+                                }
+                                for (let index = 0; index < appFile.length; index++) {
+                                    const element = appFile[index];
+                                    if (ignoreFileList.indexOf(element)!==-1) {
+                                        appFile =  appFile.slice(index,1);
+                                    }
+                                    index += 1;
+                                }
+                                generateImportProjectInitJson(importProjectPath);
+                                pushProjectConfigAppFile(appFile,importProjectPath);
+                                pushProjectConfigIgnoreFile(ignoreFileList,importProjectPath);
+                                return importProjectPath;
+                            }
 						}
                         else{
                             return undefined;
@@ -158,5 +172,18 @@ export class OpenProject {
             };
         });
         return importProjectPathResult;
+    }
+
+    // 用户待导入工程文件处理
+    importProjectFileHandler(datalist:string[]){
+        const projectIgnoreList:string[] = getProjectIgnoreList();
+        let ignoreFileList:string[] = [];
+        for (let index = 0; index < datalist.length; index++) {
+            const element = datalist[index];
+            if (projectIgnoreList.indexOf(path.extname(element))!==-1) {
+                ignoreFileList.push(element);
+            }
+        }
+        return ignoreFileList;
     }
 }
