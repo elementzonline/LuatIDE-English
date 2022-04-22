@@ -150,8 +150,8 @@ export class OpenProject {
                                     const element = appFile[index];
                                     if (ignoreFileList.indexOf(element)!==-1) {
                                         appFile =  appFile.slice(index,1);
+                                        index -= 1;
                                     }
-                                    index += 1;
                                 }
                                 generateImportProjectInitJson(importProjectPath);
                                 pushProjectConfigAppFile(appFile,importProjectPath);
