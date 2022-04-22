@@ -55,24 +55,13 @@ const checkFile = new CheckFiles();
 const stateMachine = new StateMachine();
 let temContext: vscode.ExtensionContext;
 let timeId: any;
-let oldAp: any = undefined;
 let oldFd: any = undefined;
 let curFd: any = undefined;
 async function checkFloderControlUpdate(){
 	let aP = getCurrentPluginConfigActivityProject();
 	if (aP !== undefined && aP !== "") {
 		curFd = getFileForDirRecursion(aP, "");
-		// console.log("oldAp:", oldAp);
-		// console.log("aP:", aP);
-		if (!oldAp){
-			oldAp = aP;
-			oldFd = curFd;
-			
-		}
-		if (oldAp !== aP){
-			oldAp = aP;
-			oldFd = curFd;
-		}
+		oldFd = await checkFile.getOriginalFiles(aP);
 		let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
 		let del = oldFd.filter(function(v: any){ return curFd.indexOf(v) === -1; });
 		if (diff.length > 0){
@@ -84,7 +73,6 @@ async function checkFloderControlUpdate(){
 			const ret = await checkFile.downloadConfigDisplay(temContext, files);
 			if (ret){
 				if (stateMachine.getState()){
-					oldFd = stateMachine.getCurFd();
 					stateMachine.setState(false);
 				}
 				timeId = setInterval(checkFloderControlUpdate, 1000);
