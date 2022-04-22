@@ -134,6 +134,17 @@ export function pushProjectConfigAppFile(appFile:any,projectPath:any){
     refreshProjectJson(projectJsonObj,projectConfigPath);
 }
 
+// 添加文件路径到活动工程忽略文件列表
+export function pushProjectConfigIgnoreFile(ignoreFile:any,projectPath:any){
+    const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
+    const projectJsonObj:any =  getProjectConfigJson(projectPath);
+    for (let index = 0; index < ignoreFile.length; index++) {
+        const ignoreFilePath:string = ignoreFile[index];
+        projectJsonObj.ignore.push(ignoreFilePath);
+    }
+    refreshProjectJson(projectJsonObj,projectConfigPath);
+}
+
     // 删除文件路径从活动工程下载文件列表
 export function popProjectConfigAppFile(appFilePath:any,projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');

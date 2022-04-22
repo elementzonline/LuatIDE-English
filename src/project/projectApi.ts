@@ -181,3 +181,10 @@ export function getJsonObj(path:string) {
     const fileObj:any = JSON.parse(fileContent);
     return fileObj;
 }
+
+
+// 新增ignore列表
+export function getProjectIgnoreList(){
+    const projectIgnoreList:string[] = [".pac",'.soc','.zip'];
+    return projectIgnoreList;
+}
