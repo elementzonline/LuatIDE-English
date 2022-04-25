@@ -2,7 +2,8 @@
 import * as fs  from "fs";
 import * as path  from "path";
 import * as vscode from 'vscode';
-import { getPluginConfigUserProjectList } from "../plugConfigParse";
+import { activityMemoryProjectPathBuffer } from "../extension";
+import { getPluginConfigUserProjectList, setPluginConfigActivityProject } from "../plugConfigParse";
 import {
     getAir72XUXDefaultLatestLibPath,
     getAir72XUXDefaultLibPath,
@@ -125,10 +126,13 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
     vscode.window.showInformationMessage(`请选择激活${activityProjectName}工程的打开方式`,{modal:true},"当前窗口打开","新窗口打开").then(
         result =>{
             if (result==='当前窗口打开') {
+                setPluginConfigActivityProject(activityProjectPath);
+                activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProjectPath;
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(activityProjectPath),false);
             }
             else if(result === '新窗口打开'){
+                setPluginConfigActivityProject(activityProjectPath);
                 vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
                 vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(activityProjectPath),true);
             }

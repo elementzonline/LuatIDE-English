@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import * as path from "path";
-import { deleteDirRecursive } from './projectApi';
+import { deleteDirRecursive, projectActiveInterfact } from './projectApi';
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getDefaultWorkspacePath } from "../variableInterface";
 import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
@@ -24,22 +24,23 @@ export class ProjectActiveHandle {
         // 激活工程前做兼容性处理
         projectConfigCompatible(projectActivePath);
         // 执行激活到资源管理器命令
-        vscode.window.showInformationMessage('请选择激活工程的打开方式',{modal:true},"当前窗口打开","新窗口打开").then(
-            result =>{
-                if (result==='当前窗口打开') {
-                    setPluginConfigActivityProject(projectActivePath);
-                    activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
-                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
-                    vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
-                }
-                else if(result === '新窗口打开'){
-                    setPluginConfigActivityProject(projectActivePath);
-                    // activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
-                    vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
-                    vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
-                }
-            }
-        );   
+        // vscode.window.showInformationMessage('请选择激活工程的打开方式',{modal:true},"当前窗口打开","新窗口打开").then(
+        //     result =>{
+        //         if (result==='当前窗口打开') {
+        //             setPluginConfigActivityProject(projectActivePath);
+        //             activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
+        //             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        //             vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),false);
+        //         }
+        //         else if(result === '新窗口打开'){
+        //             setPluginConfigActivityProject(projectActivePath);
+        //             // activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
+        //             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        //             vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
+        //         }
+        //     }
+        // );   
+        projectActiveInterfact(filePath.label,projectActivePath);
     }
 
     // 激活工程必要条件检查
