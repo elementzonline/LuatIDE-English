@@ -94,11 +94,19 @@ export function getAir72XUXDefaultLibPath() {
 
 /*++++++++++++++++++++++++++++++++++++++Air72XCX数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // Air72XCX的demo及lib共用Air72XUX
+
 // 获取72XCX默认core文件存储路径
 export function getAir72XCXDefaultCorePath() {
     const air72XCXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XCX_CORE");
     return air72XCXDefaultCorePath;
 }
+
+// 获取air72XCX系列模块型号显示名称(对后面增加的同系列模块型号名称进行扩展)
+export function getAir72XCXModuleModelName(){
+    const moduleModelName:string = "air72XCX/air60XCX/air78XCX";
+    return moduleModelName;
+}
+
 /*--------------------------------------Air72XCX数据存储路径相关接口----------------------------------------*/ 
 
 /*++++++++++++++++++++++++++++++++++++++air101数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
