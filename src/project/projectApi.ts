@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getPluginConfigUserProjectList, setPluginConfigActivityProject } from "../plugConfigParse";
 import {
+    getAir72XCXModuleModelName,
     getAir72XUXDefaultLatestLibPath,
     getAir72XUXDefaultLibPath,
     getCorePathBaseModuleModel,
@@ -143,14 +144,15 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
  // 接收到的webview发送的lib处理
  export function getCreateProjectLibpathHandle(libPath:string,moduleModel:string){
     const air72XUXDefaultLibPath = getAir72XUXDefaultLibPath();
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     if (fs.existsSync(libPath)) {
         libPath = libPath;
     }
     else{
-        if (libPath==='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
+        if (libPath==='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel===air72XCXModuleModelName  || moduleModel==='simulator')) {
             libPath = getAir72XUXDefaultLatestLibPath();
         }
-        else if (libPath!=='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel==='air72XCX'  || moduleModel==='simulator')) {
+        else if (libPath!=='' && (moduleModel==='air72XUX/air82XUX'  || moduleModel===air72XCXModuleModelName  || moduleModel==='simulator')) {
             libPath = path.join(air72XUXDefaultLibPath,libPath,'lib');
         }
         else{

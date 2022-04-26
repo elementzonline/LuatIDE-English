@@ -22,6 +22,7 @@ import {
     getLuatIDEDataPath,
     getAir72XCXDefaultCorePath,
     getDefaultLatestCoreName,
+    getAir72XCXModuleModelName,
 } from './variableInterface';
 import { copyDir } from './project/projectApi';
 
@@ -141,7 +142,8 @@ async function checkEsp32c3SourceUpdate() {
 */
 async function checkair72xcxSourceUpdate(){
     const localScriptReg = /V([\d]+)_/ig;
-    const localSourceName: string = getDefaultLatestCoreName('air72XCX');
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
+    const localSourceName: string = getDefaultLatestCoreName(air72XCXModuleModelName);
     const localScriptVersion: string | undefined = getLocalLatestSourceVersion(localScriptReg, localSourceName);
     const remoteScriptReg = /V([\d]+)\.zip/ig;
     const apiName: string = '1603_lua_lod';
