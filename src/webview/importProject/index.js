@@ -277,7 +277,7 @@ function iP_customPathManagment(whichProject, whichCustom, pathData) {
 
 /* 模块型号类型 */
 const iP_moduleOne = "air72XUX/air82XUX";
-const iP_moduleTwo = "air72XCX";
+const iP_moduleTwo = "air72XCX/air60XCX/air78XCX";
 const iP_moduleThree = "simulator";
 const iP_moduleFour = "air101";
 const iP_moduleFive = "air103";

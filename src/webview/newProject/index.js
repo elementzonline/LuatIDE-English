@@ -378,7 +378,7 @@ function customPathManagment(whichProject, whichCustom, pathData) {
 
 /* 模块型号类型 */
 const nP_moduleOne = "air72XUX/air82XUX";
-const nP_moduleTwo = "air72XCX";
+const nP_moduleTwo = "air72XCX/air60XCX/air78XCX";
 const nP_moduleThree = "simulator";
 const nP_moduleFour = "air101";
 const nP_moduleFive = "air103";

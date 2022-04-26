@@ -9,7 +9,7 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import {getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+import {getAir72XCXModuleModelName, getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -17,7 +17,7 @@ import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 import { showOpenDialog } from '../project/activeProjectOperation';
 import { CheckFiles } from '../project/checkFile';
-// let pluginVariablesInit = new PluginVariablesInit();
+// let pluginVariablesInit = new PluginVariablesInit();                                             
 // let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
 let createProject = new CreateProject();
@@ -208,6 +208,7 @@ export class HomeManage {
     async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
         let activityProjectPath: string = getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
+        const air72XCXModuleModelName = getAir72XCXModuleModelName();
         // const pluginDefaultAir101Example:string[] = getAir101DefaultExampleList();
         const pluginDefaultAir101Example:string[] = getDefaultExampleList('air101');
         const pluginDefaultAir103Example:string[] = getDefaultExampleList('air103');
@@ -222,7 +223,7 @@ export class HomeManage {
         const air103CoreList:string[] = getDefaultCoreList('air103');
         const air105CoreList:string[] = getDefaultCoreList('air105');
         const esp32c3CoreList:string[] = getDefaultCoreList('esp32c3');
-        const air72XCXCoreList:string[] = getDefaultCoreList('air72XCX');
+        const air72XCXCoreList:string[] = getDefaultCoreList(air72XCXModuleModelName);
         const air101LibList:string[] = []; 
         const air103LibList:string[] = []; 
         const air105LibList:string[] = []; 
@@ -236,7 +237,7 @@ export class HomeManage {
                 homePanel.webview.postMessage(
                     {
                         command: 'switchTheme',
-                        text: colorTheme
+                        text: colorTheme    
                     }
                 );
                 sleep(100);
@@ -336,7 +337,7 @@ export class HomeManage {
                                     "moduleList": pluginDefaultModuleList,
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
-                                        "air72XCX":air72XUXLibList,
+                                        "air72XCX/air60XCX/air78XCX" :air72XUXLibList,
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
@@ -345,7 +346,7 @@ export class HomeManage {
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
-                                        "air72XCX":air72XCXCoreList,
+                                        "air72XCX/air60XCX/air78XCX" :air72XCXCoreList,
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
@@ -367,7 +368,7 @@ export class HomeManage {
                                     "moduleList": pluginDefaultModuleList,
                                     "exampleList": {
                                         "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
-                                        "air72XCX":pluginDefaultAir72XUXExample,
+                                        "air72XCX/air60XCX/air78XCX":pluginDefaultAir72XUXExample,
                                         "air101": pluginDefaultAir101Example,
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,
@@ -376,7 +377,7 @@ export class HomeManage {
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
-                                        "air72XCX":air72XCXCoreList,
+                                        "air72XCX/air60XCX/air78XCX":air72XCXCoreList,
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
@@ -399,7 +400,7 @@ export class HomeManage {
                                 "moduleList": ['air72XUX/air82XUX'],
                                 "libList": {
                                     "air72XUX/air82XUX": air72XUXLibList,
-                                    "air72XCX":[],
+                                    "air72XCX/air60XCX/air78XCX":[],
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
@@ -408,7 +409,7 @@ export class HomeManage {
                                 },
                                 "coreList": {
                                     "air72XUX/air82XUX": air72XUXCoreList,
-                                    "air72XCX":[],
+                                    "air72XCX/air60XCX/air78XCX":[],
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
@@ -417,7 +418,7 @@ export class HomeManage {
                                 },
                                 "exampleList": {
                                     "air72XUX/air82XUX": pluginDefaultNdkExample,
-                                    "air72XCX":[],
+                                    "air72XCX/air60XCX/air78XCX":[],
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
@@ -440,7 +441,7 @@ export class HomeManage {
                                     "moduleList": pluginDefaultModuleList,
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
-                                        "air72XCX":air72XUXLibList,
+                                        "air72XCX/air60XCX/air78XCX":air72XUXLibList,
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
@@ -449,7 +450,7 @@ export class HomeManage {
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
-                                        "air72XCX":air72XCXCoreList,
+                                        "air72XCX/air60XCX/air78XCX":air72XCXCoreList,
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
@@ -688,7 +689,7 @@ export class HomeManage {
                                         "moduleList": ['air72XUX/air82XUX'],
                                         "libList": {
                                             "air72XUX/air82XUX": air72XUXLibList,
-                                            "air72XCX":[],
+                                            "air72XCX/air60XCX/air78XCX":[],
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
@@ -697,7 +698,7 @@ export class HomeManage {
                                         },
                                         "coreList": {
                                             "air72XUX/air82XUX": air72XUXCoreList,
-                                            "air72XCX":[],
+                                            "air72XCX/air60XCX/air78XCX":[],
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
@@ -706,7 +707,7 @@ export class HomeManage {
                                         },
                                         "exampleList": {
                                             "air72XUX/air82XUX": pluginDefaultNdkExample,
-                                            "air72XCX":[],
+                                            "air72XCX/air60XCX/air78XCX":[],
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
@@ -727,7 +728,7 @@ export class HomeManage {
                                     "moduleList": pluginDefaultModuleList,
                                     "libList": {
                                         "air72XUX/air82XUX": air72XUXLibList,
-                                        "air72XCX":air72XUXLibList,
+                                        "air72XCX/air60XCX/air78XCX":air72XUXLibList,
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
@@ -736,7 +737,7 @@ export class HomeManage {
                                     },
                                     "coreList": {
                                         "air72XUX/air82XUX": air72XUXCoreList,
-                                        "air72XCX":air72XCXCoreList,
+                                        "air72XCX/air60XCX/air78XCX":air72XCXCoreList,
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
@@ -745,7 +746,7 @@ export class HomeManage {
                                     },
                                     "exampleList": {
                                         "air72XUX/air82XUX": pluginDefaultAir72XUXExample,
-                                        "air72XCX":pluginDefaultAir72XUXExample,
+                                        "air72XCX/air60XCX/air78XCX":pluginDefaultAir72XUXExample,
                                         "air101": pluginDefaultAir101Example,
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,

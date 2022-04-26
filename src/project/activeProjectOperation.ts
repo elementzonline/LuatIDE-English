@@ -1,6 +1,7 @@
 import path = require('path');
 import * as vscode from 'vscode';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
+import { getAir72XCXModuleModelName } from '../variableInterface';
 import { activeProjectConfig } from '../webview/configWebview';
 import { getFileForDirRecursion } from './projectApi';
 import { getProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
@@ -228,10 +229,11 @@ export async function showOpenDialog(options: any) {
 // 选择配置模块型号,模拟器
 export async function selectProjectModuleModel() {
     const activityPath: string = getPluginConfigActivityProject();
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     const result: any = await vscode.window.showQuickPick(
         [
             "air72XUX/Air82XUX",
-            "air72XCX",
+            air72XCXModuleModelName,
             "air101",
             "air103",
             "air105",

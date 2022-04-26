@@ -15,7 +15,8 @@ export function getPluginInstallVersion(){
 
 // 获取插件支持的模块列表
 export function getPluginDefaultModuleList() {
-    const moduleList: string[] = ["air72XUX/air82XUX", "air72XCX", "air101", "air103", "air105", "simulator", "esp32c3"];
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
+    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "air101", "air103", "air105", "simulator", "esp32c3"];
     return moduleList;
 }
 /*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
@@ -94,11 +95,19 @@ export function getAir72XUXDefaultLibPath() {
 
 /*++++++++++++++++++++++++++++++++++++++Air72XCX数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // Air72XCX的demo及lib共用Air72XUX
+
 // 获取72XCX默认core文件存储路径
 export function getAir72XCXDefaultCorePath() {
     const air72XCXDefaultCorePath: string = path.join(appDataPath, "LuatIDE", "LuatideCore", "Air72XCX_CORE");
     return air72XCXDefaultCorePath;
 }
+
+// 获取air72XCX系列模块型号显示名称(对后面增加的同系列模块型号名称进行扩展)
+export function getAir72XCXModuleModelName(){
+    const moduleModelName:string = "air72XCX/air60XCX/air78XCX";
+    return moduleModelName;
+}
+
 /*--------------------------------------Air72XCX数据存储路径相关接口----------------------------------------*/ 
 
 /*++++++++++++++++++++++++++++++++++++++air101数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
@@ -343,12 +352,13 @@ export function getEsp32c3Reg() {
 
 // 依据模块型号获取解析的正则表达式
 export function getRegBaseModel(moduleModel: any) {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     let reg: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             reg = getAir72XUXReg();
             break;
-        case 'air72XCX':
+        case air72XCXModuleModelName:
             reg = getAir72XCXReg();
             break;
         case 'air101':
@@ -373,12 +383,13 @@ export function getRegBaseModel(moduleModel: any) {
 /*++++++++++++++++++++++++++++++++++++++工程固件数据处理相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 依据模块型号获取core路径
 export function getCorePathBaseModuleModel(moduleModel: any) {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     let corePath: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             corePath = getAir72XUXDefaultCorePath();
             break;
-        case 'air72XCX':
+        case air72XCXModuleModelName:
             corePath = getAir72XCXDefaultCorePath();
             break;
         case 'air101':
@@ -462,12 +473,13 @@ export function getDefaultLatestCorePath(moduleModel:string){
 
 // 依据模块型号获取固件名后缀
 export function getExtnameBaseModel(moduleModel: any) {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     let extname: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             extname = '.pac';
             break;
-        case 'air72XCX':
+        case air72XCXModuleModelName:
             extname = '.zip';
             break;
         case 'air101':
@@ -531,12 +543,13 @@ export function getAir72XUXDefaultLatestDemoPath() {
 
 // 依据模块型号获取demo路径
 export function getDemoPathBaseModuleModel(moduleModel: any) {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     let demoPath: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             demoPath = getAir72XUXDefaultLatestDemoPath();
             break;
-        case 'air72XCX':
+        case air72XCXModuleModelName:
             demoPath = getAir72XUXDefaultLatestDemoPath();
             break;
         case 'air101':
@@ -651,12 +664,13 @@ export function getAir72XUXDefaultLibList() {
 
 // 依据模块型号获取lib文件列表
 export function getLibListBaseMoudeleMode(moduleModel: any) {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
     let libList: any;
     switch (moduleModel) {
         case 'air72XUX/air82XUX':
             libList = getAir72XUXDefaultLibList();
             break;
-        case 'air72XCX':
+        case air72XCXModuleModelName:
             libList = getAir72XUXDefaultLibList();
             break;
         case 'air101':
