@@ -10,7 +10,7 @@ import { getAir72XUXDefaultLatestLibPath, getDefaultLatestCorePath } from '../va
 
     // 获取当前工程文件初始化版本号
 export function getprojectConfigInitVersion(){
-        const projectConfigInitVersion:string = '2.3';
+        const projectConfigInitVersion:string = '2.4';
         return projectConfigInitVersion;
     }
 

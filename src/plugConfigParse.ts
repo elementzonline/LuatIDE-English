@@ -12,7 +12,8 @@ import {
     getHistoryCorePath,
     getHistoryDemoPath,
     getHistoryLibPath,
-    getPluginConfigPath
+    getPluginConfigPath,
+    getAir72XCXModuleModelName
 } from './variableInterface';
 import { copyDir, deleteDirRecursive } from './project/projectApi';
 // let pluginVariablesInit = new PluginVariablesInit();
@@ -230,6 +231,9 @@ export function projectConfigCompatible(projectPath: string) {
     else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
         projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
     }
+    else  if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+        projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
+    }
 }
 
 // 获取指定路径工程配置的对象
@@ -239,7 +243,7 @@ export function getProjectConfigObj(projectConfigPath: string) {
     return projectOldJsonObj;
 }
 
-// 获取2.0,2.1版本工程配置文件初始化对象
+// 获取版本工程配置文件初始化对象
 export function getProjectJsonObjVersionTwo() {
     let luatideProjectNewJson: any = {
         version: '',
@@ -378,7 +382,27 @@ export function projectConfigCompatibleVersionTwoPointThree(projectPath: string,
     luatideProjectNewJson.libPath = libPath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
     luatideProjectNewJson.ignore = [];
+    const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
+    fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+}
+// 工程配置文件2.3版本配置文件兼容至2.4版本
+export function projectConfigCompatibleVersionTwoPointFour(projectPath: string, projectOldJsonObj: any) {
+    const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+    const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
+    luatideProjectNewJson.version = '2.3';
+    luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+    luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+    luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
+    let moduleModel:string = projectOldJsonObj.module_model;
+    if (moduleModel === 'air72XCX') {
+        moduleModel = getAir72XCXModuleModelName();
+    }
+    luatideProjectNewJson.module_model = moduleModel;
+    luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.ignore = [];
+
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }
