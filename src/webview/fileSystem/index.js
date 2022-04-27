@@ -117,7 +117,7 @@ function createDirTree(dirArr) {
     let index = 0;
     let str;
     dirArr.forEach((e) => {
-        if (!e.match(/^(\.luatide|\.vscode|\.git|.svn)/)){
+        if (!e.match(/^(\.luatide|\.vscode|\.git|\.svn|\.\w+)/)){
             if (e.match(/\.\w+$/)) {
                 index += 1;
                 str = "f" + index.toString();
@@ -126,7 +126,7 @@ function createDirTree(dirArr) {
                     let tem = "";
                     for (let i = 0; i < arr.length - 1; i++) {
                         let o = arr[i];
-                        tem += "." + o;
+                        tem += "['" + o + "']";
                         eval("treeObj" + tem + " == undefined ? treeObj" + tem + " = {} : {}");
                     }
                     eval("treeObj" + tem + "['" + str + "']='" + arr[arr.length - 1] + "'");
