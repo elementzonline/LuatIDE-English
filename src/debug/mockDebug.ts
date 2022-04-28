@@ -21,7 +21,7 @@ import * as path from 'path'; // 导入fs库和path库
 import * as ndkProject from "../ndk/ndkProject";
 import * as tsQueue from "../tsQueue";
 import * as displayLog from "./displayLog";
-
+import * as checkFile from '../project/checkFile';
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';
@@ -515,6 +515,15 @@ export class MockDebugSession extends LoggingDebugSession {
 	 * to interrogate the features the debug adapter provides.
 	 */
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
+		if(checkFile.checkFilesWebviewIsOpen()===true)
+		{
+			vscode.window.showErrorMessage("检测到工程文件发生变化，请先完成工程文件的配置！");
+			// 强行终止调试器
+			vscode.debug.stopDebugging();
+			// 让Webview恢复到最上层
+			checkFile.checkFilesWebviewDesk();
+			return;
+		}
 
 		// 每次调试前清空队列数据
 		queue.clear();

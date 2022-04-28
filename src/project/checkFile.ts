@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-04-28 21:20:31
- * @LastEditTime: 2022-04-28 21:27:31
+ * @LastEditTime: 2022-04-28 21:43:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\project\checkFile.ts
@@ -12,6 +12,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface';
+
 
 /*
     check the change of the source code
@@ -24,7 +25,20 @@ import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface
 
 let downloadPage: vscode.WebviewPanel | undefined = undefined;
 
+// 工程配置Webview是否被打开
+export function checkFilesWebviewIsOpen()
+{
+    return downloadPage?true:false;
+}
 
+// 让Webview恢复到最上层
+export function checkFilesWebviewDesk()
+{
+    const column = vscode.window.activeTextEditor
+        ? vscode.window.activeTextEditor.viewColumn
+        : undefined;
+    downloadPage?.reveal(column);
+}
 
 export async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
 
@@ -453,6 +467,7 @@ export async function delFiles(tar: any){
 //     return true;
 // }
 
+// 获取工程配置文件中记录的文件列表(appfile+ignore)
 export async function getOriginalFiles(pPath: any){
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(pPath, "luatide_project.json")).toString());
 
@@ -471,4 +486,5 @@ export async function getOriginalFiles(pPath: any){
 
     return retArr;
 }
+
 
