@@ -437,6 +437,12 @@ thick_table = {
     118, 120, 124, 126, 128, 130, 136, 140, 150, 160, 170, 180
 }
 
+fonTable = {
+    light = {},
+    normal = {},
+    heavy = {}
+}
+
 local function normal(s)
     if s % 2 == 1 then s = s - 1 end
     return thick_table[(s - 16) / 2 + 1]
@@ -452,23 +458,30 @@ local function heavy(s)
     else return normal(s) + 20 end
 end
 
+
 local function font_load(...)
     args = {...}
     if type(args[1]) == 'string' then
-    if args[2] == nil then 
-        return loader(args[1]) -- 加载文件
-    else
-        -- 设计器
-        if string.find(args[1], 'light') then
-        return loader(font_spi, args[2], font_bpp, light(args[2]))
-        elseif string.find(args[1], 'normal') then
-        return loader(font_spi, args[2], font_bpp, normal(args[2]))
-        elseif string.find(args[1], 'heavy') then
-        return loader(font_spi, args[2], font_bpp, heavy(args[2]))
+        if args[2] == nil then 
+            return loader(args[1]) -- 加载文件
+        else
+            -- 设计器
+            if (fonTable[args[1]][args[2]]) then
+                print("=====font_load=====", args[1], args[2])
+                return fonTable[args[1]][args[2]]
+            end
+
+            if string.find(args[1], 'light') then
+                fonTable['light'][args[2]] = loader(font_spi, args[2], font_bpp, light(args[2]))
+            elseif string.find(args[1], 'normal') then
+                fonTable['normal'][args[2]] = loader(font_spi, args[2], font_bpp, normal(args[2]))
+            elseif string.find(args[1], 'heavy') then
+                fonTable['heavy'][args[2]] = loader(font_spi, args[2], font_bpp, heavy(args[2]))
+            end
+            return fonTable[args[1]][args[2]]
         end
-    end
     else
-    return loader(...) -- 加载矢量字库
+        return loader(...) -- 加载矢量字库
     end
 end
 
