@@ -90,7 +90,7 @@ async function checkFloderControlUpdate(){
 		}
 	}
 }
-timeId = setInterval(checkFloderControlUpdate, 1000);
+
 
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
@@ -115,6 +115,7 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
 	temContext = context;
+	timeId = setInterval(checkFloderControlUpdate, 1000);
 	vscode.languages.registerDocumentFormattingEditProvider(selectors, new LuaFormatProvider(context));
 	vscode.languages.registerDocumentRangeFormattingEditProvider(selectors, new LuaRangeFormatProvider(context));
 	// 插件配置实例化
