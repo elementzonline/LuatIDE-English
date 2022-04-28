@@ -32,6 +32,13 @@ export function getPluginSocModuleList() {
     const moduleList: string[] = ["air101", "air103", "air105", "esp32c3"];
     return moduleList;
 }
+
+// 获取插件中core路径为空的模块列表(特殊情况模块型号)
+export function getPluginUnsupportedCoreModuleList() {
+    const moduleList:string[] = ["simulator"];
+    return moduleList;
+}
+
 /*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
 
 /*++++++++++++++++++++++++++++++++++++++插件数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 

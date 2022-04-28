@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
 import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile, pushProjectConfigIgnoreFile } from './projectConfigParse';
 import { CheckFiles } from './checkFile';
+import { getPluginUnsupportedCoreModuleList } from '../variableInterface';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
@@ -98,7 +99,7 @@ export class OpenProject {
             porjectConfigModuleModel = 'air72XUX/air82XUX';
         }
         openProjectJson.correctData.moduleModel = porjectConfigModuleModel;
-        if (!fs.existsSync(projectConfigCorePath) && porjectConfigModuleModel!=='simulator' ) {
+        if (!fs.existsSync(projectConfigCorePath) && getPluginUnsupportedCoreModuleList().indexOf(porjectConfigModuleModel)!==-1) {
             openProjectJson.errorData.corePath = projectConfigCorePath;
         }
         else{
