@@ -99,7 +99,7 @@ export class OpenProject {
             porjectConfigModuleModel = 'air72XUX/air82XUX';
         }
         openProjectJson.correctData.moduleModel = porjectConfigModuleModel;
-        if (!fs.existsSync(projectConfigCorePath) && getPluginUnsupportedCoreModuleList().indexOf(porjectConfigModuleModel)!==-1) {
+        if (!fs.existsSync(projectConfigCorePath) && getPluginUnsupportedCoreModuleList().indexOf(porjectConfigModuleModel)===-1) {
             openProjectJson.errorData.corePath = projectConfigCorePath;
         }
         else{
