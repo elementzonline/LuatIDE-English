@@ -172,7 +172,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.exportProducFile', async () => exportProducFile()));
 	// 注册快速上手命令，点击后打开doc使用说明文档
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.quickstart', async () => {
-		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/article/3203'));
+		vscode.env.openExternal(vscode.Uri.parse('https://doc.openluat.com/wiki/21?wiki_page_id=2964'));
 	}));
 	// 注册技术支持命令，点击后打开luatide用户支持群链接
 	context.subscriptions.push(vscode.commands.registerCommand('luatide.technicalSupport', async () => {
