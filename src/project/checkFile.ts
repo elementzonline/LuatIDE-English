@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-04-28 21:20:31
- * @LastEditTime: 2022-04-28 21:26:18
+ * @LastEditTime: 2022-04-28 21:27:31
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\project\checkFile.ts
@@ -21,12 +21,10 @@ import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface
             "file2": false,
         }
 */
-let isUserClose = false;
-let curFdInWeb = undefined;
-
-
 
 let downloadPage: vscode.WebviewPanel | undefined = undefined;
+
+
 
 export async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
 
@@ -34,11 +32,10 @@ export async function downloadConfigDisplay(context:vscode.ExtensionContext, fil
     const fileRet: any = await checkFilesType(files.all, files.new, false);
 
     if (fileRet){
-        if (downloadPage || isUserClose) {
+        if (downloadPage) {
             return true;
         }
         else {
-            isUserClose = false;
             downloadPage = vscode.window.createWebviewPanel(
                 'download', //仅供内部使用的面板类型
                 'LuatIDE 下载配置', //webview 展示标题
@@ -50,8 +47,7 @@ export async function downloadConfigDisplay(context:vscode.ExtensionContext, fil
             );
         }
 
-        /* 赋值当前WebView 中的当前数据*/
-        curFdInWeb = files.all;
+
         // 获取webview界面
         downloadPage.webview.html = getDownloadPageHtml();
 
@@ -116,8 +112,7 @@ export async function displayOpenProjectFiles(context:vscode.ExtensionContext, f
             );
         }
 
-        /* 赋值当前WebView 中的当前数据*/
-        curFdInWeb = files.all;
+
         // 获取webview界面
         downloadPage.webview.html = getDownloadPageHtml();
 
@@ -185,7 +180,6 @@ function getDownloadPageHtml() {
 async function receiveMessageHandle(context:vscode.ExtensionContext,downloadPage: any, message: any) {
     switch (message.command) {
         case "downloadConfig":
-            isUserClose = true;
             const ret = await checkFilesConfig(message.text, false);
             if (ret){
                 downloadPage.dispose();
