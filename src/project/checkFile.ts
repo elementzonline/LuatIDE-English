@@ -1,3 +1,11 @@
+/*
+ * @Author: czm
+ * @Date: 2022-04-28 21:20:31
+ * @LastEditTime: 2022-04-28 21:20:57
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \luatide\src\project\checkFile.ts
+ */
 
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -470,22 +478,5 @@ export class CheckFiles {
         });
 
         return retArr;
-    }
-}
-
-export class StateMachine {
-    constructor() {
-    }
-
-    setState(sta: boolean) {
-        isUserClose = sta;
-    }
-
-    getState() {
-        return isUserClose;
-    }
-
-    getCurFd() {
-        return curFdInWeb;
     }
 }

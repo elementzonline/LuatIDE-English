@@ -52,7 +52,7 @@ function debugProject(resource: vscode.Uri): void {
 
 /* 文件检测 */
 const checkFile = new CheckFiles();
-const stateMachine = new StateMachine();
+// const stateMachine = new StateMachine();
 let temContext: vscode.ExtensionContext;
 let timeId: any;
 let oldFd: any = undefined;
@@ -72,9 +72,6 @@ async function checkFloderControlUpdate(){
 			};
 			const ret = await checkFile.downloadConfigDisplay(temContext, files);
 			if (ret){
-				if (stateMachine.getState()){
-					stateMachine.setState(false);
-				}
 				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}
 		}
