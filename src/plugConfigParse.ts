@@ -166,6 +166,7 @@ export function pluginConfigCompatibleVersionLessThanTwo(pluginConfigPath: strin
     const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
     fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
 }
+
 // 插件配置文件2.0版本配置文件兼容至2.1版本
 export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, pluginJsonObj: any) {
     // Air72X_CORE路径内容复制到Air72XUX_CORE路径下
@@ -206,6 +207,7 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
     fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
 }
+
 // 工程配置文件兼容
 export function projectConfigCompatible(projectPath: string) {
     const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
@@ -231,7 +233,7 @@ export function projectConfigCompatible(projectPath: string) {
     else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
         projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
     }
-    else  if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
         projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
     }
 }
