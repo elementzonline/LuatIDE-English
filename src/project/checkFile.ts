@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-04-28 21:20:31
- * @LastEditTime: 2022-04-28 21:24:03
+ * @LastEditTime: 2022-04-28 21:25:12
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\project\checkFile.ts
@@ -431,33 +431,33 @@ async function delFiles(tar: any){
     return true;
 }
 
-async function defIgnore(tar: any) {
-    const curProjectName = getPluginConfigActivityProject();
-    if (curProjectName === '') {
-        return true;
-    }
+// async function defIgnore(tar: any) {
+//     const curProjectName = getPluginConfigActivityProject();
+//     if (curProjectName === '') {
+//         return true;
+//     }
 
-    let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
+//     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
-    if (!projectConfigJson.ignore){
-        projectConfigJson.ignore = [];
-    }
+//     if (!projectConfigJson.ignore){
+//         projectConfigJson.ignore = [];
+//     }
 
-    let filesChecked = projectConfigJson.appFile;
-    let fileIgnored = projectConfigJson.ignore;
+//     let filesChecked = projectConfigJson.appFile;
+//     let fileIgnored = projectConfigJson.ignore;
 
-    if (tar){
-        for (let i = 0; i < tar.length; i++){
-            let e = tar[i];
-            fileIgnored.push(e);
-        }
-    }
-    projectConfigJson.ignore = fileIgnored;
-    projectConfigJson.appFile = filesChecked;
-    fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
+//     if (tar){
+//         for (let i = 0; i < tar.length; i++){
+//             let e = tar[i];
+//             fileIgnored.push(e);
+//         }
+//     }
+//     projectConfigJson.ignore = fileIgnored;
+//     projectConfigJson.appFile = filesChecked;
+//     fs.writeFileSync(path.join(curProjectName, "luatide_project.json"), JSON.stringify(projectConfigJson, null, "\t"));
 
-    return true;
-}
+//     return true;
+// }
 
 async function getOriginalFiles(pPath: any){
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(pPath, "luatide_project.json")).toString());
