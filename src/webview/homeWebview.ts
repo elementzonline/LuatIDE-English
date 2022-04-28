@@ -16,7 +16,7 @@ import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfig
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 import { showOpenDialog } from '../project/activeProjectOperation';
-import { CheckFiles } from '../project/checkFile';
+import * as checkFile from '../project/checkFile';
 // let pluginVariablesInit = new PluginVariablesInit();                                             
 // let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
@@ -25,7 +25,7 @@ let createProject = new CreateProject();
 let openProject = new OpenProject();
 /* 导入 LuatTools 项目对象实例化 */
 let importLuatToolsProject = new ImportLuatToolsProjectClass();
-let disOpenProjectFiles = new CheckFiles();
+// let disOpenProjectFiles = new CheckFiles();
 export const sleep = (ms)=> {
     return new Promise(resolve=>setTimeout(resolve, ms));
 };
@@ -872,6 +872,6 @@ export class HomeManage {
                 "new": files,
                 "ignore": [],
             };
-            disOpenProjectFiles.displayOpenProjectFiles(temContext, fileArr, path);
+            checkFile.displayOpenProjectFiles(temContext, fileArr, path);
         }
 }

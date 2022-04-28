@@ -19,7 +19,8 @@ import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
 import { clientOperation } from './LSP/client/client';
-import { CheckFiles, StateMachine } from './project/checkFile';
+// import { CheckFiles, StateMachine } from './project/checkFile';
+import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 
@@ -51,7 +52,7 @@ function debugProject(resource: vscode.Uri): void {
 }
 
 /* 文件检测 */
-const checkFile = new CheckFiles();
+// const checkFile = new CheckFiles();
 // const stateMachine = new StateMachine();
 let temContext: vscode.ExtensionContext;
 let timeId: any;
@@ -70,6 +71,7 @@ async function checkFloderControlUpdate(){
 				"all":curFd,
 				"new":diff,
 			};
+			// 下载配置界面显示
 			const ret = await checkFile.downloadConfigDisplay(temContext, files);
 			if (ret){
 				timeId = setInterval(checkFloderControlUpdate, 1000);

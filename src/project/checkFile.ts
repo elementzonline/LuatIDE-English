@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-04-28 21:20:31
- * @LastEditTime: 2022-04-28 21:25:12
+ * @LastEditTime: 2022-04-28 21:26:18
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\project\checkFile.ts
@@ -28,7 +28,7 @@ let curFdInWeb = undefined;
 
 let downloadPage: vscode.WebviewPanel | undefined = undefined;
 
-async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
+export async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
 
     //判断是否需要显示webview
     const fileRet: any = await checkFilesType(files.all, files.new, false);
@@ -95,7 +95,7 @@ async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any
 }
 
 /* 打开工程回调 */
-async function displayOpenProjectFiles(context:vscode.ExtensionContext, files: any, proPath: any) {
+export async function displayOpenProjectFiles(context:vscode.ExtensionContext, files: any, proPath: any) {
 
     //判断是否需要显示webview
     const fileRet: any = await checkFilesType(files.all, files.new, proPath);
@@ -320,7 +320,7 @@ async function checkFilesConfig(files: any, proPath: any){
 
 
 /* 获取工程的配置文件 */
-async function getProjectConfigFiles(tar: any) {
+export async function getProjectConfigFiles(tar: any) {
     const curProjectName = getPluginConfigActivityProject();
     if (curProjectName === '') {
         return true;
@@ -395,7 +395,7 @@ async function getProjectConfigFiles(tar: any) {
     return true;
 }
 
-async function delFiles(tar: any){
+export async function delFiles(tar: any){
     const curProjectName = getPluginConfigActivityProject();
     if (curProjectName === '') {
         return true;
@@ -459,7 +459,7 @@ async function delFiles(tar: any){
 //     return true;
 // }
 
-async function getOriginalFiles(pPath: any){
+export async function getOriginalFiles(pPath: any){
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(pPath, "luatide_project.json")).toString());
 
     const appFiles = projectConfigJson.appFile;
