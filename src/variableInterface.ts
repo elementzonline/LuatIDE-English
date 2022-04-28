@@ -19,6 +19,19 @@ export function getPluginDefaultModuleList() {
     const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "air101", "air103", "air105", "simulator", "esp32c3"];
     return moduleList;
 }
+
+// 获取插件支持的air系列模块列表
+export function getPluginAirModuleList() {
+    const air72XCXModuleModelName = getAir72XCXModuleModelName();
+    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "simulator"];
+    return moduleList;
+}
+
+// 获取插件支持的soc系列模块列表
+export function getPluginSocModuleList() {
+    const moduleList: string[] = ["air101", "air103", "air105", "esp32c3"];
+    return moduleList;
+}
 /*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
 
 /*++++++++++++++++++++++++++++++++++++++插件数据存储路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 

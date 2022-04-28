@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
-import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath,getEsp32c3DefaultDemoPath, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath } from "../variableInterface";
+import { getAir101DefaultDemoPath, getAir103DefaultDemoPath, getAir105DefaultDemoPath,getEsp32c3DefaultDemoPath, getAir72XUXDefaultLatestDemoPath, getAir72XUXDefaultLatestLibPath, getGroupChatQrCodePath, getNdkDefaultDemoPath, getPluginConfigPath, getPluginSocModuleList, getPluginAirModuleList } from "../variableInterface";
 // import { PluginVariablesInit } from "../config";
 // import { PluginJsonParse } from "../plugConfigParse";
 import { checkSameProjectExistStatusForPluginConfig, copyDir, createFolder, deleteDirRecursive, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact } from "./projectApi";
@@ -106,7 +106,8 @@ export class CreateProject {
         setProjectConfigCorePath(createProjectCorePath,createProjectMessage.createProjectPath);
         let createProjectLibPath:string;
         // lib库路径初始化写入
-        if (createProjectMessage.createProjectModuleModel!=='air101' && createProjectMessage.createProjectModuleModel!=='air103' && createProjectMessage.createProjectModuleModel!=='air105' && createProjectMessage.createProjectModuleModel!=='esp32c3') {
+        const airModuleList:string[] = getPluginAirModuleList();
+        if (airModuleList.indexOf(createProjectMessage.createProjectModuleModel)!==-1) {
             createProjectLibPath = getAir72XUXDefaultLatestLibPath();
         }
         else{
@@ -254,7 +255,6 @@ export class CreateProject {
         const air72XUXMainData: string = 'PROJECT = \'test\'\r\nVERSION = \'2.0.0\'\r\nrequire \'log\'\r\nLOG_LEVEL = log.LOGLEVEL_TRACE\r\nrequire \'sys\'\r\n\r\n\r\n\r\nsys.taskInit(function()\r\n\twhile true do\r\n\t\t-- log.info(\'test\',array)\r\n\t\tlog.info(\'Hello world!\')\r\n\t\tsys.wait(1000)\r\n\tend\r\nend)\r\n\r\nsys.init(0, 0)\r\nsys.run()';
         switch (moduleModel) {
             case 'air72XUX/air82XUX':
-
                 fs.writeFileSync(mainLuaPath, air72XUXMainData);
                 break;
             case 'air101':
