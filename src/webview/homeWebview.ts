@@ -58,7 +58,6 @@ export class HomeManage {
                             }
                         );
                         break;
-                
                     case 'loadOpenProjectModelBox':
                         this.homePanel.webview.postMessage(
                             {
@@ -71,6 +70,7 @@ export class HomeManage {
                                 text: this.openProjectJson
                             }
                         );
+                        break;
                 }
             }
             return;
@@ -93,71 +93,8 @@ export class HomeManage {
         // 获取webview界面
         this.homePanel.webview.html = this.getHomeWebviewContent();
 
-        // // 获取vscode初始主题
-        // const colorTheme = vscode.window.activeColorTheme.kind === 1 ? 'light' : 'dark';
-        // this.homePanel.webview.postMessage(
-        //     {
-        //         command: 'switchTheme',
-        //         text: colorTheme
-        //     }
-        // );
-        // console.log('=====================主题信息发送成功');
-        // sleep(100);
-        // // 获取ide当前版本号并发送至前端
-        // const pluginInstallVersion:any =  getPluginInstallVersion();
-        // if (pluginInstallVersion) {
-        //     this.homePanel.webview.postMessage(
-        //         {
-        //             command: 'ideVersion',
-        //             text: "Version: " + pluginInstallVersion
-        //         }
-        //     );
-        //     console.log('ide版本号信息发送成功',);
-        // }
-        // sleep(100);
-        // // 发送图片广告信息
-        // this.newsJsonGenerate(this.homePanel);
-
-        let temPanel = this.homePanel;
-
-        /* 实时检测主题颜色变化 */
-        vscode.window.onDidChangeActiveColorTheme((e) => {
-            temPanel.webview.postMessage(
-                {
-                    command: "switchTheme",
-                    text: e.kind === 1 ? "light" : "dark"
-                }
-            );
-        });
-
-        // 执行home加载不同状态命令
-        if (homeLoadingState) {
-            switch (homeLoadingState) {
-                case 'loadNewProjectModelBox':
-                    temPanel.webview.postMessage(
-                        {
-                            command: 'loadNewProjectModelBox'
-                        }
-                    );
-                    break;
-                case 'loadOpenProjectModelBox':
-                    temPanel.webview.postMessage(
-                        {
-                            command: 'loadOpenProjectModelBox'
-                        }
-                    );
-                    temPanel.webview.postMessage(
-                        {
-                            command: 'importProjectData',
-                            text: this.openProjectJson
-                        }
-                    );
-                    break;
-            }
-        }
-
         this.homePanel.webview.onDidReceiveMessage(
-            message => this.receiveMessageHandle(context,this.homePanel, message)
+            message => this.receiveMessageHandle(context,this.homePanel, message,homeLoadingState)
         );
 
         // Reset when the current panel is closed
@@ -205,7 +142,7 @@ export class HomeManage {
     }
 
     // 处理从webview传来的命令
-    async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any) {
+    async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any,homeLoadingState:any) {
         let activityProjectPath: string = getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
         const air72XCXModuleModelName = getAir72XCXModuleModelName();
@@ -254,6 +191,43 @@ export class HomeManage {
                 sleep(100);
                 // 发送图片广告信息
                 this.newsJsonGenerate(homePanel);
+                sleep(10);
+                /* 实时检测主题颜色变化 */
+                vscode.window.onDidChangeActiveColorTheme((e) => {
+                    homePanel.webview.postMessage(
+                        {
+                            command: "switchTheme",
+                            text: e.kind === 1 ? "light" : "dark"
+                        }
+                    );
+                });
+
+                // 执行home加载不同状态命令
+                if (homeLoadingState) {
+                    switch (homeLoadingState) {
+                        case 'loadNewProjectModelBox':
+                            homePanel.webview.postMessage(
+                                {
+                                    command: 'loadNewProjectModelBox'
+                                }
+                            );
+                            break;
+                        case 'loadOpenProjectModelBox':
+                            homePanel.webview.postMessage(
+                                {
+                                    command: 'loadOpenProjectModelBox'
+                                }
+                            );
+                            sleep(10);
+                            homePanel.webview.postMessage(
+                                {
+                                    command: 'importProjectData',
+                                    text: this.openProjectJson
+                                }
+                            );
+                            break;
+                    }
+                }
                 break;
             case 'openNewProjectWebview':
                 break;
