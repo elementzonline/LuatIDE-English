@@ -369,10 +369,6 @@ $(".iP-select_getSpace_ModuleInfo").on("change", function () {
     let libSelected = $(".iP-select_getSpace_LibInfo");
     let coreSelected = $(".iP-select_getSpace_CoreInfo");
 
-    if (curSaveModule === moduleSelected.text()){
-        return;
-    }
-
     libSelected.empty();
     coreSelected.empty();
 
@@ -515,10 +511,6 @@ $(".iP-select_getExample_ModuleInfo").on("change", function () {
     let exampleSelected = $(".iP-select_getExample_ExampleInfo");
     let coreSelected = $(".iP-select_getExample_CoreInfo");
 
-    if (curSaveModule === moduleSelected.text()){
-        return;
-    }
-
     exampleSelected.empty();
     coreSelected.empty();
 
@@ -638,10 +630,6 @@ $(".iP-select_getNDK_ModuleInfo").on("change", function () {
     let coreSelected = $(".iP-select_getNDK_CoreInfo");
     let exampleSelected = $(".iP-select_getNDK_ExampleInfo");
 
-    if (curSaveModule === moduleSelected.text()){
-        return;
-    }
-
     libSelected.empty();
     coreSelected.empty();
     exampleSelected.empty();
@@ -726,10 +714,6 @@ $(".iP-select_getUi_ModuleInfo").on("change", function () {
     let moduleSelected = $(".iP-select_getUi_ModuleInfo option:selected");
     let libSelected = $(".iP-select_getUi_LibInfo");
     let coreSelected = $(".iP-select_getUi_CoreInfo");
-    
-    if (curSaveModule === moduleSelected.text()){
-        return;
-    }
 
     libSelected.empty();
     coreSelected.empty();
