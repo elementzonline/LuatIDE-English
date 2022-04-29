@@ -320,19 +320,23 @@ export class CreateProject {
             "blocks": [
                 {
                     "width": 362,
-                    "height": 79,
-                    "name": "LvglButton1",
-                    "body": "LvglButton1",
-                    "x": 65,
-                    "y": 608
-                },
-                {
-                    "width": 362,
                     "height": 427,
                     "name": "LvglImg1",
                     "body": "LvglImg1",
                     "x": 65,
-                    "y": 184
+                    "y": 184,
+                    "axis": [],
+                    "depth": 0
+                },
+                {
+                    "width": 362,
+                    "height": 79,
+                    "name": "LvglButton1",
+                    "body": "LvglButton1",
+                    "x": 65,
+                    "y": 107,
+                    "axis": [],
+                    "depth": 0
                 },
                 {
                     "width": 362,
@@ -340,71 +344,119 @@ export class CreateProject {
                     "name": "LvglButton2",
                     "body": "LvglButton2",
                     "x": 65,
-                    "y": 107
+                    "y": 608,
+                    "axis": [],
+                    "depth": 0
                 }
             ]
         }
     }
 ],
 "schema": {
-    "LvglButton1": {
-        "comType": "LvglButton",
-        "comConf": {
-            "status": "DEFAULT",
-            "defaultStatus": {
-                "mainPart": {
-                    "radius": 4,
-                    "bg": {
-                        "color": "#0088FF"
-                    },
-                    "value": {
-                        "str": "点击加入",
-                        "color": "#FFFFFF",
-                        "letterSpace": 4
-                    }
-                }
-            },
-            "events": {
-                "CLICKED": {
-                    "type": "invoke",
-                    "name": "joinUs"
-                }
-            }
-        }
-    },
     "LvglImg1": {
         "comType": "LvglImg",
         "comConf": {
             "defaultStatus": {
                 "mainPart": {}
             },
-            "src": "qrcode.png"
+            "src": "/qrcode.png",
+            "natureVal": {
+                "width": 362,
+                "height": 427
+            }
+        }
+    },
+    "LvglButton1": {
+        "comType": "LvglButton",
+        "comConf": {
+            "state": "BTN_STATE_DEFAULT",
+            "text": "Hello LuatOS UI",
+            "defaultStatus": {
+                "mainPart": {
+                    "radius": 8,
+                    "bg": {
+                        "color": "#0088FF"
+                    },
+                    "text": {
+                        "font": {
+                            "name": "SimSun",
+                            "size": 16,
+                            "weight": "NORMAL"
+                        },
+                        "color": "#FFFFFF"
+                    }
+                }
+            },
+            "virtualLabel": {
+                "comType": "LvglLabel",
+                "comConf": {
+                    "text": "Hello LuatOS UI",
+                    "defaultStatus": {
+                        "mainPart": {
+                            "text": {
+                                "font": {
+                                    "name": "SimSun",
+                                    "size": 16,
+                                    "weight": "NORMAL"
+                                },
+                                "color": "#FFFFFF"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "LvglButton2": {
         "comType": "LvglButton",
         "comConf": {
-            "status": "DEFAULT",
+            "state": "BTN_STATE_DEFAULT",
+            "text": "点击加入",
             "defaultStatus": {
                 "mainPart": {
-                    "radius": 4,
+                    "radius": 8,
                     "bg": {
                         "color": "#0088FF"
                     },
-                    "value": {
-                        "str": "Hello LuatOS UI",
-                        "color": "#FFFFFF",
-                        "letterSpace": 2
+                    "text": {
+                        "font": {
+                            "name": "SimSun",
+                            "size": 16,
+                            "weight": "NORMAL"
+                        },
+                        "color": "#FFFFFF"
                     }
                 }
             },
-            "events": {
-                "CLICKED": {
-                    "type": "invoke",
-                    "name": "reset"
+            "virtualLabel": {
+                "comType": "LvglLabel",
+                "comConf": {
+                    "text": "点击加入",
+                    "defaultStatus": {
+                        "mainPart": {
+                            "text": {
+                                "font": {
+                                    "name": "SimSun",
+                                    "size": 16,
+                                    "weight": "NORMAL"
+                                },
+                                "color": "#FFFFFF"
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+},
+"resources": {
+    "/qrcode.png": {
+        "type": "image",
+        "names": [
+            "LvglImg1"
+        ],
+        "width": 362,
+        "height": 427
     }
 }
 }`;
