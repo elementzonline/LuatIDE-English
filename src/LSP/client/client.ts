@@ -1,4 +1,5 @@
-import path = require('path');
+import * as path from 'path';
+// import * as fs from 'fs';
 import * as vscode from 'vscode';
 // add "vscode-languageclient": "^5.2.1" in package.json and run: npm install
 import {
@@ -7,9 +8,9 @@ import {
     ServerOptions,
     TransportKind
 } from 'vscode-languageclient';
-import { getPluginConfigActivityProject } from '../../plugConfigParse';
-import { getProjectConfigLibPath } from '../../project/projectConfigParse';
-import { getAir72XUXDefaultLatestLibPath } from '../../variableInterface';
+// import { getPluginConfigActivityProject } from '../../plugConfigParse';
+// import { getProjectConfigLibPath } from '../../project/projectConfigParse';
+// import { getAir72XUXDefaultLatestLibPath } from '../../variableInterface';
 	
 
 export function clientOperation(context) {
@@ -63,14 +64,21 @@ export function clientOperation(context) {
         clientOptions
     );
     /*--start--获取活动工程libPath*/ 
-    const workspacePath:string = getPluginConfigActivityProject();
-    let libPath:string = getProjectConfigLibPath(workspacePath);
-    if (libPath==="") {
-        libPath = getAir72XUXDefaultLatestLibPath();
-    }
+    // const workspacePath:string = getPluginConfigActivityProject();
+    // let libPath:string;
+    // if (fs.existsSync(workspacePath)) {
+    //     libPath = getProjectConfigLibPath(workspacePath);
+    //     if (libPath==="") {
+    //         libPath = getAir72XUXDefaultLatestLibPath();
+    //     }
+    // }
+    // else{
+    //     libPath = "";
+    // }
+    
     /*--end--获取活动工程libPath*/ 
     client.onReady().then(() => {
-        client.sendNotification("libPath",libPath);
+        // client.sendNotification("libPath",libPath);
         // console.log('==发送成功',libPath);
         // 收到server的自定义消息
         client.onNotification("__error", (ctx: string) => {
