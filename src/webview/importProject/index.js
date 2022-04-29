@@ -851,6 +851,12 @@ function importSpaceProject(importData, moduleWhichSelected) {
                 curSaveModule = importData.correctData[key1];
                 $("#iP-space_customeModule").text(importData.correctData[key1]);
                 $("#iP-space_customeModule").prop("selected", true);
+                if(importData.correctData[key1]==='simulator'){
+                    $(".iP-select_getSpace_CoreInfo").prop("disabled", true);
+                }
+                else if (importData.correctData[key1]==='air101' || importData.correctData[key1]==='air103' || importData.correctData[key1]==='air105' || importData.correctData[key1]==='esp32c3') {
+                    $(".iP-select_getSpace_LibInfo").prop("disabled", true);
+                }
                 break;
             case "libPath":
                 $("#iP-space_customeLib").text(importData.correctData[key1]);
@@ -879,6 +885,12 @@ function importSpaceProject(importData, moduleWhichSelected) {
                 // iP_addTips($(".iP-select_getSpace_ModuleInfo"));
                 $("#iP-space_customeModule").text(importData.errorData[key2]);
                 $("#iP-space_customeModule").prop("selected", true);
+                if(importData.correctData[key2]==='simulator'){
+                    $(".iP-select_getSpace_CoreInfo").prop("disabled", true);
+                }
+                else if (importData.correctData[key2]==='air101' || importData.correctData[key2]==='air103' || importData.correctData[key2]==='air105' || importData.correctData[key2]==='esp32c3') {
+                    $(".iP-select_getSpace_LibInfo").prop("disabled", true);
+                }
                 break;
             case "libPath":
                 iP_addTips($(".iP-select_getSpace_LibInfo"));
