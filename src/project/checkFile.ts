@@ -1,7 +1,7 @@
 /*
  * @Author: czm
  * @Date: 2022-04-28 21:20:31
- * @LastEditTime: 2022-04-28 21:43:03
+ * @LastEditTime: 2022-04-30 02:08:07
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \luatide\src\project\checkFile.ts
@@ -240,7 +240,9 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
         return item.match(/\w+\.\w+$/g);
     });
 
-    if (temNewFiles.length > 0) {
+    // if (temNewFiles.length > 0)
+    if(0) 
+    {
         //判断新添加的文件中是否存在同名文件
         let fileArr: any = [];
         for (let i = 0; i < temNewFiles.length; i++) {
