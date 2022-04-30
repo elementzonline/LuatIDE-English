@@ -35,6 +35,8 @@ const fileStr = "file";
 /* 目录树数据状态统计 */
 let fileState = {};
 let isOpenProject = false;
+/* 保存所有的文件夹 特殊处理*/
+let allFloder = [];
 
 
 /*添加文件夹 [树形目录结构]
@@ -133,6 +135,9 @@ function createDirTree(dirArr) {
                 } else {
                     treeObj[str] = e;
                 }
+            } else {
+                //对文件夹进行特殊操作，此为特殊情况下的处理
+                allFloder.push(e);
             }
         }
     });
@@ -302,6 +307,11 @@ $(".download").on("click", function () {
         });
         return ;
     }
+
+    /* 特殊处理 */
+    allFloder.forEach((e)=>{
+        fileState[e] = true;
+    });
 
     if (isOpenProject){
         vscode.postMessage({
