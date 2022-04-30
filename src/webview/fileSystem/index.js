@@ -269,9 +269,40 @@ function fileStateInit(addArr, ignore) {
 }
 
 
+/* 判断文件是否存在重复 */
+function fileIsRepeat(files){
+    let arr = [];
+    for(let key in files){
+        if (files[key]){
+            let b = key.match(/\w+\.\w+$/);
+            if (b){
+                if (arr.includes(b[0])){
+                    return b[0];
+                } else {
+                    arr[arr.length] = b[0];
+                }
+            }
+        }
+    }
+    return false;
+}
+
 /* 数据提交 */
 $(".download").on("click", function () {
     console.log('[LOG - fileState]: ', fileState);
+
+    let ret = fileIsRepeat(fileState);
+    if (ret){
+        console.log('[LOG: ret]', ret);
+        vscode.postMessage({
+            command: "Alert",
+            text: {
+                "msg": "下载列表中文件: " + ret + "存在同名文件，请修改后重试！",
+            }
+        });
+        return ;
+    }
+
     if (isOpenProject){
         vscode.postMessage({
             command: "downloadConfigWithOpenProject",
@@ -287,6 +318,7 @@ $(".download").on("click", function () {
         });
     }
 });
+
 
 
 //激活 VsCode 通信

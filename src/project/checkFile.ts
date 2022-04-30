@@ -205,6 +205,9 @@ async function receiveMessageHandle(context:vscode.ExtensionContext,downloadPage
                 downloadPage.dispose();
             }
             break;
+        case "Alert":
+            vscode.window.showErrorMessage(message.text.msg);
+            break;
         default:
             break;
     }
@@ -218,8 +221,8 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
     } else {
         curProjectName = isOpenProject;
     }
-    if (curProjectName === '') {
-        return true;
+    if (curProjectName === '' || curProjectName === undefined) {
+        return false;
     }
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
@@ -329,7 +332,7 @@ async function checkFilesConfig(files: any, proPath: any){
 }
 
 
-/* 获取工程的配置文件 */
+/* 获取工程的配置文件 弃用*/
 export async function getProjectConfigFiles(tar: any) {
     const curProjectName = getPluginConfigActivityProject();
     if (curProjectName === '') {
@@ -407,8 +410,8 @@ export async function getProjectConfigFiles(tar: any) {
 
 export async function delFiles(tar: any){
     const curProjectName = getPluginConfigActivityProject();
-    if (curProjectName === '') {
-        return true;
+    if (curProjectName === '' || curProjectName === undefined) {
+        return false;
     }
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
