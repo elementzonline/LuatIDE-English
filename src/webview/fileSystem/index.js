@@ -282,6 +282,7 @@ function fileIsRepeat(files){
             let b = key.match(/\w+\.\w+$/);
             if (b){
                 if (arr.includes(b[0])){
+                    // 存在同名文件
                     return b[0];
                 } else {
                     arr[arr.length] = b[0];
@@ -310,7 +311,16 @@ $(".download").on("click", function () {
 
     /* 特殊处理 */
     allFloder.forEach((e)=>{
-        fileState[e] = true;
+        fileState[e] = false;
+        for(let key in fileState){            
+            if (fileState[key] === true && key.indexOf(e) !== -1){
+                console.log("download",e,key);
+                fileState[e] = true;
+                return;
+            }
+        }
+        console.log("ignore",e);
+        return;
     });
 
     if (isOpenProject){
