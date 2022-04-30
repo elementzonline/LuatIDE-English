@@ -192,6 +192,6 @@ export function getJsonObj(path:string) {
 
 // 新增ignore列表
 export function getProjectIgnoreList(){
-    const projectIgnoreList:string[] = [".pac",'.soc','.zip'];
+    const projectIgnoreList:string[] = [".pac",'.soc','.zip',".dfota.bin",".txt","doc",".md",'.pdf'];
     return projectIgnoreList;
 }
