@@ -77,14 +77,12 @@ async function checkFloderControlUpdate(){
 				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}
 		}
-		if (oldFd.length !== curFd.length){
-			if (del.length > 0){
-				clearInterval(timeId);
-				const ret = await checkFile.delFiles(del);
-				if (ret){
-					oldFd = curFd;
-					timeId = setInterval(checkFloderControlUpdate, 1000);
-				}
+		if (del.length > 0){
+			clearInterval(timeId);
+			const ret = await checkFile.delFiles(del);
+			if (ret){
+				oldFd = curFd;
+				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}
 		}
 	}
