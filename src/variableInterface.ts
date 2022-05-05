@@ -224,69 +224,64 @@ export function getLogoPath() {
 
 // 获取home主页资源文件路径
 export function getHomeSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'home');
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'home');
     return projectSourcePath;
 }
 
 // 获取home主页html路径
 export function getHomeHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'home', 'index.html');
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'home', 'index.html');
     return homeHtmlPath;
 }
 
-// 获取home模态框加载的js路径
-export function getHomeModalBoxPath() {
-    const homeModalBoxPath: string = path.join(extensionPath, 'webview', 'swiper.js');
-    return homeModalBoxPath;
-}
-/*--------------------------------------home界面资源文件路径相关接口----------------------------------------*/ 
+/*--------------------------------------home界面资源文件路径相关接口----------------------------------------*/
 
-/*++++++++++++++++++++++++++++++++++++++newProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+/*++++++++++++++++++++++++++++++++++++++newProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/
 // 获取新建project主页资源文件路径
 export function getProjectSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'newProject');
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'newProject');
     return projectSourcePath;
 }
 
 // 获取新建project主页html按钮
 export function getProjectHtmlPath() {
-    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'newProject', 'index.html');
+    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'newProject', 'index.html');
     return projectHtmlPath;
 }
-/*--------------------------------------newProject界面资源文件路径相关接口----------------------------------------*/ 
+/*--------------------------------------newProject界面资源文件路径相关接口----------------------------------------*/
 
-/*++++++++++++++++++++++++++++++++++++++importProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+/*++++++++++++++++++++++++++++++++++++++importProject界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/
 // 获取打开工程project资源文件路径
 export function getOpenProjectSourcePath() {
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'importProject');
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'importProject');
     return projectSourcePath;
 }
 
 // 获取打开project主页html按钮
 export function getOpenProjectHtmlPath() {
-    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'importProject', 'index.html');
+    const projectHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'importProject', 'index.html');
     return projectHtmlPath;
 }
-/*--------------------------------------importProject界面资源文件路径相关接口----------------------------------------*/ 
+/*--------------------------------------importProject界面资源文件路径相关接口----------------------------------------*/
 
-/*++++++++++++++++++++++++++++++++++++++下载文件检测界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+/*++++++++++++++++++++++++++++++++++++++下载文件检测界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/
 // 获取下载配置界面资源文件路径
-export function getDownloadSourcePath(){
-    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem');
+export function getDownloadSourcePath() {
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'fileSystem');
     return projectSourcePath;
 }
 
 // 获取下载配置界面html路径
 export function getDownloadHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'fileSystem', 'index.html');
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'fileSystem', 'index.html');
     return homeHtmlPath;
 }
-/*--------------------------------------下载文件检测界面资源文件路径相关接口----------------------------------------*/ 
+/*--------------------------------------下载文件检测界面资源文件路径相关接口----------------------------------------*/
 
-/*++++++++++++++++++++++++++++++++++++++活动工程界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+/*++++++++++++++++++++++++++++++++++++++活动工程界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/
 // 获取活动工程配置html资源路径
 export function getActiveProjectHtmlPath() {
-    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'configActiveProject', 'index.html');
+    const homeHtmlPath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'configActiveProject', 'index.html');
     return homeHtmlPath;
 }
 /*--------------------------------------活动工程配置界面资源文件路径相关接口----------------------------------------*/ 
