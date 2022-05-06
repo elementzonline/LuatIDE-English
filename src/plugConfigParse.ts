@@ -393,18 +393,17 @@ export function projectConfigCompatibleVersionTwoPointThree(projectPath: string,
 export function projectConfigCompatibleVersionTwoPointFour(projectPath: string, projectOldJsonObj: any) {
     const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
     const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
-    luatideProjectNewJson.version = '2.3';
+    luatideProjectNewJson.version = '2.4';
     luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
     luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
-    let moduleModel:string = projectOldJsonObj.module_model;
+    let moduleModel:string = projectOldJsonObj.moduleModel;
     if (moduleModel === 'air72XCX') {
         moduleModel = getAir72XCXModuleModelName();
     }
-    luatideProjectNewJson.module_model = moduleModel;
+    luatideProjectNewJson.moduleModel = moduleModel;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
-    luatideProjectNewJson.ignore = [];
-
+    luatideProjectNewJson.ignore = projectOldJsonObj.ignore;
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }
