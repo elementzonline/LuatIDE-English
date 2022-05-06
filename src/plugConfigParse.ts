@@ -384,6 +384,7 @@ export function projectConfigCompatibleVersionTwoPointThree(projectPath: string,
     luatideProjectNewJson.libPath = libPath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
     luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
     luatideProjectNewJson.ignore = [];
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
@@ -396,6 +397,7 @@ export function projectConfigCompatibleVersionTwoPointFour(projectPath: string, 
     luatideProjectNewJson.version = '2.4';
     luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
     luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+    luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
     let moduleModel:string = projectOldJsonObj.moduleModel;
     if (moduleModel === 'air72XCX') {
