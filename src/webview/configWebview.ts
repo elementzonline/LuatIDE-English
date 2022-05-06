@@ -91,7 +91,11 @@ export async function activeProjectConfig(context: vscode.ExtensionContext) {
     //获取webview所需html资源    
     function getWebviewContent() {
         const activeProjectConfigPath = getActiveProjectHtmlPath();
-        const html = fs.readFileSync(activeProjectConfigPath, 'utf-8');
+        const dirPath = path.dirname(getActiveProjectHtmlPath());
+        let html = fs.readFileSync(activeProjectConfigPath, 'utf-8');
+        html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
+            return $1 + vscode.Uri.file(path.join(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+        });
         return html;
     }
 

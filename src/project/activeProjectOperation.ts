@@ -1,7 +1,7 @@
 import path = require('path');
 import * as vscode from 'vscode';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getAir72XCXModuleModelName } from '../variableInterface';
+import { getAir72XCXModuleModelName, getHistoryCorePath, getHistoryLibPath } from '../variableInterface';
 import { activeProjectConfig } from '../webview/configWebview';
 import { getFileForDirRecursion } from './projectApi';
 import { getProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
@@ -17,52 +17,15 @@ export function projectConfigOperation(context: vscode.ExtensionContext) {
     activeProjectConfig(context);
 }
 
-// // 活动工程配置操作用户交互提示
-// function projectConfigOperationUserInteractionInit(moduleModel: string) {
-//     vscode.window.showQuickPick(
-//         getActivityProjectConfigOptionsList(moduleModel),
-//         {
-//             canPickMany: false,
-//             ignoreFocusOut: false,
-//             matchOnDescription: true,
-//             matchOnDetail: true,
-//             placeHolder: '请选择配置项'
-//         })
-//         .then((msg) => projectConfigOperationHandle(msg));
-// }
-
-// // 活动工程配置操作分析处理
-// function projectConfigOperationHandle(msg: any) {
-//     switch (msg) {
-//         case "配置core文件":
-//             selectProjectCorePathOperation();
-//             break;
-//         case "配置lib库文件":
-//             selectProjectLibPathOperation();
-//             break;
-//         case "添加文件":
-//             selectProjectFileAddOperation();
-//             break;
-//         case "添加文件夹":
-//             selectProjectFolderAddOperation();
-//             break;
-//         case "配置模块型号/模拟器":
-//             selectProjectModuleModel();
-//             break;
-//         case "显示配置文件":
-//             openShowProjectConfig();
-//             break;
-//     }
-// }
-
 // 打开文件资源管理器接口选择core文件
 export async function selectProjectCorePathOperation() {
     const activityProjectPath = getPluginConfigActivityProject();
+    const corePath = getHistoryCorePath();
     const options = {
         canSelectFiles: true,		//是否选择文件
         canSelectFolders: false,		//是否选择文件夹
         canSelectMany: false,		//是否选择多个文件
-        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+        defaultUri: vscode.Uri.file(corePath),	//默认打开文件位置
         openLabel: '选择底包',
         filters: {
             json: ['pac', "soc", "zip"], // 文件类型过滤
@@ -85,11 +48,12 @@ export async function selectProjectCorePathOperation() {
 // 打开文件资源管理器接口选择lib文件
 export async function selectProjectLibPathOperation() {
     const activityProjectPath = getPluginConfigActivityProject();
+    const libPath = getHistoryLibPath();
     const options = {
         canSelectFiles: false,		//是否选择文件
         canSelectFolders: true,		//是否选择文件夹
         canSelectMany: false,		//是否选择多个文件
-        defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+        defaultUri: vscode.Uri.file(libPath),	//默认打开文件位置
         openLabel: '选择lib库'
     };
     const libPathList: any = await showOpenDialog(options);
