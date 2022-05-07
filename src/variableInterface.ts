@@ -712,56 +712,6 @@ export function getLibListBaseMoudeleMode(moduleModel: any) {
 
 /*--------------------------------------工程管理数据资源文件路径相关接口----------------------------------------*/ 
 
-// 功能实现形式已改变，暂时废弃该接口
-// 依据模块型号获取活动工程可选配置项列表
-// export function getActivityProjectConfigOptionsList(moduleModel:string) {
-//     const configOptionsListDefault: string[] = [
-//         "添加文件",
-//         "添加文件夹",
-//         "配置core文件",
-//         "配置lib库文件",
-//         "配置模块型号/模拟器",
-//         "显示配置文件"
-//     ];
-//     const configOptionsListSimulator: string[] = [
-//         "添加文件",
-//         "添加文件夹",
-//         "配置lib库文件",
-//         "配置模块型号/模拟器",
-//         "显示配置文件"
-//     ];
-//     const configOptionsListAir10X: string[] = [
-//         "添加文件",
-//         "添加文件夹",
-//         "配置core文件",
-//         "配置模块型号/模拟器",
-//         "显示配置文件"
-//     ];
-//     switch (moduleModel) {
-//         case 'air72XUX/air82XUX':
-//             return configOptionsListDefault;
-//         case 'air101':
-//             return configOptionsListAir10X;
-//         case 'air103':
-//             return configOptionsListAir10X;
-//         case 'air105':
-//             return configOptionsListAir10X;
-//         case 'esp32c3':
-//             return configOptionsListAir10X;
-//         case "simulator":
-//             return configOptionsListSimulator;
-//         default:
-//             return configOptionsListDefault;
-//     }
-// }
-// 暂时废弃接口
-// // 获取airSimulator皮肤配置文件存储路径
-// export function getAirSimulatorSkinConfigPath() {
-//     const airSimulatorSkinConfigPath:string = path.join(extensionPath,'tools','AirSimulator','workspace','elua_simulator','Debug','data');
-//     return airSimulatorSkinConfigPath;
-// }
-
-
 // 获取本地所有串口信息
 export async function getSerialPortInfoList() {
     let portFriendlyNameList:string[] = [];
