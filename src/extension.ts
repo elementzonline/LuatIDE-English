@@ -23,33 +23,12 @@ import { clientOperation } from './LSP/client/client';
 import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
+import { debugProject, runProject } from './debug/debugHandler';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 	'activityMemoryProjectPath': ''
 }));
-
-function runProject(resource: vscode.Uri): void {
-	vscode.debug.startDebugging(undefined, {
-		type: 'luat',
-		name: 'LuatIDE Run',
-		request: 'launch',
-		program: "${command:activityProjectGet}",
-		stopOnEntry: false,
-		noDebug: true
-	}
-	);
-}
-function debugProject(resource: vscode.Uri): void {
-	vscode.debug.startDebugging(undefined, {
-		type: 'luat',
-		name: 'LuatIDE Debug',
-		request: 'launch',
-		program: "${command:activityProjectGet}",
-		stopOnEntry: true,
-		noDebug: false
-	});
-}
 
 /* 文件检测 */
 // const checkFile = new CheckFiles();
@@ -88,11 +67,9 @@ async function checkFloderControlUpdate(){
 	}
 }
 
-
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
-// let projectConfigOperation = new ProjectConfigOperation();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
 let historyProjectTreeDataProvider = new HistoryProjectDataProvider();
