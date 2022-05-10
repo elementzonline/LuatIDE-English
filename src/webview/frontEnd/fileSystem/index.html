@@ -9,23 +9,73 @@
 </head>
 
 <body>
-    <div class="fileSystemMain">
-        <div class="description">
-            <h1>文件下载配置页面</h1>
+    <div class="leftBar">
+        <div class="leftBar-Child configShow">
+            工程配置
         </div>
-        <div class="floderBox">
-            <div class="perFloder">
-                <div class="floderCont main">
-                    <input type="checkbox" id="root"> <i class="fa fa-folder"></i> <label class="mainLabel" for="root">请选择要下载的文件，勾选的为要下载到固件的文件，否则忽略下载</label>
+        <div class="leftBar-Child fileShow">
+            下载配置
+        </div>
+    </div>
+    <div class="rightBar">
+        <div class="fileSystemMain">
+            <div class="description">
+                <h1>文件下载配置页面</h1>
+            </div>
+            <div class="floderBox">
+                <div class="perFloder">
+                    <div class="floderCont main">
+                        <input type="checkbox" id="root"> <i class="fa fa-folder"></i> <label class="mainLabel" for="root">请选择要下载的文件，勾选的为要下载到固件的文件，否则忽略下载</label>
+                    </div>
                 </div>
             </div>
+            <div>
+                <button class="download">完成</button>
+            </div>
         </div>
-        <div>
-            <button class="download">完成</button>
+        <div class="projectConfig">
+            <div class="cfg-box">
+                <h1 class="cfg-h1">活动工程配置页面</h1>
+                <div class="configBox">
+                    <p class="cfg-p" class="configItem">corePath Config</p>
+                    <p class="cfg-p" class="configDesc">
+                        选择下载到设备的最新core路径,不填默认使用本地该设备对应最新core
+                    </p>
+                    <input class="cfg-input" type="text" id="corePathInput" onclick="corePathSelect()" readonly />
+                    <br />
+                    <a onclick="javascript:openConfigJson('corePath');" href="#">在luatide_project.json中编辑</a>
+                </div>
+                <div class="configBox">
+                    <p class="cfg-p" class="configItem">libPath Config</p>
+                    <p class="cfg-p" class="configDesc">
+                        选择下载到设备的最新lib路径,不填默认使用本地该设备对应最新lib
+                    </p>
+                    <input class="cfg-input" type="text" id="libPathInput" onclick="libPathSelect()" readonly />
+                    <br />
+                    <a onclick="javascript:openConfigJson('libPath');" href="#">在luatide_project.json中编辑</a>
+                </div>
+                <div class="configBox">
+                    <p class="cfg-p" class="configItem">moduleModel Config</p>
+                    <p class="cfg-p" class="configDesc">
+                        选择将要下载的设备型号,不选默认使用air72XUX/air82XUX
+                    </p>
+                    <select class="cfg-select" name="moduleModel" id="moduleModel" onchange="moduleModelSelect()"></select>
+                    <br />
+                    <a onclick="javascript:openConfigJson('moduleModel');" href="#">在luatide_project.json中编辑</a>
+                </div>
+                <div class="configBox">
+                    <p class="cfg-p" class="configItem">modulePort Config</p>
+                    <p class="cfg-p" class="configDesc">
+                        选择将要下载的设备端口,不选会默认自动找寻,多设备同时连接等特殊情况可能找寻失败
+                    </p>
+                    <select class="cfg-select" name="modulePort" id="modulePort" onchange="modulePortSelect()"></select>
+                    <br />
+                    <a onclick="javascript:openConfigJson('modulePort');" href="#">在luatide_project.json中编辑</a>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../resource/jquery-3.6.0.js"></script>
     <script type="text/javascript" src="./index.js"></script>
 </body>
-
 </html>
