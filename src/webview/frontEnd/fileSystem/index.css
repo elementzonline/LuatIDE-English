@@ -29,10 +29,25 @@
     --default-btnBorderColor: 1px solid rgb(142, 142, 142);
     --default-btnFontColor: rgb(142, 142, 142);
     --default-hoverColor: rgb(64, 128, 208);
+
+    /* ********* 工程配置 ↓ *********** */
+    --default-project-leftBar-border: 1px solid rgb(142, 142, 142);
+    /* ********* 工程配置 ↑ *********** */
+}
+
+body {
+    display: grid;
+    height: 100vh;
+    grid-gap: 24px;
+    grid-template-columns: 110px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "g-leftBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar";
+    background-color: var(--default-bgColor);
+    color: var(--default-fontColor);
 }
 
 /* 设置全局样式 */
-body {
+.rightBar,
+.leftBar {
     position: relative;
     background-color: var(--default-bgColor);
     color: var(--default-fontColor);
@@ -41,24 +56,59 @@ body {
         "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
 }
 
+.leftBar {
+    grid-area: g-leftBar;
+}
+
+.rightBar {
+    grid-area: g-rightBar;
+}
+
 i {
     color: var(--default-fontColor);
 }
 
-/* 文件下载配置界面容器样式 */
-.fileSystemMain {
-    width: 70%;
+/* 侧边栏样式 */
+.leftBar-Child {
+    margin: auto;
+    width: 100%;
+    height: 55px;
+    background: #000;
+    color: var(--default-fontColor);
+    text-align: center;
+    line-height: 55px;
+    font-size: large;
+    font-weight: bold;
+    border: var(--default-project-leftBar-border);
+}
+
+.fileShow {
+    border-bottom: none;
+}
+
+/* 文件下载及工程配置界面容器样式 */
+.fileSystemMain,
+.projectConfig{
+    width: 100%;
     margin: auto;
     margin-top: 10px;
-    border: var(--default-btnBorderColor);
     border-radius: 4px;
+}
+
+.projectConfig {
+    text-align: center;
+}
+
+.active {
+    background-color: rgb(66, 129, 209);
+    color: rgb(255, 255, 255);
 }
 
 /* 设置文件夹的样式 ↓ */
 
 .floderBox {
     margin-top: 2%;
-    min-height: 600px;
+    min-height: 500px;
     width: 100%;
     background-color: inherit;
 }
@@ -79,6 +129,11 @@ i {
     text-align: left;
 }
 
+/* 根文件夹的样式 */
+.mainLabel {
+    font-size: 16px;
+}
+
 .floderCont:only-child label:hover {
     color: var(--default-hoverColor);
     cursor: pointer;
@@ -95,7 +150,7 @@ i {
 }
 
 /* 选择框样式 */
-input[type=checkbox] {
+input[type="checkbox"] {
     opacity: 0.6;
 }
 
@@ -117,3 +172,103 @@ input[type=checkbox] {
     color: var(--default-hoverColor);
     border-color: var(--default-hoverColor);
 }
+
+
+/* *********************************工程配置样式 ↓********************************* */
+.cfg-box {
+    height: 100vh;
+    width: 100%;
+    background-color: var(--default-bgColor);
+    color: var(--default-fontColor);
+}
+
+.cfg-h1 {
+    text-align: center;
+    color: var(--default-fontColor);
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 50px;
+}
+
+.configBox {
+    height: 100px;
+    width: 60%;
+    margin: auto;
+    position: relative;
+    padding: 12px 14px 18px;
+    white-space: normal;
+    text-align: left;
+}
+
+.configBox:hover {
+    background-color: rgb(34, 35, 35);
+}
+
+.cfg-p {
+    color: var(--default-fontColor);
+    font-size: 13px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.cfg-a {
+    /* color: #3794ff; */
+    color: #e7e7e7;
+    font-size: 13px;
+    text-decoration: underline;
+    color: rgb(204, 204, 204);
+}
+
+.cfg-input {
+    border-style: none;
+    border: 0;
+    font-size: inherit;
+    font-family: inherit;
+    resize: none;
+    /* width: 100%;
+    height: 100%; */
+    box-sizing: border-box;
+    background-color: rgb(60, 60, 60);
+    color: rgb(240, 240, 240);
+    outline: none;
+    /* outline-color: #007fd4; */
+    padding: 4px;
+    width: 300px;
+    height: 30px;
+    border-radius: 2px;
+    margin-top: 10px;
+
+}
+
+.cfg-select {
+    border-style: none;
+    border: 0;
+    font-size: inherit;
+    font-family: inherit;
+    resize: none;
+    /* width: 100%;
+    height: 100%; */
+    box-sizing: border-box;
+    background-color: rgb(60, 60, 60);
+    color: rgb(240, 240, 240);
+    outline: none;
+    /* outline-color: #007fd4; */
+    padding: 4px;
+    width: 300px;
+    height: 30px;
+    border-radius: 2px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.configItem {
+    margin: 2px;
+    padding: 0px;
+}
+
+.configDesc {
+    color: rgba(204, 204, 204, 0.9)
+}
+
+/* *********************************工程配置样式 ↑********************************* */
+

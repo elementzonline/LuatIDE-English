@@ -37,6 +37,8 @@ let fileState = {};
 let isOpenProject = false;
 /* 保存所有的文件夹 特殊处理*/
 let allFloder = [];
+/* 是否是文件检测弹出的弹框 */
+let autoFileCheck = false;
 
 
 /*添加文件夹 [树形目录结构]
@@ -119,7 +121,7 @@ function createDirTree(dirArr) {
     let index = 0;
     let str;
     dirArr.forEach((e) => {
-        if (!e.match(/^(\.luatide|\.vscode|\.git|\.svn|\.\w+)/)){
+        if (!e.match(/^(\.luatide|\.vscode|\.git|\.svn|\.\w+)/)) {
             if (e.match(/\.\w+$/)) {
                 index += 1;
                 str = "f" + index.toString();
@@ -275,13 +277,13 @@ function fileStateInit(addArr, ignore) {
 
 
 /* 判断文件是否存在重复 */
-function fileIsRepeat(files){
+function fileIsRepeat(files) {
     let arr = [];
-    for(let key in files){
-        if (files[key]){
+    for (let key in files) {
+        if (files[key]) {
             let b = key.match(/\w+\.\w+$/);
-            if (b){
-                if (arr.includes(b[0])){
+            if (b) {
+                if (arr.includes(b[0])) {
                     // 存在同名文件
                     return b[0];
                 } else {
@@ -298,7 +300,7 @@ $(".download").on("click", function () {
     console.log('[LOG - fileState]: ', fileState);
 
     let ret = fileIsRepeat(fileState);
-    if (ret){
+    if (ret) {
         console.log('[LOG: ret]', ret);
         vscode.postMessage({
             command: "Alert",
@@ -306,24 +308,24 @@ $(".download").on("click", function () {
                 "msg": "下载列表中文件: " + ret + "存在同名文件，请修改后重试！",
             }
         });
-        return ;
+        return;
     }
 
     /* 特殊处理 */
-    allFloder.forEach((e)=>{
+    allFloder.forEach((e) => {
         fileState[e] = false;
-        for(let key in fileState){            
-            if (fileState[key] === true && key.indexOf(e) !== -1){
-                console.log("download",e,key);
+        for (let key in fileState) {
+            if (fileState[key] === true && key.indexOf(e) !== -1) {
+                console.log("download", e, key);
                 fileState[e] = true;
                 return;
             }
         }
-        console.log("ignore",e);
+        console.log("ignore", e);
         return;
     });
 
-    if (isOpenProject){
+    if (isOpenProject) {
         vscode.postMessage({
             command: "downloadConfigWithOpenProject",
             text: {
@@ -339,11 +341,49 @@ $(".download").on("click", function () {
     }
 });
 
+/*侧边栏点击切换*/
+$(".fileShow").on("click", function () {
+    activeWindowsClicked("file");
+    disPlayWhichWindow("file");
+    // vscode.postMessage({
+    //     command: "clickGetFiles"
+    // });
+});
 
+$(".configShow").on("click", function () {
+    activeWindowsClicked("config");
+    disPlayWhichWindow("config");
+});
+
+/* 激活被点击选项的样式 */
+function activeWindowsClicked(whichWindow) {
+    if (whichWindow === "file") {
+        $(".configShow, .fileShow").removeClass("active");
+        $(".fileShow").addClass("active");
+    } else {
+        $(".configShow, .fileShow").removeClass("active");
+        $(".configShow").addClass("active");
+    }
+}
+
+/* 显示界面切换 */
+function disPlayWhichWindow(whichWindow) {
+    if (whichWindow === "file") {
+        $(".fileSystemMain").show();
+        $(".projectConfig").hide();
+    } else {
+        $(".projectConfig").show();
+        $(".fileSystemMain").hide();
+    }
+}
+
+/* 隐藏页面切换 */
+function hideWindowChange() {
+    $(".leftBar").hide();
+}
 
 //激活 VsCode 通信
 const vscode = acquireVsCodeApi();
-
 
 /* 改变主题样式 */
 function changeThemeColor(style) {
@@ -354,6 +394,93 @@ function changeThemeColor(style) {
     }
 }
 
+/**********************************工程配置***********************************/
+const selecte = document.getElementById('moduleModel');
+const portSelecte = document.getElementById('modulePort');
+function cfgInitData(data) {
+    document.getElementById('corePathInput').value = data['corePath'];
+    document.getElementById('libPathInput').value = data['libPath'];
+    // 初始化moduleModel下拉框数据
+    selecte.options.length = 0;//清空原有数据
+    for (let index = 0; index < data['moduleModelArray'].length; index++) {
+        const element = data['moduleModelArray'][index];
+        var option = document.createElement("option");
+        option.text = element;
+        selecte.append(option, null);
+        if (data['moduleModel'] === element) {
+            option.selected = true;
+        }
+    }
+    // 初始化modulePort下拉框数据
+    portSelecte.options.length = 0;
+    for (let index = 0; index < data['modulePortArray'].length; index++) {
+        const element = data['modulePortArray'][index];
+        const reg = /\[(\w*)\]/ig;
+        const comPortList = reg.exec(element);
+        let comPort;
+        if (comPortList === null) {
+            comPort = "";
+        }
+        else {
+            comPort = comPortList[1];
+        }
+        var option = document.createElement("option");
+        option.text = element;
+        portSelecte.append(option, null);
+        if (data['modulePort'] === comPort) {
+            option.selected = true;
+        }
+    }
+}
+function cfgCorePathHandle(data) {
+    document.getElementById('corePathInput').value = data;
+}
+function cfgLibPathHandle(data) {
+    document.getElementById('libPathInput').value = data;
+}
+function corePathSelect() {
+    vscode.postMessage(
+        {
+            command: "coreConfigPath"
+        }
+    );
+}
+function libPathSelect() {
+    vscode.postMessage(
+        {
+            command: "libConfigPath"
+        }
+    );
+}
+function moduleModelSelect() {
+    const data = document.getElementById('moduleModel').value;
+    vscode.postMessage(
+        {
+            command: "moduleModel",
+            text: data
+        }
+    );
+}
+function modulePortSelect() {
+    const data = document.getElementById('modulePort').value;
+    vscode.postMessage(
+        {
+            command: "modulePort",
+            text: data
+        }
+    );
+}
+function openConfigJson(data) {
+    vscode.postMessage(
+        {
+            command: 'configJsonSelected',
+            text: data
+        }
+    );
+    return false;
+}
+/**********************************工程配置***********************************/
+
 
 /* 获取vscode端发送的数据 */
 window.addEventListener('message', event => {
@@ -362,11 +489,32 @@ window.addEventListener('message', event => {
         case "switchTheme":
             changeThemeColor(message.text);
             break;
+        //自动获取工程文件目录
         case "filesChange":
-            console.log("oooooooooooooo\n", message.text);
+            //隐藏侧边栏
+            hideWindowChange();
+        //手动点击获取工程文件目录
+        case "filesChangeInManual":
+            $(".fileShow").click();
             isOpenProject = message.text.isOpenProject;
             fileTreeInit(createDirTree(message.text.all));
             fileStateInit(message.text.new, message.text.ignore);
+            //console.log("oooooooooooooo\n", message.text);
+            break;
+        //手动点击获取工程配置信息
+        case 'initConfigData':
+            $(".configShow").click();
+            cfgInitData(message.text);
+            console.log('[LOG - ooooo]: ', message.text);
+            break;
+        case 'coreConfigPath':
+            cfgCorePathHandle(message.text);
+            break;
+        case 'libConfigPath':
+            cfgLibPathHandle(message.text);
+            break;
+        case 'serialPortUpdate':
+            this.updateSerialPort(message.text);
             break;
         default:
             break;
