@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { getCurrentPluginConfigActivityProject } from '../plugConfigParse';
-import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, setProjectConfigModuleModel, setProjectConfigModulePort } from '../project/projectConfigParse';
+import { getCurrentPluginConfigActivityProject, getPluginConfigUserProjectList, setPluginConfigUserProjectList } from '../plugConfigParse';
+import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectconfigName, setProjectConfigModuleModel, setProjectConfigModulePort, setProjectConfigProjectName } from '../project/projectConfigParse';
 import { getActiveProjectHtmlPath, getPluginDefaultModuleList, getSerialPortInfoList } from '../variableInterface';
 import * as path from 'path';
 import { selectProjectCorePathOperation, selectProjectLibPathOperation } from '../project/activeProjectOperation';
+import { checkSameProjectExistStatusForPluginConfig } from '../project/projectApi';
 let configPanel: vscode.WebviewPanel | undefined = undefined;
 
 // 执行打开或更新活动工程配置webview界面操作
@@ -35,11 +36,13 @@ export async function activeProjectConfig(context: vscode.ExtensionContext) {
     let modulePort: string = getProjectConfigMoudlePort(activityMemoryProjectPath);
     let moduleModelArray: string[] = getPluginDefaultModuleList();
     let modulePortArray: string[] =  await getSerialPortInfoList();
+    const projectName = getProjectconfigName(activityMemoryProjectPath);
     // 发送原始配置数据至前端
     configPanel.webview.postMessage(
         {
             command: "initConfigData",
             text: {
+                "projectName":projectName,
                 "corePath": corePath,
                 "libPath": libPath,
                 "moduleModel": moduleModel,
@@ -57,6 +60,7 @@ export async function activeProjectConfig(context: vscode.ExtensionContext) {
         const libPathNew = getProjectConfigLibPath(activityMemoryProjectPath);
         const moduleModelNew = getProjectConfigModuleModel(activityMemoryProjectPath);
         const modulePortNew = getProjectConfigMoudlePort(activityMemoryProjectPath);
+        const projectName = getProjectconfigName(activityMemoryProjectPath);
         moduleModelArray = getPluginDefaultModuleList();
         modulePortArray =  await getSerialPortInfoList();
         // 暂时先以长度做相似性判断，防止遍历对性能影响过大
@@ -66,6 +70,7 @@ export async function activeProjectConfig(context: vscode.ExtensionContext) {
                 {
                     command: "initConfigData",
                     text: {
+                        "projectName":projectName,
                         "corePath": corePathNew,
                         "libPath": libPathNew,
                         "moduleModel": moduleModelNew,
@@ -104,6 +109,29 @@ export async function activeProjectConfig(context: vscode.ExtensionContext) {
             switch (message.command) {
                 case 'alert':
                     vscode.window.showInformationMessage(message.text);
+                    return;
+                case 'projectName':
+                    const projectState:boolean = checkSameProjectExistStatusForPluginConfig(message.text);
+                    if (!projectState) {
+                        setProjectConfigProjectName(message.text,activityMemoryProjectPath);
+                        const projectJsonObj:any = getPluginConfigUserProjectList();
+                        const projectList = projectJsonObj.map(x => {
+                            if (x.projectPath===activityMemoryProjectPath) {
+                                x.projectName = message.text;
+                            }
+                            return x;
+                        });
+                        setPluginConfigUserProjectList(projectList);
+                    }
+                    else{
+                        configPanel?.webview.postMessage(
+                            {
+                                command:"projectName",
+                                text:path.basename(activityMemoryProjectPath)
+                            }
+                        );
+                        vscode.window.showErrorMessage(`${message.text}工程已经被创建,不允许修改为同名工程`);
+                    }
                     return;
                 case 'coreConfigPath':
                     // 执行打开选择core文件夹操作
