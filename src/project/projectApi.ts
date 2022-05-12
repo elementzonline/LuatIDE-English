@@ -3,7 +3,7 @@ import * as fs  from "fs";
 import * as path  from "path";
 import * as vscode from 'vscode';
 import { activityMemoryProjectPathBuffer } from "../extension";
-import { getPluginConfigUserProjectList, setPluginConfigActivityProject } from "../plugConfigParse";
+import { getPluginConfigUserProjectNameList, setPluginConfigActivityProject } from "../plugConfigParse";
 import {
     getAir72XUXDefaultLatestLibPath,
     getAir72XUXDefaultLibPath,
@@ -17,7 +17,7 @@ import {
 
 // 检查当前工程是否存在用户历史工程中
 export function checkSameProjectExistStatusForPluginConfig(projectName:any){
-    let userProjectList:any = getPluginConfigUserProjectList();
+    let userProjectList:any = getPluginConfigUserProjectNameList();
     if (userProjectList.indexOf(projectName)!==-1) {
         return true;
     }
