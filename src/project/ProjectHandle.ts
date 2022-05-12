@@ -4,7 +4,7 @@ import * as path from "path";
 import { deleteDirRecursive, projectActiveInterfact } from './projectApi';
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getDefaultWorkspacePath } from "../variableInterface";
-import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectNameList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, popProjectConfigAppFile } from './projectConfigParse';
 import * as ideServer from '../serverInterface';
 
@@ -16,7 +16,8 @@ export class ProjectActiveHandle {
 
     // 激活工程操作
     projectActive(filePath: any) {
-        const projectActivePath: string = path.join(filePath.path,filePath.label);
+        // const projectActivePath: string = path.join(filePath.path,filePath.label);
+        const projectActivePath: string = filePath.path;
         const projectActiveCheckState: boolean = this.projectActiveCheck(projectActivePath);
         if (!projectActiveCheckState) { //激活工程必要条件检查失败
             return false;
@@ -45,8 +46,9 @@ export class ProjectActiveHandle {
 
     // 激活工程必要条件检查
     projectActiveCheck(dir: any) {
-        const projectList: any = getPluginConfigUserProjectAbsolutePathList();
-        if (projectList.indexOf(dir) === -1) {
+        const projectPathList: any = getPluginConfigUserProjectAbsolutePathList();
+       
+        if (projectPathList.indexOf(dir) === -1) {
             vscode.window.showErrorMessage("选择激活工程未在用户工程列表中发现,请重新激活", { modal: true });
             return false;
         }
@@ -92,8 +94,8 @@ export class ProjectDeleteHandle {
     // 工程删除用户交互提示
     async deleteProjectUserInteractionHint(result: any, filePath: any) {
         const projectName: string = filePath.label;
-        const projectParentPath:string = filePath.path;
-        const projectPath:string = path.join(projectParentPath,projectName);
+        // const projectParentPath:string = filePath.path;
+        const projectPath:string = filePath.path;
         let activeProject: string = getPluginConfigActivityProject();
         switch (result) {
             case '移除工程':
@@ -127,10 +129,10 @@ export class ProjectDeleteHandle {
 
     // 工程删除必要条件检查
     deletProjectCheck(filePath: any) {
-        if (!fs.existsSync(path.join(filePath.path,filePath.label))) {
+        if (!fs.existsSync(filePath.path)) {
             popPluginConfigProject(filePath.label);
             const activityProjectPath:string = getPluginConfigActivityProject();
-            if (path.join(filePath.path,filePath.label).toLocaleLowerCase()===activityProjectPath.toLocaleLowerCase()) {
+            if (filePath.path.toLocaleLowerCase()===activityProjectPath.toLocaleLowerCase()) {
                 setPluginConfigActivityProject('');
             }
             vscode.window.showInformationMessage(`选定的${filePath.label}工程路径状态已改变，已从配置文件列表中删除该工程`);
@@ -138,14 +140,14 @@ export class ProjectDeleteHandle {
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return false;
         }
-        const pluginConfigAppFile: any = getPluginConfigUserProjectList();
+        const pluginConfigAppFile: any = getPluginConfigUserProjectNameList();
         if (pluginConfigAppFile.indexOf(filePath.label) === -1) {
             vscode.window.showInformationMessage(`用户工程列表中未检测到${filePath.label}工程,已为您刷新用户工程`);
             vscode.commands.executeCommand('luatide-history-project.Project.refresh');
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return false;
         }
-        if (fs.statSync(path.join(filePath.path,filePath.label)).isFile()) {
+        if (fs.statSync(filePath.path).isFile()) {
             vscode.window.showErrorMessage("选择删除的不是一个工程,请重新选择");
             return false;
         }
