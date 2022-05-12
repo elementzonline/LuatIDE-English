@@ -31,28 +31,36 @@ export function getPluginConfigJson() {
     return pluginConfigJsonObj;
 }
 
-// 获取用户插件配置文件内用户工程列表
-export function getPluginConfigUserProjectList() {
+// 获取用户插件配置文件的用户工程对象列表
+export function getPluginConfigUserProjectList(){
     const pluginConfigJsonObj: any = getPluginConfigJson();
     const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
-    let pluginConfigProjectList: any = [];
-    for (let i = 0; i < pluginConfigJsonProjectListObj.length; i++) {
-        const element = pluginConfigJsonProjectListObj[i];
-        pluginConfigProjectList.push(element.projectName);
-    }
-    return pluginConfigProjectList;
+    return pluginConfigJsonProjectListObj;
+}
+
+// 设置用户插件配置文件的用户工程对象列表
+export function setPluginConfigUserProjectList(projectList:string[]){
+    const pluginConfigJsonObj:any = getPluginConfigJson();
+    const pluginJsonPath:string = getPluginConfigPath();
+    pluginConfigJsonObj.projectList = projectList;
+    const projectConfigJson = JSON.stringify(pluginConfigJsonObj, null, "\t");
+    fs.writeFileSync(pluginJsonPath, projectConfigJson);
+}
+
+// 获取用户插件配置文件内用户工程列表
+export function getPluginConfigUserProjectNameList() {
+    const pluginConfigJsonObj: any = getPluginConfigJson();
+    const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
+    const pluginConfigNameList:string[] = pluginConfigJsonProjectListObj.map(x => { x = x.projectName; return x; });
+    return pluginConfigNameList;
 }
 
 // 获取用户插件配置文件内用户工程完整路径
 export function getPluginConfigUserProjectAbsolutePathList() {
     const pluginConfigJsonObj: any = getPluginConfigJson();
     const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
-    let pluginConfigProjecAbsolutePathtList: any = [];
-    for (let i = 0; i < pluginConfigJsonProjectListObj.length; i++) {
-        const element = pluginConfigJsonProjectListObj[i];
-        pluginConfigProjecAbsolutePathtList.push(path.join(element.projectPath, element.projectName));
-    }
-    return pluginConfigProjecAbsolutePathtList;
+    const pluginConfigPathList:string[] = pluginConfigJsonProjectListObj.map(x => { x = x.projectPath; return x; });
+    return pluginConfigPathList;
 }
 
 // 获取当前活动工程名称
