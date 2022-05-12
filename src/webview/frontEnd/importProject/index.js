@@ -901,7 +901,7 @@ function importSpaceProject(importData, moduleWhichSelected) {
         document.documentElement.style.setProperty("--default-cursorForLuatTools", 'default');
     } else {
         $("input[name=iP-space_project_path]").prop("disabled", true);
-        $("input[name=iP-space_project_name]").prop("disabled", true);
+        $("input[name=iP-space_project_name]").prop("disabled", false);
         /* 设置导入空白工程时的鼠标样式 */
         document.documentElement.style.setProperty("--default-cursorForLuatTools", 'not-allowed');
     }
@@ -997,7 +997,7 @@ function importExampleProject(importData, moduleWhichSelected) {
 
     /* 禁用工程路径, 工程名称的修改 */
     $("input[name=iP-example_project_path]").prop("disabled", true);
-    $("input[name=iP-example_project_name]").prop("disabled", true);
+    $("input[name=iP-example_project_name]").prop("disabled", false);
     
     /* 添加工程初始化数据 */
     for (let key in moduleWhichSelected) {
@@ -1100,7 +1100,7 @@ function importNdkProject(importData, moduleWhichSelected) {
 
     /* 禁用工程路径, 工程名称的修改 */
     $("input[name=iP-ndk_project_path]").prop("disabled", true);
-    $("input[name=iP-ndk_project_name]").prop("disabled", true);
+    $("input[name=iP-ndk_project_name]").prop("disabled", false);
     
     /* 添加工程初始化数据 */
     for (let key in moduleWhichSelected) {
@@ -1202,7 +1202,7 @@ function importUiProject(importData, moduleWhichSelected) {
 
     /* 禁用工程路径, 工程名称以及屏幕分辨率的修改 */
     $("input[name=iP-ui_project_path]").prop("disabled", true);
-    $("input[name=iP-ui_project_name]").prop("disabled", true);
+    $("input[name=iP-ui_project_name]").prop("disabled", false);
     $("input[name=iP-ui_project_scrCfgWidth]").prop("disabled", true);
     $("input[name=iP-ui_project_scrCfgHeight]").prop("disabled", true);
     
