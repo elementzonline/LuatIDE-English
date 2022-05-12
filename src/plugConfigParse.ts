@@ -137,6 +137,9 @@ export function pluginConfigCompatible() {
     else if (Number(pluginJsonObj.version) === 2.0) {
         pluginConfigCompatibleVersionTwo(pluginConfigPath, pluginJsonObj);
     }
+    else if(Number(pluginJsonObj.version) === 2.1){
+        pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath,pluginJsonObj);
+    }
 }
 
 //  插件配置文件2.0以下版本配置文件兼容至2.0版本
@@ -192,7 +195,7 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     deleteDirRecursive(air72XOldLibPath);
     // 更新插件配置文件版本至2.1
     let activityProject: string = pluginJsonObj.activeProject;
-    // 对活动工程的插件配置文件进行兼容
+    // 对活动工程的工程配置文件进行兼容
     if (fs.existsSync(activityProject)) {
         projectConfigCompatible(activityProject);
     }
@@ -204,6 +207,24 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
     // 插件版本兼容
     luatideWorkspaceJson.version = '2.1';
+    const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
+    fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
+}
+
+// 插件配置文件2.1版本配置文件兼容至2.2版本
+// 本次兼容主要是为了解决配置文件升级的问题
+export function pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath: string, pluginJsonObj: any) {
+    let activeProject: string = pluginJsonObj.activeProject;
+    // 遍历用户工程，对工程名称做升级处理，
+    pluginJsonObj.projectList = pluginJsonObj.projectList.map(x => {
+        x.projectPath = path.join(x.projectPath, x.projectName);
+        projectConfigCompatible(x.projectPath);
+        return x;
+    });
+    let luatideWorkspaceJson: any = getPluginConfigObjVersionTwo();
+    luatideWorkspaceJson.activeProject = activeProject;
+    luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
+    luatideWorkspaceJson.version = '2.2';
     const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
     fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
 }
