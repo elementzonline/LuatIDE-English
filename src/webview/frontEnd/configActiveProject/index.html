@@ -13,6 +13,14 @@
     <div class="box">
         <h1>Active Project Config</h1>
         <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#efefef SIZE=1>
+        
+        <div class="configBox projectNameBox">
+            <p class="configItem">projectName Config </p>
+            <p class="configDesc">设置当前工程名称,若所设置的工程名称已存在,则设置失败,使用原有工程名称</p>
+            <input type="text" id="projectNameInput" onchange=projectNameSelect()>
+            <br>
+            <a onclick="javascript:openConfigJson('projectName');" href="#">在luatide_project.json中编辑</a>
+        </div>
 
         <div class="configBox">
             <p class="configItem">corePath Config</p>

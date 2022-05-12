@@ -37,6 +37,7 @@ import {
     setProjectConfigCorePath,
     setProjectConfigLibPath,
     setProjectConfigModuleModel,
+    setProjectConfigProjectName,
     setProjectConfigProjectType,
     setProjectConfigVersion
 } from "./projectConfigParse";
@@ -62,11 +63,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
-        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
-        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
+        // const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        // const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectParentPath,
+            projectPath: createProjectMessage.createProjectPath,
             projectName: createProjectMessage.createProjectName,
         };
         pushPluginConfigProject(projectObj);
@@ -90,6 +91,8 @@ export class CreateProject {
         setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        // 工程名称写入工程配置
+        setProjectConfigProjectName(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -110,11 +113,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
-        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
-        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
+        // const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        // const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectParentPath,
+            projectPath: createProjectMessage.createProjectPath,
             projectName: createProjectMessage.createProjectName,
         };
         pushPluginConfigProject(projectObj);
@@ -145,6 +148,8 @@ export class CreateProject {
         setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);  //示例工程的lib采用最新的lib
         setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        // 工程名称写入工程配置
+        setProjectConfigProjectName(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -166,11 +171,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
-        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
-        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
+        // const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        // const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectParentPath,
+            projectPath: createProjectMessage.createProjectPath,
             projectName: createProjectMessage.createProjectName,
         };
         pushPluginConfigProject(projectObj);
@@ -200,6 +205,8 @@ export class CreateProject {
         setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        // 工程名称写入工程配置
+        setProjectConfigProjectName(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');
@@ -221,11 +228,11 @@ export class CreateProject {
         if (!createProjectCheckState) { //新建工程必要条件检查未通过
             return false;
         }
-        const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
-        const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex); 
+        // const nameIndex:number = createProjectMessage.createProjectPath.lastIndexOf("\\");
+        // const createProjectParentPath:string = createProjectMessage.createProjectPath.substring(0,nameIndex);
         // 将新建工程信息插入插件配置文件
         const projectObj = {
-            projectPath: createProjectParentPath,
+            projectPath: createProjectMessage.createProjectPath,
             projectName: createProjectMessage.createProjectName,
         };
         pushPluginConfigProject(projectObj);
@@ -251,6 +258,8 @@ export class CreateProject {
         setProjectConfigLibPath(createProjectLibPath,createProjectMessage.createProjectPath);
         setProjectConfigModuleModel(createProjectMessage.createProjectModuleModel,createProjectMessage.createProjectPath);
         setProjectConfigProjectType(projectType,createProjectMessage.createProjectPath);
+        // 工程名称写入工程配置
+        setProjectConfigProjectName(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         // vscode.window.showInformationMessage(`工程${createProjectMessage.createProjectName}新建成功，请切换到用户工程查看`, { modal: true });
         projectActiveInterfact(createProjectMessage.createProjectName,createProjectMessage.createProjectPath);
         vscode.commands.executeCommand('luatide-history-project.Project.refresh');

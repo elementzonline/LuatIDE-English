@@ -23,8 +23,8 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
 
   getChildren(element?: ActivityTreeItem): Thenable<ActivityTreeItem[]> {
     var treeDir: ActivityTreeItem[] = [];
+    let activityPath: string = getPluginConfigActivityProject();
     if (element === undefined) {
-      const activityPath: string = getPluginConfigActivityProject();
       if (activityPath === '') {
         return Promise.resolve([]);
       }
@@ -32,18 +32,27 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
         setPluginConfigActivityProject('');
         return Promise.resolve([]);
       }
-      const nameIndex: number = activityPath.lastIndexOf("\\");
-      const activityParentPath: string = activityPath.substring(0, nameIndex);
-      const activityProjectName: string = activityPath.substring(nameIndex + 1);
-      treeDir.push(new ActivityTreeItem(activityProjectName, activityParentPath, vscode.TreeItemCollapsibleState.Expanded));
+      // const nameIndex: number = activityPath.lastIndexOf("\\");
+      // const activityParentPath: string = activityPath.substring(0, nameIndex);
+      // const activityProjectName: string = activityPath.substring(nameIndex + 1);
+      const activityProjectJson:any = JSON.parse(fs.readFileSync(path.join(activityPath,'luatide_project.json'),'utf-8'));
+      const activityProjectPath:string = path.dirname(activityPath);
+      const activityProjectName:string = activityProjectJson.projectName;
+      treeDir.push(new ActivityTreeItem(activityProjectName, activityProjectPath, vscode.TreeItemCollapsibleState.Expanded));
       return Promise.resolve(treeDir);
     }
     else {
       const fileParentPath: string = element['parentPath'];
       const filename: string = element['label'];
-      const filePath: string = path.join(fileParentPath, filename);
+      let filePath: string;
+      if (path.dirname(activityPath)===fileParentPath){
+        filePath = activityPath;
+      }
+      else{
+        filePath = path.join(fileParentPath, filename);
+      }
       const files = fs.readdirSync(filePath);
-      const activityPath: string = getPluginConfigActivityProject();
+      // const activityPath: string = getPluginConfigActivityProject();
       const appFile = getProjectConfigAppFile(activityPath);
       if (appFile !== undefined) {
         for (let i = 0; i < files.length; i++) {
@@ -52,10 +61,10 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
           const relativeFilePath: string = path.relative(activityPath, childrenFilePath);
           if (appFile.indexOf(relativeFilePath) !== -1) {
             if (fs.statSync(childrenFilePath).isFile()) {
-              treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
+                treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
             }
             else {
-              treeDir.unshift(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
+                treeDir.unshift(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
             }
           }
         }
@@ -66,8 +75,6 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       return Promise.resolve(treeDir);
     }
   }
-
-
 
   // private pathExists(p: string): boolean {
   //   try {

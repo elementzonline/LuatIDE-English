@@ -12,7 +12,7 @@ import { OpenProject } from '../project/openProject';
 import {getAir72XCXModuleModelName, getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
-import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
+import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectName, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 import { showOpenDialog } from '../project/activeProjectOperation';
@@ -752,10 +752,10 @@ export class HomeManage {
                 return false;
             }
             // 将打开工程名称和路径信息插入插件配置文件
-            const nameIndex:number = openProjectMessage.openProjectPath.lastIndexOf("\\");
-            const projectParentPath:string = openProjectMessage.openProjectPath.substring(0,nameIndex);
+            // const nameIndex:number = openProjectMessage.openProjectPath.lastIndexOf("\\");
+            // const projectParentPath:string = openProjectMessage.openProjectPath.substring(0,nameIndex);
             const projectObj = {
-                projectPath:projectParentPath,
+                projectPath:openProjectMessage.openProjectPath,
                 projectName:openProjectMessage.openProjectName,
             };
             pushPluginConfigProject(projectObj);
@@ -770,6 +770,7 @@ export class HomeManage {
             const openProjectLibPath:string = getCreateProjectLibpathHandle(openProjectMessage.openProjectLibPath,openProjectMessage.openProjectModuleModel);
             setProjectConfigLibPath(openProjectLibPath,openProjectMessage.openProjectPath);
             setProjectConfigModuleModel(openProjectMessage.openProjectModuleModel,openProjectMessage.openProjectPath);
+            setProjectConfigProjectName(openProjectMessage.openProjectName,openProjectMessage.openProjectPath);
             // vscode.window.showInformationMessage(`工程${openProjectMessage.openProjectName}已导入成功，请切换到用户工程查看`,{modal: true});
             // 执行激活工程到活动工程操作
             projectActiveInterfact(openProjectMessage.openProjectName,openProjectMessage.openProjectPath);
