@@ -51,7 +51,7 @@ async function checkFloderControlUpdate(){
 				"new":diff,
 			};
 			// 下载配置界面显示
-			const ret = await checkFile.downloadConfigDisplay(temContext, files);
+			const ret = await checkFile.downloadConfigDisplay(temContext, files, false);
 			if (ret){
 				timeId = setInterval(checkFloderControlUpdate, 1000);
 			}

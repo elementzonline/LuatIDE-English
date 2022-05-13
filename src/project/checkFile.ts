@@ -10,8 +10,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface';
+import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject } from '../plugConfigParse';
+import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getSerialPortInfoList } from '../variableInterface';
+import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, setProjectConfigModuleModel, setProjectConfigModulePort } from './projectConfigParse';
+import { selectProjectCorePathOperation, selectProjectLibPathOperation } from './activeProjectOperation';
 
 
 /*
@@ -24,28 +26,27 @@ import { getDownloadHtmlPath, getDownloadSourcePath } from '../variableInterface
 */
 
 let downloadPage: vscode.WebviewPanel | undefined = undefined;
+let temPanel: any;
 
 // 工程配置Webview是否被打开
-export function checkFilesWebviewIsOpen()
-{
-    return downloadPage?true:false;
+export function checkFilesWebviewIsOpen() {
+    return downloadPage ? true : false;
 }
 
 // 让Webview恢复到最上层
-export function checkFilesWebviewDesk()
-{
+export function checkFilesWebviewDesk() {
     const column = vscode.window.activeTextEditor
         ? vscode.window.activeTextEditor.viewColumn
         : undefined;
     downloadPage?.reveal(column);
 }
 
-export async function downloadConfigDisplay(context:vscode.ExtensionContext, files: any) {
+export async function downloadConfigDisplay(context: vscode.ExtensionContext, files: any, isManual: boolean) {
 
     //判断是否需要显示webview
-    const fileRet: any = await checkFilesType(files.all, files.new, false);
+    const fileRet: any = await checkFilesType(files.all, files.new, false, isManual);
 
-    if (fileRet){
+    if (fileRet) {
         if (downloadPage) {
             return true;
         }
@@ -65,7 +66,7 @@ export async function downloadConfigDisplay(context:vscode.ExtensionContext, fil
         // 获取webview界面
         downloadPage.webview.html = getDownloadPageHtml();
 
-        let temPanel = downloadPage;
+        temPanel = downloadPage;
 
         /* 实时检测主题颜色变化 */
         vscode.window.onDidChangeActiveColorTheme((e) => {
@@ -76,20 +77,37 @@ export async function downloadConfigDisplay(context:vscode.ExtensionContext, fil
                 }
             );
         });
-        temPanel.webview.postMessage(
-            {
-                command: 'filesChange',
-                text: {
-                    "all": fileRet.all,
-                    "new": fileRet.new,
-                    "ignore": fileRet.ignore,
-                    "isOpenProject": false
-                },
-            }
-        );
+
+        if (isManual) {
+            temPanel.webview.postMessage(
+                {
+                    command: 'filesChangeInManual',
+                    text: {
+                        "all": fileRet.all,
+                        "new": fileRet.new,
+                        "ignore": fileRet.ignore,
+                        "isOpenProject": false
+                    },
+                }
+            );
+            const pCfginit = new ProjectCfgInit();
+            pCfginit.init();
+        } else {
+            temPanel.webview.postMessage(
+                {
+                    command: 'filesChange',
+                    text: {
+                        "all": fileRet.all,
+                        "new": fileRet.new,
+                        "ignore": fileRet.ignore,
+                        "isOpenProject": false
+                    },
+                }
+            );
+        }
 
         downloadPage.webview.onDidReceiveMessage(
-            message => receiveMessageHandle(context,downloadPage, message)
+            message => receiveMessageHandle(context, downloadPage, message)
         );
 
         // Reset when the current panel is closed
@@ -105,12 +123,12 @@ export async function downloadConfigDisplay(context:vscode.ExtensionContext, fil
 }
 
 /* 打开工程回调 */
-export async function displayOpenProjectFiles(context:vscode.ExtensionContext, files: any, proPath: any) {
+export async function displayOpenProjectFiles(context: vscode.ExtensionContext, files: any, proPath: any) {
 
     //判断是否需要显示webview
-    const fileRet: any = await checkFilesType(files.all, files.new, proPath);
+    const fileRet: any = await checkFilesType(files.all, files.new, proPath, false);
 
-    if (fileRet){
+    if (fileRet) {
         if (downloadPage) {
             return true;
         }
@@ -154,7 +172,7 @@ export async function displayOpenProjectFiles(context:vscode.ExtensionContext, f
         );
 
         downloadPage.webview.onDidReceiveMessage(
-            message => receiveMessageHandle(context,downloadPage, message)
+            message => receiveMessageHandle(context, downloadPage, message)
         );
 
         // Reset when the current panel is closed
@@ -191,32 +209,77 @@ function getDownloadPageHtml() {
 }
 
 /* 处理从 WebView 来的数据 */
-async function receiveMessageHandle(context:vscode.ExtensionContext,downloadPage: any, message: any) {
+async function receiveMessageHandle(context: vscode.ExtensionContext, downloadPage: any, message: any) {
     switch (message.command) {
         case "downloadConfig":
             const ret = await checkFilesConfig(message.text, false);
-            if (ret){
+            if (ret) {
                 downloadPage.dispose();
             }
             break;
         case "downloadConfigWithOpenProject":
             const ret2 = await checkFilesConfig(message.text.fileState, message.text.isOpenProject);
-            if (ret2){
+            if (ret2) {
                 downloadPage.dispose();
             }
             break;
         case "Alert":
             vscode.window.showErrorMessage(message.text.msg);
             break;
+        /*****************************工程配置消息 ↓************************************/
+        case 'coreConfigPath':
+            // 执行打开选择core文件夹操作
+            const corePath:string|undefined = await selectProjectCorePathOperation();
+            if (corePath!==undefined) {
+                temPanel?.webview.postMessage(
+                    {
+                        command:"coreConfigPath",
+                        text:corePath
+                    }
+                );
+            }
+            return;
+        case 'libConfigPath':
+            // 执行打开选择lib文件夹操作
+            const libPath:string|undefined = await selectProjectLibPathOperation();
+            if (libPath!==undefined) {
+                temPanel?.webview.postMessage(
+                    {
+                        command:"libConfigPath",
+                        text:libPath
+                    }
+                );
+            }
+            return;
+        case 'moduleModel':
+            // 接收到moduleModel数据处理
+            setProjectConfigModuleModel(message.text, getCurrentPluginConfigActivityProject());
+            return;
+        case 'modulePort':
+            // 接收到modulePort数据处理
+            const reg = /\[(\w*)\]/ig;
+            const comPortList:string[] | null = reg.exec(message.text);
+            let comPort:string;
+            if (comPortList===null) {
+                comPort = "";
+            }
+            else{
+                    comPort = comPortList[1];
+            }
+            setProjectConfigModulePort(comPort, getCurrentPluginConfigActivityProject());
+            return;
+        case 'configJsonSelected':
+            vscode.commands.executeCommand('vscode.open', vscode.Uri.file(path.join(getCurrentPluginConfigActivityProject(),'luatide_project.json')));
+            return;
         default:
             break;
     }
 }
 
 /* 分析文件判断是否需要打开webview */
-async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boolean) {
+async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boolean, isManual: boolean) {
     let curProjectName: any;
-    if (!isOpenProject){
+    if (!isOpenProject) {
         curProjectName = getPluginConfigActivityProject();
     } else {
         curProjectName = isOpenProject;
@@ -227,12 +290,11 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
-    if (!projectConfigJson.ignore){
+    if (!projectConfigJson.ignore) {
         projectConfigJson.ignore = [];
     }
 
     let fileIgnored = projectConfigJson.ignore;
-    let fileFiled = projectConfigJson.appFile;
 
     let temNewFiles = newFiles.filter((item: any) => {
         return !item.match(/^(\.luatide|\.vscode|\.git|.svn|ndk)/);
@@ -243,48 +305,8 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
         return item.match(/\w+\.\w+$/g);
     });
 
-    // if (temNewFiles.length > 0)
-    if(0) 
-    {
-        //判断新添加的文件中是否存在同名文件
-        let fileArr: any = [];
-        for (let i = 0; i < temNewFiles.length; i++) {
-            let e = temNewFiles[i];
-            let file = e.match(/\w+\.\w+$/g);
-            if (file) {
-                if (!fileArr.includes(file[0])) {
-                    fileArr.push(file[0]);
-                } else {
-                    vscode.window.showErrorMessage("新添加文件" + file + "存在多个同名文件，请检查后重试");
-                    return false;
-                }
-            }
-        }
-
-        if (!isOpenProject){
-            //判断工程中是否已有同名文件
-            for (let j = 0; j < temNewFiles.length; j++) {
-                let e = temNewFiles[j];
-                let file = e.match(/\w+\.\w+$/g);
-                if (file){
-                    for (let k = 0; k < fileFiled.length; k++) {
-                        if (fileFiled[k].indexOf(file[0]) > -1) {
-                            vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
-                            return false;
-                        }
-                    }
-                    for (let k = 0; k < fileIgnored.length; k++) {
-                        if (fileIgnored[k].indexOf(file[0]) > -1) {
-                            vscode.window.showErrorMessage("文件" + file + "已经存在同名文件，请检查后重试");
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if (temNewFiles.length > 0){
+    //增加手动打开下载文件目录展示
+    if ((temNewFiles.length > 0) || isManual) {
         return {
             "all": allFiles,
             "new": temNewFiles,
@@ -295,10 +317,10 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
 }
 
 /* 分析从 WebView 收到的文件配置 */
-async function checkFilesConfig(files: any, proPath: any){
+async function checkFilesConfig(files: any, proPath: any) {
     let curProjectName: any;
 
-    if (!proPath){
+    if (!proPath) {
         curProjectName = getPluginConfigActivityProject();
     } else {
         curProjectName = proPath;
@@ -310,14 +332,14 @@ async function checkFilesConfig(files: any, proPath: any){
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
-    if (!projectConfigJson.ignore){
+    if (!projectConfigJson.ignore) {
         projectConfigJson.ignore = [];
     }
 
     let appFile: any = [],
         ignore: any = [];
-    for (let key in files){
-        if (files[key]){
+    for (let key in files) {
+        if (files[key]) {
             appFile.push(key);
         } else {
             ignore.push(key);
@@ -341,7 +363,7 @@ export async function getProjectConfigFiles(tar: any) {
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
-    if (!projectConfigJson.ignore){
+    if (!projectConfigJson.ignore) {
         projectConfigJson.ignore = [];
     }
     // 当工程为 Ui 和 NDK 工程时，直接返回
@@ -358,11 +380,11 @@ export async function getProjectConfigFiles(tar: any) {
     let msgOptions = "";
     let floderAll = "default";
 
-    if (tar){
+    if (tar) {
         if (Array.isArray(tar)) {
             for (let i = 0; i < tar.length; i++) {
                 let e = tar[i];
-                if (!e.match(/^\.luatide/)){
+                if (!e.match(/^\.luatide/)) {
                     if (floderAll === "default") {
                         if (e.includes(".")) {
                             tipsToUser = e;
@@ -376,7 +398,7 @@ export async function getProjectConfigFiles(tar: any) {
                             } else if (downOption === '全是') {
                                 floderAll = "none";
                                 filesChecked.push(e);
-                            } else{
+                            } else {
                                 fileIgnored.push(e);
                             }
                         }
@@ -384,19 +406,19 @@ export async function getProjectConfigFiles(tar: any) {
                         fileIgnored.push(e);
                     } else if (floderAll === "none") {
                         filesChecked.push(e);
-                    } else{
+                    } else {
                         filesChecked.push(e);
                     }
                 }
             }
         } else {
-            if (!tar.match(/^\.luatide/)){
+            if (!tar.match(/^\.luatide/)) {
                 tipsToUser = path.basename(tar);
                 msgOptions = "是否添加文件 " + tipsToUser + " 到下载列表，是：添加，否则不添加";
                 const downOption = await vscode.window.showInformationMessage(msgOptions, { modal: true }, "是");
                 if (downOption === '是') {
                     filesChecked.push(tar);
-                } else{
+                } else {
                     fileIgnored.push(tar);
                 }
             }
@@ -408,7 +430,7 @@ export async function getProjectConfigFiles(tar: any) {
     return true;
 }
 
-export async function delFiles(tar: any){
+export async function delFiles(tar: any) {
     const curProjectName = getPluginConfigActivityProject();
     if (curProjectName === '' || curProjectName === undefined) {
         return false;
@@ -416,22 +438,22 @@ export async function delFiles(tar: any){
 
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(curProjectName, "luatide_project.json")).toString());
 
-    if (!projectConfigJson.ignore){
+    if (!projectConfigJson.ignore) {
         projectConfigJson.ignore = [];
     }
 
     let filesChecked = projectConfigJson.appFile;
     let fileIgnored = projectConfigJson.ignore;
 
-    if (tar){
-        for (let i = 0; i < tar.length; i++){
+    if (tar) {
+        for (let i = 0; i < tar.length; i++) {
             let e = tar[i];
 
-            if (filesChecked.includes(e)){
+            if (filesChecked.includes(e)) {
                 filesChecked.splice(filesChecked.indexOf(e), 1);
                 vscode.window.showWarningMessage("已经删除 " + e + " 文件");
             }
-            if (fileIgnored.includes(e)){
+            if (fileIgnored.includes(e)) {
                 fileIgnored.splice(fileIgnored.indexOf(e), 1);
                 vscode.window.showWarningMessage("已经删除 " + e + " 文件");
             }
@@ -473,7 +495,7 @@ export async function delFiles(tar: any){
 // }
 
 // 获取工程配置文件中记录的文件列表(appfile+ignore)
-export async function getOriginalFiles(pPath: any){
+export async function getOriginalFiles(pPath: any) {
     let projectConfigJson = await JSON.parse(fs.readFileSync(path.join(pPath, "luatide_project.json")).toString());
 
     const appFiles = projectConfigJson.appFile;
@@ -490,6 +512,79 @@ export async function getOriginalFiles(pPath: any){
     });
 
     return retArr;
+}
+
+
+/* 活动工程配置 ↓ */
+class ProjectCfgInit {
+    constructor() {
+    };
+
+    private serialportList: string[] = [];
+    private activityMemoryProjectPath: string = "";
+    private corePath: string = "";
+    private libPath: string = "";
+    private moduleModel: string = "";
+    private modulePort: string = "";
+    private moduleModelArray: any;
+    private modulePortArray: any;
+    private firstSendData = true;
+    private timeId: any = undefined;
+
+    async init() {
+        this.serialportList = [];
+        this.activityMemoryProjectPath = getCurrentPluginConfigActivityProject();
+        this.corePath = getProjectConfigCorePath(this.activityMemoryProjectPath);
+        this.libPath = getProjectConfigLibPath(this.activityMemoryProjectPath);
+        this.moduleModel = getProjectConfigModuleModel(this.activityMemoryProjectPath);
+        this.modulePort = getProjectConfigMoudlePort(this.activityMemoryProjectPath);
+        this.moduleModelArray = getPluginDefaultModuleList();
+        this.modulePortArray = await getSerialPortInfoList();
+
+        // 定时轮询更新活动工程配置
+        this.updtaeSerialPort();
+    }
+
+
+    // 实时监听配置数据，尤其是本地串口变化，并发送至前端
+    async updtaeSerialPort() {
+        if (this.timeId){
+            clearInterval(this.timeId);
+        }
+        const serialportListNew = await getSerialPortInfoList();
+        const corePathNew = getProjectConfigCorePath(this.activityMemoryProjectPath);
+        const libPathNew = getProjectConfigLibPath(this.activityMemoryProjectPath);
+        const moduleModelNew = getProjectConfigModuleModel(this.activityMemoryProjectPath);
+        const modulePortNew = getProjectConfigMoudlePort(this.activityMemoryProjectPath);
+        // 暂时先以长度做相似性判断，防止遍历对性能影响过大
+        if (serialportListNew.length !== this.serialportList.length || corePathNew !== this.corePath ||
+            libPathNew !== this.libPath || moduleModelNew !== this.moduleModel || modulePortNew !== this.modulePort || this.firstSendData) {
+            this.firstSendData = false;
+            temPanel?.webview.postMessage(
+                {
+                    command: "initConfigData",
+                    text: {
+                        "corePath": corePathNew,
+                        "libPath": libPathNew,
+                        "moduleModel": moduleModelNew,
+                        "modulePort": modulePortNew,
+                        "moduleModelArray": this.moduleModelArray,
+                        "modulePortArray": this.modulePortArray
+                    }
+                }
+            );
+        }
+        this.moduleModelArray = getPluginDefaultModuleList();
+        this.modulePortArray = await getSerialPortInfoList();
+        this.serialportList = serialportListNew;
+        this.corePath = corePathNew;
+        this.libPath = libPathNew;
+        this.moduleModel = moduleModelNew;
+        this.modulePort = modulePortNew;
+        setTimeout(() => {
+            this.timeId = this.updtaeSerialPort();
+        }, 1000);
+    }
 }
 
 

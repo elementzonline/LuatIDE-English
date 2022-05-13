@@ -2,19 +2,25 @@ import path = require('path');
 import * as vscode from 'vscode';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getAir72XCXModuleModelName, getHistoryCorePath, getHistoryLibPath } from '../variableInterface';
-import { activeProjectConfig } from '../webview/configWebview';
+//import { activeProjectConfig } from '../webview/configWebview';
+import { downloadConfigDisplay, getOriginalFiles } from './checkFile';
 import { getFileForDirRecursion } from './projectApi';
 import { getProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
 
 // 工程配置项处理
-export function projectConfigOperation(context: vscode.ExtensionContext) {
+export async function projectConfigOperation(context: vscode.ExtensionContext) {
     const activityProjectPath = getPluginConfigActivityProject();
     if (activityProjectPath === '') {
         vscode.window.showErrorMessage("当前未检测到活动工程,请先激活工程后再配置");
         return false;
     }
-    
-    activeProjectConfig(context);
+    //activeProjectConfig(context);
+    let all = await getOriginalFiles(activityProjectPath);
+    let json = {
+        "all": all,
+        "new": [],
+    };
+    downloadConfigDisplay(context, json, true);
 }
 
 // 打开文件资源管理器接口选择core文件
