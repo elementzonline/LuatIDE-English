@@ -78,9 +78,11 @@ export class LOGOUTPUT {
     }
 
     public print(data: string) {
-        const reg: any = /\[[TDIWEF]\]-/;
+        const reg: any = /\[[TDIWEF]\]-/ig; 
         const resule: any = reg.exec(data);
         let exts: string;
+        const regInvisibleCharacter = /[[\r\n]|\n]$/ig;
+        data = data.replace(regInvisibleCharacter,"");
         if (resule !== null) {
             switch (resule[0][1]) {
                 case LOGLEVEL.trace:
@@ -109,12 +111,11 @@ export class LOGOUTPUT {
         else {
             exts = data;
         }
-
         if (this.debugConsoleFlag) {
-            vscode.debug.activeDebugConsole.append(exts);
+            vscode.debug.activeDebugConsole.appendLine(exts);
         }
         if (this.outputWindowFlag) {
-            this.outputWindowChannel?.append(data);
+            this.outputWindowChannel?.appendLine(data);
         }
 
         if (this.outputFileFlag) {
