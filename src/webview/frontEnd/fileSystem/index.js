@@ -398,6 +398,7 @@ function changeThemeColor(style) {
 const selecte = document.getElementById('moduleModel');
 const portSelecte = document.getElementById('modulePort');
 function cfgInitData(data) {
+        document.getElementById('projectNameInput').value = data['projectName'];
     document.getElementById('corePathInput').value = data['corePath'];
     document.getElementById('libPathInput').value = data['libPath'];
     // 初始化moduleModel下拉框数据
@@ -437,6 +438,19 @@ function cfgCorePathHandle(data) {
 }
 function cfgLibPathHandle(data) {
     document.getElementById('libPathInput').value = data;
+}
+function cfgProjectNameHandle(data)
+{
+    document.getElementById('projectNameInput').value = data;
+}
+function projectNameSelect() {
+    const data = document.getElementById('projectNameInput').value;
+    vscode.postMessage(
+        {
+            command: "projectName",
+            text: data
+        }
+    );
 }
 function corePathSelect() {
     vscode.postMessage(
@@ -515,6 +529,9 @@ window.addEventListener('message', event => {
             break;
         case 'serialPortUpdate':
             this.updateSerialPort(message.text);
+            break;
+        case 'projectName':
+            this.cfgProjectNameHandle(message.text);
             break;
         default:
             break;
