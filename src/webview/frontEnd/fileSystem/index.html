@@ -36,6 +36,13 @@
         <div class="projectConfig">
             <div class="cfg-box">
                 <h1 class="cfg-h1">活动工程配置页面</h1>
+                <div class="configBox projectNameBox">
+                    <p class="cfg-p" class="configItem">projectName Config </p>
+                    <p class="cfg-p" class="configDesc">设置当前工程名称,若所设置的工程名称已存在,则设置失败,使用原有工程名称</p>
+                    <input class="cfg-input" type="text" id="projectNameInput" onchange=projectNameSelect()>
+                    <br>
+                    <a onclick="javascript:openConfigJson('projectName');" href="#">在luatide_project.json中编辑</a>
+                </div>
                 <div class="configBox">
                     <p class="cfg-p" class="configItem">corePath Config</p>
                     <p class="cfg-p" class="configDesc">

@@ -10,10 +10,11 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject } from '../plugConfigParse';
+import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject, getPluginConfigUserProjectList, setPluginConfigUserProjectList } from '../plugConfigParse';
 import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getSerialPortInfoList } from '../variableInterface';
-import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, setProjectConfigModuleModel, setProjectConfigModulePort } from './projectConfigParse';
+import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectconfigName, setProjectConfigModuleModel, setProjectConfigModulePort, setProjectConfigProjectName } from './projectConfigParse';
 import { selectProjectCorePathOperation, selectProjectLibPathOperation } from './activeProjectOperation';
+import { checkSameProjectExistStatusForPluginConfig } from './projectApi';
 
 
 /*
@@ -227,6 +228,32 @@ async function receiveMessageHandle(context: vscode.ExtensionContext, downloadPa
             vscode.window.showErrorMessage(message.text.msg);
             break;
         /*****************************工程配置消息 ↓************************************/
+        case 'projectName':
+            const projectState:boolean = checkSameProjectExistStatusForPluginConfig(message.text);
+            const activityMemoryProjectPath:string = getCurrentPluginConfigActivityProject();
+            if (!projectState) {
+                setProjectConfigProjectName(message.text,activityMemoryProjectPath);
+                const projectJsonObj:any = getPluginConfigUserProjectList();
+                const projectList = projectJsonObj.map(x => {
+                    if (x.projectPath===activityMemoryProjectPath) {
+                        x.projectName = message.text;
+                    }
+                    return x;
+                });
+                setPluginConfigUserProjectList(projectList);
+            }
+            else{
+                temPanel?.webview.postMessage(
+                    {
+                        command:"projectName",
+                        text:path.basename(activityMemoryProjectPath)
+                    }
+                );
+                vscode.window.showErrorMessage(`${message.text}工程已经被创建,不允许修改为同名工程`);
+            }
+            vscode.commands.executeCommand('luatide-history-project.Project.refresh');
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            return;
         case 'coreConfigPath':
             // 执行打开选择core文件夹操作
             const corePath:string|undefined = await selectProjectCorePathOperation();
@@ -556,6 +583,9 @@ class ProjectCfgInit {
         const libPathNew = getProjectConfigLibPath(this.activityMemoryProjectPath);
         const moduleModelNew = getProjectConfigModuleModel(this.activityMemoryProjectPath);
         const modulePortNew = getProjectConfigMoudlePort(this.activityMemoryProjectPath);
+        const projectName = getProjectconfigName(this.activityMemoryProjectPath);
+        this.moduleModelArray = getPluginDefaultModuleList();
+        this.modulePortArray =  await getSerialPortInfoList();
         // 暂时先以长度做相似性判断，防止遍历对性能影响过大
         if (serialportListNew.length !== this.serialportList.length || corePathNew !== this.corePath ||
             libPathNew !== this.libPath || moduleModelNew !== this.moduleModel || modulePortNew !== this.modulePort || this.firstSendData) {
@@ -564,18 +594,17 @@ class ProjectCfgInit {
                 {
                     command: "initConfigData",
                     text: {
+                        "projectName":projectName,
                         "corePath": corePathNew,
                         "libPath": libPathNew,
                         "moduleModel": moduleModelNew,
                         "modulePort": modulePortNew,
                         "moduleModelArray": this.moduleModelArray,
-                        "modulePortArray": this.modulePortArray
+                        "modulePortArray":this.modulePortArray
                     }
                 }
             );
         }
-        this.moduleModelArray = getPluginDefaultModuleList();
-        this.modulePortArray = await getSerialPortInfoList();
         this.serialportList = serialportListNew;
         this.corePath = corePathNew;
         this.libPath = libPathNew;
