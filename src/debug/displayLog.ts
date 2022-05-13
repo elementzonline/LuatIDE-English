@@ -81,7 +81,7 @@ export class LOGOUTPUT {
         const reg: any = /\[[TDIWEF]\]-/ig; 
         const resule: any = reg.exec(data);
         let exts: string;
-        const regInvisibleCharacter = /[[\r\n]|\n]$/ig;
+        const regInvisibleCharacter = /[\r\n]|\n$/ig;
         data = data.replace(regInvisibleCharacter,"");
         if (resule !== null) {
             switch (resule[0][1]) {
