@@ -31,28 +31,36 @@ export function getPluginConfigJson() {
     return pluginConfigJsonObj;
 }
 
-// 获取用户插件配置文件内用户工程列表
-export function getPluginConfigUserProjectList() {
+// 获取用户插件配置文件的用户工程对象列表
+export function getPluginConfigUserProjectList(){
     const pluginConfigJsonObj: any = getPluginConfigJson();
     const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
-    let pluginConfigProjectList: any = [];
-    for (let i = 0; i < pluginConfigJsonProjectListObj.length; i++) {
-        const element = pluginConfigJsonProjectListObj[i];
-        pluginConfigProjectList.push(element.projectName);
-    }
-    return pluginConfigProjectList;
+    return pluginConfigJsonProjectListObj;
+}
+
+// 设置用户插件配置文件的用户工程对象列表
+export function setPluginConfigUserProjectList(projectList:string[]){
+    const pluginConfigJsonObj:any = getPluginConfigJson();
+    const pluginJsonPath:string = getPluginConfigPath();
+    pluginConfigJsonObj.projectList = projectList;
+    const projectConfigJson = JSON.stringify(pluginConfigJsonObj, null, "\t");
+    fs.writeFileSync(pluginJsonPath, projectConfigJson);
+}
+
+// 获取用户插件配置文件内用户工程列表
+export function getPluginConfigUserProjectNameList() {
+    const pluginConfigJsonObj: any = getPluginConfigJson();
+    const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
+    const pluginConfigNameList:string[] = pluginConfigJsonProjectListObj.map(x => { x = x.projectName; return x; });
+    return pluginConfigNameList;
 }
 
 // 获取用户插件配置文件内用户工程完整路径
 export function getPluginConfigUserProjectAbsolutePathList() {
     const pluginConfigJsonObj: any = getPluginConfigJson();
     const pluginConfigJsonProjectListObj: any = pluginConfigJsonObj.projectList;
-    let pluginConfigProjecAbsolutePathtList: any = [];
-    for (let i = 0; i < pluginConfigJsonProjectListObj.length; i++) {
-        const element = pluginConfigJsonProjectListObj[i];
-        pluginConfigProjecAbsolutePathtList.push(path.join(element.projectPath, element.projectName));
-    }
-    return pluginConfigProjecAbsolutePathtList;
+    const pluginConfigPathList:string[] = pluginConfigJsonProjectListObj.map(x => { x = x.projectPath; return x; });
+    return pluginConfigPathList;
 }
 
 // 获取当前活动工程名称
@@ -137,6 +145,9 @@ export function pluginConfigCompatible() {
     else if (Number(pluginJsonObj.version) === 2.0) {
         pluginConfigCompatibleVersionTwo(pluginConfigPath, pluginJsonObj);
     }
+    else if(Number(pluginJsonObj.version) === 2.1){
+        pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath,pluginJsonObj);
+    }
 }
 
 //  插件配置文件2.0以下版本配置文件兼容至2.0版本
@@ -192,7 +203,7 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     deleteDirRecursive(air72XOldLibPath);
     // 更新插件配置文件版本至2.1
     let activityProject: string = pluginJsonObj.activeProject;
-    // 对活动工程的插件配置文件进行兼容
+    // 对活动工程的工程配置文件进行兼容
     if (fs.existsSync(activityProject)) {
         projectConfigCompatible(activityProject);
     }
@@ -204,6 +215,24 @@ export function pluginConfigCompatibleVersionTwo(pluginConfigPath: string, plugi
     luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
     // 插件版本兼容
     luatideWorkspaceJson.version = '2.1';
+    const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
+    fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
+}
+
+// 插件配置文件2.1版本配置文件兼容至2.2版本
+// 本次兼容主要是为了解决配置文件升级的问题
+export function pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath: string, pluginJsonObj: any) {
+    let activeProject: string = pluginJsonObj.activeProject;
+    // 遍历用户工程，对工程名称做升级处理，
+    pluginJsonObj.projectList = pluginJsonObj.projectList.map(x => {
+        x.projectPath = path.join(x.projectPath, x.projectName);
+        projectConfigCompatible(x.projectPath);
+        return x;
+    });
+    let luatideWorkspaceJson: any = getPluginConfigObjVersionTwo();
+    luatideWorkspaceJson.activeProject = activeProject;
+    luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
+    luatideWorkspaceJson.version = '2.2';
     const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
     fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
 }
@@ -233,8 +262,11 @@ export function projectConfigCompatible(projectPath: string) {
     else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
         projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
     }
-    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
         projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
+    }
+    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
+        projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
     }
 }
 
@@ -249,6 +281,7 @@ export function getProjectConfigObj(projectConfigPath: string) {
 export function getProjectJsonObjVersionTwo() {
     let luatideProjectNewJson: any = {
         version: '',
+        projectName:'',
         projectType: 'pure',
         corePath: '',
         libPath: '',
@@ -376,7 +409,7 @@ export function projectConfigCompatibleVersionTwoPointThree(projectPath: string,
     const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
     // 工程lib文件兼容
     let libPath: string = projectOldJsonObj.libPath;
-    if (libPath !== '' && (projectOldJsonObj.moduleModel === 'air101') || (projectOldJsonObj.moduleModel === 'air103')  || (projectOldJsonObj.moduleModel === 'air105') || ((projectOldJsonObj.moduleModel === 'esp32c3'))) {
+    if (libPath !== '' && (projectOldJsonObj.moduleModel === 'air101') || (projectOldJsonObj.moduleModel === 'air103') || (projectOldJsonObj.moduleModel === 'air105') || ((projectOldJsonObj.moduleModel === 'esp32c3'))) {
         libPath = libPath.replace('\\LuatIDE\\LuatideLib\\Air72X_LIB', '\\LuatIDE\\LuatideLib\\Air72XUX_LIB');
     }
     luatideProjectNewJson.version = '2.3';
@@ -390,6 +423,7 @@ export function projectConfigCompatibleVersionTwoPointThree(projectPath: string,
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }
+
 // 工程配置文件2.3版本配置文件兼容至2.4版本
 export function projectConfigCompatibleVersionTwoPointFour(projectPath: string, projectOldJsonObj: any) {
     const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
@@ -399,13 +433,32 @@ export function projectConfigCompatibleVersionTwoPointFour(projectPath: string, 
     luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
     luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
     luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
-    let moduleModel:string = projectOldJsonObj.moduleModel;
+    let moduleModel: string = projectOldJsonObj.moduleModel;
     if (moduleModel === 'air72XCX') {
         moduleModel = getAir72XCXModuleModelName();
     }
     luatideProjectNewJson.moduleModel = moduleModel;
     luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
     luatideProjectNewJson.ignore = projectOldJsonObj.ignore;
+    const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
+    fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+}
+
+// 工程配置文件2.4版本配置文件兼容至2.5版本
+// 本次兼容主要是为了解除工程名称同文件夹名称的绑定
+export function projectConfigCompatibleVersionTwoPointFive(projectPath: string, projectOldJsonObj: any) {
+    const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+    const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
+    luatideProjectNewJson.version = '2.5';
+    luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+    luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+    luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
+    luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
+    luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
+    luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.ignore = projectOldJsonObj.ignore;
+    //新增工程名称配置项，旧版本工程配置升级工程名称以工程所在路径文件夹名称替代
+    luatideProjectNewJson.projectName = path.basename(projectPath);
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }

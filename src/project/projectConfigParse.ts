@@ -10,7 +10,7 @@ import { getAir72XUXDefaultLatestLibPath, getDefaultLatestCorePath } from '../va
 
     // 获取当前工程文件初始化版本号
 export function getprojectConfigInitVersion(){
-        const projectConfigInitVersion:string = '2.4';
+        const projectConfigInitVersion:string = '2.5';
         return projectConfigInitVersion;
     }
 
@@ -64,6 +64,13 @@ export function getProjectConfigVersion(projectPath:any){
     const projectConfigVersion:string = projectConfigJsonObj.version;
     return projectConfigVersion;
 }
+
+// 获取工程配置文件工程名称
+export function getProjectconfigName(projectPath:any){
+    const projectConfigJsonObj:any = getProjectConfigJson(projectPath);
+    const projectConfigProjectName:string = projectConfigJsonObj.projectName;
+    return projectConfigProjectName;
+}
     
 // 获取工程模块端口号
 export function getProjectConfigMoudlePort(projectPath:any){
@@ -98,6 +105,14 @@ export function  setProjectConfigVersion(version:any,projectPath:any){
         projectJsonObj.version = version;
         refreshProjectJson(projectJsonObj,projectConfigPath);
     }
+
+// 设置活动工程工程名称
+export function setProjectConfigProjectName(projectName:string,projectPath:string){
+    const projectConfigPath = path.join(projectPath,'luatide_project.json');
+    const projectJsonObj:any = getProjectConfigJson(projectPath);
+    projectJsonObj.projectName = projectName;
+    refreshProjectJson(projectJsonObj,projectConfigPath);
+}
 
     // 设置活动工程core文件路径
 export function setProjectConfigCorePath(corePath:any,projectPath:any){
@@ -200,6 +215,7 @@ export function  generateProjectJson(projectPath:any){
         const projectConfigPath:string = path.join(projectPath,'luatide_project.json');
         const projectJson:any = {
             version:'',
+            projectName:'',
             projectType:'pure',
             corePath:'',
             libPath:'',
@@ -219,6 +235,7 @@ export function  generateImportProjectInitJson(projectPath:any){
         const libPath:string = getAir72XUXDefaultLatestLibPath();
         const projectJson:any = {
             version:'',
+            projectName:'',
             projectType:'pure',
             corePath:'',
             libPath:'',

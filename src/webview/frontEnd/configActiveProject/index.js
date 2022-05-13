@@ -12,12 +12,15 @@ window.addEventListener('message', event => {
             break;
         case 'coreConfigPath':
             this.corePathHandle(message.text);
-            break
+            break;
         case 'libConfigPath':
             this.libPathHandle(message.text);
-            break
+            break;
         case 'serialPortUpdate':
             this.updateSerialPort(message.text);
+            break;
+        case 'projectName':
+            document.getElementById('projectNameInput').value = message.text;
             break;
     }
 });
@@ -29,6 +32,7 @@ function alert(data) {
     });
 }
 function initData(data) {
+    document.getElementById('projectNameInput').value = data['projectName'];
     document.getElementById('corePathInput').value = data['corePath'];
     document.getElementById('libPathInput').value = data['libPath'];
     // 初始化moduleModel下拉框数据
@@ -68,6 +72,15 @@ function corePathHandle(data) {
 }
 function libPathHandle(data) {
     document.getElementById('libPathInput').value = data;
+}
+function projectNameSelect() {
+    const data = document.getElementById('projectNameInput').value;
+    vscode.postMessage(
+        {
+            command: "projectName",
+            text: data
+        }
+    );
 }
 function corePathSelect() {
     vscode.postMessage(

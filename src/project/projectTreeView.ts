@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { getPluginConfigUserProjectAbsolutePathList, popPluginConfigProject } from '../plugConfigParse';
+import {  getPluginConfigUserProjectList, popPluginConfigProject } from '../plugConfigParse';
 // import { PluginJsonParse } from '../plugConfigParse';
 // import { PluginConfigInit, PluginVariablesInit } from '../config';
 // import { ProjectJsonParse } from './projectConfigParse';
@@ -22,18 +22,19 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 
 	getChildren(element?: HistoryProjectTreeItem): Thenable<HistoryProjectTreeItem[]> {
 		this.rootloadUrlArray = [];
-		let userProjectAbsulutePathList: any = getPluginConfigUserProjectAbsolutePathList();
+		let userProjectAbsulutePathList: any = getPluginConfigUserProjectList();
 		this.generateTreeItem(userProjectAbsulutePathList);
 		return Promise.resolve(this.rootloadUrlArray);
 	}
 
 	generateTreeItem(userProjectAbsulutePathList: any) {
 		for (let index = 0; index < userProjectAbsulutePathList.length; index++) {
-			const projectAbsolutePath = userProjectAbsulutePathList[index];
-			const nameIndex = projectAbsolutePath.lastIndexOf('\\');
-			const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
-			const projectPath = projectAbsolutePath.substring(0, nameIndex);
-			if (fs.existsSync(path.join(projectAbsolutePath,'luatide_project.json'))) {
+			// const projectAbsolutePath = userProjectAbsulutePathList[index].projectPath;
+			// const nameIndex = projectAbsolutePath.lastIndexOf('\\');
+			// const projectName: any = projectAbsolutePath.substring(nameIndex + 1);
+			const projectPath = userProjectAbsulutePathList[index].projectPath;
+			const projectName = userProjectAbsulutePathList[index].projectName;
+			if (fs.existsSync(path.join(projectPath,'luatide_project.json'))) {
 				this.rootloadUrlArray.push(new HistoryProjectTreeItem(projectName, projectPath, vscode.TreeItemCollapsibleState.None));
 			}
 			else {
@@ -42,15 +43,6 @@ export class HistoryProjectDataProvider implements vscode.TreeDataProvider<Histo
 			}
 		}
 	}
-
-	// private pathExists(p: string): boolean {
-	//   try {
-	//     fs.accessSync(p);
-	//   } catch (err) {
-	//     return false;
-	//   }
-	//   return true;
-	// }
 
 	refresh(): void {
 		this._onDidChangeTreeData.fire();
