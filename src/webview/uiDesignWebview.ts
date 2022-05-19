@@ -3,7 +3,7 @@ import * as vscode  from 'vscode';
 import * as fs from 'fs';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
-import { getProjectConfigAppFile, getProjectConfigType, pushProjectConfigAppFile } from '../project/projectConfigParse';
+import { getProjectConfigAppFile, getProjectConfigModuleModel, getProjectConfigType, pushProjectConfigAppFile } from '../project/projectConfigParse';
 import { getLuatIDEDataPath, getUiDesignDefaultPath } from '../variableInterface';
 
 // ui设计器操作
@@ -217,8 +217,9 @@ export class UiDesignPanel {
     public uiJsonHandle(uiDesignName:any, message:any){
         // 获取当前活动工程工程类型
         const activityProjectPath:string = getPluginConfigActivityProject();
-        const activityProjectType:string = getProjectConfigType(activityProjectPath);
-        const uiLuaType:string = this.getUiConvertLuaType(activityProjectType);
+        // const activityProjectType:string = getProjectConfigType(activityProjectPath);
+        const activeProjectModuleModel:string = getProjectConfigModuleModel(activityProjectPath);
+        const uiLuaType:string = this.getUiConvertLuaType(activeProjectModuleModel);
         const uiJsonPath:string = this.activeProjectPath + "\\" + ".luatide" + "\\" + uiDesignName + '.ui';
         const uiHandlePath:string = path.join(this.activeProjectPath,'UiHandle.lua');
         if (!fs.existsSync(this.activeProjectPath + "\\" + ".luatide")) {
