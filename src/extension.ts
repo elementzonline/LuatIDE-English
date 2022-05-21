@@ -24,6 +24,7 @@ import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc } from './project/activityProjectConfig';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -129,9 +130,31 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册活动工程文件点击命令，当点击活动工程文件时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click', (label, filePath) => {
 		const selectPath = path.join(filePath, label);
-		if (fs.statSync(selectPath).isFile()) {
+		switch(selectPath){
+			case getactiveProjectConfigDesc():
+				projectConfigOperation(context);
+				break;
+			case getProductionFileDesc():
+				exportProducFile();
+				break;
+			case getUiDesignDesc():
+				uiDesign.uiDesign(context);
+				break;
+			case getDistinguishMark()+getHardwaveDesc():
+				// 硬件原理图逻辑
+				break;
+			case getDistinguishMark()+getApiDesc():
+				// api描述逻辑
+				break;
+				
+		}
+		if(selectPath===getactiveProjectConfigDesc()){
+			projectConfigOperation(context);
+		}
+		else if (fs.statSync(selectPath).isFile()) {
 			vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selectPath));
 		}
+
 	}));
 	// 注册用户历史工程TreeView
 	vscode.window.registerTreeDataProvider('luatide-history-project', historyProjectTreeDataProvider);
