@@ -732,3 +732,10 @@ export async function getSerialPortInfoList() {
         return portFriendlyNameList;
     }
 }
+
+/*++++++++++++++++++++++++++++++++++++++工具相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+export function getUnzipToolPath(){
+    const unzipToolPath:string = path.join(extensionPath,'tools','7z','7za.exe');
+    return unzipToolPath;
+}
+/*--------------------------------------工具相关接口----------------------------------------*/
