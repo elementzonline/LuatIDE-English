@@ -4,7 +4,8 @@
 import * as fetch from 'node-fetch';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as compressing from 'compressing';
+// import * as compressing from 'compressing';
+import * as childProcess from 'child_process';
 import * as path from 'path';
 import {
     getAir101DefaultCorePath,
@@ -23,6 +24,7 @@ import {
     getAir72XCXDefaultCorePath,
     getDefaultLatestCoreName,
     getAir72XCXModuleModelName,
+    getUnzipToolPath,
 } from './variableInterface';
 import { copyDir } from './project/projectApi';
 
@@ -228,13 +230,17 @@ async function download(url: any, filePath: any) {
 *@param distPath 解压到的指定目的路径 
 */
 async function unzip(srcPath: any, distPath: any) {
-    await compressing.zip.uncompress(srcPath, distPath, { zipFileNameEncoding: 'utf-8' })
-        .then(() => {
-            console.log('unzip', 'success');
-        })
-        .catch(err => {
-            console.error('unzip', err);
-        });
+    // await compressing.zip.uncompress(srcPath, distPath, { zipFileNameEncoding: 'gbk' })
+    //     .then(() => {
+    //         console.log('unzip', 'success');
+    //     })
+    //     .catch(err => {
+    //         console.error('unzip', err);
+    //     });
+    const unzipToolPath:string  = getUnzipToolPath();
+    // 7z解压缩命令
+    const cmdStr:string = `${unzipToolPath} x ${srcPath} -o${distPath}`;
+    await childProcess.execSync(cmdStr);
 }
 
 /*
