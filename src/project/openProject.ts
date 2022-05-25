@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
 import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile, pushProjectConfigIgnoreFile } from './projectConfigParse';
 import * as checkFile from './checkFile';
-import { getPluginUnsupportedCoreModuleList } from '../variableInterface';
+import { getDefaultWorkspacePath, getPluginUnsupportedCoreModuleList } from '../variableInterface';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
@@ -30,7 +30,7 @@ export class OpenProject {
 			canSelectFiles: false,		//是否选择文件
 			canSelectFolders: true,		//是否选择文件夹
 			canSelectMany: false,		//是否选择多个文件
-			defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
+			defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
 			openLabel: '选择您需要打开的工程目录'
 		};
         const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);
@@ -62,7 +62,7 @@ export class OpenProject {
 			canSelectFiles: false,		//是否选择文件
 			canSelectFolders: true,		//是否选择文件夹
 			canSelectMany: false,		//是否选择多个文件
-			defaultUri: vscode.Uri.file("C://"),	//默认打开文件位置
+			defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
 			openLabel: '选择您需要打开的工程目录'
 		};
         const importProjectPath: any = await this.getOpenProjectUserSelectdPath(options);

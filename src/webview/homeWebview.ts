@@ -9,9 +9,9 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
-import {getAir72XCXModuleModelName, getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+import {getAir72XCXModuleModelName, getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHistoryCorePath, getHistoryLibPath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
-import { getPluginConfigActivityProject, pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
+import { pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectName, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
@@ -143,7 +143,7 @@ export class HomeManage {
 
     // 处理从webview传来的命令
     async receiveMessageHandle(context:vscode.ExtensionContext,homePanel: any, message: any,homeLoadingState:any) {
-        let activityProjectPath: string = getPluginConfigActivityProject();
+        // let activityProjectPath: string = getPluginConfigActivityProject();
         const pluginDefaultModuleList: string[] = getPluginDefaultModuleList();
         const air72XCXModuleModelName = getAir72XCXModuleModelName();
         // const pluginDefaultAir101Example:string[] = getAir101DefaultExampleList();
@@ -448,7 +448,7 @@ export class HomeManage {
                             canSelectFiles: false,		//是否选择文件
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
                             openLabel: '选择工程文件夹'
                         };
                         const customProjectPathResult:any = await showOpenDialog(customProjectOptions);
@@ -470,7 +470,7 @@ export class HomeManage {
                             canSelectFiles: false,		//是否选择文件
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getHistoryLibPath()),	//默认打开文件位置
                             openLabel: '选择工程Lib文件夹'
                         };
                         const customLibPathResult = await showOpenDialog(customLibOptions);
@@ -493,7 +493,7 @@ export class HomeManage {
                             canSelectFiles: true,		//是否选择文件
                             canSelectFolders: false,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getHistoryCorePath()),	//默认打开文件位置
                             openLabel: '选择工程Core文件夹',
                             filters: {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
@@ -571,7 +571,7 @@ export class HomeManage {
                             canSelectFiles: false,		//是否选择文件
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
                         const customProjectPathResult = await showOpenDialog(customProjectOptions);
@@ -597,7 +597,7 @@ export class HomeManage {
                             canSelectFiles: false,		//是否选择文件
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getHistoryLibPath()),	//默认打开文件位置
                             openLabel: '选择需要导入工程的文件夹'
                         };
                         const customLibPathResult = await showOpenDialog(customLibOptions);
@@ -624,7 +624,7 @@ export class HomeManage {
                             canSelectFiles: true,		//是否选择文件
                             canSelectFolders: false,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
-                            defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
+                            defaultUri: vscode.Uri.file(getHistoryCorePath()),	//默认打开文件位置
                             openLabel: '选择底包',
                             filters: {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
