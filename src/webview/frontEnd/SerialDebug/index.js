@@ -220,7 +220,7 @@ function serialInit() {
 }
 
 //激活 VsCode 通信
-// const vscode = acquireVsCodeApi();
+const vscode = acquireVsCodeApi();
 
 /* 发送界面已准备完毕给vscode */
 vscode.postMessage({
