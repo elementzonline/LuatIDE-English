@@ -306,6 +306,20 @@ export function getLoginFailedPath() {
 }
 /*--------------------------------------登录界面资源文件路径相关接口----------------------------------------*/ 
 
+/*++++++++++++++++++++++++++++++++++++++串口监视器资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取串口监视器主页资源文件路径
+export function getSerialPortMonitorSourcePath() {
+    const projectSourcePath: string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'serialDebug');
+    return projectSourcePath;
+}
+
+// 获取串口监视器html资源路径
+export function getSerialPortMonitorHtmlPath(){
+    const seriportMonitorHtmlPath:string = path.join(extensionPath, 'src', 'webview', 'frontEnd', 'serialDebug', 'index.html');
+    return seriportMonitorHtmlPath;
+}
+/*--------------------------------------串口监视器资源文件路径相关接口----------------------------------------*/ 
+
 /*--------------------------------------webview资源文件路径相关接口----------------------------------------*/ 
 
 /*++++++++++++++++++++++++++++++++++++++UI设计器资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
@@ -712,6 +726,13 @@ export function getLibListBaseMoudeleMode(moduleModel: any) {
 
 /*--------------------------------------工程管理数据资源文件路径相关接口----------------------------------------*/ 
 
+/*++++++++++++++++++++++++++++++++++++++工具集合相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+// 获取7z压缩工具路径
+export function getUnzipToolPath(){
+    const unzipToolPath:string = path.join(extensionPath,'tools','7z','7za.exe');
+    return unzipToolPath;
+}
+
 // 获取本地所有串口信息
 export async function getSerialPortInfoList() {
     let portFriendlyNameList:string[] = [];
@@ -733,9 +754,4 @@ export async function getSerialPortInfoList() {
     }
 }
 
-/*++++++++++++++++++++++++++++++++++++++工具相关接口++++++++++++++++++++++++++++++++++++++++*/ 
-export function getUnzipToolPath(){
-    const unzipToolPath:string = path.join(extensionPath,'tools','7z','7za.exe');
-    return unzipToolPath;
-}
 /*--------------------------------------工具相关接口----------------------------------------*/
