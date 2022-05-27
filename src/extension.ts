@@ -25,6 +25,8 @@ import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
 import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc } from './project/activityProjectConfig';
+import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
+import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
@@ -73,8 +75,10 @@ let projectActiveHandle = new ProjectActiveHandle();
 let projectDeleteHandle = new ProjectDeleteHandle();
 let openProject = new OpenProject();
 let homeManage = new HomeManage();
+let serialPortMonitor =  new SerialPortMonitor();
 let historyProjectTreeDataProvider = new HistoryProjectDataProvider();
 let activityProjectTreeDataProvider = new ActivityTreeDataProvider();
+let toolsHubTreeDataProvider = new ToolsHubTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 let uiDesign = new UiDesign();
 const selectors: { language: string; scheme: string }[] = [
@@ -156,10 +160,24 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 	}));
+	// 注册工具集合点击命令，当点击工具集合内工具项时触发
+	context.subscriptions.push(vscode.commands.registerCommand('luatide-tools-hub.click',(lable)=>{
+		switch (lable) {
+			case '串口监视器':
+				// 打开串口监视器webview
+				serialPortMonitor.serialPortMonitor(context);
+				break;
+		
+			default:
+				break;
+		}
+	}));
 	// 注册用户历史工程TreeView
 	vscode.window.registerTreeDataProvider('luatide-history-project', historyProjectTreeDataProvider);
 	// 注册用户活动工程TreeView
 	vscode.window.registerTreeDataProvider('luatide-activity-project', activityProjectTreeDataProvider);
+	// 注册用户工具集合TreeView
+	vscode.window.registerTreeDataProvider('luatide-tools-hub',toolsHubTreeDataProvider);
 	// 注册用户工程刷新命令，当执行该命令自动刷新用户工程
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Project.refresh', async (filePath: HistoryProjectTreeItem) => historyProjectTreeDataProvider.refresh()));
 	// 注册活动工程刷新命令，当执行该命令自动刷新活动工程
