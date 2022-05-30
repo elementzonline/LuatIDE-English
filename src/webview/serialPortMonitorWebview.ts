@@ -78,7 +78,18 @@ export class SerialPortMonitor {
                 );
                 break;
             case "serialNumber":
-                setSerialNumber(message.text);
+                const reg = /\[(\w*)\]/ig;
+                const comPortList:string[] | null = reg.exec(message.text);
+                let comPort:string;
+                if (comPortList===null) {
+                    // 串口号不对
+                    console.log("串口号匹配失败");
+                    comPort = "";
+                }
+                else{
+                        comPort = comPortList[1];
+                }
+                setSerialNumber(comPort);
                 break;
             case "baudRate":
                 setBaudRate(message.text);
@@ -106,6 +117,7 @@ export class SerialPortMonitor {
             case "timingTransmission":
                 // 执行定时操作功能
                 setTimingState(message.text);
+                sendDataTimingToHardware();
                 break;
             case "timingPeriod":
                 // 设置定时任务周期时间
@@ -113,14 +125,13 @@ export class SerialPortMonitor {
                 break;
             case "sentData":
                 // 设置发送内容
-                sendDataToHardware(message.text);
+                setSendData(message.text);
+                sendDataToHardware();
                 break;
         }
     }
-
-
 }
-
+new vscode.EventEmitter();
 // 获取串口监视器可选配置对象
 let serialportOptions:any = {
     "path":"COM2",
@@ -136,9 +147,17 @@ let timingOptions:any = {
     "timingPeriod":"1000"
 };
 
+let dataContent:string ="";
+
+// 设置发送数据
+export function setSendData(data:string){
+    dataContent = data;
+}
+
 // 定时操作状态设置
 export function setTimingState(data){
-    timingOptions.state = data;
+    timingOptions.state = data.state;
+    setSendData(data.data);
 }
 
 // 定时操作周期设置
@@ -147,13 +166,13 @@ export function setTimingPeriod(data){
 }
 
 // 设置串口号
-export function setSerialNumber(data: number) {
+export function setSerialNumber(data: string) {
     serialportOptions.path = data;
 }
 
 //设置波特率
-export function setBaudRate(data: number) {
-    serialportOptions.baudRate = data;
+export function setBaudRate(data: string) {
+    serialportOptions.baudRate = Number(data);
 }
 
 // 设置数据位
@@ -272,11 +291,11 @@ export function sendDataToFrontEnd(panel){
 }
 
 // 执行发送数据给硬件指令
-export function sendDataToHardware(data){
-    if (!timingOptions.state){
-        port.write(data);
-    }
-    else{
-        setInterval(port.write(data),timingOptions.timingPeriod);
-    }
+export function sendDataToHardware(){
+    port.write(dataContent);
+}
+
+// 定时发送数据给硬件指令
+export function sendDataTimingToHardware(){
+    setInterval(function(){if (timingOptions.state){port.write(dataContent);}},timingOptions.timingPeriod);
 }

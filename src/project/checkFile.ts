@@ -11,7 +11,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject, getPluginConfigUserProjectList, setPluginConfigUserProjectList } from '../plugConfigParse';
-import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getSerialPortInfoList } from '../variableInterface';
+import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getActiveProjectSerialPortInfoList } from '../variableInterface';
 import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectconfigName, setProjectConfigModuleModel, setProjectConfigModulePort, setProjectConfigProjectName } from './projectConfigParse';
 import { selectProjectCorePathOperation, selectProjectLibPathOperation } from './activeProjectOperation';
 import { checkSameProjectExistStatusForPluginConfig } from './projectApi';
@@ -566,7 +566,7 @@ class ProjectCfgInit {
         this.moduleModel = getProjectConfigModuleModel(this.activityMemoryProjectPath);
         this.modulePort = getProjectConfigMoudlePort(this.activityMemoryProjectPath);
         this.moduleModelArray = getPluginDefaultModuleList();
-        this.modulePortArray = await getSerialPortInfoList();
+        this.modulePortArray = await getActiveProjectSerialPortInfoList();
 
         // 定时轮询更新活动工程配置
         this.updtaeSerialPort();
@@ -578,14 +578,14 @@ class ProjectCfgInit {
         if (this.timeId){
             clearInterval(this.timeId);
         }
-        const serialportListNew = await getSerialPortInfoList();
+        const serialportListNew = await getActiveProjectSerialPortInfoList();
         const corePathNew = getProjectConfigCorePath(this.activityMemoryProjectPath);
         const libPathNew = getProjectConfigLibPath(this.activityMemoryProjectPath);
         const moduleModelNew = getProjectConfigModuleModel(this.activityMemoryProjectPath);
         const modulePortNew = getProjectConfigMoudlePort(this.activityMemoryProjectPath);
         const projectName = getProjectconfigName(this.activityMemoryProjectPath);
         this.moduleModelArray = getPluginDefaultModuleList();
-        this.modulePortArray =  await getSerialPortInfoList();
+        this.modulePortArray =  await getActiveProjectSerialPortInfoList();
         // 暂时先以长度做相似性判断，防止遍历对性能影响过大
         if (serialportListNew.length !== this.serialportList.length || corePathNew !== this.corePath ||
             libPathNew !== this.libPath || moduleModelNew !== this.moduleModel || modulePortNew !== this.modulePort || this.firstSendData) {

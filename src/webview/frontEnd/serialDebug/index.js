@@ -31,28 +31,26 @@ function sd_openSortOpera(data) {
         command: "openSerial",
         text: data.sortIsOpen,
     });
-    // if (data.sortIsOpen) {
-        vscode.postMessage({
-            command: "serialNumber",
-            text: $(".sd-sort-select option:selected").val(),
-        });
-        vscode.postMessage({
-            command: "baudRate",
-            text: $(".sd-baudRate option:selected").val(),
-        });
-        vscode.postMessage({
-            command: "dataBits",
-            text: $(".sd-dataBits option:selected").val(),
-        });
-        vscode.postMessage({
-            command: "checkDigit",
-            text: $(".sd-checkDigit option:selected").val(),
-        });
-        vscode.postMessage({
-            command: "stopBits",
-            text: $(".sd-stopBits option:selected").val(),
-        });
-    // }
+    vscode.postMessage({
+        command: "serialNumber",
+        text: $(".sd-sort-select option:selected").val(),
+    });
+    vscode.postMessage({
+        command: "baudRate",
+        text: $(".sd-baudRate option:selected").val(),
+    });
+    vscode.postMessage({
+        command: "dataBits",
+        text: $(".sd-dataBits option:selected").val(),
+    });
+    vscode.postMessage({
+        command: "checkDigit",
+        text: $(".sd-checkDigit option:selected").val(),
+    });
+    vscode.postMessage({
+        command: "stopBits",
+        text: $(".sd-stopBits option:selected").val(),
+    });
 }
 
 /* 串口的开关 */
@@ -133,7 +131,10 @@ sd_sendTimeSendSwitch.on("change", function () {
     let isChecked = $(this).prop("checked");
     vscode.postMessage({
         command: "timingTransmission",
-        text: isChecked,
+        text: {
+            state: isChecked,
+            data: sd_disInput.val()
+        },
     });
 });
 
@@ -200,14 +201,17 @@ sd_alertSubmit.on("click", function () {
     }
 });
 
-/* 串口调试初始化 */
+/* 串口调试初始化第一步 */
 function serialInit() {
     sd_sortSelect.empty();
     sd_baudRate.empty();
     sd_dataBits.empty();
     sd_checkDigit.empty();
     sd_stopBits.empty();
+}
 
+/* 串口调试初始化第二步 */
+function serialInitAddHide(){
     let option2 = $("<option class='sd-baudRate-hide' style='display: none' value='def'>");
     let option3 = $("<option class='sd-dataBits-hide' style='display: none' value='def'>");
     let option4 = $("<option class='sd-checkDigit-hide' style='display: none' value='def'>");
@@ -242,11 +246,20 @@ window.addEventListener("message", (event) => {
             sd_autoAddOption(message.text.dataBitsList, sd_dataBits);
             sd_autoAddOption(message.text.checkDigitList, sd_checkDigit);
             sd_autoAddOption(message.text.stopBits, sd_stopBits);
+            serialInitAddHide();
             break;
-        //获取接受区数据
+        //串口异常的处理
+        case "serialPortException":
+            sd_isOpen = false;
+            $(this).text("打开串口");
+            document.documentElement.style.setProperty(
+                "--default-baseLed-bgColor",
+                "rgb(212, 35, 35)"
+            );
+            break;
         case "receiveData":
             let oldData = sd_disOutput.val();
-            sd_disOutput.val(oldData + "\r\n" + message.text);
+            sd_disOutput.val(oldData  + message.text);
             break;
         default:
             break;
