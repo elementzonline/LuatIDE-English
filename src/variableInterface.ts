@@ -746,12 +746,18 @@ export async function getSerialPortInfoList() {
             portFriendlyNameList.push(portDesc);
         }
         // console.log(ports); // 打印串口列表
-        portFriendlyNameList.unshift("");
         return portFriendlyNameList;
     } catch (error) {
         console.log(error);
         return portFriendlyNameList;
     }
+}
+
+// 活动工程配置获取串口信息列表
+export async function getActiveProjectSerialPortInfoList() {
+    let portFriendlyNameList:string[] = await getSerialPortInfoList();
+    portFriendlyNameList.unshift("");
+    return portFriendlyNameList;
 }
 
 /*--------------------------------------工具相关接口----------------------------------------*/
