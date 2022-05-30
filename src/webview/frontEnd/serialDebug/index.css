@@ -25,7 +25,7 @@ body {
     text-align: center;
     position: relative;
     min-width: 880px;
-    min-height: 760px;
+    min-height: 800px;
 }
 
 .mainBg {
@@ -83,7 +83,7 @@ i {
 }
 
 .sd-base-child2 {
-    height: 25%;
+    height: 22%;
     margin: auto;
     position: relative;
 }
