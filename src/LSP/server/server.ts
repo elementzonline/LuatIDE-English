@@ -42,8 +42,8 @@ import { GoToDefinition } from "./goToDefinition";
 import { SignatureProvider } from "./signatureProvider";
 import { DiagnosticProvider, CheckHow } from "./diagnosticProvider";
 import { Setting, FileParseType } from './setting';
-import path = require('path');
-import fs = require('fs');
+// import path = require('path');
+// import fs = require('fs');
 // const { Subject } = require('await-notify');
 
 export const sleep = (ms)=> {
@@ -65,7 +65,6 @@ export class Server {
     // private rootWorkspaceState = false;
     // private rootWorkspaceMessage = new Subject();
     private isPreInit = false;
-
     private exportVer: number = 0;
     private exportSym = new Map<string, number>();
 
@@ -86,7 +85,18 @@ export class Server {
         //     }
         // );
         conn.onInitialize(handler => this.onInitialize(handler));
-        conn.onInitialized(async () => {
+        conn.onNotification(async (method,handler) =>
+        {
+            switch (method) {
+                case "activeProjectPath":
+                    this.rootWorkspace?.push(handler);
+                    break;
+                case "libPath":
+                    this.rootWorkspace?.push(handler);
+                    break;
+                default:
+                    break;
+            }
             try {
                 // 阻塞初始一些必须的参数
                 await this.preInitialized();
@@ -95,6 +105,17 @@ export class Server {
             } catch (e) {
                 Utils.instance().anyError(e);
             }
+        }
+        );
+        conn.onInitialized(async () => {
+            // try {
+            //     // 阻塞初始一些必须的参数
+            //     await this.preInitialized();
+            //     // 解析、luacheck这些比较耗时，异步进行就可以了
+            //     this.onInitialized();
+            // } catch (e) {
+            //     Utils.instance().anyError(e);
+            // }
         });
         conn.onCompletion(handler => {
             try {
@@ -244,50 +265,34 @@ export class Server {
         return true;
     }
 
-    // 获取lib库路径
-    private getLibPath(dir:string) {
-        let libPath:string;
-        let projectJsonPath:string = path.join(dir,'luatide_project.json');
-        // console.log('====9',projectJsonPath);
-        if (fs.existsSync(projectJsonPath)) {
-            libPath = JSON.parse(fs.readFileSync(projectJsonPath,'utf-8'))['libPath'];
-            console.log('====10',libPath);
-        }
-        else{
-            libPath = "";
-        }
-        // console.log('====11',libPath);
-        return libPath;
-    };
-
     private onInitialize(params: InitializeParams): InitializeResult {
         // TODO no multi dir support for now
-        const folders = params.workspaceFolders;
-        console.log('====8',params);
-        let projectLibPath;
-        if (params.rootPath) {
-            projectLibPath =  this.getLibPath(params.rootPath);
-            if (projectLibPath!=="" && !fs.existsSync(projectLibPath)) {
-                projectLibPath = '';
-                console.log('lib库文件检测不存在');
-            }
-        }
+        // const folders = params.workspaceFolders;
+        // console.log('====8',params);
+        // let projectLibPath;
+        // if (params.rootPath) {
+        //     projectLibPath =  this.getLibPath(params.rootPath);
+        //     if (projectLibPath!=="" && !fs.existsSync(projectLibPath)) {
+        //         projectLibPath = '';
+        //         console.log('lib库文件检测不存在');
+        //     }
+        // }
 
-        // let projectLibPath = 'C:\\Users\\AAA\\AppData\\Roaming\\LuatIDE\\LuatideLib\\Air72XUX_LIB\\V2.4.2\\lib';
+        // // let projectLibPath = 'C:\\Users\\AAA\\AppData\\Roaming\\LuatIDE\\LuatideLib\\Air72XUX_LIB\\V2.4.2\\lib';
 
-        // console.log('====test',this.rootWorkspace);
-        if (folders && folders.length > 0) {
-            // this.rootUri = folders[0].uri;
-            // Utils.instance().log(`using ${this.rootUri} as root`)
+        // // console.log('====test',this.rootWorkspace);
+        // if (folders && folders.length > 0) {
+        //     // this.rootUri = folders[0].uri;
+        //     // Utils.instance().log(`using ${this.rootUri} as root`)
          
-            // console.log(projectLibPath,'====12');
-            for (let index = 0; index < folders.length; index++) {
-                this.rootWorkspace?.push(folders[index].uri.toString());  
-            }
-            if (this.rootWorkspace?.indexOf(projectLibPath)===-1 && projectLibPath!=="") {
-                this.rootWorkspace?.push(URI.file(projectLibPath).toString());
-            }
-        }
+        //     // console.log(projectLibPath,'====12');
+        //     for (let index = 0; index < folders.length; index++) {
+        //         this.rootWorkspace?.push(folders[index].uri.toString());  
+        //     }
+        //     if (this.rootWorkspace?.indexOf(projectLibPath)===-1 && projectLibPath!=="") {
+        //         this.rootWorkspace?.push(URI.file(projectLibPath).toString());
+        //     }
+        // }
         // while (true) {
         //     if (this.rootWorkspaceState===true) {
         //         break;
@@ -342,6 +347,7 @@ export class Server {
     }
 
     private async onInitialized() {
+    
         if (!this.rootWorkspace) {
             return;
         }
