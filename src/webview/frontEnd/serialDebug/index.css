@@ -1,0 +1,282 @@
+/* 消除界面样式 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* 明亮 */
+    --default-bgColor: rgb(255, 255, 255, 0.8);
+    --default-fontColor: rgb(56, 53, 53);
+
+    /* 暗黑 */
+    --default-bgColor: rgb(37, 37, 38);
+    --default-mainBg-bgColor: rgb(37, 37, 38, 0.2);
+    --default-fontColor: rgba(255, 255, 255, 0.55);
+
+    --default-baseLed-bgColor: rgb(74, 218, 18);
+    --default-baseLed-bgColor: rgb(212, 35, 35);
+}
+
+body {
+    background-color: var(--default-bgColor);
+    color: var(--default-fontColor);
+    height: 100vh;
+    text-align: center;
+    position: relative;
+    min-width: 880px;
+    min-height: 800px;
+}
+
+.mainBg {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    display: grid;
+    grid-gap: 24px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "g-leftBar g-leftBar g-leftBar g-leftBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar g-rightBar";
+    background-color: var(--default-mainBg-bgColor);
+    color: var(--default-fontColor);
+    position: absolute;
+}
+
+/* 左右部分区 */
+.rightBar,
+.leftBar {
+    position: relative;
+    color: var(--default-fontColor);
+    text-align: center;
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
+        "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+}
+
+.leftBar {
+    grid-area: g-leftBar;
+    background-color: var(--default-fontColor);
+}
+
+.rightBar {
+    grid-area: g-rightBar;
+    background-color: var(--default-fontColor);
+}
+
+i {
+    color: var(--default-fontColor);
+}
+
+/* 串口属性设置区 */
+.sd-set {
+    height: 33.33%;
+    background-color: var(--default-mainBg-bgColor);
+}
+
+.sd-base-child {
+    height: 13%;
+    margin: auto;
+    position: relative;
+    padding-top: 7px;
+}
+
+.sd-base-child2 {
+    height: 22%;
+    margin: auto;
+    position: relative;
+}
+
+.sd-sendSet,
+.sd-acceptSet {
+    border-top: solid 1px var(--default-bgColor);
+}
+
+.sd-base-input {
+    outline: none;
+    width: 50%;
+}
+
+.sd-led {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 0;
+    top: 20%;
+    margin-right: 40px;
+    background: var(--default-baseLed-bgColor);
+    position: relative;
+}
+
+.sd-openSort {
+    width: 30%;
+    height: 50%;
+    background: rgb(66, 129, 209);
+    border: 1px solid rgb(65, 71, 78);
+}
+
+.sd-openSort:hover {
+    background: rgba(79, 145, 231, 0.5);
+}
+
+/* 接受区设置 */
+.sd-apt-opera {
+    height: 70%;
+    margin: auto;
+    position: relative;
+    text-align: center;
+}
+
+.sd-apt-clearData,
+.sd-apt-stopRoll {
+    width: 30%;
+    height: 20%;
+    top: 50%;
+    position: relative;
+    margin: 0 20px;
+}
+
+/* 发送区设置 */
+.sd-send-child {
+    height: 30%;
+    margin: auto;
+    position: relative;
+    display: block;
+}
+
+.sd-send-child1 {
+    width: 50%;
+    float: left;
+    height: 100%;
+    display: inline;
+    align-items: center;
+    justify-content: center;
+}
+
+.sd-send-child2 {
+    height: 100%;
+    position: relative;
+}
+
+.sd-send-child-child {
+    margin-top: 15%;
+}
+
+.sd-send-child-child2 {
+    margin-top: 5%;
+}
+
+.sd-send-timePeriod {
+    width: 30%;
+    outline: none;
+}
+
+.sd-send-clearData,
+.sd-send-sendDataBtn {
+    width: 30%;
+    height: 50%;
+    margin: 0 20px;
+}
+
+.sd-send-sendDataBtn {
+    background: rgb(66, 129, 209);
+    border: 1px solid rgb(65, 71, 78);
+}
+
+.sd-send-sendDataBtn:hover {
+    background: rgba(79, 145, 231, 0.5);
+}
+
+/* 输出显示区 */
+.sd-dataOutput {
+    height: 85%;
+    background-color: var(--default-mainBg-bgColor);
+}
+
+/* 数据输入区 */
+.sd-dataInput {
+    height: 15%;
+    border-top: solid 1px var(--default-bgColor);
+    background-color: var(--default-mainBg-bgColor);
+}
+
+.sd-display-sendLabel {
+    margin: 0px auto;
+    height: 20%;
+}
+
+.sd-display-input1 {
+    margin: auto;
+    height: 96.5%;
+}
+
+.sd-display-input2 {
+    margin: auto;
+    height: 80%;
+}
+
+.sd-send-input,
+.sd-accept-input {
+    border: 0;
+    padding: 0;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    background-color: var(--default-mainBg-bgColor);
+}
+
+.sd-send-input:focus,
+.sd-accept-input:focus {
+    outline: none;
+}
+
+.sd-display-tip {
+    text-align: right;
+    margin-right: 20px;
+}
+
+
+.alertWindow {
+    width: 300px;
+    height: 150px;
+    background: rgb(207, 204, 204, 0.8);
+    top: 30%;
+    left: 50%;
+    position: absolute;
+    text-align: center;
+    display: none;
+}
+
+.sd-alertInput {
+    margin-top: 30px;
+    outline: none;
+}
+
+.sd-alert-submitBox {
+    margin-top: 15px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sd-alertInput-submit,
+.sd-alertInput-cancel {
+    width: 80px;
+    height: 30px;
+    display: block;
+    position: relative;
+    margin: 0 5px;
+}
+
+.sd-alertInput-submit {
+    background: rgb(66, 129, 209);
+    border: 1px solid rgb(65, 71, 78);
+}
+
+.sd-alertInput-submit:hover {
+    background: rgba(79, 145, 231, 0.5);
+}
