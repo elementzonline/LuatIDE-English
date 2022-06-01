@@ -133,7 +133,7 @@ sd_sendTimeSendSwitch.on("change", function () {
         command: "timingTransmission",
         text: {
             state: isChecked,
-            data: sd_sendTimePeriod.val()
+            data: sd_disInput.val()
         },
     });
 });
@@ -259,7 +259,7 @@ window.addEventListener("message", (event) => {
             break;
         case "receiveData":
             let oldData = sd_disOutput.val();
-            sd_disOutput.val(oldData + "\r\n" + message.text);
+            sd_disOutput.val(oldData  + message.text);
             break;
         default:
             break;
