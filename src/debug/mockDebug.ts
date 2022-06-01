@@ -615,26 +615,10 @@ export class MockDebugSession extends LoggingDebugSession {
 			vscode.debug.stopDebugging();
 			return;
 		}
-
-		// 等待下载完成状态
-		for (var i = 0; i < 120 * 3; i++) {
-			if (this.download_state === 0) {
-				console.log(TAG, "等待download_state");
-				await this.download_success.wait(300);
-			} else {
-				break;
-			}
-		}
-		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
-
-		for (var i = 0; i < 120 * 3; i++) {
-			if (this.dbg_state === 1) {
-				console.log(TAG, "waiting for debugger ok");
-				break;
-			} else {
-				console.log(TAG, "等待waiting for debugger");
-				await this.sleep(300);
-			}
+		if(await this.waitDeviceConnect() === false) {
+			// 强行终止调试器
+			vscode.debug.stopDebugging();
+			return;
 		}
 		vscode.commands.executeCommand("workbench.panel.repl.view.focus");
 		/*-\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
