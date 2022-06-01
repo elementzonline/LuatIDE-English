@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 // import { ProjectJsonParse } from './projectConfigParse';
-import { getPluginConfigActivityProject, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getPluginConfigActivityProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath } from './projectConfigParse';
 import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwaveDesc, getHelp, getProductionFileDesc, getSimulatorDesc, getUiDesignDesc } from './activityProjectConfig';
 
@@ -45,6 +45,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
 
 // 初始化活动工程数据
 function activeProjectDataInit(activityPath: string) {
+  projectConfigCompatible(activityPath);
   const treeDir: ActivityTreeItem[] = [];
   const activityProjectJson: any = JSON.parse(fs.readFileSync(path.join(activityPath, 'luatide_project.json'), 'utf-8'));
   const activityProjectPath: string = path.dirname(activityPath);
