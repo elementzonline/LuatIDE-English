@@ -509,7 +509,50 @@ export class MockDebugSession extends LoggingDebugSession {
 		return false;
 	}
 
+	public async waitDeviceConnect() {
+		const timeoutS = 120;
+		// 等待下载完成状态
+		for (var i = 0; i < timeoutS * 3; i++) {
+			if (this.download_state === 0) {
+				console.log(TAG, "等待download_state");
+				await this.download_success.wait(300);
+			} else {
+				break;
+			}
+			if(i === timeoutS * 3 - 1)
+			{	
+				console.log(TAG, "等待download_state超时");
+				return false;
+			}
+			if(ideServer.connectStatus() === false)
+			{
+				console.log(TAG, "ideServer断开连接");
+				return false;
+			}
+		}
+		/*+\NEW\zhw\2021.06.11\修改用户概率性不能进断点bug*/
 
+		for (var i = 0; i < timeoutS * 3; i++) {
+			if (this.dbg_state === 1) {
+				console.log(TAG, "waiting for debugger ok");
+				break;
+			} else {
+				console.log(TAG, "等待waiting for debugger");
+				await this.sleep(300);
+			}
+			if(i === timeoutS * 3 - 1)
+			{	
+				console.log(TAG, "等待waiting for debugger超时");
+				return false;
+			}
+			if(ideServer.connectStatus() === false)
+			{
+				console.log(TAG, "ideServer断开连接");
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * The 'initialize' request is the first request called by the frontend
 	 * to interrogate the features the debug adapter provides.
