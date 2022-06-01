@@ -10,7 +10,6 @@ import {
     getCorePathBaseModuleModel,
     getDefaultLatestCorePath,
     getPluginAirModuleList,
-    getPluginUnsupportedCoreModuleList,
 } from "../variableInterface";
 
 // let pluginJsonParse:any = new PluginJsonParse(); 
@@ -169,9 +168,6 @@ export function projectActiveInterfact(activityProjectName:string,activityProjec
     const defaultCorePath:string = getCorePathBaseModuleModel(moduleModel);
     if (fs.existsSync(corePath)) {
         corePath = corePath;
-    }
-    else if (getPluginUnsupportedCoreModuleList().indexOf(moduleModel)!==-1) {
-        corePath = '';
     }
     else if (corePath==='') {
         corePath  = getDefaultLatestCorePath(moduleModel);

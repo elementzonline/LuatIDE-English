@@ -1037,11 +1037,6 @@ end
                 demoPath = path.join(air72XUXDefaultVersionDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);
                 break;
-            case 'simulator':
-                const simulatorDefaultVersionDemoPath: string = getAir72XUXDefaultLatestDemoPath();
-                demoPath = path.join(simulatorDefaultVersionDemoPath, projectDemo);
-                copyDir(demoPath, projectDemoDistPath);
-                break;
             case 'air101':
                 demoPath = path.join(air101DefaultDemoPath, projectDemo);
                 copyDir(demoPath, projectDemoDistPath);

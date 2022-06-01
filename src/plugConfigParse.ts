@@ -317,9 +317,7 @@ export function projectConfigCompatibleVersionLessThanTwo(projectPath: string, p
         case 'Air10X':
             luatideProjectNewJson.moduleModel = 'air10X';
             break;
-        case 'Simulator':
-            luatideProjectNewJson.moduleModel = 'simulator';
-            break;
+
     }
     // 用户appFile文件兼容
     const appFileOld: string[] = projectOldJsonObj['app_file'];
