@@ -2,6 +2,8 @@
 // import {PluginVariablesInit} from './config';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as variableInterface from './variableInterface';
+
 import { activityMemoryProjectPathBuffer } from './extension';
 
 import {
@@ -268,6 +270,10 @@ export function projectConfigCompatible(projectPath: string) {
     else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
         projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
     }
+    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.5){
+        projectConfigCompatibleVersionTwoPointSix(projectPath,projectOldJsonObj);
+    }
+    
 }
 
 // 获取指定路径工程配置的对象
@@ -283,11 +289,13 @@ export function getProjectJsonObjVersionTwo() {
         version: '',
         projectName:'',
         projectType: 'pure',
+        moduleModel: '',
+        simulatorRun:'',
         corePath: '',
         libPath: '',
-        moduleModel: '',
-        appFile: [],
         modulePort: '',
+        appFile: [],
+        ignore: [],
     };
     return luatideProjectNewJson;
 }
@@ -317,9 +325,7 @@ export function projectConfigCompatibleVersionLessThanTwo(projectPath: string, p
         case 'Air10X':
             luatideProjectNewJson.moduleModel = 'air10X';
             break;
-        case 'Simulator':
-            luatideProjectNewJson.moduleModel = 'simulator';
-            break;
+
     }
     // 用户appFile文件兼容
     const appFileOld: string[] = projectOldJsonObj['app_file'];
@@ -459,6 +465,38 @@ export function projectConfigCompatibleVersionTwoPointFive(projectPath: string, 
     luatideProjectNewJson.ignore = projectOldJsonObj.ignore;
     //新增工程名称配置项，旧版本工程配置升级工程名称以工程所在路径文件夹名称替代
     luatideProjectNewJson.projectName = path.basename(projectPath);
+    const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
+    fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
+}
+
+
+// 工程配置文件2.5版本配置文件兼容至2.6版本
+// 本次兼容主要是为了去除模块型号中的simulator
+export function projectConfigCompatibleVersionTwoPointSix(projectPath: string, projectOldJsonObj: any) {
+    const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
+    const luatideProjectNewJson: any = getProjectJsonObjVersionTwo();
+    luatideProjectNewJson.version = '2.6';
+    luatideProjectNewJson.projectType = projectOldJsonObj.projectType;
+    luatideProjectNewJson.projectName = projectOldJsonObj.projectName;
+    // 新增simulatorRun标志，标识是否启用模拟器运行
+    if(projectOldJsonObj.moduleModel === "simulator")
+    {
+        luatideProjectNewJson.moduleModel = "air72XUX/air82XUX";
+        luatideProjectNewJson.simulatorRun = "enable";
+        luatideProjectNewJson.corePath = variableInterface.getDefaultLatestCorePath(luatideProjectNewJson.moduleModel);
+        luatideProjectNewJson.libPath = variableInterface.getAir72XUXDefaultLatestLibPath();
+    }
+    else
+    {
+        luatideProjectNewJson.moduleModel = projectOldJsonObj.moduleModel;
+        luatideProjectNewJson.simulatorRun = "disable";
+        luatideProjectNewJson.corePath = projectOldJsonObj.corePath;
+        luatideProjectNewJson.libPath = projectOldJsonObj.libPath;
+    }
+    luatideProjectNewJson.modulePort = projectOldJsonObj.modulePort;
+    luatideProjectNewJson.appFile = projectOldJsonObj.appFile;
+    luatideProjectNewJson.ignore = projectOldJsonObj.ignore;
+    
     const projectConfigJsonNew = JSON.stringify(luatideProjectNewJson, null, "\t");
     fs.writeFileSync(projectConfigPath, projectConfigJsonNew);
 }

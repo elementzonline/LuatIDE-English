@@ -9,7 +9,9 @@ import * as fetch from 'node-fetch';
 import {checkSameProjectExistStatusForPluginConfig, getCreateProjectCorepathHandle, getCreateProjectLibpathHandle, getFileForDirRecursion, projectActiveInterfact} from '../project/projectApi';
 // import { ProjectJsonParse } from '../project/projectConfigParse';
 import { OpenProject } from '../project/openProject';
+
 import {getAir72XCXModuleModelName, getAir72XUXDefaultLibList, getDefaultCoreList, getDefaultExampleList, getDefaultWorkspacePath, getHistoryCorePath, getHistoryLibPath, getHomeHtmlPath, getHomeSourcePath, getLuatIDEDataPath, getNdkDefaultExampleList, getNewsApi, getPluginDefaultModuleList, getPluginInstallVersion } from '../variableInterface';
+
 import {getNdkProject} from  "../ndk/ndkCodeDownload";
 import { pushPluginConfigProject, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel, setProjectConfigProjectName, setProjectConfigProjectType, setProjectConfigVersion } from '../project/projectConfigParse';
@@ -315,7 +317,6 @@ export class HomeManage {
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
-                                        "simulator":air72XUXLibList,
                                         "esp32c3":esp32c3LibList,
                                     },
                                     "coreList": {
@@ -324,7 +325,6 @@ export class HomeManage {
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
-                                        "simulator":air72XUXCoreList,
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
@@ -346,7 +346,6 @@ export class HomeManage {
                                         "air101": pluginDefaultAir101Example,
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,
-                                        "simulator":pluginDefaultAir72XUXExample,
                                         "esp32c3":pluginDefaultEsp32c3Example,
                                     },
                                     "coreList": {
@@ -355,7 +354,6 @@ export class HomeManage {
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
-                                        "simulator":air72XUXCoreList,
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
@@ -378,7 +376,6 @@ export class HomeManage {
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
-                                    "simulator":[],
                                     "esp32c3":[],
                                 },
                                 "coreList": {
@@ -387,7 +384,6 @@ export class HomeManage {
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
-                                    "simulator":[],
                                     "esp32c3":[],
                                 },
                                 "exampleList": {
@@ -396,7 +392,6 @@ export class HomeManage {
                                     "air101": [],
                                     "air103": [],
                                     "air105": [],
-                                    "simulator":[],
                                     "esp32c3":[],
                                 },
                                 "defaultProjectPath":pluginDefaultWorkspacePath,
@@ -419,7 +414,6 @@ export class HomeManage {
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
-                                        "simulator":air72XUXLibList,
                                         "esp32c3":esp32c3LibList,
                                     },
                                     "coreList": {
@@ -428,7 +422,6 @@ export class HomeManage {
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
-                                        "simulator":air72XUXCoreList,
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "defaultProjectPath":pluginDefaultWorkspacePath,
@@ -667,7 +660,6 @@ export class HomeManage {
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
-                                            "simulator":[],
                                             "esp32c3":[],
                                         },
                                         "coreList": {
@@ -676,7 +668,6 @@ export class HomeManage {
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
-                                            "simulator":[],
                                             "esp32c3":[],
                                         },
                                         "exampleList": {
@@ -685,7 +676,6 @@ export class HomeManage {
                                             "air101": [],
                                             "air103": [],
                                             "air105": [],
-                                            "simulator":[],
                                             "esp32c3":[],
                                         },
                                 },
@@ -706,7 +696,6 @@ export class HomeManage {
                                         "air101": air101LibList,
                                         "air103": air103LibList,
                                         "air105": air105LibList,
-                                        "simulator":air72XUXLibList,
                                         "esp32c3":esp32c3LibList,
                                     },
                                     "coreList": {
@@ -715,7 +704,6 @@ export class HomeManage {
                                         "air101": air101CoreList,
                                         "air103": air103CoreList,
                                         "air105": air105CoreList,
-                                        "simulator":air72XUXCoreList,
                                         "esp32c3":esp32c3CoreList,
                                     },
                                     "exampleList": {
@@ -724,7 +712,6 @@ export class HomeManage {
                                         "air101": pluginDefaultAir101Example,
                                         "air103": pluginDefaultAir103Example,
                                         "air105": pluginDefaultAir105Example,
-                                        "simulator":pluginDefaultAir72XUXExample,
                                         "esp32c3":pluginDefaultEsp32c3Example,
                                     },
                                 },

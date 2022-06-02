@@ -16,14 +16,14 @@ export function getPluginInstallVersion(){
 // 获取插件支持的模块列表
 export function getPluginDefaultModuleList() {
     const air72XCXModuleModelName = getAir72XCXModuleModelName();
-    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "air101", "air103", "air105", "simulator", "esp32c3"];
+    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "air101", "air103", "air105", "esp32c3"];
     return moduleList;
 }
 
 // 获取插件支持的air系列模块列表
 export function getPluginAirModuleList() {
     const air72XCXModuleModelName = getAir72XCXModuleModelName();
-    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName, "simulator"];
+    const moduleList: string[] = ["air72XUX/air82XUX", air72XCXModuleModelName];
     return moduleList;
 }
 
@@ -33,11 +33,6 @@ export function getPluginSocModuleList() {
     return moduleList;
 }
 
-// 获取插件中core路径为空的模块列表(特殊情况模块型号)
-export function getPluginUnsupportedCoreModuleList() {
-    const moduleList:string[] = ["simulator"];
-    return moduleList;
-}
 
 /*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
 
@@ -433,9 +428,6 @@ export function getCorePathBaseModuleModel(moduleModel: any) {
         case 'esp32c3':
             corePath = getEsp32c3DefaultCorePath();
             break;
-        case 'simulator':
-            corePath = "";
-            break;
     }
     return corePath;
 }
@@ -593,9 +585,6 @@ export function getDemoPathBaseModuleModel(moduleModel: any) {
         case 'esp32c3':
             demoPath = getEsp32c3DefaultDemoPath();
             break;
-        case 'simulator':
-            demoPath = getAir72XUXDefaultLatestDemoPath();
-            break;
     }
     return demoPath;
 }
@@ -713,9 +702,6 @@ export function getLibListBaseMoudeleMode(moduleModel: any) {
             break;
         case 'esp32c3':
             libList = '';
-            break;
-        case 'simulator':
-            libList = getAir72XUXDefaultLibList();
             break;
         default:
             libList = getAir72XUXDefaultLibList();

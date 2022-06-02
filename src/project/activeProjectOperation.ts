@@ -196,7 +196,7 @@ export async function showOpenDialog(options: any) {
     return addFileList;
 }
 
-// 选择配置模块型号,模拟器
+// 选择配置模块型号
 export async function selectProjectModuleModel() {
     const activityPath: string = getPluginConfigActivityProject();
     const air72XCXModuleModelName = getAir72XCXModuleModelName();
@@ -207,7 +207,6 @@ export async function selectProjectModuleModel() {
             "air101",
             "air103",
             "air105",
-            "simulator",
             "esp32c3"
         ],
         {
