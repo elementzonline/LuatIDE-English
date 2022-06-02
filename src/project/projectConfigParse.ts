@@ -2,6 +2,8 @@ import * as fs from 'fs';
 // import { PluginJsonParse } from '../plugConfigParse';
 import * as path from "path";
 import { getAir72XUXDefaultLatestLibPath, getDefaultLatestCorePath } from '../variableInterface';
+import { getPluginConfigActivityProject } from '../plugConfigParse';
+
 // let pluginJsonParse = new PluginJsonParse();
 
 /**
@@ -79,6 +81,13 @@ export function getProjectConfigMoudlePort(projectPath:any){
     return projectConfigModulePort;
 }
 
+// 获取工程模拟器是否启用
+export function getProjectConfigSimulator(projectPath:any){
+    const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);
+    const projectConfigSimulatorRun:string = projectConfigJsonObj.simulatorRun;
+    return projectConfigSimulatorRun;
+}
+
 // 获取工程配置文件工程类型
 export function getProjectConfigProjectType(projectPath:any){
     const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);
@@ -112,6 +121,27 @@ export function setProjectConfigProjectName(projectName:string,projectPath:strin
     const projectJsonObj:any = getProjectConfigJson(projectPath);
     projectJsonObj.projectName = projectName;
     refreshProjectJson(projectJsonObj,projectConfigPath);
+}
+
+// 设置模拟器启用/禁用
+export function setProjectConfigSimulatorReverse(){
+    const projectPath = getPluginConfigActivityProject();	
+    const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);
+    const projectConfigSimulatorRun:string = projectConfigJsonObj.simulatorRun;
+    if(projectConfigSimulatorRun === "disable")
+    {
+        projectConfigJsonObj.simulatorRun = "enable";
+        
+    }
+    else if(projectConfigSimulatorRun === "enable")
+    {
+        projectConfigJsonObj.simulatorRun = "disable";
+    }
+    else
+    {
+        return false;
+    }
+    refreshProjectJson(projectConfigJsonObj,path.join(projectPath,'luatide_project.json'));
 }
 
     // 设置活动工程core文件路径
