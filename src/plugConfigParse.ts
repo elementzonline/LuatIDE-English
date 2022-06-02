@@ -3,7 +3,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as variableInterface from './variableInterface';
-
+import * as vscode from 'vscode';
 import { activityMemoryProjectPathBuffer } from './extension';
 
 import {
@@ -25,6 +25,11 @@ import { getprojectConfigInitVersion } from './project/projectConfigParse';
 /**
  * 解析插件配置文件
  */
+//  获取用户插件配置文件最新版本号
+export function getPluginConfigJsonVersion(){
+    const pluginConfigInitVersion:string = '2.2';
+    return pluginConfigInitVersion;
+}
 
 // 获取用户插件配置文件内容对象
 export function getPluginConfigJson() {
@@ -140,17 +145,28 @@ export function getPluginConfigObjVersionTwo() {
 export function pluginConfigCompatible() {
     // plugin版本2.0以下兼容
     const pluginConfigPath: string = getPluginConfigPath();
-    const pluginJson: string = fs.readFileSync(pluginConfigPath, 'utf-8');
-    const pluginJsonObj = JSON.parse(pluginJson);
-    if (Number(pluginJsonObj.version) < 2.0) {
-        pluginConfigCompatibleVersionLessThanTwo(pluginConfigPath, pluginJsonObj);
+    try {
+        while (true) {  
+            const pluginJson: string = fs.readFileSync(pluginConfigPath, 'utf-8');
+            const pluginJsonObj = JSON.parse(pluginJson);
+            if(pluginJsonObj.version===getPluginConfigJsonVersion()){
+                return;
+            }
+            if (Number(pluginJsonObj.version) < 2.0) {
+                pluginConfigCompatibleVersionLessThanTwo(pluginConfigPath, pluginJsonObj);
+            }
+            else if (Number(pluginJsonObj.version) === 2.0) {
+                pluginConfigCompatibleVersionTwo(pluginConfigPath, pluginJsonObj);
+            }
+            else if(Number(pluginJsonObj.version) === 2.1){
+                pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath,pluginJsonObj);
+            }
+        }
+    } catch (error) {
+        console.log("插件配置文件兼容异常",error);
+        vscode.window.showErrorMessage("插件配置文件兼容异常，请检查或重置插件配置文件");
     }
-    else if (Number(pluginJsonObj.version) === 2.0) {
-        pluginConfigCompatibleVersionTwo(pluginConfigPath, pluginJsonObj);
-    }
-    else if(Number(pluginJsonObj.version) === 2.1){
-        pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath,pluginJsonObj);
-    }
+
 }
 
 //  插件配置文件2.0以下版本配置文件兼容至2.0版本
@@ -246,32 +262,37 @@ export function projectConfigCompatible(projectPath: string) {
     if (!fs.existsSync(projectConfigPath)) {
         return;
     }
-    while (true){
-        let projectOldJsonObj = getProjectConfigObj(projectConfigPath);
-        if(projectOldJsonObj.version === "" || projectOldJsonObj.version === getprojectConfigInitVersion()){
-            return;
-        }
-        if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) < 2.0) {
-            projectConfigCompatibleVersionLessThanTwo(projectPath, projectOldJsonObj);
-        }
-        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.0) {
-            projectConfigCompatibleVersionTwo(projectPath, projectOldJsonObj);
-        }
-        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
-            projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
-        }
-        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
-            projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
-        }
-        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
-            projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
-        }
-        else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
-            projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
-        }
-        else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.5){
-            projectConfigCompatibleVersionTwoPointSix(projectPath,projectOldJsonObj);
-        }
+    try {
+        while (true){
+            let projectOldJsonObj = getProjectConfigObj(projectConfigPath);
+            if(projectOldJsonObj.version === "" || projectOldJsonObj.version === getprojectConfigInitVersion()){
+                return;
+            }
+            if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) < 2.0) {
+                projectConfigCompatibleVersionLessThanTwo(projectPath, projectOldJsonObj);
+            }
+            else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.0) {
+                projectConfigCompatibleVersionTwo(projectPath, projectOldJsonObj);
+            }
+            else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
+                projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
+            }
+            else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
+                projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
+            }
+            else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+                projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
+            }
+            else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
+                projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
+            }
+            else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.5){
+                projectConfigCompatibleVersionTwoPointSix(projectPath,projectOldJsonObj);
+            }
+        }                                
+    } catch (error) {
+        console.log("工程配置文件兼容异常",error);
+        vscode.window.showErrorMessage("工程配置文件兼容异常，请检查或重置插件配置文件");
     }
 }
 
