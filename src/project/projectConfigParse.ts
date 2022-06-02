@@ -253,6 +253,7 @@ export function  generateProjectJson(projectPath:any){
             appFile:[],
             modulePort:'',
             ignore:[],
+            simulatorRun:"disable"
         };
         refreshProjectJson(projectJson,projectConfigPath);
     }
@@ -273,6 +274,7 @@ export function  generateImportProjectInitJson(projectPath:any){
             appFile:[],
             modulePort:'',
             ignore:[],
+            simulatorRun:"disable"
         };
         projectJson.corePath = corePath;
         projectJson.libPath = libPath;
