@@ -17,17 +17,17 @@ import { UiDesign } from './webview/uiDesignWebview';
 import { checkSourceUpdate } from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
-import { getCurrentPluginConfigActivityProject, pluginConfigCompatible } from './plugConfigParse';
+import { getCurrentPluginConfigActivityProject, pluginConfigCompatible} from './plugConfigParse';
 import { clientOperation } from './LSP/client/client';
 // import { CheckFiles, StateMachine } from './project/checkFile';
 import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
-import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc } from './project/activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc } from './project/activityProjectConfig';
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
-
+import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 	'activityMemoryProjectPath': ''
@@ -143,6 +143,10 @@ export function activate(context: vscode.ExtensionContext) {
 				break;
 			case getUiDesignDesc():
 				uiDesign.uiDesign(context);
+				break;
+			case getSimulatorDesc():
+				setProjectConfigSimulatorReverse();
+				activityProjectTreeDataProvider.refresh();
 				break;
 			case getDistinguishMark()+getHardwaveDesc():
 				// 硬件原理图逻辑

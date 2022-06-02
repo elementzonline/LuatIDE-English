@@ -1,6 +1,6 @@
 // 本文件存放活动工程界面描述字符串
 import { getPluginConfigActivityProject } from "../plugConfigParse";
-import { getProjectConfigMoudlePort } from "./projectConfigParse";
+import { getProjectConfigMoudlePort, getProjectConfigSimulator} from "./projectConfigParse";
 
 // 获取工程配置描述
 export function getactiveProjectConfigDesc(){
@@ -22,7 +22,9 @@ export function getUiDesignDesc() {
 
 // 获取模拟器描述
 export function getSimulatorDesc(){
-    const descStr:string = '模拟器:ON';
+    const activityProjectPath:string = getPluginConfigActivityProject();
+    const status:string = getProjectConfigSimulator(activityProjectPath);
+    const descStr:string = '模拟器:' + status;
     return descStr;
 }
 
@@ -30,7 +32,11 @@ export function getSimulatorDesc(){
 export function getConnectPort(){
     // 获取当前活动工程的通讯端口
     const activityProjectPath:string = getPluginConfigActivityProject();
-    const comport:string = getProjectConfigMoudlePort(activityProjectPath);
+    let comport:string = getProjectConfigMoudlePort(activityProjectPath);
+    if(comport === "")
+    {
+        comport = "Auto";
+    }
     const descStr:string = '通讯口:'+comport;
     return descStr;
 }
