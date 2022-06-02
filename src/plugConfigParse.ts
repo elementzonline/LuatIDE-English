@@ -18,6 +18,7 @@ import {
     getAir72XCXModuleModelName
 } from './variableInterface';
 import { copyDir, deleteDirRecursive } from './project/projectApi';
+import { getprojectConfigInitVersion } from './project/projectConfigParse';
 // let pluginVariablesInit = new PluginVariablesInit();
 
 
@@ -245,35 +246,33 @@ export function projectConfigCompatible(projectPath: string) {
     if (!fs.existsSync(projectConfigPath)) {
         return;
     }
-    let projectOldJsonObj = getProjectConfigObj(projectConfigPath);
-    if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) < 2.0) {
-        projectConfigCompatibleVersionLessThanTwo(projectPath, projectOldJsonObj);
-        projectOldJsonObj = getProjectConfigObj(projectConfigPath);
-        projectConfigCompatibleVersionTwo(projectPath, projectOldJsonObj);
-        projectOldJsonObj = getProjectConfigObj(projectConfigPath);
-        projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
+    while (true){
+        let projectOldJsonObj = getProjectConfigObj(projectConfigPath);
+        if(projectOldJsonObj.version === "" || projectOldJsonObj.version === getprojectConfigInitVersion()){
+            return;
+        }
+        if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) < 2.0) {
+            projectConfigCompatibleVersionLessThanTwo(projectPath, projectOldJsonObj);
+        }
+        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.0) {
+            projectConfigCompatibleVersionTwo(projectPath, projectOldJsonObj);
+        }
+        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
+            projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
+        }
+        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
+            projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
+        }
+        else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
+            projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
+        }
+        else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
+            projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
+        }
+        else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.5){
+            projectConfigCompatibleVersionTwoPointSix(projectPath,projectOldJsonObj);
+        }
     }
-    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.0) {
-        projectConfigCompatibleVersionTwo(projectPath, projectOldJsonObj);
-        projectOldJsonObj = getProjectConfigObj(projectConfigPath);
-        projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
-    }
-    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.1) {
-        projectConfigCompatibleVersionTwoPointOne(projectPath, projectOldJsonObj);
-    }
-    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.2) {
-        projectConfigCompatibleVersionTwoPointThree(projectPath, projectOldJsonObj);
-    }
-    else if (projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.3) {
-        projectConfigCompatibleVersionTwoPointFour(projectPath, projectOldJsonObj);
-    }
-    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.4){
-        projectConfigCompatibleVersionTwoPointFive(projectPath,projectOldJsonObj);
-    }
-    else if(projectOldJsonObj.version !== "" && Number(projectOldJsonObj.version) === 2.5){
-        projectConfigCompatibleVersionTwoPointSix(projectPath,projectOldJsonObj);
-    }
-    
 }
 
 // 获取指定路径工程配置的对象
