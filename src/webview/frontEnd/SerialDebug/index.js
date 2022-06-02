@@ -186,15 +186,19 @@ sd_alertSubmit.on("click", function () {
     switch (isInWhichCus) {
         case "baudRate":
             sd_baudRate.find("option[value='def']").text(sd_alertInput.val());
+            sd_baudRate.find("option[value='def']").attr("selected", true);
             break;
         case "dataBits":
             sd_dataBits.find("option[value='def']").text(sd_alertInput.val());
+            sd_dataBits.find("option[value='def']").attr("selected", true);
             break;
         case "checkDigit":
             sd_checkDigit.find("option[value='def']").text(sd_alertInput.val());
+            sd_checkDigit.find("option[value='def']").attr("selected", true);
             break;
         case "stopBits":
             sd_stopBits.find("option[value='def']").text(sd_alertInput.val());
+            sd_stopBits.find("option[value='def']").attr("selected", true);
             break;
         default:
             break;
@@ -259,7 +263,7 @@ window.addEventListener("message", (event) => {
             break;
         case "receiveData":
             let oldData = sd_disOutput.val();
-            sd_disOutput.val(oldData  + message.text);
+            sd_disOutput.val(oldData + message.text);
             break;
         default:
             break;
