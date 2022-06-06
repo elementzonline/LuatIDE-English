@@ -164,21 +164,6 @@
 					"command": "luatide-activity-project.Project.delete",
 					"when": "view == luatide-activity-project",
 					"group": "navigation@0"
-				},
-				{
-					"command": "luatide-activity-project.configOperation",
-					"when": "view == luatide-activity-project",
-					"group": "navigation@1"
-				},
-				{
-					"command": "luatide-ui.design",
-					"when": "view == luatide-activity-project",
-					"group": "navigation@2"
-				},
-				{
-					"command": "luatide-activity-project.exportProducFile",
-					"when": "view == luatide-activity-project",
-					"group": "navigation@3"
 				}
 			],
 			"view/item/context": [
