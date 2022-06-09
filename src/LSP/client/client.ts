@@ -1,6 +1,10 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import { getPluginConfigActivityProject } from '../../plugConfigParse';
+import { getProjectConfigLibPath } from '../../project/projectConfigParse';
+import { getAir72XUXDefaultLatestLibPath } from '../../variableInterface';
+import { URI } from 'vscode-uri';	
 // add "vscode-languageclient": "^5.2.1" in package.json and run: npm install
 import {
     LanguageClient,
@@ -8,10 +12,10 @@ import {
     ServerOptions,
     TransportKind
 } from 'vscode-languageclient';
-import { getPluginConfigActivityProject } from '../../plugConfigParse';
-import { getProjectConfigLibPath } from '../../project/projectConfigParse';
-import { getAir72XUXDefaultLatestLibPath } from '../../variableInterface';
-import { URI } from 'vscode-uri';	
+// import { getPluginConfigActivityProject } from '../../plugConfigParse';
+// import { getProjectConfigLibPath } from '../../project/projectConfigParse';
+// import { getAir72XUXDefaultLatestLibPath } from '../../variableInterface';
+	
 
 export function clientOperation(context) {
     /*************************lsp */                                         
@@ -78,10 +82,10 @@ export function clientOperation(context) {
     
     /*--end--获取活动工程libPath*/ 
     client.onReady().then(() => {
+        // client.sendNotification("libPath",libPath);
         client.sendNotification("activeProjectPath",URI.file(workspacePath).toString());
         client.sendNotification("libPath",URI.file(libPath).toString());
-        // console.log('==workSpace发送成功',URI.file(workspacePath).toString());
-        // console.log('==libPath发送成功',URI.file(libPath).toString());
+        // console.log('==发送成功',libPath);
         // 收到server的自定义消息
         client.onNotification("__error", (ctx: string) => {
             vscode.window.showErrorMessage(`${ctx}`);
@@ -98,5 +102,4 @@ export function clientOperation(context) {
     // 在插件deactivate时，把这个client销毁掉
     context.subscriptions.push(disposableClt);
     /*************************lsp */
-    disposableClt.dispose();
 }
