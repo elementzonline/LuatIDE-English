@@ -1,5 +1,9 @@
 // 本文件存放活动工程界面描述字符串
+import *  as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
 import { getPluginConfigActivityProject } from "../plugConfigParse";
+import { extensionPath } from "../variableInterface";
 import { getProjectConfigMoudlePort, getProjectConfigSimulator} from "./projectConfigParse";
 
 // 获取工程配置描述
@@ -63,4 +67,96 @@ export function getApiDesc(){
 export function getDistinguishMark(){
     const markStr:string = 'LuatIDE$ActiviteProject';
     return markStr;
+}
+
+// 获取lcd驱动配置描述
+export function getLcdDriverDesc(){
+    const lcdDriverDesc:string = "LCD驱动配置";
+    return lcdDriverDesc;
+}
+
+// 获取触摸屏驱动配置描述
+export function getTpDriverDesc(){
+    const tpDriverDesc:string = "触摸屏驱动配置";
+    return tpDriverDesc;
+}
+
+// 获取ui工程支持的lcd驱动资源存储路径
+export function getLcdDriverSourcePath(){
+    const lcdDriverPath:string = path.join(extensionPath,"tools","lcdDriver");
+    return lcdDriverPath;
+}
+
+// 获取ui工程支持的lcd驱动列表
+export function getLcdDriverList(){
+    const driverList:string[] = fs.readdirSync(getLcdDriverSourcePath());
+    return driverList;
+}
+
+//获取活动工程lcd驱动路径
+export function getActiveProjectLcdDriverPath(){
+    const lcdDriverPath = path.join(getPluginConfigActivityProject(),"LCD.lua");
+    return lcdDriverPath;
+}
+
+// 获取ui工程支持的tp驱动资源存储路径
+export function getTpDriverSourcePath(){
+    const lcdDriverPath:string = path.join(extensionPath,"tools","tpDriver");
+    return lcdDriverPath;
+}
+
+// 获取ui工程支持的tp驱动列表
+export function getTpDriverList(){
+    const driverList:string[] = fs.readdirSync(getTpDriverSourcePath());
+    return driverList;
+}
+
+//获取活动工程tp驱动路径
+export function getActiveProjectTpDriverPath(){
+    const lcdDriverPath = path.join(getPluginConfigActivityProject(),"UiTp.lua");
+    return lcdDriverPath;
+}
+
+// lcd驱动设置处理
+export function lcdDriverSettingHandler(){
+    vscode.window.showQuickPick(
+        getLcdDriverList(),
+        {
+            canPickMany:false,
+            ignoreFocusOut:true,
+            matchOnDescription:true,
+            matchOnDetail:true,
+            placeHolder:'请选择您所需要配置的LCD驱动文件'
+        })
+        .then(function(msg){
+            // console.log(msg);
+            // 执行copy动作
+            if (msg===undefined) {
+                return;
+            }
+            fs.copyFileSync(path.join(getLcdDriverSourcePath(),msg),getActiveProjectLcdDriverPath());
+            vscode.commands.executeCommand("vscode.open",vscode.Uri.file(getActiveProjectLcdDriverPath()));
+    });
+}
+
+// tp驱动设置处理
+export function tpDriverSettingHandler(){
+    vscode.window.showQuickPick(
+        getTpDriverList(),
+        {
+            canPickMany:false,
+            ignoreFocusOut:true,
+            matchOnDescription:true,
+            matchOnDetail:true,
+            placeHolder:'请选择您所需要配置的触摸屏驱动文件'
+        })
+        .then(function(msg){
+            // console.log(msg);
+            // 执行copy动作
+            if (msg===undefined) {
+                return;
+            }
+            fs.copyFileSync(path.join(getTpDriverSourcePath(),msg),getActiveProjectTpDriverPath());
+            vscode.commands.executeCommand("vscode.open",vscode.Uri.file(getActiveProjectTpDriverPath()));
+    });
 }

@@ -24,7 +24,7 @@ import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
-import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc } from './project/activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler } from './project/activityProjectConfig';
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
@@ -154,6 +154,14 @@ export function activate(context: vscode.ExtensionContext) {
 			case getDistinguishMark()+getApiDesc():
 				// api描述逻辑
 				break;
+			case getLcdDriverDesc():
+				// lcd驱动相关操作
+				// console.log(getLcdDriverList());
+				lcdDriverSettingHandler();
+				break;
+			case getTpDriverDesc():
+				tpDriverSettingHandler();
+				break;
 				
 		}
 		if(selectPath===getactiveProjectConfigDesc()){
@@ -171,7 +179,6 @@ export function activate(context: vscode.ExtensionContext) {
 				// 打开串口监视器webview
 				serialPortMonitor.serialPortMonitor(context);
 				break;
-		
 			default:
 				break;
 		}

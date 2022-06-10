@@ -5,7 +5,7 @@ import {SerialPort} from 'serialport';
 
 /*++++++++++++++++++++++++++++++++++++++插件扩展信息相关接口+++++++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取用户扩展路径
-let extensionPath: any = path.join(__dirname, '../.');
+export let extensionPath: any = path.join(__dirname, '../.');
 
 // 获取用户当前插件安装版本号名称
 export function getPluginInstallVersion(){
