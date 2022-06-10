@@ -159,10 +159,10 @@ export class UiDesignPanel {
                         // 获取图片的绝对路径
                         const picturePath:string = path.join(this.activeProjectPath,pictureBase64Path);
                         // 读取文件内容，并转换为 base64
-                        console.log("读取本地文件", picturePath);
+                        // console.log("读取本地文件", picturePath);
                         let bitmap = fs.readFileSync(picturePath);
                         let base64 = Buffer.from(bitmap).toString('base64');
-                        console.log("转换为base64", base64.substring(0, 100), "...");
+                        // console.log("转换为base64", base64.substring(0, 100), "...");
                         // 获取后缀名
                         let suffix = path.extname(pictureBase64Path).substring(1,);
                         let prefix = `data:image/${suffix};base64`;
