@@ -4,7 +4,7 @@ import * as path from 'path';
 // import { ProjectJsonParse } from './projectConfigParse';
 import { getPluginConfigActivityProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath } from './projectConfigParse';
-import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwaveDesc, getHelp, getProductionFileDesc, getSimulatorDesc, getUiDesignDesc } from './activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwaveDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
 
 // let pluginJsonParse = new PluginJsonParse();
 // let projectJsonParse = new ProjectJsonParse();
@@ -36,7 +36,7 @@ export class ActivityTreeDataProvider implements vscode.TreeDataProvider<Activit
       treeDir = activeProjectDataInit(activityPath);
     }
     else {
-      treeDir = childrenDataInit(element, activityPath);
+      treeDir =  childrenDataInit(element, activityPath);
     }
     return Promise.resolve(treeDir);
   }
@@ -55,6 +55,10 @@ function activeProjectDataInit(activityPath: string) {
   treeDir.push(new ActivityTreeItem(activityProjectName, activityProjectPath, vscode.TreeItemCollapsibleState.Expanded));
   if (activityProjectJson.libPath !== "" && fs.existsSync(activityProjectJson.libPath)) {
     treeDir.push(new ActivityTreeItem(libName, libParentPath, vscode.TreeItemCollapsibleState.Collapsed));
+  }
+  if(activityProjectJson.projectType === "ui"){
+    treeDir.push(new ActivityTreeItem(getLcdDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getTpDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
   }
   treeDir.push(new ActivityTreeItem(getactiveProjectConfigDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None));
