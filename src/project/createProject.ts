@@ -378,7 +378,7 @@ export class CreateProject {
     "LvglButton1": {
         "comType": "LvglButton",
         "comConf": {
-            "state": "BTN_STATE_DEFAULT",
+            "state": "BTN_STATE_RELEASED",
             "text": "Hello LuatOS UI",
             "defaultStatus": {
                 "mainPart": {
