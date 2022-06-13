@@ -493,6 +493,7 @@ spi.setup(spi.SPI_1,1,1,8,1000000,1)
 font_spi = spi.SPI_1
 font_bpp = 2
 
+lvgl.BTN_STATE_DEFAULT = lvgl.BTN_STATE_RELEASED
 thick_table = {
     40, 46, 48, 54, 54, 54, 54, 54, 54, 56, 60, 72, 76, 80, 82, 86, 90, 94, 96, 102, 102, 104, 106, 108, 110, 112, 114, 116, 
     118, 120, 124, 126, 128, 130, 136, 140, 150, 160, 170, 180
@@ -576,7 +577,8 @@ end
 
 
 local function init()
-    lvgl.init(demo_WindowInit, UiTp.input)
+    lvgl.init(function() end , UiTp.input)
+    demo_WindowInit()
 end
 
 sys.taskInit(init, nil)
