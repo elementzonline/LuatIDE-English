@@ -93,15 +93,18 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 
 /** 这个方法当插件被激活时调用*/
 export function activate(context: vscode.ExtensionContext) {
-	temContext = context;
-	timeId = setInterval(checkFloderControlUpdate, 1000);
-	vscode.languages.registerDocumentFormattingEditProvider(selectors, new LuaFormatProvider(context));
-	vscode.languages.registerDocumentRangeFormattingEditProvider(selectors, new LuaRangeFormatProvider(context));
 	// 插件配置实例化
 	pluginConfigInit.configInit();
 	// 插件配置文件兼容执行
 	pluginConfigCompatible();
+	// 检查依赖资源更新
 	checkSourceUpdate();
+	// 活动工程文件夹定时检测
+	temContext = context;
+	timeId = setInterval(checkFloderControlUpdate, 1000);
+	// 代码格式化相关功能入口
+	vscode.languages.registerDocumentFormattingEditProvider(selectors, new LuaFormatProvider(context));
+	vscode.languages.registerDocumentRangeFormattingEditProvider(selectors, new LuaRangeFormatProvider(context));
 	const activityProject: string = getCurrentPluginConfigActivityProject();
 	activityMemoryProjectPathBuffer.activityMemoryProjectPath = activityProject;
 	// 注册新建工程命令,当点击用户历史工程标题区域新建工程按钮时触发
@@ -131,7 +134,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-history-project.Home', async () => homeManage.homeManage(context)));
 	// 注册点击活动工程配置命令,当点击配置活动工程时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.configOperation', async () => projectConfigOperation(context)));
-	// 注册活动工程文件点击命令，当点击活动工程文件时触发
+	// 注册活动工程文件点击命令，当点击活动工程文件或其它配置时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-activity-project.click', (label, filePath) => {
 		const selectPath = path.join(filePath, label);
 		switch(selectPath){

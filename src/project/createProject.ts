@@ -10,7 +10,6 @@ import {
     getAir72XUXDefaultLatestLibPath,
     getGroupChatQrCodePath,
     getNdkDefaultDemoPath,
-    getPluginConfigPath,
     getPluginAirModuleList
 } from "../variableInterface";
 import {
@@ -26,7 +25,6 @@ import {
 
 import * as ndkProject from "../ndk/ndkProject";
 import {
-    getPluginConfigJson,
     pushPluginConfigProject,
     setPluginConfigActivityProject
 } from "../plugConfigParse";
@@ -41,7 +39,6 @@ import {
     setProjectConfigProjectType,
     setProjectConfigVersion
 } from "./projectConfigParse";
-
 
 export class CreateProject {
     constructor() {
@@ -1063,26 +1060,6 @@ end
         if (projectDemo === "") {
             this.createMainLuaData;
         }
-    }
-
-    // 新增工程写入插件配置json文件
-    writeProjectToPluginJson(projectName: any, projectPath: any) {
-        let userProject: any = {};
-        userProject['project_path'] = projectPath;
-        userProject['project_name'] = projectName;
-        let pluginJson: any = getPluginConfigJson();
-        let pluginnJsonObj: any = JSON.parse(pluginJson);
-        for (let i = 0; i < pluginJson.length; i++) {
-            const element = pluginJson[i];
-            if (element['type'] === 'user') {
-                // 插件配置用户json对象更新
-                pluginnJsonObj['data'][i]['projects'].push(userProject);
-                break;
-            }
-        }
-        const pluginJsonData: string = JSON.stringify(pluginnJsonObj, null, '\t');
-        const pluginJsonPath: string = getPluginConfigPath();
-        fs.writeFileSync(pluginJsonPath, pluginJsonData);
     }
 
     // 对接收到的ndk数据进行工程环境初始化处理
