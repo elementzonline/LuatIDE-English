@@ -156,21 +156,17 @@ export function activate(context: vscode.ExtensionContext) {
 				break;
 			case getLcdDriverDesc():
 				// lcd驱动相关操作
-				// console.log(getLcdDriverList());
 				lcdDriverSettingHandler();
 				break;
 			case getTpDriverDesc():
 				tpDriverSettingHandler();
 				break;
-				
+			default:
+				if (fs.statSync(selectPath).isFile()) {
+					vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selectPath));
+				}
+				break;
 		}
-		if(selectPath===getactiveProjectConfigDesc()){
-			projectConfigOperation(context);
-		}
-		else if (fs.statSync(selectPath).isFile()) {
-			vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selectPath));
-		}
-
 	}));
 	// 注册工具集合点击命令，当点击工具集合内工具项时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-tools-hub.click',(lable)=>{
