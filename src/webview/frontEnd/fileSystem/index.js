@@ -281,7 +281,7 @@ function fileIsRepeat(files) {
     let arr = [];
     for (let key in files) {
         if (files[key]) {
-            let b = key.match(/\w+\.\w+$/);
+            let b = key.match(/([\w\-@$\.])+\.\w+$/);
             if (b) {
                 if (arr.includes(b[0])) {
                     // 存在同名文件
