@@ -2,9 +2,9 @@
 import *  as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
-import { getPluginConfigActivityProject } from "../plugConfigParse";
-import { extensionPath } from "../variableInterface";
-import { getProjectConfigMoudlePort, getProjectConfigSimulator} from "./projectConfigParse";
+import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject } from "../plugConfigParse";
+import { extensionPath, getSerialPortInfoList } from "../variableInterface";
+import { getProjectConfigMoudlePort, getProjectConfigSimulator, setProjectConfigModulePort} from "./projectConfigParse";
 
 // 获取工程配置描述
 export function getactiveProjectConfigDesc(){
@@ -159,4 +159,36 @@ export function tpDriverSettingHandler(){
             fs.copyFileSync(path.join(getTpDriverSourcePath(),msg),getActiveProjectTpDriverPath());
             vscode.commands.executeCommand("vscode.open",vscode.Uri.file(getActiveProjectTpDriverPath()));
     });
+}
+
+export async function portSelectSettingHandler(){
+    vscode.window.showQuickPick(
+        await getSerialPortInfoList(),
+        {
+            canPickMany:false,
+            ignoreFocusOut:true,
+            matchOnDescription:true,
+            matchOnDetail:true,
+            placeHolder:'请选择您的通信端口'
+        })
+        .then(function(msg){
+            // console.log(msg);
+            // 执行copy动作
+            if (msg===undefined) {
+                return;
+            }
+            // 接收到modulePort数据处理
+            const reg = /\[(\w*)\]/ig;
+            const comPortList:string[] | null = reg.exec(msg);
+            let comPort:string;
+            if (comPortList===null) {
+                comPort = "";
+            }
+            else{
+                    comPort = comPortList[1];
+            }
+            setProjectConfigModulePort(comPort, getCurrentPluginConfigActivityProject());
+            vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+            return;
+});
 }

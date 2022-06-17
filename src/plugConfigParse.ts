@@ -27,7 +27,7 @@ import { getprojectConfigInitVersion } from './project/projectConfigParse';
  */
 //  获取用户插件配置文件最新版本号
 export function getPluginConfigJsonVersion(){
-    const pluginConfigInitVersion:string = '2.2';
+    const pluginConfigInitVersion:string = '2.3';
     return pluginConfigInitVersion;
 }
 
@@ -161,6 +161,12 @@ export function pluginConfigCompatible() {
             else if(Number(pluginJsonObj.version) === 2.1){
                 pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath,pluginJsonObj);
             }
+            else if(Number(pluginJsonObj.version) === 2.2){
+                pluginConfigCompatibleVersionTwoPointTwo(pluginConfigPath,pluginJsonObj);
+            }
+            else{
+                break;
+            }
         }
     } catch (error) {
         console.log("插件配置文件兼容异常",error);
@@ -256,6 +262,28 @@ export function pluginConfigCompatibleVersionTwoPointOne(pluginConfigPath: strin
     fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
 }
 
+// 插件配置文件2.2版本配置文件兼容至2.3版本
+// 本次兼容主要是为了解决air103资源拉取接口V0010版本误放入了air101的固件文件问题
+export function pluginConfigCompatibleVersionTwoPointTwo(pluginConfigPath: string, pluginJsonObj: any) {
+    const air103DefaultCorePath  = variableInterface.getAir103DefaultCorePath();
+    const files = fs.readdirSync(air103DefaultCorePath);
+    for (const file of files) {
+        if(file==="LuatOS-SoC_V0010_AIR101.soc"){
+            fs.unlinkSync(path.join(air103DefaultCorePath,file));
+        }
+        if(file==="LuatOS-SoC_V0010_AIR101_BLE.soc"){
+            fs.unlinkSync(path.join(air103DefaultCorePath,file));
+        }
+    }
+    let luatideWorkspaceJson: any = getPluginConfigObjVersionTwo();
+    let activeProject: string = pluginJsonObj.activeProject;
+    luatideWorkspaceJson.activeProject = activeProject;
+    luatideWorkspaceJson.projectList = pluginJsonObj.projectList;
+    luatideWorkspaceJson.version = '2.3';
+    const pluginConfigJsonNew = JSON.stringify(luatideWorkspaceJson, null, "\t");
+    fs.writeFileSync(pluginConfigPath, pluginConfigJsonNew);
+}
+
 // 工程配置文件兼容
 export function projectConfigCompatible(projectPath: string) {
     const projectConfigPath: string = path.join(projectPath, 'luatide_project.json');
@@ -296,7 +324,7 @@ export function projectConfigCompatible(projectPath: string) {
     }
 }
 
-// 获取指定路径工程配置的对象
+// 获取指定路径工程配置的对象  
 export function getProjectConfigObj(projectConfigPath: string) {
     const projectOldJson: string = fs.readFileSync(projectConfigPath, 'utf-8');
     const projectOldJsonObj = JSON.parse(projectOldJson);

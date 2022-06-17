@@ -64,7 +64,7 @@ function activeProjectDataInit(activityPath: string) {
   treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getSimulatorDesc(), '', vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getConnectPort(), '', vscode.TreeItemCollapsibleState.None));
+  treeDir.push(new ActivityTreeItem(getConnectPort(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getHelp(), getDistinguishMark(), vscode.TreeItemCollapsibleState.Collapsed));
   return treeDir;
 }
