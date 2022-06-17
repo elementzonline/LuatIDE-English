@@ -24,7 +24,7 @@ import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
-import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler } from './project/activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler } from './project/activityProjectConfig';
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
@@ -165,7 +165,11 @@ export function activate(context: vscode.ExtensionContext) {
 				tpDriverSettingHandler();
 				break;
 			default:
-				if (fs.statSync(selectPath).isFile()) {
+				if(selectPath.startsWith(getDistinguishMark()+"\\通讯口:")){
+					// 端口号选择相关操作
+					portSelectSettingHandler();
+				}
+				else if (fs.statSync(selectPath).isFile()) {
 					vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selectPath));
 				}
 				break;
