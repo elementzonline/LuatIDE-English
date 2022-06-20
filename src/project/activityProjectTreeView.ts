@@ -4,7 +4,7 @@ import * as path from 'path';
 // import { ProjectJsonParse } from './projectConfigParse';
 import { getPluginConfigActivityProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath } from './projectConfigParse';
-import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwaveDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwareDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
 
 // let pluginJsonParse = new PluginJsonParse();
 // let projectJsonParse = new ProjectJsonParse();
@@ -89,8 +89,8 @@ function childrenDataInit(element: any,activityPath) {
     }
   }
   else if(filename=== getHelp() &&  fileParentPath===getDistinguishMark()){
-    treeDir.push(new ActivityTreeItem(getHardwaveDesc(), '', vscode.TreeItemCollapsibleState.None));
-    treeDir.push(new ActivityTreeItem(getApiDesc(), '', vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getHardwareDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getApiDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
   }
   else {
     let filePath: string;
