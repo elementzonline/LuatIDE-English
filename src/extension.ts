@@ -24,7 +24,7 @@ import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
-import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwaveDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler } from './project/activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwareDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler, hardwareSettingHandler, apiSettingHandler } from './project/activityProjectConfig';
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
@@ -151,11 +151,13 @@ export function activate(context: vscode.ExtensionContext) {
 				setProjectConfigSimulatorReverse();
 				activityProjectTreeDataProvider.refresh();
 				break;
-			case getDistinguishMark()+getHardwaveDesc():
+			case getDistinguishMark()+"\\"+getHardwareDesc():
 				// 硬件原理图逻辑
+				hardwareSettingHandler();
 				break;
-			case getDistinguishMark()+getApiDesc():
+			case getDistinguishMark()+"\\"+getApiDesc():
 				// api描述逻辑
+				apiSettingHandler();
 				break;
 			case getLcdDriverDesc():
 				// lcd驱动相关操作

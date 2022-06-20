@@ -3,8 +3,8 @@ import *  as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject } from "../plugConfigParse";
-import { extensionPath, getSerialPortInfoList } from "../variableInterface";
-import { getProjectConfigMoudlePort, getProjectConfigSimulator, setProjectConfigModulePort} from "./projectConfigParse";
+import { extensionPath, getAir72XCXModuleModelName, getSerialPortInfoList } from "../variableInterface";
+import { getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectConfigSimulator, setProjectConfigModulePort} from "./projectConfigParse";
 
 // 获取工程配置描述
 export function getactiveProjectConfigDesc(){
@@ -52,7 +52,7 @@ export function getHelp(){
 }
 
 // 获取硬件描述
-export function getHardwaveDesc(){
+export function getHardwareDesc(){
     const descStr:string = '硬件';
     return descStr;
 }
@@ -161,6 +161,7 @@ export function tpDriverSettingHandler(){
     });
 }
 
+// 用户端口选择设置及处理操作
 export async function portSelectSettingHandler(){
     vscode.window.showQuickPick(
         await getSerialPortInfoList(),
@@ -191,4 +192,76 @@ export async function portSelectSettingHandler(){
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
             return;
 });
+}
+
+// 获取硬件资料链接
+export function getHardwareDataLink(moduleModel:string){
+    let hardwareDataLink:string = "";
+    switch (moduleModel) {
+        case "air72XUX/air82XUX":
+            hardwareDataLink = "https://doc.openluat.com/wiki/21?wiki_page_id=2055#Air724UG_6";
+            break;
+        case getAir72XCXModuleModelName():
+            hardwareDataLink = "https://doc.openluat.com/wiki/21?wiki_page_id=2994#Air780CSE_2";
+            break;
+        case "air101":
+            hardwareDataLink = "https://wiki.luatos.com/chips/air101/hardware.html";
+            break;
+        case "air103":
+            hardwareDataLink = "https://wiki.luatos.com/chips/air103/hardware.html";
+            break;
+        case "air105":
+            hardwareDataLink = "https://wiki.luatos.com/chips/air105/hardware.html";
+            break;
+        case "esp32c3":
+            hardwareDataLink = "https://wiki.luatos.com/chips/esp32c3/hardware.html";
+            break;
+        default:
+            break;
+    }
+    return hardwareDataLink;
+}
+
+// 硬件选择设置处理
+export function hardwareSettingHandler(){
+    const pluginConfigActivityProject = getPluginConfigActivityProject();
+    const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
+    const dataLink:string = getHardwareDataLink(moduleModel);
+    vscode.env.openExternal(vscode.Uri.parse(dataLink));
+}
+
+// 获取api资料链接
+export function getApiDataLink(moduleModel){
+    let apiDataLink:string = "";
+    switch(moduleModel){
+        case "air72XUX/air82XUX":
+            apiDataLink = "https://doc.openluat.com/wiki/21?wiki_page_id=2068";
+            break;
+        case getAir72XCXModuleModelName():
+            apiDataLink = "https://doc.openluat.com/wiki/21?wiki_page_id=2068";
+            break;
+        case "air101":
+            apiDataLink = "https://wiki.luatos.com/api/index.html";
+            break;
+        case "air103":
+            apiDataLink = "https://wiki.luatos.com/api/index.html";
+            break;
+        case "air105":
+            apiDataLink = "https://wiki.luatos.com/api/index.html";
+            break;
+        case "esp32c3":
+            apiDataLink = "https://wiki.luatos.com/api/index.html";
+            break;
+        default:
+            break;
+    }
+    return apiDataLink;
+}
+
+// api选择设置处理
+export function apiSettingHandler(){
+    const pluginConfigActivityProject = getPluginConfigActivityProject();
+    const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
+    const dataLink:string = getApiDataLink(moduleModel);
+    vscode.env.openExternal(vscode.Uri.parse(dataLink));
 }
