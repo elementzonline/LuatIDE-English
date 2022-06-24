@@ -4,7 +4,7 @@ import * as path from 'path';
 // import { ProjectJsonParse } from './projectConfigParse';
 import { getPluginConfigActivityProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath } from './projectConfigParse';
-import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getHardwareDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getDownloadCoreDesc, getHardwareDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
 
 // let pluginJsonParse = new PluginJsonParse();
 // let projectJsonParse = new ProjectJsonParse();
@@ -61,6 +61,7 @@ function activeProjectDataInit(activityPath: string) {
     treeDir.push(new ActivityTreeItem(getTpDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
   }
   treeDir.push(new ActivityTreeItem(getactiveProjectConfigDesc(), '', vscode.TreeItemCollapsibleState.None));
+  treeDir.push(new ActivityTreeItem(getDownloadCoreDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getSimulatorDesc(), '', vscode.TreeItemCollapsibleState.None));
