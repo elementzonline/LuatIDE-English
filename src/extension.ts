@@ -24,7 +24,7 @@ import * as checkFile from './project/checkFile';
 import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
-import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwareDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler, hardwareSettingHandler, apiSettingHandler } from './project/activityProjectConfig';
+import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwareDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler, hardwareSettingHandler, apiSettingHandler, getDownloadCoreDesc, downloadCoreSettingHandler } from './project/activityProjectConfig';
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
@@ -158,6 +158,9 @@ export function activate(context: vscode.ExtensionContext) {
 			case getDistinguishMark()+"\\"+getApiDesc():
 				// api描述逻辑
 				apiSettingHandler();
+				break;
+			case  getDistinguishMark()+"\\"+getDownloadCoreDesc():
+				downloadCoreSettingHandler();
 				break;
 			case getLcdDriverDesc():
 				// lcd驱动相关操作

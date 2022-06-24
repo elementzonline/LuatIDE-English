@@ -4,7 +4,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject } from "../plugConfigParse";
 import { extensionPath, getAir72XCXModuleModelName, getSerialPortInfoList } from "../variableInterface";
-import { getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectConfigSimulator, setProjectConfigModulePort} from "./projectConfigParse";
+import { getProjectConfigCorePath, getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectConfigSimulator, setProjectConfigModulePort} from "./projectConfigParse";
 
 // 获取工程配置描述
 export function getactiveProjectConfigDesc(){
@@ -15,6 +15,12 @@ export function getactiveProjectConfigDesc(){
 // 获取生成量产文件描述
 export function getProductionFileDesc(){
     const descStr:string = '生成量产文件';
+    return descStr;
+}
+
+// 获取下载固件功能描述
+export function getDownloadCoreDesc(){
+    const descStr:string = "下载固件";
     return descStr;
 }
 
@@ -264,4 +270,47 @@ export function apiSettingHandler(){
     const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
     const dataLink:string = getApiDataLink(moduleModel);
     vscode.env.openExternal(vscode.Uri.parse(dataLink));
+}
+
+// 下载固件功能设置处理
+export async function downloadCoreSettingHandler(){
+    const downloadCoreToolPath = "D:\\AAALuatIDE\\luatide_server\\build\\firmware_manage\\firmware_manage.exe";
+    const pluginConfigActivityProject = getPluginConfigActivityProject();
+    const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
+    let modulePort:string = getProjectConfigMoudlePort(pluginConfigActivityProject);
+    const corePath:string = getProjectConfigCorePath(pluginConfigActivityProject);
+    const cmd:string = "\""+downloadCoreToolPath.toString()+"\"" + " -m \"" +moduleModel.toString()+"\"" + " -p\" " +modulePort.toString()+ "\"" + " -c \"" + corePath.toString()+"\"";
+    const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE", 'Core Download');
+    task.execution = new vscode.ShellExecution(cmd);
+    task.isBackground = false; //true 隐藏日志
+    task.presentationOptions = {
+        echo: false,
+        focus: false,
+        clear: true,
+        showReuseMessage: true
+    };
+    vscode.tasks.executeTask(task);
+    let taskRunStatus = false;
+    // 这里订阅的Task结束事件，不区分Task，所有的的Task的时间都会过来，
+    // 所以在用完通知之后需要使用dispose取消订阅
+    let onDidEndTaskHand = vscode.tasks.onDidEndTask(function (event: any) {
+        console.log(event);
+        if (event.execution._task._name === "LuatIDE" && event.execution._task._source === "Core Download") {
+            taskRunStatus = true;
+        }
+    });
+    const { Subject } = require('await-notify');
+
+    let timesleep = new Subject();
+    while (1) {
+        if (taskRunStatus === false) {
+            await timesleep.wait(1000);
+            console.log( "Wait for the Core Download task to finish!");
+        }
+        else {
+            // 取消订阅这个消息
+            onDidEndTaskHand.dispose();
+            break;
+        }
+    }
 }
