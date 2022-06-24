@@ -239,7 +239,7 @@ async function unzip(srcPath: any, distPath: any) {
     //     });
     const unzipToolPath:string  = getUnzipToolPath();
     // 7z解压缩命令
-    const cmdStr:string = `${unzipToolPath} x ${srcPath} -o${distPath}`;
+    const cmdStr = "\""+ unzipToolPath+"\" " + ' x ' + "\"" + srcPath + "\" "  + '-o' + "\"" + distPath + "\"" + ' -aos';
     await childProcess.execSync(cmdStr);
 }
 
