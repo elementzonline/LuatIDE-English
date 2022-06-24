@@ -1,0 +1,11 @@
+2022-06-24 15:17:55,029 - firmware_manage.py[line:1068] - INFO: 正在准备下载固件
+2022-06-24 15:17:55,029 - firmware_manage.py[line:1069] - INFO: 固件下载参数,模块型号:air105,端口号:,固件路径:C:\Users\AAA\AppData\Roaming\LuatIDE\LuatideCore\Air105_CORE\LuatOS-SoC_V0008_AIR105.soc
+2022-06-24 15:17:55,032 - firmware_manage.py[line:174] - INFO: C:\USERS\AAA\APPDATA\ROAMING\LUATIDE\LUATIDECORE\AIR105_CORE\LUATOS-SOC_V0008_AIR105.SOC
+2022-06-24 15:17:55,032 - firmware_manage.py[line:175] - INFO: D:\AAALuatIDE\luatide_server\build\firmware_manage\_temp\project\core
+2022-06-24 15:17:55,179 - my_api.py[line:635] - INFO: COM14 - USB-SERIAL CH340 (COM14)
+2022-06-24 15:17:55,179 - firmware_manage.py[line:568] - INFO: 即将开始下载
+2022-06-24 15:17:55,179 - firmware_manage.py[line:569] - INFO: 若长时间无响应，请尝试控制设备重新进入boot下载模式
+2022-06-24 15:17:55,181 - firmware_manage.py[line:607] - INFO: 下载端口:COM14
+2022-06-24 15:17:55,181 - firmware_manage.py[line:608] - INFO: 下载波特率:3000000
+2022-06-24 15:17:55,181 - firmware_manage.py[line:609] - INFO: download cmd:[WindowsPath('D:/AAALuatIDE/luatide_server/build/firmware_manage/_temp/project/core/soc_download.exe'), 'air105_download', '14', '3000000', 'D:\\AAALuatIDE\\luatide_server\\build\\firmware_manage\\_temp\\project\\core', 'bootloader.bin', '01001000', 'app.bin', '01010000', 'script.bin', '01300000', '0', '0', '01380000', '0']
+2022-06-24 15:18:11,638 - firmware_manage.py[line:644] - INFO: 下载完成
