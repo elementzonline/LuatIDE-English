@@ -59,11 +59,11 @@ function activeProjectDataInit(activityPath: string) {
   if(activityProjectJson.projectType === "ui"){
     treeDir.push(new ActivityTreeItem(getLcdDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
     treeDir.push(new ActivityTreeItem(getTpDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None));
   }
   treeDir.push(new ActivityTreeItem(getactiveProjectConfigDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getDownloadCoreDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getSimulatorDesc(), '', vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getConnectPort(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
   treeDir.push(new ActivityTreeItem(getHelp(), getDistinguishMark(), vscode.TreeItemCollapsibleState.Collapsed));
