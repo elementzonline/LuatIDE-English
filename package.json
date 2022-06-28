@@ -36,10 +36,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/openLuat/luatide"
+    "url": "http://gitee.com/openLuat/luatide"
   },
   "bugs": {
-    "url": "http://github.com/openLuat/luatide"
+    "url": "http://gitee.com/openLuat/luatide"
   },
   "activationEvents": [
     "onLanguage:lua",
