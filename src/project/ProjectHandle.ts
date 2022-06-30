@@ -4,7 +4,7 @@ import * as path from "path";
 import { deleteDirRecursive, projectActiveInterfact } from './projectApi';
 import { activityMemoryProjectPathBuffer } from "../extension";
 import { getDefaultWorkspacePath } from "../variableInterface";
-import { getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectNameList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
+import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject, getPluginConfigUserProjectAbsolutePathList, getPluginConfigUserProjectNameList, popPluginConfigProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, popProjectConfigAppFile } from './projectConfigParse';
 import * as ideServer from '../serverInterface';
 
@@ -36,7 +36,7 @@ export class ProjectActiveHandle {
         //         else if(result === '新窗口打开'){
         //             setPluginConfigActivityProject(projectActivePath);
         //             // activityMemoryProjectPathBuffer.activityMemoryProjectPath = projectActivePath;
-        //             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+        //             vscode.commands.executeCommand('luatide-activity-project.Project.refresh'); 
         //             vscode.commands.executeCommand("vscode.openFolder",vscode.Uri.file(projectActivePath),true);
         //         }
         //     }
@@ -59,6 +59,11 @@ export class ProjectActiveHandle {
         const configPath: string = path.join(dir, 'luatide_project.json');
         if (!fs.existsSync(configPath)) {    //工程配置文件有效性检查
             vscode.window.showErrorMessage('当前点击激活路径未检测到工程配置文件,不支持激活到活动工程，请重新检查');
+            return false;
+        }
+        const activeProjectPath:string = getCurrentPluginConfigActivityProject();
+        if(dir===activeProjectPath){
+            vscode.window.showWarningMessage('当前工程已激活，请勿重复激活');
             return false;
         }
         return true;
