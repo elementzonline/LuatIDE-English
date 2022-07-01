@@ -33,6 +33,17 @@ export function getPluginSocModuleList() {
     return moduleList;
 }
 
+// 获取dark背景下活动工程设置icon路径
+export function getConfigDarkIconPath(){
+    const configIconPath = path.join(extensionPath,'resource', 'themeSvg',"dark","projectConfig.svg");
+    return configIconPath;
+}
+
+// 获取light背景下活动工程设置icon路径
+export function getConfigLightIconPath(){
+    const configIconPath = path.join(extensionPath,'resource', 'themeSvg',"light","projectConfig.svg");
+    return configIconPath;
+}
 
 /*--------------------------------------插件扩展信息相关接口---------------------------------------------/ 
 

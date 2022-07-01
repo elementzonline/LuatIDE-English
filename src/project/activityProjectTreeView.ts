@@ -130,9 +130,43 @@ export class ActivityTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,      //存储当前标签
     public readonly parentPath: string,   //存储当前标签的路径，不包含该标签这个目录
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly type:string
   ) {
     super(label, collapsibleState);
+    const selectPath = path.join(parentPath, label);
+    const configDarkIconPath:string = getConfigDarkIconPath();
+    const configLightIconPath:string = getConfigLightIconPath();
+    const configIconPath = vscode.window.activeColorTheme.kind === 1 ? configLightIconPath : configDarkIconPath;
+    switch (selectPath) {
+      case getactiveProjectConfigDesc():
+        this.iconPath = configIconPath;
+        break;
+      case getProductionFileDesc():
+        this.iconPath = configIconPath;
+        break;
+      case getUiDesignDesc():
+        this.iconPath = configIconPath;
+        break;
+      case getSimulatorDesc():
+        this.iconPath = configIconPath;
+        break;
+      case  getDistinguishMark()+"\\"+getDownloadCoreDesc():
+        this.iconPath = configIconPath;
+        break;
+      case getLcdDriverDesc():
+        this.iconPath = configIconPath;
+        break;
+      case getTpDriverDesc():
+        this.iconPath = configIconPath;
+        break;
+      default:
+          if(selectPath.startsWith(getDistinguishMark()+"\\通讯口:")){
+            this.iconPath = configIconPath;
+            break;
+          }
+          break;
+    }
   }
 
   //为每项添加点击事件的命令
@@ -141,10 +175,14 @@ export class ActivityTreeItem extends vscode.TreeItem {
     command: 'luatide-activity-project.click',
     arguments: [    //传递两个参数
       this.label,
-      this.parentPath
+      this.parentPath,
     ]
   };
-  iconPath:'C:\\Users\\AAA\\Downloads\\开启.svg' | undefined;
   tooltip = this.parentPath;
-  contextValue = 'ActivityTreeItem';
+  contextValue = this.type;
 }
+
+ /* 实时检测主题颜色变化,刷新设置颜色 */
+vscode.window.onDidChangeActiveColorTheme((e) => {
+  vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
+});
