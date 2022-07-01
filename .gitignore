@@ -13,3 +13,5 @@ luatide_server/build/ide_service/log/
 tools/AirSimulator/workspace/elua_simulator/elua_simulator_log.txt
 tools/AirSimulator/script/lua.bin
 tools/AirSimulator/fs/sys_airm2m_force_debug_flag.flag
+luatide_server/build/firmware_manage/_temp/
+luatide_server/build/firmware_manage/log/
