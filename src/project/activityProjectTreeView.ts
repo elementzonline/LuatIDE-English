@@ -5,6 +5,7 @@ import * as path from 'path';
 import { getPluginConfigActivityProject, projectConfigCompatible, setPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath } from './projectConfigParse';
 import { getactiveProjectConfigDesc, getApiDesc, getConnectPort, getDistinguishMark, getDownloadCoreDesc, getHardwareDesc, getHelp, getLcdDriverDesc, getProductionFileDesc, getSimulatorDesc, getTpDriverDesc, getUiDesignDesc } from './activityProjectConfig';
+import { getConfigDarkIconPath, getConfigLightIconPath } from '../variableInterface';
 
 // let pluginJsonParse = new PluginJsonParse();
 // let projectJsonParse = new ProjectJsonParse();
@@ -52,21 +53,21 @@ function activeProjectDataInit(activityPath: string) {
   const activityProjectName: string = activityProjectJson.projectName;
   const libParentPath = path.dirname(activityProjectJson.libPath);
   const libName = path.basename(activityProjectJson.libPath);
-  treeDir.push(new ActivityTreeItem(activityProjectName, activityProjectPath, vscode.TreeItemCollapsibleState.Expanded));
+  treeDir.push(new ActivityTreeItem(activityProjectName, activityProjectPath, vscode.TreeItemCollapsibleState.Expanded,"ActivityTreeItemShow"));
   if (activityProjectJson.libPath !== "" && fs.existsSync(activityProjectJson.libPath)) {
-    treeDir.push(new ActivityTreeItem(libName, libParentPath, vscode.TreeItemCollapsibleState.Collapsed));
+    treeDir.push(new ActivityTreeItem(libName, libParentPath, vscode.TreeItemCollapsibleState.Collapsed,'ActivityTreeItem'));
   }
+  treeDir.push(new ActivityTreeItem(getHelp(), getDistinguishMark(), vscode.TreeItemCollapsibleState.Collapsed,'ActivityTreeItem'));
   if(activityProjectJson.projectType === "ui"){
-    treeDir.push(new ActivityTreeItem(getLcdDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
-    treeDir.push(new ActivityTreeItem(getTpDriverDesc(),"",vscode.TreeItemCollapsibleState.None));
-    treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getLcdDriverDesc(),"",vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+    treeDir.push(new ActivityTreeItem(getTpDriverDesc(),"",vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+    treeDir.push(new ActivityTreeItem(getUiDesignDesc(), '', vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
   }
-  treeDir.push(new ActivityTreeItem(getactiveProjectConfigDesc(), '', vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getDownloadCoreDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getSimulatorDesc(), '', vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getConnectPort(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
-  treeDir.push(new ActivityTreeItem(getHelp(), getDistinguishMark(), vscode.TreeItemCollapsibleState.Collapsed));
+  treeDir.push(new ActivityTreeItem(getactiveProjectConfigDesc(), '', vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+  treeDir.push(new ActivityTreeItem(getDownloadCoreDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+  treeDir.push(new ActivityTreeItem(getProductionFileDesc(), '', vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+  treeDir.push(new ActivityTreeItem(getSimulatorDesc(), '', vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+  treeDir.push(new ActivityTreeItem(getConnectPort(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
   return treeDir;
 }
 
@@ -82,16 +83,16 @@ function childrenDataInit(element: any,activityPath) {
       const childrenFileName: string = files[i];
       const childrenFilePath: string = path.join(libPath, childrenFileName);
       if (fs.statSync(childrenFilePath).isFile()) {
-        treeDir.push(new ActivityTreeItem(childrenFileName, libPath, vscode.TreeItemCollapsibleState.None));
+        treeDir.push(new ActivityTreeItem(childrenFileName, libPath, vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
       }
       else {
-        treeDir.unshift(new ActivityTreeItem(childrenFileName, libPath, vscode.TreeItemCollapsibleState.Collapsed));
+        treeDir.unshift(new ActivityTreeItem(childrenFileName, libPath, vscode.TreeItemCollapsibleState.Collapsed,'ActivityTreeItem'));
       }
     }
   }
   else if(filename=== getHelp() &&  fileParentPath===getDistinguishMark()){
-    treeDir.push(new ActivityTreeItem(getHardwareDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
-    treeDir.push(new ActivityTreeItem(getApiDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None));
+    treeDir.push(new ActivityTreeItem(getHardwareDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
+    treeDir.push(new ActivityTreeItem(getApiDesc(), getDistinguishMark(), vscode.TreeItemCollapsibleState.None,'ActivityTreeItem'));
   }
   else {
     let filePath: string;
@@ -111,10 +112,10 @@ function childrenDataInit(element: any,activityPath) {
         const relativeFilePath: string = path.relative(activityPath, childrenFilePath);
         if (appFile.indexOf(relativeFilePath) !== -1) {
           if (fs.statSync(childrenFilePath).isFile()) {
-            treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None));
+            treeDir.push(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.None,'ActivityTreeItemShow'));
           }
           else {
-            treeDir.unshift(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed));
+            treeDir.unshift(new ActivityTreeItem(childrenFileName, filePath, vscode.TreeItemCollapsibleState.Collapsed,'ActivityTreeItemShow'));
           }
         }
       }

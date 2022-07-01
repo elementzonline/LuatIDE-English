@@ -179,7 +179,7 @@
         },
         {
           "command": "luatide-activity-project.sourceFile.delete",
-          "when": "view == luatide-activity-project",
+          "when": "view == luatide-activity-project && viewItem == ActivityTreeItemShow",
           "group": "inline"
         }
       ],
