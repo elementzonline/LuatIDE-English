@@ -20,8 +20,8 @@ module(...,package.seeall)
 local function init()
     local para =
     {
-        width = 854, --分辨率宽度，
-        height = 480, --分辨率高度
+        width = 480--分辨率宽度，
+        height = 854--分辨率高度
         bpp = 16, --MIPI LCD直接写16，暂不支持其他配置
         bus = disp.BUS_MIPI, --LCD专用SPI引脚接口，不可修改
         xoffset = 0, --X轴偏移
