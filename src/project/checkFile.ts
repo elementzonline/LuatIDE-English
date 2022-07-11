@@ -11,7 +11,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { getCurrentPluginConfigActivityProject, getPluginConfigActivityProject, getPluginConfigUserProjectList, setPluginConfigUserProjectList } from '../plugConfigParse';
-import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getActiveProjectSerialPortInfoList } from '../variableInterface';
+import { getDownloadHtmlPath, getDownloadSourcePath, getPluginDefaultModuleList, getActiveProjectSerialPortInfoList, getLuatIDEDataPath } from '../variableInterface';
 import { getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigMoudlePort, getProjectconfigName, setProjectConfigModuleModel, setProjectConfigModulePort, setProjectConfigProjectName } from './projectConfigParse';
 import { selectProjectCorePathOperation, selectProjectLibPathOperation } from './activeProjectOperation';
 import { checkSameProjectExistStatusForPluginConfig } from './projectApi';
@@ -52,13 +52,16 @@ export async function downloadConfigDisplay(context: vscode.ExtensionContext, fi
             return true;
         }
         else {
+            const luatideDataPath = getLuatIDEDataPath();
+            const extensionPath = path.join(__dirname, '../..');
             downloadPage = vscode.window.createWebviewPanel(
                 'download', //仅供内部使用的面板类型
                 'LuatIDE 下载配置', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
-                    retainContextWhenHidden: true
+                    retainContextWhenHidden: true,
+                    localResourceRoots:[vscode.Uri.file(extensionPath),vscode.Uri.file(luatideDataPath)]
                 }
             );
         }
@@ -134,13 +137,16 @@ export async function displayOpenProjectFiles(context: vscode.ExtensionContext, 
             return true;
         }
         else {
+            const luatideDataPath = getLuatIDEDataPath();
+            const extensionPath = path.join(__dirname, '../..');
             downloadPage = vscode.window.createWebviewPanel(
                 'download', //仅供内部使用的面板类型
                 'LuatIDE 下载配置', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
-                    retainContextWhenHidden: true
+                    retainContextWhenHidden: true,
+                    localResourceRoots:[vscode.Uri.file(extensionPath),vscode.Uri.file(luatideDataPath)]
                 }
             );
         }
