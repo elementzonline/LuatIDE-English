@@ -274,7 +274,7 @@ export function apiSettingHandler(){
 
 // 下载固件功能设置处理
 export async function downloadCoreSettingHandler(){
-    const downloadCoreToolPath = "D:\\AAALuatIDE\\luatide_server\\build\\firmware_manage\\firmware_manage.exe";
+    const downloadCoreToolPath = path.join(__dirname, "../..", "luatide_server", "build", "firmware_manage", "firmware_manage.exe");
     const pluginConfigActivityProject = getPluginConfigActivityProject();
     const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
     let modulePort:string = getProjectConfigMoudlePort(pluginConfigActivityProject);
