@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    /* .el-table{
+      background: red;
+    } */
+  </style>
+</head>
+<body>
+  <div id="app"  v-cloak>
+    <h1 style="text-align:center">LuatIDE 下载资源管理</h1>
+  <el-table
+    :data="tableData"
+    style="width: 100%;margin-bottom: 20px;background-color:wheat;"
+    row-key="id"
+    :row-style="{height:'20px'}"
+    :cell-style="{padding:'3px'}"
+    border
+    lazy
+    highlight-current-row
+    align="center"
+    default-expand-all
+    :load="loadSearch"
+    :select-on-indeterminate="true"
+    @select="select"
+    @select-all="selectAll"
+    @selection-change="selectionChange"
+    ref="multipleTable"
+    :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+  >
+    <el-table-column type="selection" width="55" :selectable="selectable"> </el-table-column>
+    <el-table-column prop="name" label="名称"  width="180" >
+    </el-table-column>
+    <el-table-column prop="size" label="大小"  width="100">
+    </el-table-column>
+    <el-table-column prop="state" label="状态" width="120" > </el-table-column>
+    <el-table-column prop="desc" label="描述" width="300"> </el-table-column>
+  </el-table>
+  <el-button-group style="position: relative; margin-left: 70%;">
+  <el-button type="primary" icon="el-icon-download" :value="downloadSourceLength" @click="downloadSourceClick()">下载 {{downloadSourceLength}} 资源</el-button>
+  <el-button type="primary" icon="el-icon-delete" :value="unInstallSourceLength"  @click="unInstallSourceClick()">卸载 {{unInstallSourceLength}} 资源</el-button>
+</el-button-group>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="./vue/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="./index.js"></script>
+</html>
