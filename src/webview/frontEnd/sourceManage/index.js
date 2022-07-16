@@ -13,13 +13,13 @@ let testvue;
 window.addEventListener("message", (event) => {
     const message = event.data;
     switch (message.command) {
-        case 'ttt':
-          testvue.loadData();
-          break;
-        case 'hello2':
+        // case 'ttt':
+        //   testvue.loadData();
+        //   break;
+        case 'refreshSourceTableData':
           testvue.tableData = message.text;
           break;
-        case 'hello':
+        case 'sourceTableData':
             testdata = message.text;
             testvue = new Vue({
               el: '#app',
