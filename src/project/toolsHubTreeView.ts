@@ -19,6 +19,7 @@ export class ToolsHubTreeDataProvider implements vscode.TreeDataProvider<ToolsHu
     var treeDir: ToolsHubTreeItem[] = [];
     if (element === undefined) {
       treeDir.push(new ToolsHubTreeItem("串口监视器", "LuatIDE串口监视器", vscode.TreeItemCollapsibleState.None));
+      treeDir.push(new ToolsHubTreeItem("下载资源管理", "LuatIDE下载资源管理", vscode.TreeItemCollapsibleState.None));
       return Promise.resolve(treeDir);
     }
     else {

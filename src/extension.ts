@@ -14,7 +14,7 @@ import { ActivityTreeDataProvider, ActivityTreeItem } from './project/activityPr
 import { OpenProject } from './project/openProject';
 import * as fs from 'fs';
 import { UiDesign } from './webview/uiDesignWebview';
-import { checkSourceUpdate } from './serverSourceUpdate';
+// import { checkSourceUpdate } from './serverSourceUpdate';
 import * as dataReport from './feedback/dataReport';
 import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatting';
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible} from './plugConfigParse';
@@ -28,6 +28,7 @@ import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardware
 import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
+import { SourceManage } from './webview/sourceManage';
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 	'activityMemoryProjectPath': ''
@@ -81,6 +82,7 @@ let activityProjectTreeDataProvider = new ActivityTreeDataProvider();
 let toolsHubTreeDataProvider = new ToolsHubTreeDataProvider();
 let projectSoruceFileDelete = new ProjectSoruceFileDelete();
 let uiDesign = new UiDesign();
+const sourceManage = new SourceManage();
 const selectors: { language: string; scheme: string }[] = [
 	{ language: 'lua', scheme: 'file' },
 	{ language: 'lua', scheme: 'untitled' },
@@ -95,10 +97,11 @@ const runMode: 'external' | 'server' | 'inline' = 'inline';
 export function activate(context: vscode.ExtensionContext) {
 	// 插件配置实例化
 	pluginConfigInit.configInit();
+	pluginConfigInit.refreshPlugDependentResourceConfig();
 	// 插件配置文件兼容执行
 	pluginConfigCompatible();
 	// 检查依赖资源更新
-	checkSourceUpdate();
+	// checkSourceUpdate();
 	// 活动工程文件夹定时检测
 	temContext = context;
 	timeId = setInterval(checkFloderControlUpdate, 1000);
@@ -186,6 +189,9 @@ export function activate(context: vscode.ExtensionContext) {
 			case '串口监视器':
 				// 打开串口监视器webview
 				serialPortMonitor.serialPortMonitor(context);
+				break;
+			case '下载资源管理':
+				sourceManage.sourceManage(context);
 				break;
 			default:
 				break;
