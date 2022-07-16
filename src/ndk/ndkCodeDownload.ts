@@ -10,7 +10,7 @@ const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 // let gitOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel("NDK Update");
 let ndkFlag: boolean = true;
 // 下载 NDK 代码
-async function getNdkCode() {
+export async function getNdkCode() {
     console.log(TAG, "\x1b[0;96m[正在下载 NDK 编译环境，请等待......]");
     let dir: any = getNdkDefaultPath();
     let url: string = 'https://gitee.com/openLuat/luatos-ndk.git';

@@ -122,6 +122,38 @@ export function deleteDirRecursive(dir:any){
     }
 }
 
+// 递归删除文件夹内容，不删除文件夹本身
+export function deleteDirRecursiveMaintainFolder(dir:any){
+    if (fs.existsSync(dir)) {
+        const files = fs.readdirSync(dir);
+        files.forEach( (file) => {
+            var curPath = path.join(dir,file);
+            // fs.statSync同步读取文件夹文件，如果是文件夹，在重复触发函数
+            if (fs.statSync(curPath).isDirectory()) { // recurse
+                deleteDirRecursive(curPath);
+            } else {
+                fs.unlinkSync(curPath);
+            }
+        });
+    }
+    else{
+        vscode.window.showErrorMessage(`${dir}路径已改变，请重新确认`);
+    }
+}
+
+// 判断文件夹是否存在且是否是空文件夹
+export function isEmptyDir(fPath) {
+    if (!fs.existsSync(fPath)) {
+        return false;
+    }
+    var pa = fs.readdirSync(fPath);
+    if (pa.length === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export function projectActiveInterfact(activityProjectName:string,activityProjectPath:string) {
     // 执行激活到资源管理器命令
     vscode.window.showInformationMessage(`请选择激活${activityProjectName}工程的打开方式`,{modal:true},"当前窗口打开","新窗口打开").then(

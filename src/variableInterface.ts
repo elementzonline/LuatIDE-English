@@ -63,6 +63,12 @@ export function getLuatIDEDataPath() {
     return plugDataPath;
 }
 
+// 获取当前插件依赖资源配置路径
+export function getPlugDependentResourceConfigPath(){
+    const plugDependentResourceConfigPath = path.join(appDataPath,'LuatIDE','luatide_dependentSource.config');
+    return plugDependentResourceConfigPath;
+};
+
 // 获取用户默认工程工作空间存储路径
 export function getDefaultWorkspacePath() {
     const defaultProjectWorkspacePath:string = path.join(appDataPath,'LuatIDE','LuatideWorkspace');
@@ -132,6 +138,18 @@ export function getAir72XCXDefaultCorePath() {
 export function getAir72XCXModuleModelName(){
     const moduleModelName:string = "air72XCX/air60XCX/air78XCX";
     return moduleModelName;
+}
+
+// 获取72XCX默认demo文件存储路径
+export function getAir72XCXDefaultDemoPath(){
+    const air72XCXDefaultDemoPath: string = path.join(appDataPath, "LuatIDE", "LuatideDemo", "Air72XCX_Demo");
+    return air72XCXDefaultDemoPath;
+}
+
+// 获取72XCX默认lib文件存储路径
+export function getAir72XCXDefaultLibPath(){
+    const air72XCXDefaultLibPath: string = path.join(appDataPath, "LuatIDE", "LuatideLib", "Air72XCX_LIB");
+    return air72XCXDefaultLibPath;
 }
 
 /*--------------------------------------Air72XCX数据存储路径相关接口----------------------------------------*/ 
@@ -291,6 +309,12 @@ export function getActiveProjectHtmlPath() {
     return homeHtmlPath;
 }
 /*--------------------------------------活动工程配置界面资源文件路径相关接口----------------------------------------*/ 
+/*++++++++++++++++++++++++++++++++++++++工程依赖资源界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
+export function getSourceManageHtmlPath(){
+    const sourceManageHtmlPath:string = path.join(extensionPath,"src","webview","frontEnd","sourceManage","index.html");
+    return sourceManageHtmlPath;
+}
+/*--------------------------------------工程依赖资源界面资源文件路径相关接口----------------------------------------*/ 
 
 /*++++++++++++++++++++++++++++++++++++++登录界面资源文件路径相关接口++++++++++++++++++++++++++++++++++++++++*/ 
 // 获取luatide qq群二维码图标路径
@@ -640,6 +664,36 @@ export function getNdkDefaultExampleList() {
 export function getAir72XUXDefaultLatestLibName() {
     const air72XUXLibPath: string = getAir72XUXDefaultLibPath();
     const libList: string[] = fs.readdirSync(air72XUXLibPath);
+    let libLatestPath:string = '';
+    if (libList.length===0) {
+        return libLatestPath;
+    }
+    const reg = /V([\d\.]+)/gi;
+    let currentVersion: string = '';
+    for (let index = 0; index < libList.length; index++) {
+        const currentLibName: string = libList[index];
+        const libNameVersionArray = reg.exec(currentLibName);
+        reg.lastIndex = 0;
+        if (libNameVersionArray === null) {
+            continue;
+        }
+        else if (currentVersion === '') {
+            currentVersion = libNameVersionArray[1];
+        }
+        else if (libNameVersionArray[1] > currentVersion) {
+            currentVersion = libNameVersionArray[1];
+        }
+    }
+    if (currentVersion!=='') {
+        currentVersion = 'V'+currentVersion;
+    }
+    return currentVersion;
+}
+
+// 获取air72XCX默认最新lib版本名称
+export function getAir72XCXDefaultLatestLibName() {
+    const air72XCXLibPath: string = getAir72XCXDefaultLibPath();
+    const libList: string[] = fs.readdirSync(air72XCXLibPath);
     let libLatestPath:string = '';
     if (libList.length===0) {
         return libLatestPath;
