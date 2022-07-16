@@ -7,8 +7,8 @@ import http = require('isomorphic-git/http/node');
 
 // let gitOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel("NDK Update");
 let uiDesignFlag: boolean = true;
-// 下载 NDK 代码
-async function getUiDesignCode() {
+// 下载  UI设计器 代码
+export async function getUiDesignCode() {
     console.log("\x1b[0;96m[正在下载UI设计器环境，请等待......]");
     let dir: any = getUiDesignDefaultPath();
     let url: string = 'https://gitee.com/openLuat/luatos-uidesign.git';
