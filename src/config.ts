@@ -2,6 +2,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { isEmptyDir } from './project/projectApi';
+import { sourceAutoUpdate } from './serverSourceUpdate';
 import {
     getAir101DefaultCorePath,
     getAir101DefaultDemoPath,
@@ -22,7 +24,12 @@ import {
     getPluginConfigPath,
     getUserUUIDPath,
     getAir72XCXDefaultCorePath,
-    getAir72XUXDefaultDemoPath
+    getAir72XUXDefaultDemoPath,
+    getAir72XCXDefaultDemoPath,
+    getAir72XCXDefaultLibPath,
+    getPlugDependentResourceConfigPath,
+    getUiDesignDefaultPath,
+    getNdkDefaultPath
 } from './variableInterface';
 /**
  * 插件配置初始化，在用户appdata区域生成插件所需data
@@ -50,7 +57,149 @@ export class PluginConfigInit {
     private air105Corepath: any = getAir105DefaultCorePath();
     private esp32c3Corepath: any = getEsp32c3DefaultCorePath();
     private air72XCXCorePath:any = getAir72XCXDefaultCorePath();
+    private air72XCXDemoPath:any = getAir72XCXDefaultDemoPath();
+    private air72XCXLibPath:any = getAir72XCXDefaultLibPath();
     // public isUserCloseDownloadPage = false;
+    private plugDependentResourceConfigPath:any = getPlugDependentResourceConfigPath();
+    private plugDependentResourceConfig:any = [
+        {
+          id: "boardcast",
+          name: '板级支持包',
+          size: '',
+          state:'',
+          desc: '使用对应工程所需依赖资源',
+          children: [{
+            id:"Air72XUX",
+            name:'Air72XUX',
+            size: '',
+            state:"",
+            desc: '',
+            children:[{
+              id:"8910_script",
+              name:'Demo/Lib',
+              size: '',
+              state:'Not Installed',
+              desc: '',
+              children:[]
+          },{
+            id:"8910_lua_lod",
+              name:'Core',
+              size: '',
+              state:'Not Installed',
+              desc: '',
+              children:[]
+          }]
+          },{
+            id:"Air72XCX",
+            name:'Air72XCX',
+            size: '',
+            state:'',
+            desc: '',
+            children: [{
+              id: '1603_script',
+              name: 'Demo/Lib',
+              size: '',
+              state: 'Not Installed',
+              desc: '',
+              children: []
+            }, {
+                id: '1603_lua_lod',
+                name: 'Core',
+                size: '',
+                state: 'Not Installed',
+                desc: '',
+                children: []
+          }]
+          },
+          {
+            id:"Air101",
+            name:'Air101',
+            size: '',
+            state:'',
+            desc: '',
+            children:[
+              {
+                id: "101_lua_lod",
+                name: 'Demo/Core',
+                size: '',
+                state: 'Not Installed',
+                desc: '',
+              }
+            ]
+          },
+          {
+            id:"Air103",
+            name:'Air103',
+            size: '',
+            state:'',
+            desc: '',
+            children:[
+              {
+                id: "103_lua_lod",
+                name: 'Demo/Core',
+                size: '',
+                state: 'Not Installed',
+                desc: '',
+              }
+            ]
+          },
+          {
+            id:"Air105",
+            name:'Air105',
+            size: '',
+            state:'',
+            desc: '',
+            children:[
+              {
+                id: '105_lua_lod',
+                name: 'Demo/Core',
+                size: '',
+                state: 'Not Installed',
+                desc: '',
+              }
+            ]
+          },
+          {
+            id:'Esp32C3',
+            name:'Esp32C3',
+            size: '',
+            state:'',
+            desc: '',
+            children:[
+              {
+                id: 'esp32c3_lua_lod',
+                name: 'Demo/Core',
+                size: '',
+                state: 'Not Installed',
+                desc: '',
+              }
+            ]
+          }
+          ]
+        },
+        {
+          id: "工具链",
+          name:'工具链',
+          size: '',
+          state:'',
+          desc: '',
+          children: [{
+                id:"UI设计器",
+                name:'UI设计器',
+                size: '50MB+',
+                state:'Not Installed',
+                desc: 'UI工程开发必备资源'
+            },
+            {
+                id:"NDK",
+                name:'NDK',
+                size: '500MB+',
+                state:'Not Installed',
+                desc: 'NDK开发工程必备资源'
+            }
+            ]
+            },
+            ];
 
     constructor() {
 
@@ -78,7 +227,133 @@ export class PluginConfigInit {
         this.folderInit(this.air105Corepath);
         this.folderInit(this.esp32c3Corepath);
         this.folderInit(this.air72XCXCorePath);
+        this.folderInit(this.air72XCXDemoPath);
+        this.folderInit(this.air72XCXLibPath);
+        this.fileInit(this.plugDependentResourceConfigPath);
     }
+    
+    // 刷新依赖资源数据
+    refreshPlugDependentResourceConfig() {
+        let tabledata = JSON.parse(fs.readFileSync(this.plugDependentResourceConfigPath, "utf-8"));
+        let sourceStateHanler =  (tabledata): void => {
+            // let that = this;
+            for (let index = 0; index < tabledata.length; index++) {
+              const element = tabledata[index];
+              const pluginDependentSourceState = this.getPlugDependentResourceState(element.id);
+              if (element.state!=="") {
+                if (pluginDependentSourceState) {
+                    sourceAutoUpdate(element.id);
+                    element.state = "Installed";
+                }
+                else{
+                    element.state = "Not Installed";
+                }
+            }
+              else if (element.children && element.children !== []) {
+                sourceStateHanler(element.children);
+              }
+            }
+          };
+          sourceStateHanler(tabledata);
+          const plugDependentResourceConfigPath = getPlugDependentResourceConfigPath();
+          fs.writeFileSync(plugDependentResourceConfigPath,JSON.stringify(tabledata,null,"\t"));
+    };
+    
+
+
+        // 获取插件依赖资源安装状态
+       public getPlugDependentResourceState(resourceId:string){
+            switch (resourceId) {
+                case "8910_script":
+                    const air72XUXDefaultLibPath = getAir72XUXDefaultLibPath();
+                    const air72XUXDemoPath = getAir72XUXDefaultDemoPath();
+                    if (isEmptyDir(air72XUXDefaultLibPath) && isEmptyDir(air72XUXDemoPath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "8910_lua_lod":
+                    const air72XUXDefaultCorePath = getAir72XUXDefaultCorePath();
+                    if (isEmptyDir(air72XUXDefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "1603_script":
+                    const air72XCXDefaultLibPath = getAir72XCXDefaultLibPath();
+                    const air72XCXDemoPath = getAir72XCXDefaultDemoPath();
+                    if (isEmptyDir(air72XCXDefaultLibPath) && isEmptyDir(air72XCXDemoPath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "1603_lua_lod":
+                    const air72XCXDefaultCorePath = getAir72XCXDefaultCorePath();
+                    if (isEmptyDir(air72XCXDefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "101_lua_lod":
+                    const air101DefaultDemoPath = getAir101DefaultDemoPath();
+                    const air101DefaultCorePath = getAir101DefaultCorePath();
+                    if (isEmptyDir(air101DefaultDemoPath) && isEmptyDir(air101DefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "103_lua_lod":
+                    const air103DefaultDemoPath = getAir103DefaultDemoPath();
+                    const air103DefaultCorePath = getAir103DefaultCorePath();
+                    if (isEmptyDir(air103DefaultDemoPath) && isEmptyDir(air103DefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "105_lua_lod":
+                    const air105DefaultDemoPath = getAir105DefaultDemoPath();
+                    const air105DefaultCorePath = getAir105DefaultCorePath();
+                    if (isEmptyDir(air105DefaultDemoPath) && isEmptyDir(air105DefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "esp32c3_lua_lod":
+                    const esp32c3DefaultDemoPath = getEsp32c3DefaultDemoPath();
+                    const esp32c3DefaultCorePath = getEsp32c3DefaultCorePath();
+                    if (isEmptyDir(esp32c3DefaultDemoPath) && isEmptyDir(esp32c3DefaultCorePath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "UI设计器":
+                    const uiDesignPath = getUiDesignDefaultPath();
+                    if (isEmptyDir(uiDesignPath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                case "NDK":
+                    const ndkPath = getNdkDefaultPath();
+                    if (isEmptyDir(ndkPath)) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                default:
+                    break;
+            }
+        }
 
     // 获取当前插件配置文件初始化版本号
     getPlugConfigInitVersion(){
@@ -121,6 +396,10 @@ export class PluginConfigInit {
             case 'uuid.txt':
                 const uuidData: any = this.uuidGenerator();
                 fs.writeFileSync(filePath, uuidData);
+                break;
+            case "luatide_dependentSource.config":
+                const plugDependentResouceConfig = this.plugDependentResourceConfig;
+                fs.writeFileSync(filePath, JSON.stringify(plugDependentResouceConfig, null, "\t"));
                 break;
         }
     }
