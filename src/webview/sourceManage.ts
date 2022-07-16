@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import path = require("path");
-import { getAir101DefaultCorePath, getAir101DefaultDemoPath, getAir103DefaultCorePath, getAir103DefaultDemoPath, getAir105DefaultCorePath, getAir105DefaultDemoPath, getAir72XCXDefaultCorePath, getAir72XCXDefaultDemoPath, getAir72XCXDefaultLibPath, getAir72XUXDefaultCorePath, getAir72XUXDefaultDemoPath, getAir72XUXDefaultLibPath, getEsp32c3DefaultCorePath, getEsp32c3DefaultDemoPath, getNdkDefaultPath, getPlugDependentResourceConfigPath, getSourceManageHtmlPath, getUiDesignDefaultPath } from "../variableInterface";
+import { getAir101DefaultCorePath, getAir101DefaultDemoPath, getAir103DefaultCorePath, getAir103DefaultDemoPath, getAir105DefaultCorePath, getAir105DefaultDemoPath, getAir72XCXDefaultCorePath, getAir72XCXDefaultDemoPath, getAir72XCXDefaultLibPath, getAir72XUXDefaultCorePath, getAir72XUXDefaultDemoPath, getAir72XUXDefaultLibPath, getEsp32c3DefaultCorePath, getEsp32c3DefaultDemoPath, getLuatIDEDataPath, getNdkDefaultPath, getPlugDependentResourceConfigPath, getSourceManageHtmlPath, getUiDesignDefaultPath } from "../variableInterface";
 import {  pullAir101Source, pullAir103Source, pullAir105Source, pullAir72XCXCore, pullAir72XCXScript, pullAir72XUXCore, pullAir72XUXScript, pullEsp32c3Source, updateProgressView } from "../serverSourceUpdate";
 import { getNdkCode } from "../ndk/ndkCodeDownload";
 import { getUiDesignCode } from "../ui/uiDesignSourceUpdate";
@@ -23,13 +23,16 @@ export class SourceManage{
             return;
         }
         else{
+          const luatideDataPath = getLuatIDEDataPath();
+          const extensionPath = path.join(__dirname, '../..');
             this.sourcePanel = vscode.window.createWebviewPanel(
                 "sourceManage",
                 "sourceManage",
                 vscode.ViewColumn.Active,
                 {
                     enableScripts:true,
-                    retainContextWhenHidden:true
+                    retainContextWhenHidden:true,
+                    localResourceRoots:[vscode.Uri.file(extensionPath),vscode.Uri.file(luatideDataPath)]
                 }
             );
             this.sourcePanel.webview.html = this.getWebviewContent();
