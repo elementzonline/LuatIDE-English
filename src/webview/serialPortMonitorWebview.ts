@@ -1,6 +1,6 @@
 // 该文件用于luatide工具集合内内置串口监视器页面
 import * as vscode from 'vscode';
-import { getSerialPortInfoList, getSerialPortMonitorHtmlPath, getSerialPortMonitorSourcePath } from '../variableInterface';
+import { getLuatIDEDataPath, getSerialPortInfoList, getSerialPortMonitorHtmlPath, getSerialPortMonitorSourcePath } from '../variableInterface';
 import * as fs from "fs";
 import * as path from "path";
 
@@ -19,13 +19,16 @@ export class SerialPortMonitor {
             return;
         }
         else{
+            const luatideDataPath = getLuatIDEDataPath();
+            const extensionPath = path.join(__dirname, '../..');
             this.serialPortMonitorPanel = vscode.window.createWebviewPanel(
                 'serialMonitor',
                 "SerialMonitor",
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
-                    retainContextWhenHidden: true
+                    retainContextWhenHidden: true,
+                    localResourceRoots:[vscode.Uri.file(extensionPath),vscode.Uri.file(luatideDataPath)]
                 },
                 );
             this.serialPortMonitorPanel.webview.html = this.getWebviewContent();
