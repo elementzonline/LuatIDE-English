@@ -16,7 +16,7 @@ const sleep = util.promisify(setTimeout);
 
 const TAG = "[LuatIDE] " + path.basename(__filename) + "";
 
-export enum cmdType {
+export enum CmdType {
     server = "0",
     dbg = "1",
     at = "2"
@@ -72,7 +72,6 @@ async function socketConnect() {
     return null;
 }
 
-
 async function serverConnect() {
 
     for (var i = 0; i < 50; i++) {
@@ -104,7 +103,6 @@ export async function open(serverRecvCb: Function|null) {
     // 连接中端客户端
     if ((gSocketHandle = await serverConnect()) === null) { return false; }
 
-
     gSocketHandle?.on('close', () => {
         console.log(TAG, ">> client connection closed");
         gSocketHandle?.destroy();
@@ -135,7 +133,7 @@ export async function close() {
 
 
 
-export async function sendData(type: cmdType, cmd: string, param: string) {
+export async function sendData(type: CmdType, cmd: string, param: string) {
     if (gSocketHandle === null) {
         console.log(TAG, "设备链接未就绪,无法输出控制命令");
         return;
