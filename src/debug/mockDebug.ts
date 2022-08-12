@@ -409,7 +409,7 @@ export class MockDebugSession extends LoggingDebugSession {
 			arg.requestMessage = requestDataArr[1];
 			console.log(TAG, "当前出队数据：", requestData);
 			// arg.dbg_write_cmd(requestData);
-			ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg " + requestData);
+			ideServer.sendData(ideServer.CmdType.dbg, "dbg", "dbg " + requestData);
 			console.log(TAG, "队列发送数据成功", requestData);
 			arg.dataReceiveFlag = 0;
 		}
@@ -492,18 +492,18 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 获取用户工作区路径
 		if (vscode.workspace) {
 			// 用户当前点击文件获取。
-			ideServer.sendData(ideServer.cmdType.server, "work_path", this.activeWorkspace);
+			ideServer.sendData(ideServer.CmdType.server, "work_path", this.activeWorkspace);
 			await this.sleep(100);
 			// 插件所在路径获取
 			const plugPath: string = path.join(__dirname, "../..");
-			ideServer.sendData(ideServer.cmdType.server, "plug_path", plugPath);
+			ideServer.sendData(ideServer.CmdType.server, "plug_path", plugPath);
 			await this.sleep(100);
 			const moduleModel = getProjectConfigModuleModel(this.activeWorkspace);
 			// 修复模块不显示时默认使用Air72XUX/Air82XUX模块型号
 			if (moduleModel === undefined) {
 				setProjectConfigModuleModel(this.activeWorkspace, "air72XUX/air82XUX");
 			}
-			ideServer.sendData(ideServer.cmdType.server, "download", "");
+			ideServer.sendData(ideServer.CmdType.server, "download", "");
 			return true;
 		}
 		return false;
@@ -749,9 +749,9 @@ export class MockDebugSession extends LoggingDebugSession {
 		// 清除队列
 		queue.clear();
 		// 怀疑是bug，修改后：
-		ideServer.sendData(ideServer.cmdType.dbg, "dbg", "dbg disconnect");
+		ideServer.sendData(ideServer.CmdType.dbg, "dbg", "dbg disconnect");
 		/*+\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
-		ideServer.sendData(ideServer.cmdType.server, "servicekill", "");
+		ideServer.sendData(ideServer.CmdType.server, "servicekill", "");
 		ideServer.close();
 		/*-\NEW\czm\2021.05.9\点击停止调试按钮时自动终止服务器进程*/
 		// 关闭定时器，置this.timer1为undefined
@@ -1110,7 +1110,7 @@ export class MockDebugSession extends LoggingDebugSession {
 		//调试控制台输入请求
 		switch (args.context) {
 			case 'repl':
-				ideServer.sendData(ideServer.cmdType.at, "sendat", args.expression);
+				ideServer.sendData(ideServer.CmdType.at, "sendat", args.expression);
 				this.sendResponse(response);
 			default:
 				while (true) {
