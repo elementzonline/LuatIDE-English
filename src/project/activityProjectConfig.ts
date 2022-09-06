@@ -279,9 +279,10 @@ export async function downloadCoreSettingHandler(){
     const moduleModel:string = getProjectConfigModuleModel(pluginConfigActivityProject);
     let modulePort:string = getProjectConfigMoudlePort(pluginConfigActivityProject);
     const corePath:string = getProjectConfigCorePath(pluginConfigActivityProject);
-    const cmd:string = "\""+downloadCoreToolPath.toString()+"\"" + " -m \"" +moduleModel.toString()+"\"" + " -p\" " +modulePort.toString()+ "\"" + " -c \"" + corePath.toString()+"\"";
+    const cmd:string = downloadCoreToolPath.toString();
+    const coreDownloadArg:string[] =  ['-m',moduleModel.toString(),'-p', modulePort.toString(),'-c',corePath.toString()];
     const task = new vscode.Task({ type: 'luatide-task' }, vscode.TaskScope.Global, "LuatIDE", 'Core Download');
-    task.execution = new vscode.ShellExecution(cmd);
+    task.execution = new vscode.ShellExecution(cmd.toString(),coreDownloadArg);
     task.isBackground = false; //true 隐藏日志
     task.presentationOptions = {
         echo: false,

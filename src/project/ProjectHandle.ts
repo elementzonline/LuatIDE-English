@@ -246,13 +246,13 @@ export async function exportProducFile() {
     {
         await ideServer.open(null);
         const activeWorkspace = getPluginConfigActivityProject();	
-        ideServer.sendData(ideServer.cmdType.server,"work_path",activeWorkspace);
+        ideServer.sendData(ideServer.CmdType.server,"work_path",activeWorkspace);
         const plugPath: string = path.join(__dirname, "../..");
-        ideServer.sendData(ideServer.cmdType.server,"plug_path",plugPath);
-        ideServer.sendData(ideServer.cmdType.server, "producFileGen", "");
+        ideServer.sendData(ideServer.CmdType.server,"plug_path",plugPath);
+        ideServer.sendData(ideServer.CmdType.server, "producFileGen", "");
         ideServer.close();
         return;
     }
     // 如果中端正在运行，就直接发送指令
-    ideServer.sendData(ideServer.cmdType.server, "producFileGen", "");
+    ideServer.sendData(ideServer.CmdType.server, "producFileGen", "");
 }

@@ -330,12 +330,20 @@ async function checkFilesType(allFiles: any, newFiles: any, isOpenProject: boole
     let fileIgnored = projectConfigJson.ignore;
 
     let temNewFiles = newFiles.filter((item: any) => {
-        return !item.match(/^(\.luatide|\.vscode|\.git|.svn|ndk)/);
+        return !item.match(/^(\.luatide|\.vscode|\.git|\.svn|ndk)/);
     });
 
     /* 去除无效文件夹影响 */
     temNewFiles = temNewFiles.filter((item: any) => {
-        return item.match(/\w+\.\w+$/g);
+        return item.match(/\w+\.\w+$|\w+\.pac/g);
+    });
+
+    temNewFiles = temNewFiles.filter((item: any) => {
+        let showFlag:number = item.match(/\w+\.pac/g);
+        if(showFlag){
+            fileIgnored.push(item);
+        }
+        return !showFlag;
     });
 
     //增加手动打开下载文件目录展示
