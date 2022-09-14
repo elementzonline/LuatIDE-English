@@ -21,7 +21,7 @@ import * as path from 'path'; // 导入fs库和path库
 import * as ndkProject from "../ndk/ndkProject";
 import * as tsQueue from "../tsQueue";
 import * as displayLog from "./displayLog";
-import * as checkFile from '../project/checkFile';
+import * as checkFile from '../project/checkFileWebview';
 
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getProjectConfigAppFile, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigType, setProjectConfigModuleModel } from '../project/projectConfigParse';

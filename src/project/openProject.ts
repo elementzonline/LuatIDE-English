@@ -8,8 +8,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { projectConfigCompatible } from '../plugConfigParse';
 import { generateImportProjectInitJson, getProjectConfigCorePath, getProjectConfigLibPath, getProjectConfigModuleModel, getProjectConfigProjectType, pushProjectConfigAppFile, pushProjectConfigIgnoreFile } from './projectConfigParse';
-import * as checkFile from './checkFile';
+// import * as checkFile from './checkFile';
 import { getDefaultWorkspacePath} from '../variableInterface';
+import { activeProjectManage } from './checkFileWebview';
 // import { getCoreListBaseMoudeleMode, getExampleListBaseMoudeleMode, getLibListBaseMoudeleMode } from '../variableInterface';
 // import { openProjectManage } from '../webview/openProjectWebview';
 // import { PluginVariablesInit } from '../config';
@@ -45,7 +46,7 @@ export class OpenProject {
             "new": filesArr,
             "ignore": [],
         };
-        checkFile.displayOpenProjectFiles(context, files, importProjectPath);
+        activeProjectManage(context, files,false,importProjectPath);
         // 解析活动工程配置传送至打开工程webview
         const openProjectJson  = this.openProjectDataParse(importProjectPath);
         homeManageObj.homeManage(context,'loadOpenProjectModelBox',openProjectJson);
