@@ -20,8 +20,6 @@ import { LuaFormatProvider, LuaRangeFormatProvider } from './editor/codeFormatti
 import { getCurrentPluginConfigActivityProject, pluginConfigCompatible} from './plugConfigParse';
 import { clientOperation } from './LSP/client/client';
 // import { CheckFiles, StateMachine } from './project/checkFile';
-import * as checkFile from './project/checkFile';
-import { getFileForDirRecursion } from './project/projectApi';
 import { projectConfigOperation } from './project/activeProjectOperation';
 import { debugProject, runProject } from './debug/debugHandler';
 import { getactiveProjectConfigDesc, getApiDesc, getDistinguishMark, getHardwareDesc, getProductionFileDesc, getUiDesignDesc,getSimulatorDesc, getLcdDriverDesc, getTpDriverDesc, tpDriverSettingHandler, lcdDriverSettingHandler, portSelectSettingHandler, hardwareSettingHandler, apiSettingHandler, getDownloadCoreDesc, downloadCoreSettingHandler } from './project/activityProjectConfig';
@@ -29,47 +27,11 @@ import { ToolsHubTreeDataProvider } from './project/toolsHubTreeView';
 import { SerialPortMonitor } from './webview/serialPortMonitorWebview';
 import { setProjectConfigSimulatorReverse } from './project/projectConfigParse';
 import { SourceManage } from './webview/sourceManage';
+import { checkActiveProjectChange } from './activeProjectCheck';
 // 定义保存到到缓冲区的活动工程每次加载路径
 export let activityMemoryProjectPathBuffer: any = JSON.parse(JSON.stringify({
 	'activityMemoryProjectPath': ''
 }));
-
-/* 文件检测 */
-// const checkFile = new CheckFiles();
-// const stateMachine = new StateMachine();
-let temContext: vscode.ExtensionContext;
-let timeId: any;
-let oldFd: any = undefined;
-let curFd: any = undefined;
-async function checkFloderControlUpdate(){
-	let aP = getCurrentPluginConfigActivityProject();
-	if (aP !== undefined && aP !== "") {
-		curFd = getFileForDirRecursion(aP, "");
-		oldFd = await checkFile.getOriginalFiles(aP);
-		let diff = curFd.filter(function(v: any){ return oldFd.indexOf(v) === -1; });
-		let del = oldFd.filter(function(v: any){ return curFd.indexOf(v) === -1; });
-		if (diff.length > 0){
-			clearInterval(timeId);
-			let files = {
-				"all":curFd,
-				"new":diff,
-			};
-			// 下载配置界面显示
-			const ret = await checkFile.downloadConfigDisplay(temContext, files, false);
-			if (ret){
-				timeId = setInterval(checkFloderControlUpdate, 1000);
-			}
-		}
-		if (del.length > 0){
-			clearInterval(timeId);
-			const ret = await checkFile.delFiles(del);
-			if (ret){
-				oldFd = curFd;
-				timeId = setInterval(checkFloderControlUpdate, 1000);
-			}
-		}
-	}
-}
 
 let pluginConfigInit = new PluginConfigInit();
 let projectActiveHandle = new ProjectActiveHandle();
@@ -103,8 +65,9 @@ export function activate(context: vscode.ExtensionContext) {
 	// 检查依赖资源更新
 	// checkSourceUpdate();
 	// 活动工程文件夹定时检测
-	temContext = context;
-	timeId = setInterval(checkFloderControlUpdate, 1000);
+	// temContext = context;
+	setInterval(checkActiveProjectChange, 1000,context);
+	// timeId = setInterval(checkFloderControlUpdate, 1000);
 	// 代码格式化相关功能入口
 	vscode.languages.registerDocumentFormattingEditProvider(selectors, new LuaFormatProvider(context));
 	vscode.languages.registerDocumentRangeFormattingEditProvider(selectors, new LuaRangeFormatProvider(context));

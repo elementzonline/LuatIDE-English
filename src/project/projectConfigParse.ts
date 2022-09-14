@@ -40,6 +40,13 @@ export function  getProjectConfigAppFile(projectPath:any){
         return projectConfigAppFile;
     }
 
+    // 获取工程忽略的资源文件列表
+    export function  getProjectConfigIgnoreFile(projectPath:any){
+        const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);
+        const projectConfigIgnoreFile:string[] = projectConfigJsonObj.ignore;
+        return projectConfigIgnoreFile;
+    }
+
     // 获取工程lib库文件路径
 export function getProjectConfigLibPath(projectPath:any){
         const projectConfigJsonObj:any =  getProjectConfigJson(projectPath);

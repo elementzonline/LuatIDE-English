@@ -1,9 +1,11 @@
 import path = require('path');
 import * as vscode from 'vscode';
+import { getActiveProjectFileList } from '../activeProjectCheck';
 import { getPluginConfigActivityProject } from '../plugConfigParse';
 import { getAir72XCXModuleModelName, getHistoryCorePath, getHistoryLibPath } from '../variableInterface';
 //import { activeProjectConfig } from '../webview/configWebview';
-import { downloadConfigDisplay, getOriginalFiles } from './checkFile';
+// import { downloadConfigDisplay } from './checkFile';
+import { activeProjectManage } from './checkFileWebview';
 import { getFileForDirRecursion } from './projectApi';
 import { getProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCorePath, setProjectConfigLibPath, setProjectConfigModuleModel } from './projectConfigParse';
 
@@ -15,12 +17,13 @@ export async function projectConfigOperation(context: vscode.ExtensionContext) {
         return false;
     }
     //activeProjectConfig(context);
-    let all = await getOriginalFiles(activityProjectPath);
+    let all = await getActiveProjectFileList(activityProjectPath);
     let json = {
         "all": all,
         "new": [],
     };
-    downloadConfigDisplay(context, json, true);
+    // await downloadConfigDisplay(context, json, true);
+    activeProjectManage(context,json,true,false);
 }
 
 // 打开文件资源管理器接口选择core文件

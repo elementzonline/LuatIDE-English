@@ -92,7 +92,7 @@ let recurseFiles = function (par, name, obj) {
     } else {
         addFile(par, obj);
     }
-}
+};
 
 
 /*
@@ -244,7 +244,7 @@ function fileStateInit(addArr, ignore) {
     let container = $("#root").parent().find('input[type="checkbox"]');
     container.each(function () {
         let arr = [];
-        let temS = ""
+        let temS = "";
         if (!($(this).prop("id").includes("floder") || $(this).prop("id").includes("root"))) {
             let temC;
             arr[arr.length] = $("#" + $(this).prop("id") + "-label").text();
@@ -384,7 +384,9 @@ function hideWindowChange() {
 
 //激活 VsCode 通信
 const vscode = acquireVsCodeApi();
-
+vscode.postMessage({
+    command: "homePageReady",
+});
 /* 改变主题样式 */
 function changeThemeColor(style) {
     if (style === "light") {

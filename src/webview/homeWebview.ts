@@ -18,7 +18,8 @@ import { getprojectConfigInitVersion, setProjectConfigCorePath, setProjectConfig
 import * as uiDesignUpdate from '../ui/uiDesignSourceUpdate';
 import { ImportLuatToolsProjectClass } from '../project/importLuatToolsProject';
 import { showOpenDialog } from '../project/activeProjectOperation';
-import * as checkFile from '../project/checkFile';
+import { activeProjectManage } from '../project/checkFileWebview';
+// import * as checkFile from '../project/checkFile';
 // let pluginVariablesInit = new PluginVariablesInit();                                             
 // let projectConfigOperation = new ProjectConfigOperation();
 // let pluginJsonParse = new PluginJsonParse();
@@ -834,6 +835,7 @@ export class HomeManage {
                 "new": files,
                 "ignore": [],
             };
-            checkFile.displayOpenProjectFiles(temContext, fileArr, path);
+            // checkFile.displayOpenProjectFiles(temContext, fileArr, path);
+            activeProjectManage(temContext,fileArr,false,path);
         }
 }
