@@ -97,43 +97,43 @@ export class SourceManage{
         let downloadingHint:string;
         switch (element['id']) {
           case "8910_script":
-            downloadingHint = '正在为您拉取最新air72XUX/air82XUX的DEMO及Lib文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir72XUXScript);
+            downloadingHint = 'Downloading the latest Air72xux/Air82xux DEMO and lib file for you. Please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir72XUXScript);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "8910_lua_lod":
-            downloadingHint = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir72XUXCore);
+            downloadingHint = 'Downloading the latest Air72xux/Air82xux firmware for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir72XUXCore);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "1603_script":
-            downloadingHint = '正在为您拉取最新air72XCX的DEMO及Lib文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir72XCXScript);
+            downloadingHint = 'Downloading the latest Air72xcx DEMO and LIB file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir72XCXScript);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "1603_lua_lod":
-            downloadingHint = '正在为您拉取最新air72XCX固件文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir72XCXCore);
+            downloadingHint = 'Downloading the latest Air72xcx firmware file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir72XCXCore);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "101_lua_lod":
-            downloadingHint = '正在为您拉取最新air101资源文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir101Source);
+            downloadingHint = 'Downloading the latest Air101 resource file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir101Source);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "103_lua_lod":
-            downloadingHint = '正在为您拉取最新air103资源文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir103Source);
+            downloadingHint = 'Downloading the latest Air103 resource file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir103Source);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "105_lua_lod":
-            downloadingHint = '正在为您拉取最新air105资源文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullAir105Source);
+            downloadingHint = 'Downloading the latest Air105 resource file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullAir105Source);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "esp32c3_lua_lod":
-            downloadingHint = '正在为您拉取最新esp32c3资源文件,请耐心等待';
-            await updateProgressView("是",downloadingHint,pullEsp32c3Source);
+            downloadingHint = 'Downloading the latest ESP32C3 resource file for you, please wait patiently';
+            await updateProgressView("Yes",downloadingHint,pullEsp32c3Source);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
           case "UI设计器":

@@ -47,7 +47,7 @@ export class PluginConfigInit {
     private esp32c3Demopath: any = getEsp32c3DefaultDemoPath();
     private air72XUXLibpath: any = getAir72XUXDefaultLibPath();
     private dataIntroduce: any = path.join(this.appDataPath, 'LuatIDE', '文件夹说明.txt');
-    private introduceData: any = '该文件夹为合宙vscode插件LuatIDE的配置保存文件,删除后可能导致插件历史配置丢失,插件不可使用,请谨慎删除';
+    private introduceData: any = 'This folder is the configuration saving file of the LuAative plugin VSCode plug -in. After deleting, the plug -in history is lost, the plug -in is not available, please delete it carefully';
     private pluginconfigPath: any = getPluginConfigPath();
     private uuidPath = getUserUUIDPath();
     private corepath = getHistoryCorePath();

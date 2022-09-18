@@ -181,7 +181,7 @@ async function checkair72xcxSourceUpdate(){
 */
 function checkUpdateState(localSourceVersion: string | undefined, remoteSourceVersion: string | undefined) {
     if (remoteSourceVersion === undefined) {
-        console.log('检查服务器更新失败');
+        console.log('Check the server update failed');
         return undefined;
     }
     else if (localSourceVersion === undefined) {
@@ -280,7 +280,7 @@ async function deleteFolderRecursive(url: any) {
         });
         fs.rmdirSync(url);
     } else {
-        console.log('给定的路径不存在，请给出正确的路径');
+        console.log('The given path does not exist, please give the correct path');
     }
 }
 
@@ -311,20 +311,20 @@ export async function updateProgressView(result: string, downloadingHint: string
     if (jsonObj === undefined) {
         return undefined;
     }
-    if (result === '是') {
+    if (result === 'Yes') {
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: downloadingHint,
             cancellable: true,
         }, async (progress, token) => {
             token.onCancellationRequested(() => {
-                console.log('用户取消了更新');
+                console.log('The user canceled the update');
             });
-            progress.report({ increment: 0, message: '正在更新...' });
-            progress.report({ increment: 10, message: '正在更新...' });
+            progress.report({ increment: 0, message: 'Updating...' });
+            progress.report({ increment: 10, message: 'Updating...' });
             await updateFunction(jsonObj, sourceBasePath);
             setTimeout(() => {
-                progress.report({ increment: 50, message: '正在更新...' });
+                progress.report({ increment: 50, message: 'Updating...' });
             }, 1000);
 
             const promise = new Promise<void>(resolve => {
@@ -793,69 +793,69 @@ export async function sourceAutoUpdate(resourceId: string) {
     switch (resourceId) {
         case "8910_script":
             const air72XUXSourceUpdateState = await checkAir72XUXScriptUpdate();
-            console.log("8910_script更新状态:", air72XUXSourceUpdateState);
+            console.log("8910_Script update status:", air72XUXSourceUpdateState);
             if (air72XUXSourceUpdateState) {
-                downloadingHint = '正在为您拉取最新air72XUX/air82XUX的DEMO及Lib文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir72XUXScript);
+                downloadingHint = 'Downloading the latest Air72xux/Air82xux DEMO and lib file for you. Please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir72XUXScript);
             }
             break;
         case "8910_lua_lod":
             const air72XUXCoreUpdateState = await checkAir72XUXCoreUpdate();
-            console.log("8910_lua_lodt更新状态:", air72XUXCoreUpdateState);
+            console.log("8910_LUA_LODT update status:", air72XUXCoreUpdateState);
             if (air72XUXCoreUpdateState) {
-                downloadingHint = '正在为您拉取最新air72XUX/air82XUX固件,请耐心等待';
-                await updateProgressView("是", downloadingHint, pullAir72XUXCore);
+                downloadingHint = 'Downloading the latest Air72xux/Air82xux firmware for you, please wait patiently';
+                await updateProgressView("Yes", downloadingHint, pullAir72XUXCore);
             }
             break;
         case "1603_script":
             const air72XCXSourceUpdateState = await checkAir72XCXScriptUpdate();
-            console.log("1603_script更新状态:", air72XCXSourceUpdateState);
+            console.log("1603_script update status:", air72XCXSourceUpdateState);
             if (air72XCXSourceUpdateState) {
-                downloadingHint = '正在为您拉取最新air72XCX的DEMO及Lib文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir72XCXScript);
+                downloadingHint = 'Downloading the latest Air72xcx DEMO and LIB file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir72XCXScript);
             }
             break;
         case "1603_lua_lod":
             const air72xcxState = await checkair72xcxSourceUpdate();
-            console.log("1603_lua_lod更新状态:", air72xcxState);
+            console.log("1603_LUA_LOD update status:", air72xcxState);
             if (air72xcxState) {
-                downloadingHint = '正在为您拉取最新air72XCX固件文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir72XCXCore);
+                downloadingHint = 'Downloading the latest Air72xcx firmware file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir72XCXCore);
             }
             break;
         case "101_lua_lod":
             const air101SourceState = await checkAir101SourceUpdate();
-            console.log("101_lua_lod更新状态:", air101SourceState);
+            console.log("101_LUA_LOD update status:", air101SourceState);
             if (air101SourceState) {
-                downloadingHint = '正在为您拉取最新air101资源文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir101Source);
+                downloadingHint = 'Downloading drawing the latest Air101 resource file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir101Source);
             }
             break;
         case "103_lua_lod":
             const air103SourceState = await checkAir103SourceUpdate();
-            console.log("103_lua_lod更新状态:", air103SourceState);
+            console.log("103_LUA_LOD update status:", air103SourceState);
             if (air103SourceState) {
-                downloadingHint = '正在为您拉取最新air103资源文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir103Source);
+                downloadingHint = 'Downloading the latest Air103 resource file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir103Source);
             }
             break;
         case "105_lua_lod":
             const air105SourceState = await checkAir105SourceUpdate();
-            console.log("105_lua_lod更新状态:", air105SourceState);
+            console.log("105_LUA_LOD update status:", air105SourceState);
             if (air105SourceState) {
-                downloadingHint = '正在为您拉取最新air105资源文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullAir105Source);
+                downloadingHint = 'Downloading the latest Air105 resource file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullAir105Source);
             }
             break;
         case "esp32c3_lua_lod":
             const esp32c3SourceState = await checkEsp32c3SourceUpdate();
-            console.log("esp32c3_lua_lod更新状态:", esp32c3SourceState);
+            console.log("ESP32C3_lua_Lod update status:", esp32c3SourceState);
             if (esp32c3SourceState) {
-                downloadingHint = '正在为您拉取最新esp32c3资源文件,请耐心等待';
-                updateProgressView("是", downloadingHint, pullEsp32c3Source);
+                downloadingHint = 'Downloading the latest ESP32C3 resource file for you, please wait patiently';
+                updateProgressView("Yes", downloadingHint, pullEsp32c3Source);
             }
             break;
-        case "UI设计器":
+        case "UI designer":
             getUiDesignCode();
             break;
         case "NDK":

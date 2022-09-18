@@ -83,7 +83,7 @@ export class HomeManage {
             const extensionPath = path.join(__dirname, '../..');
             this.homePanel = vscode.window.createWebviewPanel(
                 'Home', //仅供内部使用的面板类型
-                'LuatIDE主页', //webview 展示标题
+                'Luatide homepage', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
