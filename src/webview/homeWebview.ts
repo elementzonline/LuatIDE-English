@@ -258,7 +258,7 @@ export class HomeManage {
                 if (importLuatToolsData !== undefined) {
                     if (typeof(importLuatToolsData) === "string"){
                         if (importLuatToolsData.match(/^ERROR: /)){
-                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importLuatToolsData.replace(/ERROR: /, "")} 的文件不存在，请检查后重试`);
+                            vscode.window.showErrorMessage(`LuatTools The address in the project is: \n ${importLuatToolsData.replace(/ERROR: /, "")} The file does not exist, please check it after checking`);
                             return undefined;
                         }
                         return undefined;
@@ -284,16 +284,16 @@ export class HomeManage {
                 break;
             case 'openExternalWeb':
                 switch (message.text) {
-                    case '工具源码': 
+                    case 'Tool source code': 
                         vscode.commands.executeCommand('luatide.SourceCode');
                         break;
                     case 'QQ':
                         vscode.commands.executeCommand('luatide.technicalSupport');
                         break;
-                    case '联系我们':
+                    case 'contact us':
                         vscode.commands.executeCommand('luatide.contactUs');
                         break; 
-                    case '注册':
+                    case 'register':
                         vscode.commands.executeCommand('luatide.register');
                         break;
                     case "LuatOSWiki":
@@ -443,7 +443,7 @@ export class HomeManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
-                            openLabel: '选择工程文件夹'
+                            openLabel: 'Select engineering folder'
                         };
                         const customProjectPathResult:any = await showOpenDialog(customProjectOptions);
                         if (customProjectPathResult!==undefined) {
@@ -465,7 +465,7 @@ export class HomeManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getHistoryLibPath()),	//默认打开文件位置
-                            openLabel: '选择工程Lib文件夹'
+                            openLabel: 'Select the project lib folder'
                         };
                         const customLibPathResult = await showOpenDialog(customLibOptions);
                         if (customLibPathResult!==undefined) {
@@ -488,7 +488,7 @@ export class HomeManage {
                             canSelectFolders: false,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getHistoryCorePath()),	//默认打开文件位置
-                            openLabel: '选择工程Core文件夹',
+                            openLabel: 'Select the project Core folder',
                             filters: {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
                             },
@@ -538,15 +538,15 @@ export class HomeManage {
                     let importRet = await importLuatToolsProject.checkLuatToolsProjectCorrectWithInterface(message, this.luatToolsData);
                     if (typeof(importRet) === "string"){
                         if (importRet === "core find failed"){
-                            vscode.window.showErrorMessage("LuatTools 工程中 CORE 文件缺失，请检查后重试！");
+                            vscode.window.showErrorMessage("LuatTools Engineering CORE The file is lacking, please review it after checking!");
                             return undefined;
                         } else if (importRet.match(/^ERROR: /)){
-                            vscode.window.showErrorMessage(`LuatTools 项目中地址为: \n ${importRet.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
+                            vscode.window.showErrorMessage(`LuatTools The address in the project is: \n ${importRet.replace(/ERROR: /, "")} 的文件存在错误，请检查后重试`);
                             return undefined;
                         }
                         return undefined;
                     } else if (typeof(importRet) === "object") {
-                        vscode.window.showInformationMessage("LuatTools 工程导入成功");
+                        vscode.window.showInformationMessage("LuatTools Successful engineering introduction");
                         // 执行激活工程到活动工程操作
                         setPluginConfigActivityProject(path.join(importRet[0], importRet[1]));
                         projectActiveInterfact(importRet[1], path.join(importRet[0], importRet[1]));
@@ -566,7 +566,7 @@ export class HomeManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getDefaultWorkspacePath()),	//默认打开文件位置
-                            openLabel: '选择需要导入工程的文件夹'
+                            openLabel: 'Choose a folder that needs to be imported'
                         };
                         const customProjectPathResult = await showOpenDialog(customProjectOptions);
                         let customProjectPath:string|undefined;
@@ -592,7 +592,7 @@ export class HomeManage {
                             canSelectFolders: true,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getHistoryLibPath()),	//默认打开文件位置
-                            openLabel: '选择需要导入工程的文件夹'
+                            openLabel: 'Choose a folder that needs to be imported'
                         };
                         const customLibPathResult = await showOpenDialog(customLibOptions);
                         let customLibPath:string|undefined;
@@ -619,7 +619,7 @@ export class HomeManage {
                             canSelectFolders: false,		//是否选择文件夹
                             canSelectMany: false,		//是否选择多个文件
                             defaultUri: vscode.Uri.file(getHistoryCorePath()),	//默认打开文件位置
-                            openLabel: '选择底包',
+                            openLabel: 'Choose a base bag',
                             filters: {
                                 json: ['pac', "soc","zip"], // 文件类型过滤
                             },

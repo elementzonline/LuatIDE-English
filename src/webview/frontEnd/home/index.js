@@ -41,13 +41,13 @@ $(".openLuatToolsProject").on("click", function () {
 $(".header-publicBtn1").on("click", function () {
   vscode.postMessage({
     command: "openExternalWeb",
-    text: "工具源码"
+    text: "Tool source code"
   });
 });
 $(".footerBtn1").on("click", function () {
   vscode.postMessage({
     command: "openExternalWeb",
-    text: "工具源码"
+    text: "Tool source code"
   });
 });
 $(".header-publicBtn2").on("click", function () {
@@ -65,13 +65,13 @@ $(".footerBtn2").on("click", function () {
 $(".header-publicBtn3").on("click", function () {
   vscode.postMessage({
     command: "openExternalWeb",
-    text: "联系我们"
+    text: "contact us"
   });
 });
 $(".footerBtn3").on("click", function () {
   vscode.postMessage({
     command: "openExternalWeb",
-    text: "联系我们"
+    text: "contact us"
   });
 });
 $(".header-publicBtnWiki").on("click", function () {

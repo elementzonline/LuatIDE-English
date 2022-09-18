@@ -44,11 +44,11 @@ export async function getNdkCode() {
                 }
             ).then(
                 () => {
-                    vscode.window.showInformationMessage(`NDK 资源更新成功`);
+                    vscode.window.showInformationMessage(`NDK resource update success`);
                 },
                 (error) => {
                     console.error(error);
-                    vscode.window.showErrorMessage(`NDK 资源更新失败:${error}`);
+                    vscode.window.showErrorMessage(`NDK resource update failed:${error}`);
                 }
             );
     }

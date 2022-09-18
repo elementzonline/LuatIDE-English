@@ -158,19 +158,19 @@ function sd_cusBaseValue(tag) {
     switch (tag) {
         case "baudRate":
             isInWhichCus = "baudRate";
-            sd_alertLabel.text("请输入自定义波特率");
+            sd_alertLabel.text("Please enter the custom bottenity rate");
             break;
         case "dataBits":
             isInWhichCus = "dataBits";
-            sd_alertLabel.text("请输入自定义数据位");
+            sd_alertLabel.text("Please enter the custom data bit");
             break;
         case "checkDigit":
             isInWhichCus = "checkDigit";
-            sd_alertLabel.text("请输入自定义校验位");
+            sd_alertLabel.text("Please enter the custom school inspection");
             break;
         case "stopBits":
             isInWhichCus = "stopBits";
-            sd_alertLabel.text("请输入自定义停止位");
+            sd_alertLabel.text("Please enter the custom stop bit");
             break;
         default:
             break;

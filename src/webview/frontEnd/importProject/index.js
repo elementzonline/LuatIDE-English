@@ -488,14 +488,14 @@ function iP_exampleProjectInitDataManagment(initData) {
     }
 
     /* 添加模块型号显示选项 */
-    moduleSelected.append('<option value="default" id="iP-example_customeModule" style="display: none;">点击选择</option>');
+    moduleSelected.append('<option value="default" id="iP-example_customeModule" style="display: none;">Click to select</option>');
 
     /* 添加初始化option用来承载自定义选项 */
-    exampleSelected.append('<option value="default" id="iP-example_customeExample" style="display: none;">点击选择</option>');
-    coreSelected.append('<option value="default" id="iP-example_customeCore" style="display: none;">点击选择</option>');
+    exampleSelected.append('<option value="default" id="iP-example_customeExample" style="display: none;">Click to select</option>');
+    coreSelected.append('<option value="default" id="iP-example_customeCore" style="display: none;">Click to select</option>');
 
     /* 添加自定义选项 */
-    coreSelected.append('<option class="iP_example_customeCoreOption">自定义</option>');
+    coreSelected.append('<option class="iP_example_customeCoreOption">customize</option>');
 
     /* 隐藏提示信息 */
     $(".tip_exampleCore").hide();
