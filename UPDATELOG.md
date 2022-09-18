@@ -1,625 +1,624 @@
 ## 2.2.7
-发布日期：2022.09.16
+release date：2022.09.16
 
-解决bug
+Solved bug
 
-* 1、修复下载固件部分路径导致异常问题
-* 2、修复工程文件实时检测异常显示问题，优化工程文件实时检测机制
+* 1. Fix the problem of abnormal problems in the download of the firmware part of the path
+* 2. Repair project files Real -time detection abnormal display problems, optimize the real -time detection mechanism of engineering files
 
 ## 2.2.6
-发布日期：2022.07.16
+release date：2022.07.16
 
-功能新增
+New function
 
-* 1、添加下载资源可视化配置功能
+* 1. Add download resource visual configuration function
 
-解决bug
+Solved bug
 
-* 1、更新下载驱动，兼容8850驱动
-* 2、修复下载固件功能异常问题
-* 3、修复5寸金牛座开发板lcd内置驱动错误问题
-* 4、修复extension使用软链用户文件检测及配置界面显示异常问题
-* 5、修复ui工程默认demo大屏开发板使用异常问题
+* 1. Update download driver, compatible with 8850 driver
+* 2. Fix the problem of downloading firmware functions abnormal
+* 3. Fix the 5 -inch Taurus development board LCD built -in driving error problem
+* 4. Fix extension using soft chain user file detection and configuration interface to display abnormal problems
+* 5. Fix the UI project default DEMO large screen development board use abnormal problem
 
 ## 2.2.5
-发布日期：2022.07.11
+release date：2022.07.11
+Solved bug
 
-解决bug
-
-* 1、修复活动工程已被激活后仍能再次重复激活问题
-* 2、活动工程设置项体验优化，新增设置图标标识
-* 3、修复活动工程删除按钮非工程文件异常显示问题
-* 4、修复模拟器lvgl接口调用死机问题
-* 5、修复UI设计器相关问题
-* 6、修复ui工程默认demo大屏开发板使用异常问题
-* 7、修复extension使用软链用户文件检测及配置界面显示异常问题
+* 1. Repairing activity projects can still repeat the activation problem again
+* 2. Optimize the experience of activity project settings, add new setting icon standards
+* 3. Repair activity project delete button non -engineering file abnormal display problems
+* 4. Repair the simulator LVGL interface call the crash problem
+* 5. Fix the problems related to the UI designer
+* 6. Fix the UI project default DEMO large screen development board use abnormal problem
+* 7. Fix extension using soft chain user file detection and configuration interface to display abnormal problems
 
 ## 2.2.4
-发布日期：2022.06.24
+release date：2022.06.24
 
-功能新增
+New function
 
-* 1、添加下载固件功能
-* 2、添加活动工程help选项中硬件及api点击跳转相关功能
+* 1. Add download firmware function
+* 2. Add the functions of hardware and API in HELP options in the event engineering project
 
-解决bug
+Solved bug
 
-* 1、修复用户名带空格资源解压缩失败问题
-* 2、UI设计器相关问题优化
+* 1. Fix the failure of the user name with space resources to decompress the failure
+* 2. Optimization of problems related to UI designer
 
 ## 2.2.3
-发布日期：2022.06.17
+release date: 2022.06.17
 
-功能新增
+New function
 
-* 1、添加活动工程通信口配置功能
+* 1. Add activity engineering communication port configuration function
 
-解决bug
+Solved bug
 
-* 1、修复文件检测同名文件前端异常问题
-* 2、修复部分资源拉取接口兼容问题
-* 3、UI设计器相关问题优化
-* 4、部分已知问题修复
+* 1. Repair file detection of the same name of the same name file abnormal problem
+* 2. Fix some resources to draw interface compatibility issues
+* 3. Optimization of problems related to UI designer
+* 4. Some known issues fixes
 
 ## 2.2.2
-发布日期：2022.06.10
+release date: 2022.06.10
 
-功能新增
+New function
 
-* 1、新增UI工程lcd驱动和触屏驱动设置功能
+* 1. New UI engineering LCD driver and touch screen driver setting function
 
-解决bug
+Solved bug
 
-* 1、修复lua语言服务器错误导致代码辅助相关功能异常问题
-* 2、UI设计器相关问题优化
+* 1. Fix LUA language server errors cause code assisted related functions abnormal problems
+* 2. Optimization of problems related to UI designer
 
 ## 2.2.1
-发布日期：2022.06.06
+release date: 2022.06.06
 
-功能新增
+New function
 
-* 1、活动工程界面展示方式升级，新增lib等目录展开，按钮入口改变
-* 2、新增内置串口监视工具beta版本
-* 3、模拟器启用方式升级
+* 1. Event engineering interface display method is upgraded, new LIB and other directory expand, the button entry changes
+* 2. Add built -in serial port surveillance tool Beta version
+* 3. Upgrade of the simulator enablement method
 
-解决bug
+Solved bug
 
-* 1、修复插件及工程配置跨大版本升级问题
-* 2、修复lua语法解析器用户资源管理器过多导致崩溃bug
-* 3、修复demo资源拉取文件名压缩编码导致解码乱码问题
+* 1. Repair plug -in and engineering configuration cross -large version upgrade issues
+* 2. Fix the excessive user resource manager of the LUA grammar analyzer leads to the collapse bug
+* 3. Fix DEMO resource pulling file name compression coding causes the decoding garbled problem
 
 ## 2.1.26
-发布日期：2022.06.2
+release date: 2022.06.2
 
-解决bug
+Solved bug
 
-* 1、修复资源拉取相关问题
-* 2、修复ui设计器部分控件已知问题
-* 3、部分体验问题优化
-* 4、修复部分已知问题
+* 1. Repair resources to pick up related issues
+* 2. Repair some of the controls of the UI designer control
+* 3. Optimize some experience problems
+* 4. Repair part of known questions
 
 ## 2.1.25
-发布日期：2022.05.21
+release date: 2022.05.21
 
-解决bug
+Solved bug
 
-* 1、修复luatos-socUI设计器代码生成异常问题
-* 2、修复ui设计器部分控件已知问题
+* 1. Fix the abnormality of the Luatos-Socui designer code
+* 2. Repair some of the controls of the UI designer control
 
 ## 2.1.24
-发布日期：2022.05.13
+release date: 2022.05.13
 
-功能新增
+New function
 
-* 1、支持工程名称自定义修改
-* 2、工程配置升级可视化体验
+* 1. Support engineering name Customized modification
+* 2. Engineering configuration upgrade visualization experience
 
-解决bug
+Solved bug
 
-* 1、修复日志添加颜色后调试控制台筛选器失效问题
-* 2、修复显示界面过小时，home排版异常问题
-* 3、修复ui设计器部分已知问题
+* 1. Repair logs to add colors to debug the console filter failure problem
+* 2. Repair the display interface over hours, home typesetting abnormal problem
+* 3. Repair the known problems of the UI designer part
 
 ## 2.1.23
-发布日期：2022.05.07
+release date: 2022.05.07
 
-解决bug
+Solved bug
 
-* 1、修复工程配置升级失败导致异常问题
-* 2、体验优化
+* 1. Repairing project configuration upgrades lead to abnormal problems
+* 2. Experience optimization
 
 ## 2.1.22
-发布日期：2022.05.01
+release date: 2022.05.01
 
-解决bug
+Solved bug
 
-* 1、导入IRTU项目，无法正常使用
-* 2、新建UI工程异常
+* 1. Import IRTU project, it cannot be used normally
+* 2. New UI engineering abnormalities
 
 ## 2.1.21
-发布日期：2022.04.29
+release date: 2022.04.29
 
-解决bug
+Solved bug
 
-* 1、air72xcx模块型号支持更新为air72XCX/air60XCX/air78XCX
-* 2、修复文件检测相关问题
-* 3、修复工程导入相关问题
-* 4、修复ui工程默认demo调用字库异常消耗内存问题
-* 5、部分体验问题优化
+* 1, Air72xcx module model support update to Air72xcx/Air60xcx/Air78xcx
+* 2. Repair file detection related issues
+* 3. Repair project introduction related issues
+* 4. Fix the default DEMO of the UI project to call the fonts abnormal consumption of memory problems
+* 5. Optimize some experience problems
 
 ## 2.1.20
-发布日期：2022.04.25
+release date: 2022.04.25
 
-解决bug
+Solved bug
 
-* 1、修复移除工程后重新导入自定义lib有误问题
-* 2、修复模拟器运行相关问题
-* 3、修复文件自动检测相关问题
-* 4、修复插件包剪切到其他路径用mklink命令生成软连接，IDE运行异常问题
-* 5、部分体验问题优化
+* 1. After repairing the removal project, there is a problem with error in the self -defined LIB
+* 2. Fix the problems related to the operation of the simulator
+* 3. Repair file automatic detection related issues
+* 4. Fix the cutting plug -in bag to cut into other paths with the mklink command to generate a soft connection. The IDE operation is abnormal
+* 5. Optimize some experience problems
 
 ## 2.1.19
-发布日期：2022.04.18
+release date: 2022.04.18
 
-功能新增
+New function
 
-* 1、新增文件自动检测界面展示功能
-* 2、新增活动工程配置可视化功能
-* 3、新增Air72XCX资源更新功能
+* 1. Added file automatic detection interface display function
+* 2. Added the visualization function of the new activity engineering engineering
+* 3. Added Air72XCX resource update function
 
 ## 2.1.18
-发布日期：2022.04.11
+release date: 2022.04.11
 
-功能新增
+New function
 
-* 1、新增代码跳转功能
-* 2、新增代码悬停显示功能
-* 3、新增文件资源管理器自动检测功能
-* 4、新增日志分级多颜色区分功能
+* 1. Added code jumping function
+* 2. Added code suspension display function
+* 3. Added the automatic detection function of the new file resource manager
+* 4. Added a log grading multi -color distinction function
 
-解决bug
+Solved bug
 
-* 1、修复soc无法调试问题
-* 2、修复工程相关问题
+* 1. Fix the problem that the SOC cannot debug
+* 2. Repair project -related issues
 
 ## 2.1.17
-发布日期：2022.04.02
+release date：2022.04.02
 
-解决bug
+Solved bug
 
-* 1、修复部分已知问题
-* 2、优化用户功能体验
+* 1. Repair part of known questions
+* 2. Optimize user function experience
 
 ## 2.1.15
-发布日期：2022.3.25
-功能新增
+release date: 2022.3.25
+New function
 
-* 1、新增导入luatools项目功能
+* 1. Added the function of the Luatools project
 
-解决bug
+Solved bug
 
-* 1、修复模拟器SSL异常问题
-* 2、修复模拟器无皮肤lcd版本不支持旋转问题
-* 3、修复esp32c3资源未更新问题
-* 4、修复下载相关已知问题
-* 5、修复UI转码器相关已知问题
-* 6、修复UI设计器部分基础库问题
+* 1. Fix the abnormal problem of the simulator SSL
+* 2. Fix the simulator without skin LCD version does not support rotation problems
+* 3. Fix the problem of not updating ESP32C3 resources
+* 4. Repair and download related known questions
+* 5. Repair the known problems related to UI transcoders
+* 6. Fix part of the basic library problem of the UI designer
 
 ## 2.1.14
-发布日期：2022.3.18
-功能新增
+release date: 2022.3.18
+New function
 
-* 1、LuatIDE适配ESP32正式版
-* 2、支持量产文件生成功能
-* 3、支持UI设计器功能实时更新，UI设计器以插件形式嵌入IDE
+* 1, luature adapt to the official version of ESP32
+* 2. Support the production function of mass production files
+* 3. Support the real -time update of the function of the UI designer, the UI designer embeds IDE in the form of a plug -in
 
-解决bug
+Solved bug
 
-* 1、修复air105下载异常问题
-* 2、修复UI工程DEMO不支持矢量字库接口问题
-* 3、修复UI工程DEMO默认tp金牛座开发板使用异常问题
-* 4、UI设计器界面修复imgbtn及字体相关属性
-* 5、UI转码器修复字体代码生成相关问题
+* 1. Fix the abnormal problem of downloading Air105
+* 2. Fix the UI project DEMO does not support vector font interface problems
+* 3. Repair UI engineering DEMO default TP Taurus development board use abnormal problem
+* 4. UI designer interface repair IMGBTN and font related attributes
+* 5. UI transcoder repair font code generation related issues
 
 ## 2.1.13
-发布日期：2022.3.16
+release date: 2022.3.16
 
-解决bug
+Solved bug
 
-* 1、NDK工程资源更新方式优化
-* 2、UI设计器界面修正了lable，下拉，opa等属性
-* 3、修复UI工程内置demo不支持按键矩阵问题
-* 4、修复了模拟器网络连接 IP 地址不可用的问题
-* 5、优化主页资讯及版本号消息通信机制
-* 6、UI转码器修复label宽度及下拉框高度代码生成异常问题
+* 1, optimize the update method of NDK engineering resource
+* 2. The UI designer interface has corrected LABLE, drop -down, OPA and other attributes
+* 3. Fix the built -in DEMO of the UI project does not support the key matrix problem
+* 4. Fix the problem that the simulator network connection IP address cannot be available
+* 5. Optimize homepage information and version number message communication mechanism
+* 6. UI transcoder repair Label width and drop -down box height code generate abnormal problem
 
 ## 2.1.12
-发布日期：2022.3.12
+release date: 2022.3.12
 
-解决bug
+Solved bug
 
-* 1、修复ui转码器label生成及边框绘制问题
-* 2、UI设计器界面修正了下拉列表样式，优化了候选输入方式，补全动画时间属性
-* 3、UI设计器界面修正了button样式，边框轮廓透明度与显示样式
-* 4、修复UI设计器事件函数输入未校验问题
-* 5、修复模拟器lcd拖动闪烁问题
-* 6、修复UI工程内置demo事件函数与设计器界面不匹配问题
+* 1. Fix UI transcoders label generation and frame drawing problems
+* 2. The UI designer interface has modified the drop -down list style, optimized the candidate input method, and completed the animation time attribute
+* 3. The UI designer interface modifies the Button style, the transparency and display style of the frame contour
+* 4. Fix the UI designer event function input unattended problem
+* 5. Fix the simulator LCD dragging flashing problem
+* 6. Fix the built -in DEMO event function of the UI project without matching the designer interface
 
 ## 2.1.11
-发布日期：2022.3.10
+release date: 2022.3.10
 
-功能新增
+New function
 
-* 1、新建UI工程增加分辨率设置功能
+* 1. New UI project increases the resolution setting function
 
-解决bug
+Solved bug
 
-* 1、修复ui转码器事件生成异常问题
-* 2、修复label默认状态下宽高无法根据文字内容扩展大小问题
-* 3、修复模拟器坐标异常打印问题
+* 1. Repair the UI transcoder event to generate abnormal problems
+* 2. Fix the high height of the label default state that cannot be expanded according to the text content
+* 3. Fix the problem of abnormal printing of the simulator coordinates
 
 ## 2.1.10
-发布日期：2022.3.9
+release date: 2022.3.9
 
-解决bug
+Solved bug
 
-* 1、UI设计器修复switch，slider内边距与背景色相关问题
-* 2、修复esp32c3新建工程内置脚本异常问题
-* 3、修复下载异常任务无法结束问题
+* 1. UI designer repair Switch, Slider interior margin and background color related issues
+?
+* 3. Repair the problem of downloading abnormal tasks cannot end the problem
 
 ## 2.1.9
-发布日期：2022.3.8
+release date: 2022.3.8
 
-解决bug
+Solved bug
 
-* 1、修复默认工程路径工程添加文件失败问题
-* 2、修复模拟器不能显示横屏问题
+* 1. Fix the failure problem of the default engineering path project adding files
+* 2. Fix the simulator cannot display the horizontal screen problem
 
 ## 2.1.8
-发布日期：2022.3.8
+release date: 2022.3.8
 
-解决bug
+Solved bug
 
-* 1、修复横屏操作点击模拟器虚拟按钮死机问题
-* 2、ui设计器设置取消屏幕旋转功能
+* 1. Fix the horizontal screen operation. Click the emulator virtual button death machine problem
+* 2. UI designer settings to cancel the screen rotation function
 
 ## 2.1.7
-发布日期：2022.3.7
+release date: 2022.3.7
 
-功能新增
+New function
 
-* 1、新建工程工程名称/路径支持默认格式
-* 2、主页图标下增加LuatIDE版本号
-* 3、默认core列表、lib列表选用最新资源
+* 1. New engineering project name/path supports default format
+* 2. Add the LUATIDE version number under the homepage icon
+* 3. The latest resources are selected by the default Core list, LIB list
 
-解决bug
+Solved bug
 
-* 1、LuatIDE的HOME界面的最新资讯更新
-* 2、NDK工程每次都会拉取代码，占用时间，改成后台运行
-* 3、活动工程内打开图片等资源文件时报错
-* 4、修复模拟器底层不支持支持透明图片(但是图片的位深需要为32才行)
-* 5、修复模拟器底层不支持混合模式问题
-* 6、修复UI设计器label的recolor属性不可用问题
-* 7、UI设计器label的动画速度单位调整
+* 1. The latest information update of the homeide interface of luature
+* 2. The NDK project will draw the code every time, take up the time, and change it to the background operation
+* 3. Report errors in resource files such as opening pictures in the event engineering
+* 4. Fix the bottom layer of the simulator does not support transparent pictures (but the depth of the picture needs to be 32)
+* 5. Fix the underlying layer of the simulator does not support the problem of hybrid mode
+* 6. Fix the recolor attribute of the UI design device label.
+* 7. UI design device Label's animation speed unit adjustment
 
 ## 2.1.6
-发布日期：2022.3.1
+release date: 2022.3.1
 
-功能新增
+New function
 
-* 1、新增图片缩放功能
-* 2、新增模拟器根据旋转接口自动切换皮肤功能
+* 1. Added picture zoom function
+* 2. Automatically switch the skin function according to the rotating interface
 
-解决bug
+Solved bug
 
-* 1、修复空屏幕跳转异常问题
-* 2、修复下拉菜单json文件生成正常，lua代码不生成问题
-* 3、修复屏幕名称变化代码不更新，导致加载异常问题
-* 4、修复图片点击无法触发事件问题
-* 5、修复图片资源文件路径无法正确获取问题
-* 6、UI设计器界面json生成部分问题修改
+* 1. Fix the abnormal problem of the empty screen jumping
+* 2. Fix the production of the drop -down menu JSON file.
+* 3. Repair the screen name change code is not updated, resulting in abnormal problems in loading
+* 4. Fix the picture click cannot trigger the event problem
+* 5. Fix the picture resource file path cannot be obtained correctly
+* 6. UI designer interface JSON generation part of the problem modification
 
 ## 2.1.4
-发布日期：2022.2.23
+release date: 2022.2.23
 
-* UI设计器优化
-* 模拟器体验优化
-* 修复一些已知问题
+* UI designer optimization
+* Simulator experience optimization
+* Fix some known issues
 
 ## 2.1.3
-发布日期：2022.2.21
+release date: 2022.2.21
 
-* 集成新版本UI设计器
-* 模拟器体验优化
-* 集成NDK开发功能
-* 修复一些已知问题
+* Integrated new version UI designer
+* Simulator experience optimization
+* Integrated NDK development function
+* Fix some known issues
 
 ## 2.1.1
-发布日期：2022.2.14
+release date: 2022.2.14
 
-* 修复一些已知问题
+* Fix some known issues
 
 ## 2.1.0
-发布日期：2022.2.12
+release date: 2022.2.12
 
-* 大版本更新,功能升级，体验优化。
+* Big version update, function upgrade, experience optimization.
 
 ## 1.2.8
-发布日期：2021.12.23
+release date: 2021.12.23
 
-功能新增
+New function
 
-* 1、LuatIDE集成UI设计器功能
+* 1. Luatide integrated UI designer function
 
-* 2、新增按钮图标样式随用户选择主题变换功能
+* 2. Add button icon style as the user selects theme transformation function with the user
 
-* 3、新增101固件自动更新功能
+* 3. Add 101 firmware automatic update function
 
-解决bug
+Solved bug
 
-* 1、修复LuatOS-HMI固件每次调试都要下载固件问题
+* 1. Fix Luatos-HMI firmware to download the firmware problem every time you debug
 
-* 2、修复LuatIDE特殊条件下提示打包脚本异常，之后下载一直提示打包脚本出错问题
+* 2. Repair the special conditions of luature and prompted the packing script abnormalities, and then download the packing script errors.
 
-* 3、修复模块型号无法加载，主页加载不完整问题
+* 3. Repair the module model cannot be loaded, and the homepage loads incomplete problem
 
-* 4、修复部分PC环境luatide调试功能异常，卡死在模块当前处于正常模式问题
+* 4. Fix some PC environments luature debugging functions abnormal, stuck in the module is currently in normal mode problems
 
-* 5、修复模拟器一些已知问题
+* 5. Fix some known problems
 
-* 6、修复Air103和Air101无法下载脚本运行，通过luatools烧写固件后只第一次可以下载脚本问题。
+* 6. Fix AIR103 and Air101 cannot download the script operation. After the fastestware is written with Luatools, you can only download the script problem for the first time.
 
-* 7、修复本地资源管理器删除工程配置文件重新导入显示工程不可重复建立问题
+* 7. Repair the local resource manager delete project configuration file and re -import the display project cannot be repeatedly established
 
-体验优化
+Experience optimization
 
-* 1、用户体验问题优化，工程配置文件自动格式化
+* 1. Optimize user experience problems, automatic formatting of engineering configuration files
 
-* 2、用户工程内IDE增加对每个项目路径进行显示
+* 2. Increase IDE in the user engineering display to display the path of each project
 
-* 3、优化Air10X系列下载不进行语法检查问题
+* 3. Optimize the Air10X series to download without grammar inspection issues
 
-* 4、优化活动工程配置->添加文件或添加文件夹不能定位到当前工程问题
+* 4. Optimize activity engineering configuration-> Add files or add folders cannot be positioned to the current project problem
 
-* 5、解析Air10X系列Demo，并更新到最新版本
+* 5. Analyze the Air10X series DEMO and update to the latest version
 
 ## 1.2.6
-发布日期：2021.11.18
+release date: 2021.11.18
 
-解决bug
+Solved bug
 
-* 1、插件数据存储方式结构重构，
+* 1. Plug -in data storage method structure reconstruction,
 
-* 2、修复LuatIDE1.2.5 无法下载命名为download的文件夹
+* 2. Fix luatide 1.2.5 Folded folder named DOWNLOAD
 
-* 3、修复websocket demo调试异常，打包脚本出错
+* 3. Fix the abnormal debugging of Websocket Demo, and make an error in the packing script
 
-* 4、按钮配色与底色冲突，统一换成亮色
+* 4. The color conflict between the button color and the background color is replaced with bright colors
 
-* 5、修复Luatide适配windows 32位系统问题。
+* 5. Fix LUATIDE to adapt to Windows 32 -bit system.
 
-* 6、修复全局变量_G不能显示问题
+* 6. Fix global variables_G cannot display problems
 
-* 7、修复模拟器一些已知问题
+* 7. Repair some known problems
 
 ## 1.2.5
-发布日期：2021.10.23
-功能新增
+release date: 2021.10.23
+New function
 
-* 1、新增模拟器功能。
+* 1. Add simulator function.
 
-解决bug
+Solved bug
 
-* 1、修复新建工程复制大量demo问题
+* 1. Fix a large number of demo issues for replication of new projects
 
-* 2、修复连续快速刷新工作空间或激活工程会出现多个文件夹问题
+* 2. Fix continuous and rapidly refresh work space or activation projects will have multiple folder problems
 
-* 3、修复激活工程后，活动工程闪烁消失问题
+* 3. After repairing the activation project, the activity project flickering and disappear
 
 ## 1.1.5
-发布日期：2021.09.30
+release date: 2021.09.30
 
-功能新增
+New function
 
-* 1、新增监视变量查询功能。
+* 1. Add monitoring variable query function.
 
-* 2、新增悬浮变量查询功能及变量内联显示。
+* 2. Add suspension variable query function and variable internal display.
 
-* 3、导入工程功能细化，新增【导入工程目录】和【导入工程文件】
+* 3. Refined the function of the project, new [Import Project Directory] and [Import Project File]
 
-* 4、适配Air101模块下载及日志显示功能
+* 4. Adapt to the Air101 module download and log display function
 
 
-解决bug
+Solved bug
 
-* 1、新建工程时的工程路径显示优化。
+* 1. Optimized engineering path display during new projects.
 
-* 2、修复 LuatIDE1.1.4 本地文件下如果有lib文件，导入工程会显示两份lib文件问题。
+* 2. Fix Luatide 1.1.4 if there is a lib file under the local file, the import project will display two lib file problems.
 
-* 3、修复LuatIDE1.1.4版本配置活动工程添加文件或添加文件夹成功但界面未成功显示问题。
+* 3. Fix the luatide 1.1.4 version configuration activity project to add files or add a folder successfully but the interface has not successfully displayed the problem.
 
-* 4、修复LuatIDE当模块一直处于重启状态就无法下载问题。
+* 4. Fix LUATIDE when the module is restarted and cannot download the problem.
 
-* 5、修复LuatIDE自动拉取固件功能受网络影响较大问题。
+* 5. Fix Luatide automatic pulling firmware function is greaterly affected by the network.
 
 ## 1.1.4
-发布日期：2021.09.03
-* 功能新增
+release date: 2021.09.03
+* New features
 
-      1、日志功能增加lua运行日志输出控制台输出，支持上下文检索及自定义日志是否滚动功能。
-	
-      2、日志功能新增lua运行调试日志按时间戳存放至活动工程目录。
+      1. The log function increases the output of the LUA running log output console, supporting the context retrieval and custom logic rolling function.
+
+      2. The log function is added to the LUA to run debugging the log and place it to the event project directory according to the time stamp.
   
-      3、新增插件历史配置缓存功能，插件升级保留插件原始工程配置。
+      3. Added the cache function of the new plug -in history, and the plug -in upgrade retains the original project configuration of the plug -in plug -in.
 
-      4、新增core文件自动拉取erp最新正式版本功能
+      4. Add the latest official version function of the new Core file to remove ERP
 
-      5、升级lib库文件和demo文件为2.4.0版本
-	
-* 解决bug
+      5. Upgrade the lib library file and demo file to version 2.4.0
 
-      1、修复导入工程复制lib问题，支持多工程共用同一路径lib库文件。
-	
-      2、修复工程目录结构组织不合理问题，文件夹统一显示在工程上方。
-	
-      3、修复下载lua_protobuffer最新demo底层库不兼容报错问题。
-	
+* Solved bug
+
+      1. Fix the introduction of the LIB problem and support the multi -project sharing LIB library file.
+
+      2. Repair the project directory structure Organization is unreasonable, and the folder is uniformly displayed above the project.
+
+      3. Fix download LUA_PROTOBUFFER's latest DEMO underlying library does not have the problem of reporting errors.
+
 
 ## 1.1.3
-发布日期：2021.08.23
-* 解决bug
+release date: 2021.08.23
+* Solved bug
 
-    1、解决浮点型参数lua语法校验不通过问题
+    1. Solve the floating -point parameter LUA grammar verification without passing the problem
 
 ## 1.1.2
-发布日期：2021.08.21
-* 功能新增
+release date: 2021.08.21
+* New features
 
-      1、增加下载前进行lua脚本语法预检查功能
-	
-      2、修改默认core文件版本为LuatOS-Air_V3103版本
-	
-* 解决bug
+      1. Add the pre -check function of LUA script syntax before downloading
 
-        1、修复特殊情况调试无法进入lib库文件问题
-	
-        2、修复特殊情况识别固件版本号异常问题
-	
-        3、修复脚本大小超出core文件空间下载失败问题
-	
+      2. Modify the default Core file version is luatos-air_v3103 version
+
+* Solved bug
+
+        1. Repair special circumstances and debug cannot enter the lib library file problem
+
+        2. Fix special circumstances to identify the fixedware version number abnormal problem
+
+        3. Fix the script size exceeding the core file space download failure problem
+
 
 ## 1.1.1
-发布日期：2021.08.18
+release date: 2021.08.18
 
-* 功能新增
+* New features
 
-    1、调试控制台增加lua脚本日志时间戳显示
+    1. Debug the console to increase the LUA script log time stamp display
 
-    2、打包脚本出错提示细化，显示关键重要错误到终端显示框中。
+    2. Packing the script error prompt refinement, the key and important errors are in the terminal display box.
 
-    3、模块型号选项中添加Air820模块型号选项。
+    3. Add the Air820 module type option to the module type option.
 
-    4、变量查询新增对nil类型、指针类型、函数、协程类型变量查询及显示。
+    4. Variable query adds to query and display the NIL type, pointer type, function, and coroutine type variables.
 
-* 解决bug
+* Solved bug
 
-    1、修复win7 64位操作系统下载调试不兼容问题。
+    1. Fix the problem that the download and debugging of the Win7 64 -bit operating system is not compatible.
 
-    2、修复多次快速重启或下载exe服务器导致exe进程重复启动问题。
+    2. Fix multiple rapid restarts or download the EXE server caused the EXE process to repeat the problem.
 
-    3、部分按钮内容及用户提示内容优化。
+    3. Optimize the content of some buttons and user prompts.
 
-    4、下载流程及体验优化升级。
+    4. Download the process and experience optimization and upgrade.
 
-    5、单步调试程序优化，提升调试速度。
+    5. Single -step debugging program optimization to improve debugging speed.
 
-    6、修复多个main.lua文件堆栈加载异常问题。
+    6. Fix multiple main.lua file stacks to load abnormal problems.
 
 ## 1.1.0
-发布日期：2021.07.28
+release date: 2021.07.28
 
-1、工程管理优化通过配置功能修改。
+1. Engineering management optimization through configuration function modification.
 
-2、修复示例demo点击不显示子文件夹问题。
+2. Fix the sample DEMO click not to display the subfolder problem.
 
-3、修复新工程创建路径有同名文件未做处理问题。
+3. Fix the creation path of the new project. There are documents of the same name without dealing with the same name.
 
-4、air72XCX下载问题优化。
+4, Air72xcx download problem optimization.
 
-5、修复LuatIDE_V1.0.7 调试打印框会消失问题。
+5. Fix luatide_v1.0.7 Debugging the printing box will disappear.
 
-6、lib库及demo更新为2.3.9版本。
+6. LIB library and DEMO update to version 2.3.9.
 
 7、默认core文件改为LuatOS-Air_V3102_RDA8910_BT_TTS_FLOAT.pac
 
 
 ## 1.0.7
-发布日期：2021.07.19
+release date: 2021.07.19
 
-1、修复重启调试有几率进程不会被终止
+1. Repair and restart trials will not be terminated
 
-2、部分时候未在管理员模式写入文件失败。
+2. Some time failure to write the file in the administrator mode failed.
 
-3、适配适配luatos最新版本命名方式
+3. Adaptation to adapting to the latest version of LUATOS naming method
 
-4、修复调试后概率性无法跳到调试控制台及其它日志显示问题优化。
+4. After repairing the debugging, the probability cannot jump to the debug console and other log display problems.
 
-5、增加点击配置活动工程配置功能按钮
+5. Add click Configuration Activity Project Configuration Function button
 
-6、工程管理优化为通过配置文件管理。
+6. Engineering management is optimized to management through configuration files.
 
 ## 1.0.6
-发布日期：2021.07.13
+release date: 2021.07.13
 
-1、readme增加接口获取插件数据，并以svg图片做展示。
+1. Readme increases the interface to obtain the plug -in data and display it with SVG pictures.
 
-2、修复ymodem下载部分机型失效bug。
+2. Fix YMODEM to download some models to fail BUG.
 
-3、修复特殊情况下调试无法加载源文件bug。
+3. Repair the special circumstances that the source file cannot be loaded.
 
-4、增加LuatIDE支持Air72XCX模块脚本下载调试等功能
+4. Increase LUATIDE to support the available on the Air72xcx module script download and debugging
 
-5、新增LuatIDE登录功能，可通过erp账号直接登录。
+5. Add Luata login function to log in directly through the ERP account.
 
-6、工程管理功能及用户体验大幅优化
+6. Significant optimization of engineering management functions and user experience
 
-* 优化1：用户工程及活动工程同步实时刷新
+* Optimization 1: User engineering and activity engineering simultaneously refresh
 
-* 优化2：增加导入文件或文件夹至活动工程功能。
+* Optimization 2: Add import files or folders to activity engineering functions.
 
-* 优化3：增加活动工程快速新建文件操作。
+* Optimization 3: Increase the operation project to quickly create new file operations.
 
-* 优化4：增加用户工程及活动工程内工程及文件个性化删除功能。
+* Optimization 4: Increase the personalized deletion function of the user engineering and activity engineering and files.
 
-* 优化5：优化激活工程至vscode自带资源管理器时窗口跳转及异常抖动问题
+* Optimization 5: Optimize the activation project to VSCODE when comes with resource manager.
 
-7、修复用户名含有空格LuatIDE无法使用bug。
+7. Fix the username containing a space luature cannot be used.
 
-8、修复新闻中心不能打开微信公众号链接bug。
+8. Fix the news center cannot open the WeChat public account link bug.
 
-9、更新LuatIDE用户使用说明readem.md文件。
+9. Update the luature user to explain the Readem.md file.
 
-10、兼容新的版本命名方式
+10. Compatible version of the naming method
 
 ## 1.0.5
-发布日期：2021.06.29
+release date: 2021.06.29
 
-1、修复旧版本配置文件不兼容问题
+1. Fix the problem of not compatibility of the old version configuration file
 
-2、优化导入工程流程
+2. Optimize the introduction of the project process
 
 
 ## 1.0.4
-发布日期：2021.06.28
+release date: 2021.06.28
 
-1、修复部分机型特殊情况不停断点。
+1. Repair the special circumstances of some models constantly.
 
-2、动态更新新闻中心内容。
+2. Dynamic update news center content.
 
-3、增加用户工程自定义选择下载多文件夹功能（适配多级文件夹）。
+3. Increase the user engineering customization to select the multi -folder function (adapting multi -level folder).
 
-4、更换LuatIDE插件图标样式。
+4. Replace the LuAtide plug -in icon style.
 
-5、更新底包为4001，修改底包版本限制为4001。
+5. Update the bottom package is 4001, and the modified base package version is limited to 4001.
 
-6、优化LuatIDE脚本下载方式，加速脚本下载。
+6. Optimize the LUATIDE script download method to accelerate the script download.
 
 
 ## 1.0.3
-发布日期：2021.06.15
+release date: 2021.06.15
 
-1、增加新闻中心内容。
+1. Increase the content of the news center.
 
-2、修复部分日志解码异常。
+2. Fix some log decoding abnormalities.
 
-3、修复调试概率性进入不了断点。
+3. The probability of repairing the test cannot enter the breakpoint.
 
-4、修复新建工程第二次不能产生main.lua文件。
+4. Repair the Main.Lua file for the second time to repair the new project.
 
-5、更新LuatIDE使用说明介绍。
+5. Update the introduction of the instructions of the LUATIDE in use.
 
 
-## 1.0.2 
-发布日期：2021.06.09
+## 1.0.2
+release date: 2021.06.09
 
-LuatIDE 正式发布
+Luature officially released
