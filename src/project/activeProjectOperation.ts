@@ -13,7 +13,7 @@ import { getProjectConfigAppFile, pushProjectConfigAppFile, setProjectConfigCore
 export async function projectConfigOperation(context: vscode.ExtensionContext) {
     const activityProjectPath = getPluginConfigActivityProject();
     if (activityProjectPath === '') {
-        vscode.window.showErrorMessage("当前未检测到活动工程,请先激活工程后再配置");
+        vscode.window.showErrorMessage("No active project is currently detected, please activate the project before configuring");
         return false;
     }
     //activeProjectConfig(context);
@@ -35,7 +35,7 @@ export async function selectProjectCorePathOperation() {
         canSelectFolders: false,		//是否选择文件夹
         canSelectMany: false,		//是否选择多个文件
         defaultUri: vscode.Uri.file(corePath),	//默认打开文件位置
-        openLabel: '选择底包',
+        openLabel: 'Choose format',
         filters: {
             json: ['pac', "soc", "zip"], // 文件类型过滤
         },
@@ -63,7 +63,7 @@ export async function selectProjectLibPathOperation() {
         canSelectFolders: true,		//是否选择文件夹
         canSelectMany: false,		//是否选择多个文件
         defaultUri: vscode.Uri.file(libPath),	//默认打开文件位置
-        openLabel: '选择lib库'
+        openLabel: 'Select library'
     };
     const libPathList: any = await showOpenDialog(options);
     if (libPathList !== undefined) {
@@ -88,7 +88,7 @@ export async function selectProjectFileAddOperation() {
         canSelectFolders: false,		//是否选择文件夹
         canSelectMany: true,		//是否选择多个文件
         defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-        openLabel: '选择需要导入工程的文件'
+        openLabel: 'Select the file to import the project'
     };
     const fileObjList: any = await showOpenDialog(options);
     if (fileObjList !== undefined) {
@@ -115,7 +115,7 @@ export async function selectProjectFolderAddOperation() {
         canSelectFolders: true,		//是否选择文件夹
         canSelectMany: true,		//是否选择多个文件
         defaultUri: vscode.Uri.file(activityProjectPath),	//默认打开文件位置
-        openLabel: '选择需要导入工程的文件夹'
+        openLabel: 'Select the folder where you want to import the project'
     };
     const fileObjList: any = await showOpenDialog(options);
     if (fileObjList !== undefined) {
@@ -145,22 +145,22 @@ export function projectAddCheck(filePath: string) {
     const activityPath: string = getPluginConfigActivityProject();
     const appFile: any = getProjectConfigAppFile(activityPath);
     if (filePath.toLocaleLowerCase().indexOf(activityPath.toLocaleLowerCase()) === -1) {
-        vscode.window.showErrorMessage("LuatIDE不支持添加非工程内文件至工程", { modal: true });
+        vscode.window.showErrorMessage("LuatIDE does not support adding non-project files to the project", { modal: true });
         return false;
     }
 
     if (filePath.toLocaleLowerCase() === activityPath.toLocaleLowerCase()) {
-        vscode.window.showErrorMessage("不支持导入工程自身", { modal: true });
+        vscode.window.showErrorMessage("Importing the project itself is not supported", { modal: true });
         return false;
     }
     if (filePath.toLocaleLowerCase() === path.join(activityPath, 'luatide_project.json').toLocaleLowerCase()) {
-        vscode.window.showErrorMessage("不支持导入LuatIDE工程配置文件", { modal: true });
+        vscode.window.showErrorMessage("Importing LuatIDE project configuration files is not supported", { modal: true });
         return false;
     }
     for (let index = 0; index < appFile.length; index++) {
         const appFilePath: string = appFile[index];
         if (path.join(activityPath, appFilePath).toLocaleLowerCase() === filePath.toLocaleLowerCase()) {
-            vscode.window.showErrorMessage("该文件已存在于工程，不能重复添加", { modal: true });
+            vscode.window.showErrorMessage("The file already exists in the project and cannot be added repeatedly", { modal: true });
             return false;
         }
     }
@@ -172,11 +172,11 @@ export function libCoreCheck(filePath: string) {
     const activityPath: string = getPluginConfigActivityProject();
     // const appFile:any = projectJsonParse.getProjectConfigAppFile(activityPath);
     if (filePath.toLocaleLowerCase() === activityPath.toLocaleLowerCase()) {
-        vscode.window.showErrorMessage("不支持设置工程自身", { modal: true });
+        vscode.window.showErrorMessage("Setting the project itself is not supported", { modal: true });
         return false;
     }
     if (filePath.toLocaleLowerCase() === path.join(activityPath, 'luatide_project.json').toLocaleLowerCase()) {
-        vscode.window.showErrorMessage("不支持设置LuatIDE工程配置文件", { modal: true });
+        vscode.window.showErrorMessage("Setting the LuatIDE project configuration file is not supported", { modal: true });
         return false;
     }
     return true;
@@ -217,7 +217,7 @@ export async function selectProjectModuleModel() {
             ignoreFocusOut: false,
             matchOnDescription: true,
             matchOnDetail: true,
-            placeHolder: '请选择模块型号'
+            placeHolder: 'Please select the module model'
         }).then((msg) => {
             return msg;
         });

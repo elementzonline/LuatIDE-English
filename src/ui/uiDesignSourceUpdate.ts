@@ -9,7 +9,7 @@ import http = require('isomorphic-git/http/node');
 let uiDesignFlag: boolean = true;
 // 下载  UI设计器 代码
 export async function getUiDesignCode() {
-    console.log("\x1b[0;96m[正在下载UI设计器环境，请等待......]");
+    console.log("\x1b[Downloading UI designer environment, please wait...]");
     let dir: any = getUiDesignDefaultPath();
     let url: string = 'https://gitee.com/openLuat/luatos-uidesign.git';
     if (!fs.existsSync(dir)) {
@@ -43,11 +43,11 @@ export async function getUiDesignCode() {
                 }
             ).then(
                 () => {
-                    vscode.window.showInformationMessage(`UI设计器资源更新成功`);
+                    vscode.window.showInformationMessage(`UI Designer resource updated successfully`);
                 },
                 (error) => {
                     console.error(error);
-                    vscode.window.showErrorMessage(`UI设计器资源更新失败:${error}`);
+                    vscode.window.showErrorMessage(`UI designer resource update failed:${error}`);
                 }
             );
     }
@@ -96,11 +96,11 @@ async function uiDesignPullHandle(url:string,dir:string){
                 }
             ).then(
                 () => {
-                    vscode.window.showInformationMessage(`UI设计器资源更新成功`);
+                    vscode.window.showInformationMessage(`UI Designer resource updated successfully`);
                 },
                 (error) => {
                     console.error(error);
-                    vscode.window.showErrorMessage(`UI设计器资源更新失败${error}`);
+                    vscode.window.showErrorMessage(`UI designer resource update failed ${error}`);
                 }
             );
     }
@@ -112,8 +112,8 @@ export async function uiProjectCheckUpdate() {
         return;
     }
     if (!fs.existsSync(path.join(getUiDesignDefaultPath(), '.git'))) {
-        await vscode.window.showInformationMessage('UI工程需要额外的资源(50+MB),是否下载?', { modal: true }, '是').then(async result => {
-            if (result === "是") {
+        await vscode.window.showInformationMessage('UI project requires additional resources (50+MB), download?', { modal: true }, 'Yes').then(async result => {
+            if (result === "Yes") {
                 uiDesignFlag = false;
                 await getUiDesignCode();
                 uiDesignFlag = true;

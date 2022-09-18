@@ -33,7 +33,7 @@ export function activeProjectManage(context: vscode.ExtensionContext, files:any,
             const extensionPath = path.join(__dirname, '../..');
             activeProjectConfigPanel = vscode.window.createWebviewPanel(
                 'download', //仅供内部使用的面板类型
-                'LuatIDE 下载配置', //webview 展示标题
+                'LuatIDE Download configuration', //webview 展示标题
                 vscode.ViewColumn.Active,
                 {
                     enableScripts: true,
@@ -154,7 +154,7 @@ async function receiveMessageHandle(message: any, fileRet: any, isManual: boolea
                         text: path.basename(activityMemoryProjectPath)
                     }
                 );
-                vscode.window.showErrorMessage(`${message.text}工程已经被创建,不允许修改为同名工程`);
+                vscode.window.showErrorMessage(`${message.text}The project has already been created, it is not allowed to modify the project with the same name`);
             }
             vscode.commands.executeCommand('luatide-history-project.Project.refresh');
             vscode.commands.executeCommand('luatide-activity-project.Project.refresh');
@@ -314,11 +314,11 @@ export async function deleteProjectConfigFile(targetFileList: any) {
 
             if (filesChecked.includes(e)) {
                 filesChecked.splice(filesChecked.indexOf(e), 1);
-                vscode.window.showWarningMessage("已经删除 " + e + " 文件");
+                vscode.window.showWarningMessage("Deleted " + e + " file");
             }
             if (fileIgnored.includes(e)) {
                 fileIgnored.splice(fileIgnored.indexOf(e), 1);
-                vscode.window.showWarningMessage("已经删除 " + e + " 文件");
+                vscode.window.showWarningMessage("Deleted " + e + " file");
             }
         }
     }

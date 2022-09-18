@@ -18,8 +18,8 @@ export class ToolsHubTreeDataProvider implements vscode.TreeDataProvider<ToolsHu
   getChildren(element?: ToolsHubTreeItem): Thenable<ToolsHubTreeItem[]> {
     var treeDir: ToolsHubTreeItem[] = [];
     if (element === undefined) {
-      treeDir.push(new ToolsHubTreeItem("串口监视器", "LuatIDE串口监视器", vscode.TreeItemCollapsibleState.None));
-      treeDir.push(new ToolsHubTreeItem("下载资源管理", "LuatIDE下载资源管理", vscode.TreeItemCollapsibleState.None));
+      treeDir.push(new ToolsHubTreeItem("Serial Monitor", "LuatIDE Serial Monitor", vscode.TreeItemCollapsibleState.None));
+      treeDir.push(new ToolsHubTreeItem("Download resource management", "LuatIDE download resource management", vscode.TreeItemCollapsibleState.None));
       return Promise.resolve(treeDir);
     }
     else {
@@ -41,7 +41,7 @@ export class ToolsHubTreeItem extends vscode.TreeItem {
 
   //为每项添加点击事件的命令
   command = {
-    title: "点击打开",
+    title: "Click to open",
     command: 'luatide-tools-hub.click',
     arguments: [    //传递两个参数
       this.label,

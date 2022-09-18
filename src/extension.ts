@@ -149,11 +149,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// 注册工具集合点击命令，当点击工具集合内工具项时触发
 	context.subscriptions.push(vscode.commands.registerCommand('luatide-tools-hub.click',(lable)=>{
 		switch (lable) {
-			case '串口监视器':
+			case 'Serial Monitor':
 				// 打开串口监视器webview
 				serialPortMonitor.serialPortMonitor(context);
 				break;
-			case '下载资源管理':
+			case 'Download resource management':
 				sourceManage.sourceManage(context);
 				break;
 			default:

@@ -208,7 +208,7 @@ export class SourceManage{
             deleteDirRecursiveMaintainFolder(esp32c3DefaultCorePath);
             this.changeDownloadState(element['id'],this.sourceTableData);
             break;
-          case "UI设计器":
+          case "UI designer":
             const uiDesignPath = getUiDesignDefaultPath();
             deleteDirRecursiveMaintainFolder(uiDesignPath);
             this.changeDownloadState(element['id'],this.sourceTableData);

@@ -8,25 +8,25 @@ import { getProjectConfigCorePath, getProjectConfigModuleModel, getProjectConfig
 
 // 获取工程配置描述
 export function getactiveProjectConfigDesc(){
-    const descStr:string = '工程配置';
+    const descStr:string = 'Project configuration';
     return descStr;
 }
 
 // 获取生成量产文件描述
 export function getProductionFileDesc(){
-    const descStr:string = '生成量产文件';
+    const descStr:string = 'Generate production files';
     return descStr;
 }
 
 // 获取下载固件功能描述
 export function getDownloadCoreDesc(){
-    const descStr:string = "下载固件";
+    const descStr:string = "Download firmware";
     return descStr;
 }
 
 // 获取ui设计器描述
 export function getUiDesignDesc() {
-    const descStr:string = 'UI设计器';
+    const descStr:string = 'UI designer';
     return descStr;
 }
 
@@ -34,7 +34,7 @@ export function getUiDesignDesc() {
 export function getSimulatorDesc(){
     const activityProjectPath:string = getPluginConfigActivityProject();
     const status:string = getProjectConfigSimulator(activityProjectPath);
-    const descStr:string = '模拟器:' + status;
+    const descStr:string = 'Run in Emulator: ' + status;
     return descStr;
 }
 
@@ -47,7 +47,7 @@ export function getConnectPort(){
     {
         comport = "Auto";
     }
-    const descStr:string = '通讯口:'+comport;
+    const descStr:string = 'Port: '+comport;
     return descStr;
 }
 
@@ -59,7 +59,7 @@ export function getHelp(){
 
 // 获取硬件描述
 export function getHardwareDesc(){
-    const descStr:string = '硬件';
+    const descStr:string = 'Hardware';
     return descStr;
 }
 
@@ -77,13 +77,13 @@ export function getDistinguishMark(){
 
 // 获取lcd驱动配置描述
 export function getLcdDriverDesc(){
-    const lcdDriverDesc:string = "LCD驱动配置";
+    const lcdDriverDesc:string = "LCD Driver Configuration";
     return lcdDriverDesc;
 }
 
 // 获取触摸屏驱动配置描述
 export function getTpDriverDesc(){
-    const tpDriverDesc:string = "触摸屏驱动配置";
+    const tpDriverDesc:string = "Touch screen driver configuration";
     return tpDriverDesc;
 }
 
@@ -132,7 +132,7 @@ export function lcdDriverSettingHandler(){
             ignoreFocusOut:true,
             matchOnDescription:true,
             matchOnDetail:true,
-            placeHolder:'请选择您所需要配置的LCD驱动文件'
+            placeHolder:'Please select the LCD driver file you need to configure'
         })
         .then(function(msg){
             // console.log(msg);
@@ -154,7 +154,7 @@ export function tpDriverSettingHandler(){
             ignoreFocusOut:true,
             matchOnDescription:true,
             matchOnDetail:true,
-            placeHolder:'请选择您所需要配置的触摸屏驱动文件'
+            placeHolder:'Please select the touch screen driver file you need to configure'
         })
         .then(function(msg){
             // console.log(msg);
@@ -176,7 +176,7 @@ export async function portSelectSettingHandler(){
             ignoreFocusOut:true,
             matchOnDescription:true,
             matchOnDetail:true,
-            placeHolder:'请选择您的通信端口'
+            placeHolder:'Please select your communication port'
         })
         .then(function(msg){
             // console.log(msg);

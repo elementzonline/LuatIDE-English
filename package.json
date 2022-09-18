@@ -1,7 +1,7 @@
 {
   "name": "luatide",
   "displayName": "luatIDE",
-  "description": "合宙官方IDE",
+  "description": "Hezhou official IDE",
   "version": "2.2.7",
   "publisher": "luater",
   "engines": {
@@ -121,15 +121,15 @@
       "luatide-activeBar": [
         {
           "id": "luatide-history-project",
-          "name": "用户工程"
+          "name": "Project History"
         },
         {
           "id": "luatide-activity-project",
-          "name": "活动工程"
+          "name": "Active Project"
         },
         {
           "id": "luatide-tools-hub",
-          "name": "工具集合",
+          "name": "Tools",
           "visibility": "collapsed"
         }
       ]
@@ -200,7 +200,7 @@
     "commands": [
       {
         "command": "luatide-history-project.createProject",
-        "title": "新建工程",
+        "title": "Create Project",
         "icon": {
           "dark": "./resource/themeSvg/dark/createProject.svg",
           "light": "./resource/themeSvg/light/createProject.svg"
@@ -208,7 +208,7 @@
       },
       {
         "command": "luatide-history-project.openProject",
-        "title": "打开工程",
+        "title": "Open Project",
         "icon": {
           "dark": "./resource/themeSvg/dark/openProject.svg",
           "light": "./resource/themeSvg/light/openProject.svg"
@@ -216,7 +216,7 @@
       },
       {
         "command": "luatide-history-project.Home",
-        "title": "主页",
+        "title": "Home",
         "icon": {
           "dark": "./resource/themeSvg/dark/Home.svg",
           "light": "./resource/themeSvg/light/Home.svg"
@@ -224,7 +224,7 @@
       },
       {
         "command": "luatide-activity-project.runProject",
-        "title": "LuatIDE:Run Project",
+        "title": "LuatIDE: Run Project",
         "enablement": "!inDebugMode",
         "icon": {
           "dark": "./resource/themeSvg/dark/runProject.svg",
@@ -233,7 +233,7 @@
       },
       {
         "command": "luatide-activity-project.debugProject",
-        "title": "LuatIDE:Debug Project",
+        "title": "LuatIDE: Debug Project",
         "enablement": "!inDebugMode",
         "icon": {
           "dark": "./resource/themeSvg/dark/debugProject.svg",
@@ -242,7 +242,7 @@
       },
       {
         "command": "luatide-history-project.deleteProject",
-        "title": "删除工程文件",
+        "title": "Delete Project",
         "icon": {
           "dark": "./resource/themeSvg/dark/delete.svg",
           "light": "./resource/themeSvg/light/delete.svg"
@@ -250,7 +250,7 @@
       },
       {
         "command": "luatide-history-project.Project.active",
-        "title": "激活工程",
+        "title": "Activate Project",
         "icon": {
           "dark": "./resource/themeSvg/dark/activeProject.svg",
           "light": "./resource/themeSvg/light/activeProject.svg"
@@ -258,7 +258,7 @@
       },
       {
         "command": "luatide-activity-project.Project.delete",
-        "title": "删除活动工程",
+        "title": "Delete Active Project",
         "icon": {
           "dark": "./resource/themeSvg/dark/delete.svg",
           "light": "./resource/themeSvg/light/delete.svg"
@@ -266,19 +266,19 @@
       },
       {
         "command": "luatide.Open",
-        "title": "打开工程"
+        "title": "Open"
       },
       {
         "command": "luatide-history-project.Project.refresh",
-        "title": "刷新用户工程列表"
+        "title": "Refresh user projects"
       },
       {
         "command": "luatide-activity-project.Project.refresh",
-        "title": "刷新活动工程列表"
+        "title": "Refresh active projects"
       },
       {
         "command": "luatide-activity-project.sourceFile.delete",
-        "title": "删除工程内资源文件",
+        "title": "Delete project resource files",
         "icon": {
           "dark": "./resource/themeSvg/dark/delete.svg",
           "light": "./resource/themeSvg/light/delete.svg"
@@ -286,7 +286,7 @@
       },
       {
         "command": "luatide-activity-project.configOperation",
-        "title": "活动工程配置",
+        "title": "Open Project Configuration",
         "icon": {
           "dark": "./resource/themeSvg/dark/projectConfig.svg",
           "light": "./resource/themeSvg/light/projectConfig.svg"
@@ -294,7 +294,7 @@
       },
       {
         "command": "luatide-ui.design",
-        "title": "UI设计器",
+        "title": "UI Designer",
         "icon": {
           "dark": "./resource/themeSvg/dark/uiDesign.svg",
           "light": "./resource/themeSvg/light/uiDesign.svg"
@@ -302,7 +302,7 @@
       },
       {
         "command": "luatide-activity-project.exportProducFile",
-        "title": "导出量产文件",
+        "title": "Export production files",
         "icon": {
           "dark": "./resource/themeSvg/dark/export.svg",
           "light": "./resource/themeSvg/light/export.svg"
@@ -368,7 +368,7 @@
         "configurationSnippets": [
           {
             "label": "LuatIDE: Debug Launch",
-            "description": "LuatIDE活动工程调试配置",
+            "description": "LuatIDE active project debug configuration",
             "body": {
               "type": "luat",
               "request": "launch",
@@ -380,7 +380,7 @@
           },
           {
             "label": "LuatIDE: Run Launch",
-            "description": "LuatIDE活动工程运行配置",
+            "description": "LuatIDE Active Project Run Configuration",
             "body": {
               "type": "luat",
               "request": "launch",
@@ -409,7 +409,7 @@
     "viewsWelcome": [
       {
         "view": "luatide-history-project",
-        "contents": "[快速上手](command:luatide.quickstart)\n[技术支持](command:luatide.technicalSupport)\n[工具源码](command:luatide.SourceCode)"
+        "contents": "[Quick start](command:luatide.quickstart)\n[Technical Support](command:luatide.technicalSupport)\n[Tool Source code](command:luatide.SourceCode)"
       }
     ]
   }

@@ -11,73 +11,73 @@
 <body>
     <div class="leftBar">
         <div class="leftBar-Child configShow">
-            工程配置
+            Project
         </div>
         <div class="leftBar-Child fileShow">
-            下载配置
+            Download
         </div>
     </div>
     <div class="rightBar">
         <div class="fileSystemMain">
             <div class="description">
-                <h1>文件下载配置页面</h1>
+                <h1>File Download Configuration Page</h1>
             </div>
             <div class="floderBox">
                 <div class="perFloder">
                     <div class="floderCont main">
-                        <input type="checkbox" id="root"> <i class="fa fa-folder"></i> <label class="mainLabel" for="root">请选择要下载的文件，勾选的为要下载到固件的文件，否则忽略下载</label>
+                        <input type="checkbox" id="root"> <i class="fa fa-folder"></i> <label class="mainLabel" for="root">Please select the file to be downloaded, the selected file is the file to be downloaded to the firmware, otherwise the download will be ignored</label>
                     </div>
                 </div>
             </div>
             <div>
-                <button class="download">完成</button>
+                <button class="download">Finish</button>
             </div>
         </div>
         <div class="projectConfig">
             <div class="cfg-box">
-                <h1 class="cfg-h1">活动工程配置页面</h1>
+                <h1 class="cfg-h1">Active Project Configuration Page</h1>
                 <div class="configBox projectNameBox">
                     <p class="cfg-p" class="configItem">projectName Config </p>
-                    <p class="cfg-p" class="configDesc">设置当前工程名称,若所设置的工程名称已存在,则设置失败,使用原有工程名称</p>
+                    <p class="cfg-p" class="configDesc">Set the current project name. If the set project name already exists, the setting will fail and the original project name will be used.</p>
                     <input class="cfg-input" type="text" id="projectNameInput" onchange=projectNameSelect()>
                     <br>
-                    <a onclick="javascript:openConfigJson('projectName');" href="#">在luatide_project.json中编辑</a>
+                    <a onclick="javascript:openConfigJson('projectName');" href="#">Edit in luatide_project.json</a>
                 </div>
                 <div class="configBox">
                     <p class="cfg-p" class="configItem">corePath Config</p>
                     <p class="cfg-p" class="configDesc">
-                        选择下载到设备的最新core路径,不填默认使用本地该设备对应最新core
+                        Select the latest core path downloaded to the device, leave it blank and use the local device corresponding to the latest core by default
                     </p>
                     <input class="cfg-input" type="text" id="corePathInput" onclick="corePathSelect()" readonly />
                     <br />
-                    <a onclick="javascript:openConfigJson('corePath');" href="#">在luatide_project.json中编辑</a>
+                    <a onclick="javascript:openConfigJson('corePath');" href="#">Edit in luatide_project.json</a>
                 </div>
                 <div class="configBox">
                     <p class="cfg-p" class="configItem">libPath Config</p>
                     <p class="cfg-p" class="configDesc">
-                        选择下载到设备的最新lib路径,不填默认使用本地该设备对应最新lib
+                        Select the latest lib path downloaded to the device, leave it blank and use the local device corresponding to the latest lib by default
                     </p>
                     <input class="cfg-input" type="text" id="libPathInput" onclick="libPathSelect()" readonly />
                     <br />
-                    <a onclick="javascript:openConfigJson('libPath');" href="#">在luatide_project.json中编辑</a>
+                    <a onclick="javascript:openConfigJson('libPath');" href="#">Edit in luatide_project.json</a>
                 </div>
                 <div class="configBox">
                     <p class="cfg-p" class="configItem">moduleModel Config</p>
                     <p class="cfg-p" class="configDesc">
-                        选择将要下载的设备型号,不选默认使用air72XUX/air82XUX
+                        Select the device model to be downloaded, do not select to use air72XUX/air82XUX by default
                     </p>
                     <select class="cfg-select" name="moduleModel" id="moduleModel" onchange="moduleModelSelect()"></select>
                     <br />
-                    <a onclick="javascript:openConfigJson('moduleModel');" href="#">在luatide_project.json中编辑</a>
+                    <a onclick="javascript:openConfigJson('moduleModel');" href="#">Edit in luatide_project.json</a>
                 </div>
                 <div class="configBox">
                     <p class="cfg-p" class="configItem">modulePort Config</p>
                     <p class="cfg-p" class="configDesc">
-                        选择将要下载的设备端口,不选会默认自动找寻,多设备同时连接等特殊情况可能找寻失败
+                        Select the port of the device to be downloaded. If not selected, it will be automatically searched by default. In special cases such as multiple devices connected at the same time, the search may fail.
                     </p>
                     <select class="cfg-select" name="modulePort" id="modulePort" onchange="modulePortSelect()"></select>
                     <br />
-                    <a onclick="javascript:openConfigJson('modulePort');" href="#">在luatide_project.json中编辑</a>
+                    <a onclick="javascript:openConfigJson('modulePort');" href="#">Edit in luatide_project.json</a>
                 </div>
             </div>
         </div>

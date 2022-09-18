@@ -560,7 +560,7 @@ export class MockDebugSession extends LoggingDebugSession {
 	protected async initializeRequest(response: DebugProtocol.InitializeResponse, args: DebugProtocol.InitializeRequestArguments) {
 		if(checkFile.checkFilesWebviewIsOpen()===true)
 		{
-			vscode.window.showErrorMessage("检测到工程文件发生变化，请先完成工程文件的配置！");
+			vscode.window.showErrorMessage("Detected that the project file has changed, please complete the configuration of the project file first!");
 			// 强行终止调试器
 			vscode.debug.stopDebugging();
 			// 让Webview恢复到最上层

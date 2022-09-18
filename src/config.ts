@@ -184,11 +184,11 @@ export class PluginConfigInit {
           state:'',
           desc: '',
           children: [{
-                id:"UI设计器",
-                name:'UI设计器',
+                id:"UI designer",
+                name:'UI designer',
                 size: '50MB+',
                 state:'Not Installed',
-                desc: 'UI工程开发必备资源'
+                desc: 'Necessary resources for UI engineering development'
             },
             {
                 id:"NDK",
@@ -334,7 +334,7 @@ export class PluginConfigInit {
                     else {
                         return true;
                     }
-                case "UI设计器":
+                case "UI designer":
                     const uiDesignPath = getUiDesignDefaultPath();
                     if (isEmptyDir(uiDesignPath)) {
                         return false;

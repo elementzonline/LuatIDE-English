@@ -121,7 +121,7 @@ function childrenDataInit(element: any,activityPath) {
       }
     }
     else {
-      vscode.window.showErrorMessage('活动工程目录展开失败,插件appFile项获取异常', { modal: true });
+      vscode.window.showErrorMessage('Active project directory expansion failed, the plugin appFile item gets abnormally', { modal: true });
     }
   }
   return treeDir;
@@ -172,7 +172,7 @@ export class ActivityTreeItem extends vscode.TreeItem {
 
   //为每项添加点击事件的命令
   command = {
-    title: "点击打开",
+    title: "Click to open",
     command: 'luatide-activity-project.click',
     arguments: [    //传递两个参数
       this.label,
